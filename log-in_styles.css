@@ -15,6 +15,8 @@ header{
     height: 100px;
     flex-shrink: 0;
     background: #0B0B0D;
+    display: flex;
+    justify-content: space-between;
 }
 .container{
     width: 100%;
@@ -68,7 +70,7 @@ header{
     display: flex;
     flex-direction: column;
     justify-content: center;
-    width: 450px;
+    width: 491px;
     height: 62px;
     flex-shrink: 0;
     border-radius: 5px;
@@ -246,6 +248,10 @@ color: #B47B44;
         display: flex;
         justify-content: center;
         align-items: center;
+    }
+    .google img{
+        width: 30px;
+        height: 30px;
     }
     .footer {
         margin-top: 20px;
