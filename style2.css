@@ -1,0 +1,72 @@
+*{
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.navbar{
+    background-color: rgb(32, 31, 31);
+    padding: 17px 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100px;
+
+}
+img{
+    height: 150px;
+    width: 150px ;
+
+}
+.navbar ul{
+    list-style: none;
+    display: flex;
+    gap: 30px;
+}
+.navbar ul li a{ 
+    color: gold;
+    text-decoration: none;
+    font-size: 20pxs;
+    font-weight: bold;
+    transition: 0.3 ease;
+
+}
+.navbar ul li a:hover{
+    color: yellow;
+}
+.hero{
+    height: 100vh;
+    background-image: url(/bg1.jpg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    flex-direction: column;
+    background-size: cover;
+    background-repeat: no-repeat;   
+    background-position: center;
+    color: gold;    
+}
+.hero h1{
+    font-size: 60px;
+}
+.hero p{
+    font-size: 20px;
+    margin: 20px 0px;
+}
+.hero .btn{
+    display: flex;
+    padding: 12px 20px;
+    background-color: rgb(36, 18, 18);
+    color: white;
+    font-size: 20px;
+    letter-spacing: 1px;
+    text-decoration: none;
+    border-radius: 50px;
+    transition: 0.3 ease;
+}
+.hero .btn:hover{
+    background-color: rgb(32, 31, 32);
+    color: goldenrod;
+
+}
