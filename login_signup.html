@@ -78,13 +78,29 @@
     </div>
 
     <script src="login_signup.js"></script>
-
     <script src="jquery-3.7.1.min.js"></script>
     <script>
-        $(document).ready(function(){
-            $("")
-        })
-    </script>
+        $(document).ready(function() {
+            $('.btn').click(function() {
+                const username = $("#username").val();
+                const password = $("#pass").val();
+
+                const adminusername = "admin";
+                const adminpassword = "admin123";
+
+                const userusername = "user";
+                const userpassword = "user123";
+
+                if(username === adminusername && password === adminpassword) {
+                    window.location.href = "admindb.html";
+                } else if (username === userusername && password === userpassword) {
+                    window.location.href = "index.html";
+                } else {
+                    alert("Invalid username or password");
+                }
+            });
+        });
+        </script>
 
 </body>
 </html>
