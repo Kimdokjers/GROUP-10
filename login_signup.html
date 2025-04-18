@@ -130,27 +130,55 @@
             $("#submit").on("click", function(event) {
                 event.preventDefault();
 
-                const username = $("#email").val(); 
+                const email = $("#email").val(); 
                 const password = $("#pass").val();  
 
-                const adminUsername = "admin@gmail.com";
+                const adminEmail = "admin@gmail.com";
                 const adminPassword = "admin123";
 
-                const ownerUsername = "gymOwner@gmail.com";
+                const ownerEmail = "gymOwner@gmail.com";
                 const ownerPassword = "gymOwner123";
 
-                const clientUsername = "user@gmail.com";
+                const clientEmail = "user@gmail.com";
                 const clientPassword = "user0123";
 
 
-                if (username === clientUsername && password === clientPassword) {
+                if (email === clientEmail && password === clientPassword) {
                     window.location.href = "home.html";
-                }else if (username === ownerUsername && password === ownerPassword) {
+                }else if (email === ownerEmail && password === ownerPassword) {
                         window.location.href = "owner.html";
-                } else if (username === adminUsername && password === adminPassword) {
+                } else if (email === adminEmail && password === adminPassword) {
                     window.location.href = "admindb.html";
                 } else {
-                    alert("Invalid login username or password. Please try again.");
+                    alert("Invalid login email or password. Please try again.");
+                }
+
+            });
+        });
+
+        $(document).ready(function() {
+            $("#signup-submit").on("click", function(event) {
+                event.preventDefault();
+
+                const email = $("#signup-email").val(); 
+                const password = $("#signup-pass").val();  
+
+                const adminEmail = "admin@gmail.com";
+                const adminPassword = "admin123";
+
+                const ownerEmail = "gymOwner@gmail.com";
+                const ownerPassword = "gymOwner123";
+
+                const clientEmail = "user@gmail.com";
+                const clientPassword = "user0123";
+
+
+                if (email === clientEmail && password === clientPassword) {
+                    window.location.href = "home.html";
+                }else if (email === ownerEmail && password === ownerPassword) {
+                        window.location.href = "owner.html";
+                } else if (email === adminEmail && password === adminPassword) {
+                    window.location.href = "admindb.html";
                 }
 
             });
