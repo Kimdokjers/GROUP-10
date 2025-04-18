@@ -383,10 +383,10 @@ document.addEventListener('DOMContentLoaded', () => {
                             data.calories.snacks
                         ],
                         backgroundColor: [
-                            getCssVariable('--chart-calorie-breakfast') || '#3498db',
-                            getCssVariable('--chart-calorie-lunch') || '#5dade2',
-                            getCssVariable('--chart-calorie-dinner') || '#2980b9',
-                            getCssVariable('--chart-calorie-snacks') || '#aed6f1'
+                            getCssVariable('--chart-calorie-breakfast') || '#bf9a33',
+                            getCssVariable('--chart-calorie-lunch') || '#febd14',
+                            getCssVariable('--chart-calorie-dinner') || '#fece43',
+                            getCssVariable('--chart-calorie-snacks') || '#feda75'
                         ],
                         borderColor: getCssVariable('--card-bg') || '#ffffff', 
                         borderWidth: 2,
@@ -474,9 +474,9 @@ document.addEventListener('DOMContentLoaded', () => {
                         label: 'Macronutrients',
                         data: [ percentCarbs, percentFat, percentProtein ],
                         backgroundColor: [
-                            getCssVariable('--chart-macro-carbs') || '#2ecc71',
-                            getCssVariable('--chart-macro-fat') || '#e74c3c',
-                            getCssVariable('--chart-macro-protein') || '#f39c12'
+                            getCssVariable('--chart-macro-carbs') || '#c49a3c',
+                            getCssVariable('--chart-macro-fat') || '#e6c56d',
+                            getCssVariable('--chart-macro-protein') || '#a47e2b'
                         ],
                         borderColor: getCssVariable('--card-bg') || '#ffffff',
                         borderWidth: 2,
