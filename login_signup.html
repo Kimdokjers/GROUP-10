@@ -8,32 +8,33 @@
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
 <body>
+
     <div class="container">
         <div class="form-box login">
             <form action="">
                     <h1>Login</h1>
                 <div class="input-box">
-                    <input type="text" placeholder="Username" id="username" required>
+                    <input type="email" placeholder="Email" id="email" required>
                     <i class='bx bxs-user' ></i>
                 </div>
                 <div class="input-box">
-                    <input type="Password" placeholder="Password"  id="pass" required>
+                    <input type="password" placeholder="Password"  id="pass" required>
                     <i class='bx bxs-lock-alt' ></i>
                 </div>
                 <div class="forgot-link">
                     <a href="#">Forgot password?</a>
                 </div>
-                <button type="submit" class="btn">Log in</button>
+                <button type="submit" class="btn-login" id="submit">Log in</button>
                 <p>or Log in with</p>
                 <div class="social-icons">
-                    <a href="#"><img src="google.jpg"></a>
+                    <a href="google_login.html"><img src="google.jpg"></a>
                 </div>
             </form>
         </div>
 
         <div class="form-box signup">
-            <form action="">
-                <h1>Sign in</h1>
+            <form id="signup-form"> 
+                <h1>Sign up</h1> 
                 <div class="input-box">
                     <input type="text" placeholder="Username"  id="username" required>
                     <i class='bx bxs-user' ></i>
@@ -42,34 +43,34 @@
                     <input type="date" placeholder="Birth Date" id="date" min="1900-01-01" max="2025-01-01" required>
                 </div>
                 <div class="input-box">
-                    <input type="email" placeholder="Email" required>
+                    <input type="email" placeholder="Email" id="signup-email" required> 
                     <i class='bx bxs-envelope' ></i>
                 </div>
                 <div class="input-box">
-                    <input type="Password" placeholder="Password" id="pass" required>
+                    <input type="password" placeholder="Password" id="signup-pass" required>
                     <i class='bx bxs-lock-alt' ></i>
                 </div>
-                
-                <button type="submit" class="btn">Sign in</button>
-                <p>or Sign in with</p>
+
+                <button type="submit" class="btn-signin" id="signup-submit">Sign up</button>
+                <p>or Sign up with</p>
                 <div class="social-icons">
-                    <a href="#"><img src="google.jpg"></a>
+                    <a href="google_signup.html"><img src="google.jpg"></a>
                 </div>
             </form>
         </div>
 
         <div class="toggle-box">
             <div class="toggle-panel toggle-left">
-                <a><i class='bx bxs-home'></i></a>
+                <a href="landingPage.html"><i class='bx bxs-home' style="color: white;"></i></a>
                 <img src="logo.png" alt="Logo">
                 <h1>Hello, Welcome!</h1>
                 <p>Don't have an account?</p>
-                <button class="btn signup-btn">Sign in</button>
+                <button class="btn signup-btn">Sign up</button>
             </div>
 
             <div class="toggle-panel toggle-right">
-                <a><i class='bx bxs-home'></i></a>
-                <img src="logo.png" alt="Logo">
+                <a href="landingPage.html"><i class='bx bxs-home' style="color: white;"></i></a>
+                <img src="logo.png" alt="Logo" width="100px" height="100px">
                 <h1>Welcome Back!</h1>
                 <p>Already have an account?</p>
                 <button class="btn login-btn">Log in</button>
@@ -77,27 +78,81 @@
         </div>
     </div>
 
-    <script src="login_signup.js"></script>
+
+
     <script src="jquery-3.7.1.min.js"></script>
     <script>
-        $(document).ready(function() {
-            $('.btn').click(function() {
-                const username = $("#username").val();
-                const password = $("#pass").val();
+        const container = document.querySelector('.container');
+        const registerBtn = document.querySelector('.signup-btn'); 
+        const loginBtn = document.querySelector('.login-btn');     
+        const signupSubmitBtn = document.getElementById('signup-submit');
 
-                const adminusername = "admin";
-                const adminpassword = "admin123";
+        if (registerBtn) {
+            registerBtn.addEventListener('click', () => {
+                container.classList.add('active');
+            });
+        }
 
-                const userusername = "user";
-                const userpassword = "user123";
+        if (loginBtn) {
+            loginBtn.addEventListener('click', () => {
+                container.classList.remove('active');
+            });
+        }
+        if (signupSubmitBtn) {
+            signupSubmitBtn.addEventListener('click', function(event) {
+                event.preventDefault();
 
-                if(username === adminusername && password === adminpassword) {
-                    window.location.href = "admindb.html";
-                } else if (username === userusername && password === userpassword) {
-                    window.location.href = "index.html";
-                } else {
-                    alert("Invalid username or password");
+                const signupPasswordInput = document.getElementById('signup-pass');
+
+                if (!signupPasswordInput) {
+                    console.error("Signup password input with ID 'signup-pass' not found!");
+                    alert("Signup password field missing.");
+                    return;
                 }
+
+                const password = signupPasswordInput.value;
+
+                if (password.length < 8) {
+                    alert("Password must be 8 or more characters long.");
+                    return;
+                }
+
+                console.log("Password length is sufficient.");
+                alert("Sign up successful (validation passed)!");
+
+            });
+        } else {
+            console.warn("Sign up submit button (#signup-submit) not found.");
+        }
+
+        
+        $(document).ready(function() {
+            $("#submit").on("click", function(event) {
+                event.preventDefault();
+
+                const username = $("#email").val(); 
+                const password = $("#pass").val();  
+
+                const adminUsername = "admin@gmail.com";
+                const adminPassword = "admin123";
+
+                const ownerUsername = "gymOwner@gmail.com";
+                const ownerPassword = "gymOwner123";
+
+                const clientUsername = "user@gmail.com";
+                const clientPassword = "user0123";
+
+
+                if (username === clientUsername && password === clientPassword) {
+                    window.location.href = "home.html";
+                }else if (username === ownerUsername && password === ownerPassword) {
+                        window.location.href = "owner.html";
+                } else if (username === adminUsername && password === adminPassword) {
+                    window.location.href = "admindb.html";
+                } else {
+                    alert("Invalid login username or password. Please try again.");
+                }
+
             });
         });
     </script>
