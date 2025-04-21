@@ -23,6 +23,17 @@
         </ul>
 
     </header>
+    <section class="gym-search-section">
+        <div class="gym-search-container">
+             <form id="gym-search-form" onsubmit="return false;"> 
+                 <input type="search" id="gym-search-input" placeholder="Find Your Gym (e.g., Apex, Ironclad)...">
+                 <button type="button" id="gym-search-button"> 
+                     <i class='bx bx-search'></i> Search
+                 </button>
+             </form>
+        </div>
+        
+    </section>
     
     <section class="home" id="home">
         <div class="home-content">
@@ -113,7 +124,14 @@
     </div>
 </footer>
 
-
+<script>
+    const menuIcon = document.getElementById('menu-icon');
+    const navbar = document.querySelector('.navbar');
+  
+    menuIcon.addEventListener('click', () => {
+        navbar.classList.toggle('active');
+    });
+  </script>
 <script src="jquery-3.7.1.min.js"></script>
 </body>
 </html>
