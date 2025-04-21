@@ -1,4 +1,3 @@
-
 * {
     margin: 0;
     padding: 0;
@@ -7,9 +6,9 @@
 
 body {
     font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f4f7fc;
-    color: #333;
-    display: flex; 
+    background-color: #1a1a1a;
+    color: #ecf0f1;
+    display: flex;
 }
 
 a {
@@ -31,17 +30,17 @@ ul {
 
 .sidebar {
     width: 250px;
-    background-color:#1a1a1a;
-    color: #ecf0f1; 
+    background-color:#1f1f1f;
+    color: #ecf0f1;
     display: flex;
     flex-direction: column;
-    flex-shrink: 0; 
+    flex-shrink: 0;
 }
 
 .sidebar-header {
     padding: 20px;
     text-align: center;
-    border-bottom: 1px solid #aaa;
+    border-bottom: 1px solid #444;
 }
 
 .sidebar-header h2 {
@@ -49,7 +48,7 @@ ul {
 }
 
 .sidebar-nav {
-    flex-grow: 1; 
+    flex-grow: 1;
     padding-top: 20px;
 }
 
@@ -66,20 +65,20 @@ ul {
 
 .sidebar-nav ul li a i {
     margin-right: 10px;
-    width: 20px; 
+    width: 20px;
     text-align: center;
 }
 
 
 .sidebar-nav ul li a:hover {
-    background-color: #34495e; 
+    background-color: #333;
     color: #ffffff;
-    padding-left: 25px; 
+    padding-left: 25px;
 }
 
 .sidebar-nav ul li a.active {
     background-color: #f0c44c;
-    color: #ffffff;
+    color: #1a1a1a;
     font-weight: bold;
 }
 
@@ -89,34 +88,35 @@ ul {
     flex-grow: 1;
     display: flex;
     flex-direction: column;
-    background-color: #ffffff;
+    background-color: #2c2c2c;
 }
 
 
 .main-header {
-    background-color: #ffffff;
+    background-color: #2c2c2c;
     padding: 15px 30px;
-    border-bottom: 1px solid #e0e0e0;
+    border-bottom: 1px solid #444;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    box-shadow: none;
 }
 
 .main-header h1 {
     font-size: 1.8em;
-    color: #2c3e50;
+    color: #ecf0f1;
 }
 
 .admin-profile span {
     font-weight: 500;
+    color: #bdc3c7;
 }
 
 
 .content-area {
     padding: 30px;
     flex-grow: 1;
-    overflow-y: auto; 
+    overflow-y: auto;
 }
 
 .content-section {
@@ -125,14 +125,14 @@ ul {
 }
 
 .content-section.active {
-    display: block; 
+    display: block;
 }
 
 .content-section h2 {
     margin-bottom: 20px;
-    color: #34495e;
+    color: #ecf0f1;
     font-size: 1.6em;
-    border-bottom: 2px solid #1abc9c;
+    border-bottom: 2px solid #f0c44c;
     padding-bottom: 5px;
     display: inline-block;
 }
@@ -146,46 +146,49 @@ ul {
 }
 
 .card {
-    background-color: #ffffff;
+    background-color: #333;
     padding: 20px;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: none;
     text-align: center;
-    border-left: 5px solid #1abc9c;
+    border-left: 5px solid #f0c44c;
+    color: #ecf0f1;
 }
 
 .card h3 {
     margin-bottom: 10px;
     font-size: 1.1em;
-    color: #555;
+    color: #bdc3c7;
 }
 
 .card p {
     font-size: 2em;
     font-weight: bold;
-    color: #2c3e50;
+    color: #ffffff;
 }
 
 .quick-actions, .recent-activity {
-    background-color: #fff;
+    background-color: #333;
     padding: 20px;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    box-shadow: none;
     margin-bottom: 20px;
+    color: #ecf0f1;
 }
 
 .quick-actions h3, .recent-activity h3 {
      margin-bottom: 15px;
-     color: #34495e;
+     color: #ecf0f1;
 }
 
 .quick-actions button {
     margin-right: 10px;
+    margin-bottom: 5px;
 }
 
 .recent-activity ul li {
     padding: 8px 0;
-    border-bottom: 1px dashed #eee;
+    border-bottom: 1px dashed #555;
 }
 .recent-activity ul li:last-child {
     border-bottom: none;
@@ -194,13 +197,13 @@ ul {
 
 
 .chart-placeholder {
-    background-color: #e9ecef;
-    border: 1px dashed #ced4da;
+    background-color: #3a3a3a;
+    border: 1px dashed #555;
     padding: 50px;
     text-align: center;
     margin-bottom: 20px;
     border-radius: 5px;
-    color: #6c757d;
+    color: #bdc3c7;
 }
 
 
@@ -208,27 +211,28 @@ table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
-    background-color: #fff;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    background-color: #333;
+    box-shadow: none;
+    color: #ecf0f1;
 }
 
 thead {
-    background-color: #34495e;
-    color: #ecf0f1; 
+    background-color: #444;
+    color: #ecf0f1;
 }
 
 th, td {
     padding: 12px 15px;
     text-align: left;
-    border-bottom: 1px solid #e0e0e0;
+    border-bottom: 1px solid #555;
 }
 
 tbody tr:nth-child(even) {
-    background-color: #f8f9fa; 
+    background-color: #3a3a3a;
 }
 
 tbody tr:hover {
-    background-color: #e9ecef; 
+    background-color: #454545;
 }
 
 th {
@@ -246,67 +250,68 @@ th {
     margin: 2px;
 }
 
+
 .btn-primary {
-    background-color: #3498db; 
-    color: white;
+    background-color: #ffbb00;
+    color: #333;
 }
 .btn-primary:hover {
-    background-color: #2980b9;
+    background-color: #bbb;
     box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
 
 .btn-secondary {
-    background-color: #95a5a6; 
+    background-color: #8b8b8b;
     color: white;
 }
 .btn-secondary:hover {
-    background-color: #7f8c8d;
+    background-color: #6c7a7b;
     box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
 
 .btn-warning {
-    background-color: #f39c12; 
-    color: white;
+    background-color: #eb9902;
+    color: #1a1a1a;
 }
 .btn-warning:hover {
-    background-color: #e67e22;
+    background-color: #e6b840;
     box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
 
 .btn-danger {
-    background-color: #e74c3c; 
+    background-color: #c0392b;
     color: white;
 }
 .btn-danger:hover {
-    background-color: #c0392b;
+    background-color: #a53125;
     box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
 
 .btn-info {
-    background-color: #1abc9c; 
+    background-color: #16a085;
     color: white;
 }
 .btn-info:hover {
-    background-color: #16a085;
+    background-color: #117a65;
     box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
 
 .btn-success {
-    background-color: #2ecc71; 
+    background-color: #27ae60;
     color: white;
 }
 .btn-success:hover {
-    background-color: #27ae60;
+    background-color: #1f8b4c;
     box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
 
 
-.btn-sm { 
+.btn-sm {
     padding: 5px 10px;
     font-size: 0.8em;
 }
 
-.add-btn { 
+.add-btn {
     margin-bottom: 15px;
 }
 
@@ -319,7 +324,7 @@ th {
 
 @media (max-width: 768px) {
     .sidebar {
-        width: 60px; 
+        width: 60px;
     }
     .sidebar-header h2, .sidebar-nav ul li a span {
         display: none;
@@ -341,7 +346,7 @@ th {
     }
 
     th, td {
-        padding: 8px 5px; 
+        padding: 8px 5px;
         font-size: 0.9em;
     }
 
