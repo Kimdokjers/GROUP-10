@@ -3,25 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OptiLife</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="style2.css">
+    <title>Home Page</title>
 </head>
-<body>
-    <header class="navbar">
-        <img src="logo.png"/>
+<body> 
+    <header>
+        <a href="#home" class="logo"><img src="images/logo.png"></a>
+        
+        <div class='bx bx-menu' id="menu-icon"></div>
+
+        <ul class="navbar">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#about">About Us</a></li>
+            <li><a href="#review">Review</a></li>
+        </ul>
+        <div class="top-btn">
+            <a href="#" class="nav-btn">Join Us</a>
+        </div>
+    </header>
     
-    <ul>
-        <li ><a href="#">Home</a></li>
-        <li ><a href="#">About</a></li>
-        <li ><a href="#">Services</a></li>
-        <li ><a href="#">Contact</a></li>
-    </ul>
-</header>
-<section class="hero">
-    <h1>Welcome To OptiLife</h1>
-    <p>A Journey To Make Your Life Healthier</p>
-    <a href="#" class="btn">Get Started</a>
-</section>
-    
+    <section class="home" id="home">
+        <div class="home-content">
+
+            <h3>Build Your</h3>
+            <h1>Dream Body</h1>
+            <h3><span class="multiple-text">Passionately</span></h3>
+
+           
+            <a href="#" class="btn">Join Us</a>
+            
+        </div>
+        <div class="home-img">
+            <img src="images/heroImage.png" alt="Home Image">
+        </div>
+    </section>
 </body>
 </html>
