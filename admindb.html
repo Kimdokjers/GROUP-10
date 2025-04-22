@@ -372,7 +372,7 @@
                 var titleText = $(this).clone().find('i').remove().end().text().trim();
                 $('#page-title').text(titleText);
             }
-            // Note: Logout handled by separate vanilla JS listener above
+           
         });
 
         // --- Add Gym Modal Logic ---
@@ -393,7 +393,7 @@
 
         addGymBtnDashboard.on('click', showAddGymModal);
         addGymBtnInSection.on('click', showAddGymModal);
-        addGymModal.find('.close-btn').on('click', hideAndResetGymModal); // Close button specific to gym modal
+        addGymModal.find('.close-btn').on('click', hideAndResetGymModal); 
 
         addGymForm.on('submit', function(e) {
             e.preventDefault();
@@ -427,12 +427,11 @@
 
         // --- Add User Modal Logic ---
         var addUserModal = $('#add-user-modal');
-        // Use the button inside the 'users-content' section
+     
         var addUserBtnInSection = $('#users-content button.add-btn');
-        // You might need to add a button in the dashboard if desired:
-        // var addUserBtnDashboard = $('#quick-add-user-btn');
-        var addUserForm = $('#add-user-form'); // Correct form ID
-        var userTableBody = $('#users-content table tbody'); // Correct table body
+       
+        var addUserForm = $('#add-user-form'); 
+        var userTableBody = $('#users-content table tbody'); 
 
         function showAddUserModal() {
             addUserModal.show();
@@ -440,14 +439,13 @@
 
         function hideAndResetUserModal() {
             addUserModal.hide();
-            addUserForm[0].reset(); // Reset the user form
+            addUserForm[0].reset(); 
         }
 
-        // Add event listener for the button in the users section
+        
         addUserBtnInSection.on('click', showAddUserModal);
-        // If you add a dashboard button, uncomment this:
-        // addUserBtnDashboard.on('click', showAddUserModal);
-        addUserModal.find('.close-btn').on('click', hideAndResetUserModal); // Close button specific to user modal
+       ;
+        addUserModal.find('.close-btn').on('click', hideAndResetUserModal); 
 
         addUserForm.on('submit', function(e) {
             e.preventDefault();
@@ -474,12 +472,12 @@
                     </td>
                 </tr>
             `;
-            userTableBody.append(newRowHtml); // Append to the correct table
+            userTableBody.append(newRowHtml); 
             alert(`User "${userName}" added successfully!`);
             hideAndResetUserModal();
         });
 
-        // --- General Modal Closing (Clicking outside) ---
+     
         $(window).on('click', function(event) {
             if ($(event.target).is(addGymModal)) {
                 hideAndResetGymModal();
@@ -489,24 +487,23 @@
             }
         });
 
-        // --- Delete Button Simulation (for any table) ---
-        // Use event delegation for dynamically added rows
+       
         $('.content-area').on('click', '.btn-danger', function() {
             if (confirm('Are you sure you want to delete this item?')) {
-                $(this).closest('tr').remove(); // Remove the closest table row
+                $(this).closest('tr').remove(); 
                 alert('Item deleted (Simulation)!');
-                // In a real app, you'd make an AJAX call here to delete from the server
+              
             }
         });
 
-        // --- Other Button Simulations ---
+     
          $('.content-area').on('click', '.btn-info', function() {
              alert('Refund Action (Simulation)');
          });
          $('.content-area').on('click', '.btn-success', function() {
              alert('Mark as Paid Action (Simulation)');
-              $(this).closest('tr').find('td:nth-child(6)').text('Completed'); // Example update
-               $(this).remove(); // Remove the button after action
+              $(this).closest('tr').find('td:nth-child(6)').text('Completed');
+               $(this).remove(); 
          });
 
 
