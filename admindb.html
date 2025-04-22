@@ -302,6 +302,35 @@
         </div>
     </div>
 
+    <div id="add-user-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">×</span>
+            <h2>Add New Member</h2>
+            <form id="add-gym-form">
+                <div class="form-group">
+                    <label for="member-id">Member ID:</label>
+                    <input type="text" id="member-id" name="member-id" required placeholder="e.g., user03">
+                </div>
+                <div class="form-group">
+                    <label for="member-name">Name:</label>
+                    <input type="text" id="member-name" name="member-name" required placeholder="e.g., Bruce Wayne ">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required placeholder="e.g., use@gmail.com">
+                </div>
+                <div class="form-group">
+                    <label for="membership">Membership:</label>
+                    <input type="text" id="membership" name="membership" required placeholder="e.g., Premium">
+                </div>
+                <div class="form-group">
+                    <label for="status">Status:</label>
+                    <input type="text" id="status" name="status" required placeholder="e.g., Active">
+                </div>
+                <button type="submit" class="btn btn-primary modal-add-btn">Add New Member</button>
+            </form>
+        </div>
+    </div>
 
     <script src="jquery-3.7.1.min.js"></script>
 
