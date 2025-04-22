@@ -78,23 +78,15 @@
                     </div>
                 </section>
 
-                
                 <section id="analytics-content" class="content-section">
                     <h2>Analytics</h2>
-                     <p>Visual representation of key metrics.</p>
-                    <div class="chart-container">
-                        <h3>Membership Trends</h3>
-                        <img src="images/graph.svg" alt="Chart showing membership trends">
-                    </div>
-                     <div class="chart-container">
-                        <h3>New User Registrations</h3>
-                         <img src="images/graph.svg" alt=""> 
-                    </div>
-                     <div class="chart-container">
-                        <h3>New Added Gym</h3>
-                         <img src="images/graph.svg" alt="Chart showing revenue growth">
-                    </div>
+                    <p>Detailed charts and reports will go here.</p>
+                    <div class="chart-placeholder">Membership Growth graph Placeholder</div>
+                    <div class="chart-placeholder">New User Add graph Placeholder</div>
+                    <div class="chart-placeholder">New Gym Add graph Placeholder</div>
+
                 </section>
+
 
                 <section id="users-content" class="content-section">
                     <h2>Manage Users</h2>
@@ -119,7 +111,7 @@
                                 <td>Active</td>
                                 <td>
                                     <button class="btn btn-sm btn-secondary">View</button>
-                               
+                                    <button class="btn btn-sm btn-warning">Edit</button>
                                     <button class="btn btn-sm btn-danger">Delete</button>
                                 </td>
                             </tr>
@@ -131,7 +123,7 @@
                                 <td>Inactive</td>
                                 <td>
                                     <button class="btn btn-sm btn-secondary">View</button>
-                                    
+                                    <button class="btn btn-sm btn-warning">Edit</button>
                                     <button class="btn btn-sm btn-danger">Delete</button>
                                 </td>
                             </tr>
@@ -162,8 +154,8 @@
                                 <td>charlie@gym.com</td>
                                 <td>Downtown</td>
                                 <td>
-                                    <button class="btn btn-sm btn-secondary"></button>
-                                    
+                                    <button class="btn btn-sm btn-secondary">View</button>
+                                    <button class="btn btn-sm btn-warning">Edit</button>
                                     <button class="btn btn-sm btn-danger">Delete</button>
                                 </td>
                             </tr>
@@ -175,7 +167,7 @@
                                 <td>Uptown</td>
                                  <td>
                                     <button class="btn btn-sm btn-secondary">View</button>
-                                    
+                                    <button class="btn btn-sm btn-warning">Edit</button>
                                     <button class="btn btn-sm btn-danger">Delete</button>
                                 </td>
                             </tr>
@@ -208,7 +200,7 @@
                                 <td>150</td>
                                 <td>
                                     <button class="btn btn-sm btn-secondary">View Details</button>
-                                    <button class="btn btn-sm btn-warning">Edit</button>
+                                    <button class="btn btn-sm btn-warning">Delete</button>
                                 </td>
                             </tr>
                              <tr>
@@ -219,7 +211,7 @@
                                 <td>100</td>
                                  <td>
                                     <button class="btn btn-sm btn-secondary">View Details</button>
-                                    <button class="btn btn-sm btn-warning">Edit</button>
+                                    <button class="btn btn-sm btn-warning">Delete</button>
                                 </td>
                             </tr>
 
@@ -254,7 +246,7 @@
                                 <td>Completed</td>
                                 <td>Credit Card</td>
                                 <td>
-                                    <button class="btn btn-sm btn-secondary">View Invoice</button>
+                                    
                                     <button class="btn btn-sm btn-info">Refund</button>
                                 </td>
                             </tr>
@@ -267,7 +259,7 @@
                                 <td>Pending</td>
                                 <td>Bank Transfer</td>
                                  <td>
-                                    <button class="btn btn-sm btn-secondary">View Invoice</button>
+                                    
                                      <button class="btn btn-sm btn-success">Mark as Paid</button>
                                 </td>
                             </tr>
@@ -319,27 +311,16 @@
     $('.sidebar-nav .nav-link').on('click', function(e) {
         e.preventDefault(); // Prevent default anchor behavior
 
-        // Get the target content section ID from data attribute
         var targetId = $(this).data('target');
-
-        // If the link has a target (ignore logout link for content switching)
         if (targetId) {
-            // Update active link
-            $('.sidebar-nav .nav-link').removeClass('active'); // Remove active class from all links
-            $(this).addClass('active'); // Add active class to the clicked link
-
-            // Update active content section
-            $('.content-section').removeClass('active'); // Hide all content sections
-            $('#' + targetId).addClass('active'); // Show the target content section
-
-            // Update the page title
-            // Clone the link, remove the icon, get the text
+            $('.sidebar-nav .nav-link').removeClass('active');
+            $(this).addClass('active');
+            $('.content-section').removeClass('active');
+            $('#' + targetId).addClass('active');
             var titleText = $(this).clone().find('i').remove().end().text().trim();
             $('#page-title').text(titleText);
         } else if ($(this).find('i.bi-box-arrow-left').length) {
-             // Handle logout link specifically if needed
              console.log("Logout clicked");
-             // Add actual logout logic here (e.g., redirect, clear session)
              alert("Logout functionality not implemented in this example.");
         }
     });
@@ -347,8 +328,11 @@
     // --- Modal Logic ---
     var modal = $('#add-gym-modal');
     var addGymBtnDashboard = $('#quick-add-gym-btn'); // Button in Dashboard
-    var addGymBtnInSection = $('#gyms-content .add-btn'); // Button in Gyms Section
-    var closeBtn = $('.close-btn'); // Close button inside modal
+    // More specific selector for the button within the gyms section
+    var addGymBtnInSection = $('#gyms-content button.add-btn');
+    var closeBtn = modal.find('.close-btn'); // Find close button *within* the modal
+    var addGymForm = $('#add-gym-form');
+    var gymTableBody = $('#gyms-content table tbody'); // Target the table body
 
     // Function to show the modal
     function showAddGymModal() {
@@ -362,7 +346,7 @@
     // Function to hide the modal and reset the form
     function hideAndResetModal() {
          modal.hide();
-         $('#add-gym-form')[0].reset(); // Reset the form fields
+         addGymForm[0].reset(); // Reset the form fields using native JS method on the DOM element
     }
 
     // Event listener for the close button
@@ -370,39 +354,61 @@
 
     // Event listener to close modal if clicked outside the content area
     $(window).on('click', function(event) {
-        // Check if the click target is the modal background itself
+       
         if ($(event.target).is(modal)) {
             hideAndResetModal();
         }
     });
 
     // Event listener for the Add Gym form submission
-    $('#add-gym-form').on('submit', function(e) {
+    addGymForm.on('submit', function(e) {
         e.preventDefault(); // Prevent the default form submission
 
-        // --- Simulation: Get data and show alert ---
-        var gymId = $('#gym-id').val();
-        var gymName = $('#gym-name').val();
-        var gymLocation = $('#gym-location').val();
-        var gymManager = $('#gym-manager').val();
-        var gymCapacity = $('#gym-capacity').val();
+        // --- Get data from form ---
+        var gymId = $('#gym-id').val().trim();
+        var gymName = $('#gym-name').val().trim();
+        var gymLocation = $('#gym-location').val().trim();
+        var gymManager = $('#gym-manager').val().trim();
+        var gymCapacity = $('#gym-capacity').val().trim();
 
-        console.log("Simulating Add New Gym:");
+        
+        if (!gymId || !gymName || !gymLocation || !gymManager || !gymCapacity) {
+            alert('Please fill out all fields.');
+            return; // Stop submission if fields are empty
+        }
+
+        console.log("Adding New Gym:");
         console.log("ID:", gymId);
         console.log("Name:", gymName);
         console.log("Location:", gymLocation);
         console.log("Manager:", gymManager);
         console.log("Capacity:", gymCapacity);
 
-       
+        // --- Add the new gym data to the table ---
+        var newRowHtml = `
+            <tr>
+                <td>${gymId}</td>
+                <td>${gymName}</td>
+                <td>${gymLocation}</td>
+                <td>${gymManager}</td>
+                <td>${gymCapacity}</td>
+                <td>
+                    <button class="btn btn-sm btn-secondary"></button>
+                    <button class="btn btn-sm btn-warning">Delete</button>
+                </td>
+            </tr>
+        `;
 
-        alert("Gym Added (Simulation)! Data logged to console. In a real app, this would save and refresh the gym list.");
+        // Append the new row to the table body
+        gymTableBody.append(newRowHtml);
+
+        
+        alert(`Gym "${gymName}" added successfully!`);
 
         // Hide the modal and reset the form
         hideAndResetModal();
 
        
-
     });
 
 });

@@ -268,10 +268,7 @@ th {
     box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
 
-.btn-secondary {
-    background-color: #8b8b8b;
-    color: white;
-}
+
 
 .btn-secondary:hover {
     background-color: #6c7a7b;
@@ -318,10 +315,7 @@ th {
     box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
 
-.btn-sm {
-    padding: 5px 10px;
-    font-size: 0.8em;
-}
+
 
 .add-btn {
     margin-bottom: 15px;
