@@ -509,26 +509,26 @@ if (logoutButton) {
     });
 
     // Event listener for the Add Gym form submission
-    $('#add-member-form').on('submit', function(e) {
+         $('#add-gym-form').on('submit', function(e) {
         e.preventDefault(); // Prevent the default form submission
 
         // --- Simulation: Get data and show alert ---
-        var userId = $('#member-id').val();
-        var userName = $('#member-name').val();
-        var userEmail = $('#email').val();
-        var userMembership = $('#membership').val();
-        var userStatus = $('#status').val();
+        var gymId = $('#gym-id').val();
+        var gymName = $('#gym-name').val();
+        var gymLocation = $('#gym-location').val();
+        var gymManager = $('#gym-manager').val();
+        var gymCapacity = $('#gym-capacity').val();
 
-        console.log("Simulating Add New Member:");
-        console.log("Member ID:",  userId);
-        console.log("Name:",  userName);
-        console.log("Email:",  userEmail);
-        console.log("Membership:",  userMembership);
-        console.log("Status:",  userStatus);
+        console.log("Simulating Add New Gym:");
+        console.log("ID:", gymId);
+        console.log("Name:", gymName);
+        console.log("Location:", gymLocation);
+        console.log("Manager:", gymManager);
+        console.log("Capacity:", gymCapacity);
 
        
 
-        alert("User Added (Simulation)! Data logged to console. In a real app, this would save and refresh the User list.");
+        alert("Gym Added (Simulation)! Data logged to console. In a real app, this would save and refresh the gym list.");
 
         // Hide the modal and reset the form
         hideAndResetModal();
