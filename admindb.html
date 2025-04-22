@@ -349,7 +349,7 @@
                 </div>
                 <div class="form-group">
                     <label for="coach-role">Role</label>
-                    <input type="text" id="coach" name="coach" required placeholder="e.g., Manager">
+                    <input type="text" id="coach-role" name="coach-role" required placeholder="e.g., Manager">
                 </div>
                 <div class="form-group">
                     <label for="coach-email">Email</label>
@@ -515,13 +515,7 @@
         });
 
        
-        $('.content-area').on('click', '.btn-danger', function() {
-            if (confirm('Are you sure you want to delete this item?')) {
-                $(this).closest('tr').remove(); 
-                alert('Item deleted (Simulation)!');
-              
-            }
-        });
+    
 
      
          $('.content-area').on('click', '.btn-info', function() {
@@ -533,67 +527,72 @@
                $(this).remove(); 
          });
 
-                 // --- Add Coach Modal Logic ---
-        var addcoachModal = $('#add-coach-modal');
+                // --- Add Coach Modal Logic ---
+                var addCoachModal = $('#add-coach-modal'); 
+        var addCoachBtnInSection = $('#staff-content button.add-btn'); 
+        var addCoachForm = $('#add-coach-form');
+        var coachTableBody = $('#staff-content table tbody'); 
+
+        function showAddCoachModal() {
+            addCoachModal.show();
+        }
+
+        function hideAndResetCoachModal() { 
+            addCoachModal.hide();
+            addCoachForm[0].reset();
+        }
+
+        addCoachBtnInSection.on('click', showAddCoachModal);
+
+       
+        addCoachModal.find('.close-btn').on('click', hideAndResetCoachModal);
+
+        addCoachForm.on('submit', function(e) {
+            e.preventDefault();
+            var coachId = $('#coach-id').val().trim();
+            var coachName = $('#coach-name').val().trim();
+            var coachRole = $('#coach-role').val().trim();
+            var coachEmail = $('#coach-email').val().trim();
+            var coachBranch = $('#coach-branch').val().trim();
+
+            if (!coachId || !coachName || !coachRole || !coachEmail || !coachBranch) {
+                alert('Please fill out all coach/staff fields.');
+                return;
+            }
+
+            var newRowHtml = `
+                <tr>
+                    <td>${coachId}</td>
+                    <td>${coachName}</td>
+                    <td>${coachRole}</td>
+                    <td>${coachEmail}</td>
+                    <td>${coachBranch}</td>
+                    <td>
+                        <button class="btn btn-sm btn-danger">Delete</button>
+                    </td>
+                </tr>
+            `;
+           
+            coachTableBody.append(newRowHtml);
+            alert(`Coach/Staff "${coachName}" added successfully!`);
+            hideAndResetCoachModal();
+        });
+      
+
      
-     var addcoachBtnInSection = $('#coach-content button.add-btn');
-     var addcoachForm = $('#add-coach-form'); 
-     var coachTableBody = $('#coach-content table tbody'); 
-
-     function showAddcoachModal() {
-         addcoachModal.show();
-     }
-
-     function hideAndResetcoachModal() {
-         addcoachModal.hide();
-         addcoachForm[0].reset(); 
-     }
-
-     
-     addcoachBtnInSection.on('click', showAddcoachModal);
-    ;
-     addcoachModal.find('.close-btn').on('click', hideAndResetcoachModal); 
-
-     addcoachForm.on('submit', function(e) {
-         e.preventDefault();
-         var coachId = $('#coach-id').val().trim();
-         var coachName = $('#coach-name').val().trim();
-         var coachRole = $('#coach-role').val().trim();
-         var coachEmail = $('#coach-email').val().trim();
-         var coachBranch = $('#coach-branch').val().trim();
-
-         if (!coachId || !coachName || !coachRole || !coachEmail || !coachBranch) {
-             alert('Please fill out all coach fields.');
-             return;
-         }
-
-          var newRowHtml = `
-             <tr>
-                 <td>${coachId}</td>
-                 <td>${coachName}</td>
-                 <td>${coachRole}</td>
-                 <td>${coachEmail}</td>
-                 <td>${coachBranch}</td>
-                 <td>
-                     <button class="btn btn-sm btn-danger">Delete</button>
-                 </td>
-             </tr>
-         `;
-         coachTableBody.append(newRowHtml); 
-         alert(`Coach "${coachName}" added successfully!`);
-         hideAndResetUserModal();
-     });
-
-  
-     $(window).on('click', function(event) {
-         if ($(event.target).is(addcoachModal)) {
-             hideAndResetGymModal();
-         }
-         if ($(event.target).is(addcoachModal)) {
-             hideAndResetUserModal();
-         }
-     });
-
+        $(window).on('click', function(event) {
+            if ($(event.target).is(addGymModal)) {
+                hideAndResetGymModal();
+            }
+            if ($(event.target).is(addUserModal)) {
+                hideAndResetUserModal();
+            }
+          
+            if ($(event.target).is(addCoachModal)) {
+                 hideAndResetCoachModal();
+            }
+        });
+        
     
      $('.content-area').on('click', '.btn-danger', function() {
          if (confirm('Are you sure you want to delete this item?')) {
