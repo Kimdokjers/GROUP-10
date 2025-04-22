@@ -3,25 +3,135 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OptiLife</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="style2.css">
+    <title>Home Page</title>
 </head>
-<body>
-    <header class="navbar">
-        <img src="logo.png"/>
+<body> 
+    <header>
+        <a href="#home" class="logo"><img src="images/logo.png"></a>
+        
+        <div class='bx bx-menu' id="menu-icon"></div>
+
+        <ul class="navbar">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#goals">Set Goals</a></li>
+            <li><a href="progress.html">Track Progess</a></li>
+            <li><a href="#membership">Membership</a></li>
+        </ul>
+
+    </header>
+    <section class="gym-search-section">
+        <div class="gym-search-container">
+             <form id="gym-search-form" onsubmit="return false;"> 
+                 <input type="search" id="gym-search-input" placeholder="Find Your Gym (e.g., Apex, Ironclad)...">
+                 <button type="button" id="gym-search-button"> 
+                     <i class='bx bx-search'></i> Search
+                 </button>
+             </form>
+        </div>
+        
+    </section>
     
-    <ul>
-        <li ><a href="#">Home</a></li>
-        <li ><a href="#">About</a></li>
-        <li ><a href="#">Services</a></li>
-        <li ><a href="#">Contact</a></li>
-    </ul>
-</header>
-<section class="hero">
-    <h1>Welcome To OptiLife</h1>
-    <p>A Journey To Make Your Life Healthier</p>
-    <a href="#" class="btn">Get Started</a>
-</section>
-    
+    <section class="home" id="home">
+        <div class="home-content">
+            <h1><span>Apex Atlethics</span></h1>
+            <p>This is more than a gym it’s your launchpad to a stronger, fitter, and more confident you. From cutting-edge equipment to dynamic group classes and one-on-one coaching, we’re here to help you crush your goals and build a lifestyle you’re proud of.
+
+            </p>
+            <a href="paymentMethods.html" class="btn">Apply Now</a>
+        </div>
+        <div class="home-img">
+            <img src="images/gymcorp3.jpg" alt="Home Image">
+        </div>
+    </section> 
+    <section class="home" id="home">
+        <div class="home-content">
+            <h1><span>Ironclad Fitness</span></h1>
+            <p> Step into a space where your goals become reality. Whether you're aiming to build muscle, burn fat, or simply lead a healthier lifestyle, Elevate Fitness is your ultimate destination. With state-of-the-art equipment, expert trainers, and a motivating community, you'll not only transform your body but your mindset too.</p>
+            <a href="paymentMethods.html" class="btn">Apply Now</a>
+        </div>
+        <div class="home-img">
+            <img src="images/gymcorp2.webp" alt="Home Image">
+        </div>
+    </section>
+    <section id="subscribe" class="subscribe-section">
+        <div class="container subscribe-content">
+            <div class="subscribe-text">
+                <h2>Subscribe</h2>
+                <p>Join our fitness family and get tips, exclusive updates, and special offers. Start your journey today!</p>
+                <form class="subscribe-form">
+                    <input type="email" placeholder="Email" required>
+                    <button type="submit" class="btn btn-primary">Send</button>
+                </form>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-tiktok"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            <div class="footer-links">
+                <div>
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="#">Press</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">About</a></li>
+                        <li><a href="#">Careers</a></li>
+                    </ul>
+                </div>
+                 <div>
+                    <h4>Services</h4>
+                    <ul>
+                        <li><a href="#">Training</a></li>
+                        <li><a href="#">Nutrition</a></li>
+                        <li><a href="#">Lifestyles</a></li>
+                    </ul>
+                </div>
+                 <div>
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="#">Policy</a></li>
+                        <li><a href="#">Privacy & Cookies</a></li>
+                        <li><a href="#">Terms & Conditions</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Community</h4>
+                    <ul>
+                        <li><a href="#">Contact</a></li>
+                        <li><a href="#">Find a club</a></li>
+                        <li><a href="#">Membership</a></li>
+                    </ul>
+                </div>
+                 <div>
+                    <h4>Gym</h4>
+                    <ul>
+                        <li><a href="#">Book a Gym</a></li>
+                        <li><a href="#">Find a Gym</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+<footer>
+    <div class="container">
+        <p>© 2023 OPTILIFE. All Rights Reserved.</p>
+    </div>
+</footer>
+
+<script>
+    const menuIcon = document.getElementById('menu-icon');
+    const navbar = document.querySelector('.navbar');
+  
+    menuIcon.addEventListener('click', () => {
+        navbar.classList.toggle('active');
+    });
+  </script>
+<script src="jquery-3.7.1.min.js"></script>
 </body>
 </html>
