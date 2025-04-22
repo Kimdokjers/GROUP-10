@@ -74,6 +74,24 @@
       cursor: pointer;
       transition: 0.3s ease;
     }
+    .site-header {
+    padding-top: 1rem; 
+    padding-bottom: 1rem;
+    margin-bottom: 2rem;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+   
+    
+}
+.logo {
+    height: 100px;
+    width: auto;
+    display: block; 
+}
 
     .membership-options button:hover {
       background-color: #f0c44c;
@@ -83,6 +101,36 @@
         list-style: none;
         color: black;
     }
+    .btn {
+    display: inline-block;
+    padding: 8px 18px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: 400;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+    line-height: 1.5; 
+}
+
+
+.btn-back {
+    color: var(--gold-primary);
+    border-color: var(--gold-primary);
+    background-color: transparent;
+}
+
+.btn-back:hover {
+    background-color: var(--gold-primary);
+    color: var(--dark-bg);
+}
+
+.btn-back i {
+    margin-right: 5px;
+    vertical-align: middle; 
+}
 
     @media (max-width: 768px) {
       .profile-card {
@@ -96,7 +144,18 @@
       }
     }
   </style>
+  
 </head>
+<header class="site-header container">
+  <div class="header-content">
+      
+      <a href="home.html" class="btn btn-back">
+          <i class="bi bi-arrow-left-circle"></i> Back
+      </a>
+
+      <img src="images/logo.png" alt="OptiLife Logo" class="logo">
+  </div>
+</header>
 <body>
   <div class="container">
     <img src="images/gymbuild.jpg" alt="Gym Image" class="gym-banner">
