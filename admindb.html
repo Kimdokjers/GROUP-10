@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="admin.css">
+    <link rel="stylesheet" href="testrun.css">
 </head>
 <body>
     <div class="admin-container">
@@ -306,49 +306,99 @@
     <script src="jquery-3.7.1.min.js"></script>
 
     <script>
-        $(document).ready(function() {
-            var modal = $('#add-gym-modal');
-            var addGymBtn = $('#quick-add-gym-btn');
-            var addGymBtnInSection = $('#gyms-content .add-btn');
-            var closeBtn = $('.close-btn');
+     $(document).ready(function() {
+    // --- Navigation Logic ---
+    $('.sidebar-nav .nav-link').on('click', function(e) {
+        e.preventDefault(); // Prevent default anchor behavior
 
-            function showAddGymModal() {
-                modal.show();
-            }
+        // Get the target content section ID from data attribute
+        var targetId = $(this).data('target');
 
-            addGymBtn.on('click', showAddGymModal);
-            addGymBtnInSection.on('click', showAddGymModal);
+        // If the link has a target (ignore logout link for content switching)
+        if (targetId) {
+            // Update active link
+            $('.sidebar-nav .nav-link').removeClass('active'); // Remove active class from all links
+            $(this).addClass('active'); // Add active class to the clicked link
 
+            // Update active content section
+            $('.content-section').removeClass('active'); // Hide all content sections
+            $('#' + targetId).addClass('active'); // Show the target content section
 
-            closeBtn.on('click', function() {
-                modal.hide();
-                $('#add-gym-form')[0].reset();
-            });
+            // Update the page title
+            // Clone the link, remove the icon, get the text
+            var titleText = $(this).clone().find('i').remove().end().text().trim();
+            $('#page-title').text(titleText);
+        } else if ($(this).find('i.bi-box-arrow-left').length) {
+             // Handle logout link specifically if needed
+             console.log("Logout clicked");
+             // Add actual logout logic here (e.g., redirect, clear session)
+             alert("Logout functionality not implemented in this example.");
+        }
+    });
 
-            $(window).on('click', function(event) {
-                if ($(event.target).is(modal)) {
-                    modal.hide();
-                    $('#add-gym-form')[0].reset();
-                }
-            });
+    // --- Modal Logic ---
+    var modal = $('#add-gym-modal');
+    var addGymBtnDashboard = $('#quick-add-gym-btn'); // Button in Dashboard
+    var addGymBtnInSection = $('#gyms-content .add-btn'); // Button in Gyms Section
+    var closeBtn = $('.close-btn'); // Close button inside modal
 
-            $('#add-gym-form').on('submit', function(e) {
-                e.preventDefault();
+    // Function to show the modal
+    function showAddGymModal() {
+        modal.show();
+    }
 
-                console.log("Modal 'Add New Gym' clicked. Form data (not submitted):");
-                console.log("ID:", $('#gym-id').val());
-                console.log("Name:", $('#gym-name').val());
-                console.log("Location:", $('#gym-location').val());
-                console.log("Manager:", $('#gym-manager').val());
-                console.log("Capacity:", $('#gym-capacity').val());
+    // Event listeners to open the modal
+    addGymBtnDashboard.on('click', showAddGymModal);
+    addGymBtnInSection.on('click', showAddGymModal);
 
-                alert("Gym Added (Simulation)! Redirecting to Fitness Gyms page (Simulation).");
+    // Function to hide the modal and reset the form
+    function hideAndResetModal() {
+         modal.hide();
+         $('#add-gym-form')[0].reset(); // Reset the form fields
+    }
 
-                modal.hide();
-                $('#add-gym-form')[0].reset();
-            });
+    // Event listener for the close button
+    closeBtn.on('click', hideAndResetModal);
 
-        });
+    // Event listener to close modal if clicked outside the content area
+    $(window).on('click', function(event) {
+        // Check if the click target is the modal background itself
+        if ($(event.target).is(modal)) {
+            hideAndResetModal();
+        }
+    });
+
+    // Event listener for the Add Gym form submission
+    $('#add-gym-form').on('submit', function(e) {
+        e.preventDefault(); // Prevent the default form submission
+
+        // --- Simulation: Get data and show alert ---
+        var gymId = $('#gym-id').val();
+        var gymName = $('#gym-name').val();
+        var gymLocation = $('#gym-location').val();
+        var gymManager = $('#gym-manager').val();
+        var gymCapacity = $('#gym-capacity').val();
+
+        console.log("Simulating Add New Gym:");
+        console.log("ID:", gymId);
+        console.log("Name:", gymName);
+        console.log("Location:", gymLocation);
+        console.log("Manager:", gymManager);
+        console.log("Capacity:", gymCapacity);
+
+        // In a real application, you would send this data to the server via AJAX
+        // For now, just show an alert and close the modal
+
+        alert("Gym Added (Simulation)! Data logged to console. In a real app, this would save and refresh the gym list.");
+
+        // Hide the modal and reset the form
+        hideAndResetModal();
+
+       
+
+    });
+
+});
     </script>
 
 </body>
