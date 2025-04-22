@@ -270,20 +270,7 @@ th {
 
 
 
-.btn-secondary:hover {
-    background-color: #6c7a7b;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-}
 
-.btn-warning {
-    background-color: #eb9902;
-    color: #1a1a1a;
-}
-
-.btn-warning:hover {
-    background-color: #d48800;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-}
 
 .btn-danger {
     background-color: #c0392b;
