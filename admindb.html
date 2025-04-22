@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard</title> 
+    <title>Admin Dashboard</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="admin.css">     
+    <link rel="stylesheet" href="admin.css">
 </head>
 <body>
     <div class="admin-container">
-    
+
         <aside class="sidebar">
             <div class="sidebar-header">
                 <h2>Admin</h2>
@@ -35,12 +35,12 @@
                 <h1 id="page-title">Dashboard</h1>
                 <div class="admin-profile">
                     <span>Welcome, Admin!</span>
-                 
+
                 </div>
             </header>
 
             <div class="content-area">
-               
+
                 <section id="dashboard-content" class="content-section active">
                     <h2>Overview</h2>
                     <div class="stats-cards">
@@ -65,7 +65,7 @@
                         <h3>Quick Actions</h3>
                         <button class="btn btn-primary">Add New Member</button>
                         <button class="btn btn-secondary">Add New Coach</button>
-                        <button class="btn btn-warning">Send Notification</button>
+                        <button class="btn btn-warning" id="quick-add-gym-btn">Add New Gym</button>
                     </div>
                      <div class="recent-activity">
                         <h3>Recent Activity</h3>
@@ -81,13 +81,13 @@
                 <section id="analytics-content" class="content-section">
                     <h2>Analytics</h2>
                     <p>Detailed charts and reports will go here.</p>
-                    <div class="chart-placeholder">Membership Growth Chart Placeholder</div>
-                    <div class="chart-placeholder">Class Attendance Chart Placeholder</div>
-                    <div class="chart-placeholder">Revenue Trends Chart Placeholder</div>
+                    <div class="chart-placeholder">Membership Growth graph Placeholder</div>
+                    <div class="chart-placeholder">New User Add graph Placeholder</div>
+                    <div class="chart-placeholder">New Gym Add graph Placeholder</div>
 
                 </section>
 
- 
+
                 <section id="users-content" class="content-section">
                     <h2>Manage Users</h2>
                     <button class="btn btn-primary add-btn">Add New User</button>
@@ -127,7 +127,7 @@
                                     <button class="btn btn-sm btn-danger">Delete</button>
                                 </td>
                             </tr>
-                         
+
                         </tbody>
                     </table>
                 </section>
@@ -171,12 +171,12 @@
                                     <button class="btn btn-sm btn-danger">Delete</button>
                                 </td>
                             </tr>
-                
+
                         </tbody>
                     </table>
                 </section>
 
-           
+
                 <section id="gyms-content" class="content-section">
                     <h2>Manage Fitness Gyms</h2>
                      <button class="btn btn-primary add-btn">Add New Gym</button>
@@ -214,7 +214,7 @@
                                     <button class="btn btn-sm btn-warning">Edit</button>
                                 </td>
                             </tr>
-              
+
                         </tbody>
                     </table>
                 </section>
@@ -222,7 +222,7 @@
 
                 <section id="payments-content" class="content-section">
                     <h2>Payment History</h2>
-         
+
                      <table>
                         <thead>
                             <tr>
@@ -263,7 +263,7 @@
                                      <button class="btn btn-sm btn-success">Mark as Paid</button>
                                 </td>
                             </tr>
-                       
+
                         </tbody>
                     </table>
                 </section>
@@ -271,6 +271,85 @@
         </main>
     </div>
 
-    <script src="script.js"></script>
+
+    <div id="add-gym-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">×</span>
+            <h2>Add New Fitness Gym</h2>
+            <form id="add-gym-form">
+                <div class="form-group">
+                    <label for="gym-id">Gym ID:</label>
+                    <input type="text" id="gym-id" name="gym-id" required placeholder="e.g., GYM03">
+                </div>
+                <div class="form-group">
+                    <label for="gym-name">Name:</label>
+                    <input type="text" id="gym-name" name="gym-name" required placeholder="e.g., Westside Fitness">
+                </div>
+                <div class="form-group">
+                    <label for="gym-location">Location:</label>
+                    <input type="text" id="gym-location" name="gym-location" required placeholder="e.g., 789 Oak Blvd">
+                </div>
+                <div class="form-group">
+                    <label for="gym-manager">Manager:</label>
+                    <input type="text" id="gym-manager" name="gym-manager" required placeholder="e.g., Bruce Wayne">
+                </div>
+                <div class="form-group">
+                    <label for="gym-capacity">Capacity:</label>
+                    <input type="number" id="gym-capacity" name="gym-capacity" required min="1" placeholder="e.g., 120">
+                </div>
+                <button type="submit" class="btn btn-primary modal-add-btn">Add New Gym</button>
+            </form>
+        </div>
+    </div>
+
+
+    <script src="jquery-3.7.1.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var modal = $('#add-gym-modal');
+            var addGymBtn = $('#quick-add-gym-btn');
+            var addGymBtnInSection = $('#gyms-content .add-btn');
+            var closeBtn = $('.close-btn');
+
+            function showAddGymModal() {
+                modal.show();
+            }
+
+            addGymBtn.on('click', showAddGymModal);
+            addGymBtnInSection.on('click', showAddGymModal);
+
+
+            closeBtn.on('click', function() {
+                modal.hide();
+                $('#add-gym-form')[0].reset();
+            });
+
+            $(window).on('click', function(event) {
+                if ($(event.target).is(modal)) {
+                    modal.hide();
+                    $('#add-gym-form')[0].reset();
+                }
+            });
+
+            $('#add-gym-form').on('submit', function(e) {
+                e.preventDefault();
+
+                console.log("Modal 'Add New Gym' clicked. Form data (not submitted):");
+                console.log("ID:", $('#gym-id').val());
+                console.log("Name:", $('#gym-name').val());
+                console.log("Location:", $('#gym-location').val());
+                console.log("Manager:", $('#gym-manager').val());
+                console.log("Capacity:", $('#gym-capacity').val());
+
+                alert("Gym Added (Simulation)! Redirecting to Fitness Gyms page (Simulation).");
+
+                modal.hide();
+                $('#add-gym-form')[0].reset();
+            });
+
+        });
+    </script>
+
 </body>
 </html>
