@@ -25,7 +25,7 @@
                     <li><a href="#" class="nav-link" data-target="staff-content"><i class="bi bi-headset"></i> Staff/Coaches</a></li>
                     <li><a href="#" class="nav-link" data-target="gyms-content"><i class="bi bi-building"></i>Fitness Gyms</a></li>
                     <li><a href="#" class="nav-link" data-target="payments-content"><i class="bi bi-credit-card-fill"></i> Payments</a></li>
-                    <li><a href="login_signup.html"><i class="bi bi-box-arrow-left"></i> Logout</a></li>
+                    <li><a href="login_signup.html" id="logout-link"><i class="bi bi-box-arrow-left"></i> Logout</a></li>
                 </ul>
             </nav>
         </aside>
@@ -340,6 +340,39 @@
     <script src="jquery-3.7.1.min.js"></script>
 
     <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+
+
+const logoutButton = document.getElementById('logout-link');
+
+// Check if the logout button actually exists on the page
+if (logoutButton) {
+    logoutButton.addEventListener('click', function(e) {
+       
+        
+        e.preventDefault();
+
+        // --- Show the confirmation dialog ---
+       
+        const userIsSure = window.confirm("Are you sure you want to log out?");
+
+        // --- Check the user's response ---
+        if (userIsSure) {
+            // If the user clicked "OK", proceed with the logout.
+            console.log("User confirmed logout. Redirecting..."); 
+            window.location.href = this.href; // 'this' refers to the clicked link (logoutButton)
+
+            
+        } else {
+            // If the user clicked "Cancel", do nothing.
+            console.log("User cancelled logout.");
+            
+        }
+    });
+} else {
+    console.warn("Logout button with ID 'logout-link' not found."); // Warning if the element doesn't exist
+}
+});
      $(document).ready(function() {
     // --- Navigation Logic ---
     $('.sidebar-nav .nav-link').on('click', function(e) {
