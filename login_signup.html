@@ -80,7 +80,7 @@
 
 
 
-    <script src="jquery-3.7.1.min.js"></script>
+    <script src="assets/jquery-3.7.1.min.js"></script>
     <script>
         const container = document.querySelector('.container');
         const registerBtn = document.querySelector('.signup-btn'); 
@@ -144,11 +144,11 @@
 
 
                 if (email === clientEmail && password === clientPassword) {
-                    window.location.href = "home.html";
+                    window.location.href = "User/home.html";
                 }else if (email === ownerEmail && password === ownerPassword) {
-                        window.location.href = "owner.html";
+                        window.location.href = "GymOwner/owner.html";
                 } else if (email === adminEmail && password === adminPassword) {
-                    window.location.href = "admindb.html";
+                    window.location.href = "Admin/admindb.html";
                 } else {
                     alert("Invalid login email or password. Please try again.");
                 }
