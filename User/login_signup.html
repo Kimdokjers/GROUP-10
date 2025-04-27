@@ -27,7 +27,7 @@
                 <button type="submit" class="btn-login" id="submit">Log in</button>
                 <p>or Log in with</p>
                 <div class="social-icons">
-                    <a href="google_login.html"><img src="images/google.jpg"></a>
+                    <a href="google_login.html"><img src="../images/google.jpg"></a>
                 </div>
             </form>
         </div>
@@ -54,7 +54,7 @@
                 <button type="submit" class="btn-signin" id="signup-submit">Sign up</button>
                 <p>or Sign up with</p>
                 <div class="social-icons">
-                    <a href="google_signup.html"><img src="images/google.jpg"></a>
+                    <a href="google_signup.html"><img src="../images/google.jpg"></a>
                 </div>
             </form>
         </div>
@@ -62,7 +62,7 @@
         <div class="toggle-box">
             <div class="toggle-panel toggle-left">
                 <a href="index.html"><i class='bx bxs-home' style="color: white;"></i></a>
-                <img src="images/logo.png" alt="Logo">
+                <img src="../images/logo.png" alt="Logo">
                 <h1>Hello, Welcome!</h1>
                 <p>Don't have an account?</p>
                 <button class="btn signup-btn">Sign up</button>
@@ -70,7 +70,7 @@
 
             <div class="toggle-panel toggle-right">
                 <a href="index.html"><i class='bx bxs-home' style="color: white;"></i></a>
-                <img src="images/logo.png" alt="Logo" width="100px" height="100px">
+                <img src="../images/logo.png" alt="Logo" width="100px" height="100px">
                 <h1>Welcome Back!</h1>
                 <p>Already have an account?</p>
                 <button class="btn login-btn">Log in</button>
@@ -176,9 +176,9 @@
                 if (email === clientEmail && password === clientPassword) {
                     window.location.href = "home.html";
                 }else if (email === ownerEmail && password === ownerPassword) {
-                        window.location.href = "owner.html";
+                        window.location.href = "GymOwner/gymOwner.html";
                 } else if (email === adminEmail && password === adminPassword) {
-                    window.location.href = "admindb.html";
+                    window.location.href = "Admin/admindb.html";
                 }
 
             });

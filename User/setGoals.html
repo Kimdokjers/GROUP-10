@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SetGoals - OptiLife</title>
+    <link rel="stylesheet" href="usercss/setGoals.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css'>
+</head>
+<body>
+
+    <header class="header">
+        <nav class="navbar">
+            <a href="home.html" class="nav-logo"><img src="../images/logo.png" alt="OptiLife Logo"></a>
+            <ul class="nav-menu-desktop">
+                <li class="nav-item"><a href="home.html" class="nav-link">Home</a></li>
+                <li class="nav-item"><a href="#tabs-1" class="nav-link">Fitness Goals</a></li>
+                <li class="nav-item"><a href="#tabs-3" class="nav-link">Nutrition Goals</a></li>
+            </ul>
+            <a href="#" class="nav-logo user-logo"><img src="../images/user_pic.jpg" alt="User profile picture"></a>
+            <button class="hamburger" id="hamburger-button" aria-label="Open menu" aria-expanded="false">
+                <i class='bx bx-menu'></i>
+            </button>
+        </nav>
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <span class="sidebar-brand"><img src="../images/logo.png" alt="OptiLife Logo" class="sidebar-logo-img"></span>
+                <button class="close-btn" id="close-button" aria-label="Close menu">×</button>
+            </div>
+            <ul class="sidebar-menu">
+                <div class="userprofile"><a href="#" class="nav-logo"><img src="../images/user_pic.jpg" alt="User profile picture" class="sidebar-user-img"></a><h4>User</h4></div>
+                <li class="nav-item"><a href="home.html" class="nav-link">Home</a></li>
+                <li class="nav-item"><a href="#tabs-1" class="nav-link">Fitness Goals</a></li>
+                <li class="nav-item"><a href="#tabs-3" class="nav-link">Nutrition Goals</a></li>
+            </ul>
+        </div>
+        <div class="overlay" id="overlay"></div> <!-- Sidebar overlay -->
+    </header>
+
+    <main class="content-grid">
+         <div class="calendar-widget card">
+            <h2 style="color: var(--primary-color-darkest);">Select Date</h2>
+            <div class="calendar-header">
+                <button class="cal-nav prev" aria-label="Previous month"><</button>
+                <span class="current-month-year">April 2025</span> 
+                <button class="cal-nav next" aria-label="Next month">></button>
+            </div>
+            <div class="calendar-grid">
+                <!-- Static calendar days -->
+                <div class="day-name">S</div> <div class="day-name">M</div> <div class="day-name">T</div>
+                <div class="day-name">W</div> <div class="day-name">T</div> <div class="day-name">F</div>
+                <div class="day-name">S</div>
+                <div class="date-cell empty"></div> <div class="date-cell empty"></div>
+                <div class="date-cell"><button>1</button></div> <div class="date-cell"><button>2</button></div>
+                <div class="date-cell"><button>3</button></div> <div class="date-cell"><button>4</button></div>
+                <div class="date-cell"><button>5</button></div> <div class="date-cell"><button>6</button></div>
+                <div class="date-cell"><button>7</button></div> <div class="date-cell"><button>8</button></div>
+                <div class="date-cell"><button>9</button></div> <div class="date-cell"><button>10</button></div>
+                <div class="date-cell"><button>11</button></div> <div class="date-cell"><button>12</button></div>
+                <div class="date-cell"><button>13</button></div> <div class="date-cell"><button>14</button></div>
+                <div class="date-cell"><button class="selected" data-date="2025-04-15">15</button></div> 
+                <div class="date-cell"><button data-date="2025-04-16">16</button></div> <div class="date-cell"><button data-date="2025-04-17">17</button></div>
+                <div class="date-cell"><button data-date="2025-04-18">18</button></div> <div class="date-cell"><button data-date="2025-04-19">19</button></div>
+                <div class="date-cell"><button data-date="2025-04-20">20</button></div> <div class="date-cell"><button data-date="2025-04-21">21</button></div>
+                <div class="date-cell"><button data-date="2025-04-22">22</button></div> <div class="date-cell"><button data-date="2025-04-23">23</button></div>
+                <div class="date-cell"><button data-date="2025-04-24">24</button></div> <div class="date-cell"><button data-date="2025-04-25">25</button></div>
+                <div class="date-cell"><button data-date="2025-04-26">26</button></div> <div class="date-cell"><button data-date="2025-04-27">27</button></div>
+                <div class="date-cell"><button data-date="2025-04-28">28</button></div> <div class="date-cell"><button data-date="2025-04-29">29</button></div>
+                <div class="date-cell"><button data-date="2025-04-30">30</button></div> <div class="date-cell empty"></div>
+            </div>
+
+            <!-- Input block -->
+            <div class="input-block">
+                <label for="startDate" style="color: var(--primary-color-darkest);">Start Date</label>
+                <input type="date" id="startDate" name="startDate" class="info-input" value="2025-01-15">
+            </div>
+            <div class="input-block">
+                <label for="goals" style="color: var(--primary-color-darkest);">Overall Goals</label>
+                <input type="text" id="goals" name="goals" class="info-input" placeholder="Enter your goals here..." value="Improved overall fitness, Increased muscle strength">
+            </div>
+            <div class="input-block">
+                <label for="goals" style="color: var(--primary-color-darkest);">Current Weight</label>
+                <input type="text" id="goals" name="goals" class="info-input" placeholder="Weight (kg)" value="45 kg">
+            </div>
+            <div class="input-block">
+                <label for="goals" style="color: var(--primary-color-darkest);">Goal Weight</label>
+                <input type="text" id="goals" name="goals" class="info-input" placeholder="Weight (kg)" value="40 kg">
+            </div>
+            <div class="input-block">
+                <label for="goals" style="color: var(--primary-color-darkest);">Current Weight</label>
+                <input type="text" id="goals" name="goals" class="info-input" placeholder="Weight (kg)" value="45 kg">
+            </div>
+            <div class="input-block">
+                <label for="goals" style="color: var(--primary-color-darkest);">Weight Loss Goal (per week)</label>
+                <select id="goals" name="goals" class="info-input">
+                    <option value="Not Very Active">Loose 1 kg per week</option>
+                    <option value="Lightly Active">Loose 0.75 kg per week</option>
+                    <option value="Active">Loose 0.5 kg per week</option>
+                    <option value="Very Active">Loose 0.25 kg per week</option>
+                    <option value="Lightly Active">Maintain my current weight</option>
+                    <option value="Active">Gain 0.25 kg per week</option>
+                    <option value="Very Active">Gain 0.5 kg per week</option>                    
+                </select>
+            </div>
+            <div class="input-block">
+                <label for="activity-level" style="color: var(--primary-color-darkest);">Activity Level</label>
+                <select id="activity-level" name="activity-level" class="info-input">
+                    <option value="Not Very Active">Not Very Active</option>
+                    <option value="Lightly Active">Lightly Active</option>
+                    <option value="Active">Active</option>
+                    <option value="Very Active">Very Active</option>
+                </select>
+            </div>
+        </div>
+
+         <div class="main-tab-content">
+
+            <!--Fitness Goal tab -->
+            <div id="tabs-1" class="tab-content">
+                <div class="content-placeholder">
+                    <h1>Set Your Fitness Goal:</h1>
+                    <div class="workout-schedule-container">
+                        <section class="activity-planner card">
+                            <h2>Plan Your Weekly Activities</h2>
+                            <div class="activity-form">
+                                <div class="input-group">
+                                    <label for="activity-day">Day:</label>
+                                    <select id="activity-day" name="activity-day">
+                                        <option value="Monday">Monday</option>
+                                        <option value="Tuesday">Tuesday</option>
+                                        <option value="Wednesday">Wednesday</option>
+                                        <option value="Thursday">Thursday</option>
+                                        <option value="Friday">Friday</option>
+                                        <option value="Saturday">Saturday</option>
+                                        <option value="Sunday">Sunday</option>
+                                    </select>
+                                </div>
+                                <div class="input-group">
+                                    <label for="activity-type">Workout Type:</label>
+                                    <select id="activity-type" name="activity-type">
+                                        <option value="Upper Body and Lower Body Split">Upper Body and Lower Body Split</option>     
+                                         <option value="Full Body">Full Body</option>
+                                         <option value="Core">Core</option>
+                                         <option value="Push/Pull/Legs">Push/Pull/Legs</option>  
+                                         <option value="Circuit Training">Circuit Training</option>
+                                         <option value="Example: Cardio">Cardio</option>
+                                         <option value="Weightlifting">Weightlifting</option>
+                                         <option value="HIIT">HIIT</option>
+                                         <option value="CrossFit">CrossFit</option>
+                                         <option value="Yoga">Yoga</option>
+                                         <option value="Pilates">Pilates</option>
+                                         <option value="Stretching">Stretching</option>
+                                         <option value="Rest Day">Rest Day</option>                                           
+                                    </select>
+                                </div>
+                                <div class="input-group">
+                                    <label for="activity-description">Activity:</label>
+                                    <input type="text" id="activity-description" name="activity-description" placeholder="e.g., Running, Bench Press">
+                                </div>
+                                <div class="input-group">
+                                    <label for="activity-description">Reps:</label>
+                                    <input type="text" id="activity-description" name="activity-description" placeholder="e.g., 3-5, 8-12">
+                                </div>
+                                <div class="input-group">
+                                    <label for="activity-description">Sets:</label>
+                                    <input type="text" id="activity-description" name="activity-description" placeholder="e.g., 3-5, 8-12">
+                                </div>
+                                <div class="input-group">
+                                    <label for="activity-description">Weight(lb):</label>
+                                    <input type="text" id="activity-description" name="activity-description" placeholder="e.g., 50, 100">
+                                </div>
+                                <div class="input-group">
+                                    <label for="activity-description">Duration:</label>
+                                    <input type="text" id="activity-description" name="activity-description" placeholder="e.g., 30 min, 1 hr">
+                                </div>
+                                 <button id="add-activity-btn" class="btn btn-primary">Add Activity to Plan</button>
+                            </div>
+                            <h3>Weekly Schedule:</h3>
+                            <div id="weekly-plan-display">
+                                <div class="day-schedule"><h4>Monday</h4><ul data-day="Monday"></ul></div>
+                                <div class="day-schedule"><h4>Tuesday</h4><ul data-day="Tuesday"></ul></div>
+                                <div class="day-schedule"><h4>Wednesday</h4><ul data-day="Wednesday"></ul></div>
+                                <div class="day-schedule"><h4>Thursday</h4><ul data-day="Thursday"></ul></div>
+                                <div class="day-schedule"><h4>Friday</h4><ul data-day="Friday"></ul></div>
+                                <div class="day-schedule"><h4>Saturday</h4><ul data-day="Saturday"></ul></div>
+                                <div class="day-schedule"><h4>Sunday</h4><ul data-day="Sunday"></ul></div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Nutrition Goals tab -->
+            <div id="tabs-3" class="tab-content">
+                <div class="content-placeholder">
+                    <h1>Nutrition Goals:</h1>
+                    <nav class="tabs">
+                        <button class="tab-button active" data-tab="calories">CALORIES</button>
+                        <button class="tab-button" data-tab="nutrients">NUTRIENTS</button>
+                        <button class="tab-button" data-tab="macros">MACROS</button>
+                    </nav>
+
+                    <!-- Calories Content tab -->
+                    <div id="calories-content" class="nutrition-tab-content active">
+                         <h2>Calories Breakdown</h2>
+                        <div class="nutrition-details-full">
+                            <div class="calories-breakdown">
+                                <div class="meal-item">
+                                    <span class="color-square" style="background-color: #bf9a33;"></span>
+                                    <div class="meal-info">
+                                        <div>Breakfast</div>
+                                        <div data-value="breakfast-calories">0% (0 cal)</div>
+                                    </div>
+                                    <button class="btn btn-icon add-food-btn" data-meal-type="Breakfast" aria-label="Add food to Breakfast" title="Add Food">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                </div>
+                                <div class="meal-item">
+                                    <span class="color-square" style="background-color: #febd14;"></span>
+                                    <div class="meal-info">
+                                        <div>Lunch</div>
+                                        <div data-value="lunch-calories">0% (0 cal)</div>
+                                    </div>
+                                     <button class="btn btn-icon add-food-btn" data-meal-type="Lunch" aria-label="Add food to Lunch" title="Add Food">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                </div>
+                                <div class="meal-item">
+                                    <span class="color-square" style="background-color: #fece43;"></span>
+                                     <div class="meal-info">
+                                       <div>Dinner</div>
+                                       <div data-value="dinner-calories">0% (0 cal)</div>
+                                     </div>
+                                      <button class="btn btn-icon add-food-btn" data-meal-type="Dinner" aria-label="Add food to Dinner" title="Add Food">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                </div>
+                                <div class="meal-item">
+                                    <span class="color-square" style="background-color: #feda75;"></span>
+                                     <div class="meal-info">
+                                        <div>Snacks</div>
+                                        <div data-value="snack-calories">0% (0 cal)</div>
+                                     </div>
+                                      <button class="btn btn-icon add-food-btn" data-meal-type="Snacks" aria-label="Add food to Snacks" title="Add Food">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="calorie-summary">
+                                <div class="summary-item">
+                                    <span>Total Calories</span>
+                                    <span data-value="total-calories">0</span>
+                                </div>
+                                 <div class="summary-item">
+                                    <span>Exercise</span>
+                                    <span data-value="exercise-calories" class="exercise editable" data-editable="true" data-id="exercise-calories" data-type="number" data-unit="cal" data-label="Exercise Calories" title="Click to edit">- 0 cal</span>
+                                </div>
+                                <div class="summary-item net-calories-item">
+                                    <span>Net Calories</span>
+                                    <span data-value="net-calories">0</span>
+                                </div>
+                                 <hr class="summary-divider">
+                                <div class="summary-item goal">
+                                    <span>Goal</span>
+                                    <span data-value="goal-calories" class="editable" data-editable="true" data-id="calorie-goal" data-type="number" data-unit="cal" data-label="Calorie Goal" title="Click to edit">1,520</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Nutrients Content tab -->
+                    <div id="nutrients-content" class="nutrition-tab-content">
+                         <h2>Nutrient Details</h2>
+                        <div class="nutrient-header" style="color: var(--primary-color-darkest);">
+                            <span>Nutrient</span>
+                            <span>Total</span>
+                            <span>Goal</span>
+                            <span>Left</span>
+                        </div>
+                           <ul class="nutrient-list">
+                               <li data-nutrient="protein">
+                                   <span>Protein</span>
+                                   <span data-value="protein-total">0 g</span>
+                                   <span class="editable" data-editable="true" data-id="protein-goal" data-type="number" data-unit="g" data-label="Protein Goal" title="Click to edit">76 g</span>
+                                   <span data-value="protein-left">76 g</span>
+                               </li>
+                               <li data-nutrient="carbohydrates">
+                                   <span>Carbohydrates</span>
+                                   <span data-value="carbs-total">0 g</span>
+                                   <span class="editable" data-editable="true" data-id="carbs-goal" data-type="number" data-unit="g" data-label="Carbohydrates Goal" title="Click to edit">190 g</span>
+                                   <span data-value="carbs-left">190 g</span>
+                               </li>
+                               <li data-nutrient="fiber">
+                                   <span>Fiber</span>
+                                   <span data-value="fiber-total">0 g</span>
+                                   <span class="editable" data-editable="true" data-id="fiber-goal" data-type="number" data-unit="g" data-label="Fiber Goal" title="Click to edit">25 g</span>
+                                   <span data-value="fiber-left">25 g</span>
+                               </li>
+                               <li data-nutrient="sugar">
+                                   <span>Sugar</span>
+                                   <span data-value="sugar-total">0 g</span>
+                                   <span class="editable" data-editable="true" data-id="sugar-goal" data-type="number" data-unit="g" data-label="Sugar Goal" title="Click to edit">57 g</span>
+                                   <span data-value="sugar-left">57 g</span>
+                               </li>
+                                <li data-nutrient="fat">
+                                   <span>Fat</span>
+                                   <span data-value="fat-total">0 g</span>
+                                   <span class="editable" data-editable="true" data-id="fat-goal" data-type="number" data-unit="g" data-label="Fat Goal" title="Click to edit">51 g</span>
+                                   <span data-value="fat-left">51 g</span>
+                               </li>
+                               <li data-nutrient="saturated_fat">
+                                   <span>Saturated Fat</span>
+                                   <span data-value="satfat-total">0 g</span>
+                                   <span class="editable" data-editable="true" data-id="satfat-goal" data-type="number" data-unit="g" data-label="Saturated Fat Goal" title="Click to edit">17 g</span>
+                                   <span data-value="satfat-left">17 g</span>
+                               </li>
+                                <li data-nutrient="polyunsaturated_fat">
+                                   <span>Polyunsaturated Fat</span>
+                                   <span data-value="polyfat-total">0 g</span>
+                                   <span class="editable" data-editable="true" data-id="polyfat-goal" data-type="number" data-unit="g" data-label="Polyunsaturated Fat Goal" title="Click to edit">0 g</span>
+                                   <span data-value="polyfat-left">0 g</span>
+                               </li>
+                               <li data-nutrient="monounsaturated_fat">
+                                   <span>Monounsaturated Fat</span>
+                                   <span data-value="monofat-total">0 g</span>
+                                   <span class="editable" data-editable="true" data-id="monofat-goal" data-type="number" data-unit="g" data-label="Monounsaturated Fat Goal" title="Click to edit">0 g</span>
+                                   <span data-value="monofat-left">0 g</span>
+                               </li>
+                                <li data-nutrient="trans_fat">
+                                   <span>Trans Fat</span>
+                                   <span data-value="transfat-total">0 g</span>
+                                   <span class="editable" data-editable="true" data-id="transfat-goal" data-type="number" data-unit="g" data-label="Trans Fat Goal" title="Click to edit">0 g</span>
+                                   <span data-value="transfat-left">0 g</span>
+                               </li>
+                                <li data-nutrient="cholesterol">
+                                   <span>Cholesterol</span>
+                                   <span data-value="cholesterol-total">0 mg</span>
+                                   <span class="editable" data-editable="true" data-id="cholesterol-goal" data-type="number" data-unit="mg" data-label="Cholesterol Goal" title="Click to edit">300 mg</span>
+                                   <span data-value="cholesterol-left">300 mg</span>
+                               </li>
+                               <li data-nutrient="sodium">
+                                   <span>Sodium</span>
+                                   <span data-value="sodium-total">0 mg</span>
+                                   <span class="editable" data-editable="true" data-id="sodium-goal" data-type="number" data-unit="mg" data-label="Sodium Goal" title="Click to edit">2,300 mg</span>
+                                   <span data-value="sodium-left">2,300 mg</span>
+                               </li>
+                                <li data-nutrient="potassium">
+                                   <span>Potassium</span>
+                                   <span data-value="potassium-total">0 mg</span>
+                                   <span class="editable" data-editable="true" data-id="potassium-goal" data-type="number" data-unit="mg" data-label="Potassium Goal" title="Click to edit">3,500 mg</span>
+                                   <span data-value="potassium-left">3,500 mg</span>
+                               </li>
+                               <li data-nutrient="vitamin_a">
+                                   <span>Vitamin A</span>
+                                   <span data-value="vita-total">0 %</span>
+                                   <span class="editable" data-editable="true" data-id="vita-goal" data-type="number" data-unit="%" data-label="Vitamin A Goal" title="Click to edit">100 %</span>
+                                   <span data-value="vita-left">100 %</span>
+                               </li>
+                               <li data-nutrient="vitamin_c">
+                                   <span>Vitamin C</span>
+                                   <span data-value="vitc-total">0 %</span>
+                                   <span class="editable" data-editable="true" data-id="vitc-goal" data-type="number" data-unit="%" data-label="Vitamin C Goal" title="Click to edit">100 %</span>
+                                   <span data-value="vitc-left">100 %</span>
+                               </li>
+                                <li data-nutrient="calcium">
+                                   <span>Calcium</span>
+                                   <span data-value="calcium-total">0 %</span>
+                                   <span class="editable" data-editable="true" data-id="calcium-goal" data-type="number" data-unit="%" data-label="Calcium Goal" title="Click to edit">100 %</span>
+                                   <span data-value="calcium-left">100 %</span>
+                               </li>
+                                <li data-nutrient="iron">
+                                   <span>Iron</span>
+                                   <span data-value="iron-total">0 %</span>
+                                   <span class="editable" data-editable="true" data-id="iron-goal" data-type="number" data-unit="%" data-label="Iron Goal" title="Click to edit">100 %</span>
+                                   <span data-value="iron-left">100 %</span>
+                               </li>
+                           </ul>
+                    </div>
+
+                    <!-- Macro Content tab -->
+                    <div id="macros-content" class="nutrition-tab-content">
+                         <h2>Macronutrient Ratio</h2>
+                         <p style="text-align: center;"><em>(Total must equal 100%)</em></p>
+                         <div class="nutrition-details-full">
+                            <div class="macros-legend">
+                                 <div class="legend-item" data-macro="carbs">
+                                    <span class="color-square" style="background-color: #febd14;"></span>
+                                    <span>Carbohydrates (0g)</span>
+                                    <span class="percentage">0%</span>
+                                    <span class="editable" data-editable="true" data-id="carbs-goal" data-type="number" data-unit="%" data-label="Carbohydrates Goal" title="Click to edit">50%</span>
+                                </div>
+                                 <div class="legend-item" data-macro="fat">
+                                    <span class="color-square" style="background-color: #fece43;"></span>
+                                    <span>Fat (0g)</span>
+                                    <span class="percentage">0%</span>
+                                    <span class="editable" data-editable="true" data-id="fats-goal" data-type="number" data-unit="%" data-label="Fat Goal" title="Click to edit">30%</span>
+                                </div>
+                                 <div class="legend-item" data-macro="protein">
+                                    <span class="color-square" style="background-color: #feda75;"></span>
+                                    <span>Protein (0g)</span>
+                                    <span class="percentage">0%</span>
+                                    <span class="editable" data-editable="true" data-id="protein-goal" data-type="number" data-unit="%" data-label="Protein Goal" title="Click to edit">20%</span>
+                                </div>
+                            </div>
+                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal for Logging Food -->
+    <div class="modal" id="log-meal-modal" role="dialog" aria-labelledby="log-meal-title" aria-modal="true">
+        <div class="modal-content card"> 
+            <button class="modal-close-btn" aria-label="Close modal">×</button>
+            <h3 id="log-meal-title">Log Food Item for <span id="log-meal-modal-date">Date</span></h3>
+            <form id="log-meal-form">
+                <input type="hidden" id="log-meal-date-hidden" name="logDate"> 
+                <div class="edit-input-container">
+                    <label for="log-meal-type">Meal Type:</label>
+                    <select id="log-meal-type" name="mealType" required>
+                        <option value="Breakfast">Breakfast</option>
+                        <option value="Lunch">Lunch</option>
+                        <option value="Dinner">Dinner</option>
+                        <option value="Snacks">Snacks</option>
+                    </select>
+                </div>
+                <div class="edit-input-container">
+                    <label for="log-food-name">Food Name:</label>
+                    <input type="text" id="log-food-name" name="foodName" required placeholder="e.g., Apple, medium">
+                </div>
+                 <div class="edit-input-container">
+                    <label for="log-calories">Calories (kcal):</label>
+                    <input type="number" id="log-calories" name="calories" required min="0" step="1" placeholder="e.g., 95">
+                </div>
+                <div class="edit-input-container">
+                    <label for="log-protein">Protein (g):</label>
+                    <input type="number" id="log-protein" name="protein" min="0" step="0.1" placeholder="e.g., 0.5">
+                </div>
+                 <div class="edit-input-container">
+                    <label for="log-carbs">Carbs (g):</label>
+                    <input type="number" id="log-carbs" name="carbs" min="0" step="0.1" placeholder="e.g., 25">
+                </div>
+                 <div class="edit-input-container">
+                    <label for="log-fat">Fat (g):</label>
+                    <input type="number" id="log-fat" name="fat" min="0" step="0.1" placeholder="e.g., 0.3">
+                </div>
+                <!-- Add more nutrient inputs here if desired (e.g., fiber, sugar) -->
+
+                <p id="log-meal-validation-error" class="validation-error" style="display: none;"></p>
+
+                <div class="modal-actions">
+                    <button type="submit" id="log-meal-save-button" class="btn btn-primary">Log Item</button>
+                    <button type="button" id="log-meal-cancel-button" class="btn btn-secondary">Cancel</button>
+                </div>
+            </form>
+             <!-- Display logged items for the day -->
+             <div class="logged-items-display">
+                 <h4>Logged Today (<span id="logged-items-date-display">Date</span>):</h4>
+                 <ul id="logged-items-list">
+                     <li class="no-items-logged">No items logged yet for this date.</li>
+                 </ul>
+             </div>
+        </div>
+    </div>
+    <!-- End Modal -->
+
+    <section id="subscribe" class="subscribe-section">
+        <div class="container subscribe-content">
+            <div class="subscribe-text">
+                <h2>Subscribe</h2>
+                <p>Join our fitness family and get tips, exclusive updates, and special offers. Start your journey today!</p>
+                <form class="subscribe-form">
+                    <input type="email" placeholder="Email" required>
+                    <button type="submit" class="btn btn-primary">Send</button>
+                </form>
+                <div class="social-icons">
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+                    <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            <div class="footer-links">
+                 <div>
+                    <h4>Company</h4>
+                    <ul><li><a href="#">Press</a></li><li><a href="#">Blog</a></li><li><a href="#">About</a></li><li><a href="#">Careers</a></li></ul>
+                </div>
+                 <div>
+                    <h4>Services</h4>
+                    <ul><li><a href="#">Training</a></li><li><a href="#">Nutrition</a></li><li><a href="#">Lifestyles</a></li></ul>
+                </div>
+                 <div>
+                    <h4>Legal</h4>
+                    <ul><li><a href="#">Policy</a></li><li><a href="#">Privacy & Cookies</a></li><li><a href="#">Terms & Conditions</a></li></ul>
+                </div>
+                <div>
+                    <h4>Community</h4>
+                    <ul><li><a href="#">Contact</a></li><li><a href="#">Find a club</a></li><li><a href="#">Membership</a></li></ul>
+                </div>
+                 <div>
+                    <h4>Gym</h4>
+                    <ul><li><a href="#">Book a Gym</a></li><li><a href="#">Find a Gym</a></li></ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>© 2024 OPTILIFE. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js"></script>
+    <!-- Removed Chart.js Script -->
+    <script src="userjs/setGoals.js"></script>
+
+</body>
+</html>
