@@ -9,6 +9,7 @@
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="usercss/style2.css">
     <title>Home Page</title>
+ 
 </head>
 <body>
     <header>
@@ -17,11 +18,20 @@
         <div class='bx bx-menu' id="menu-icon"></div>
 
         <ul class="navbar">
-            <li><a href="#home">Home</a></li>
-            <li><a href="setGoals.html">Set Goals</a></li>
-            <li><a href="progress.html">Track Progess</a></li>
-            <li><a href="membership.html">Membership</a></li>
-            <li><a href="login_signup.html">Logout</a></li>
+             <div class="navbar-left">
+                 <li><a href="#home">Home</a></li>
+                 <li><a href="setGoals.html">Set Goals</a></li>
+                 <li><a href="progress.html">Track Progess</a></li>
+                 <li><a href="membership.html">Membership</a></li>
+             </div>
+             <div class="navbar-right">
+                 <li>
+                     <img src="/images/hprofile.jpg" alt="User Profile" class="profile-pic">
+                 </li>
+                 <li>
+                     <a href="login_signup.html">Logout</a>
+                 </li>
+             </div>
         </ul>
 
     </header>
@@ -145,6 +155,16 @@
                     }
                 }
             });
+             // Close menu also if clicking the profile pic LI
+             let profileLi = navbar.querySelector('li:has(.profile-pic)');
+             if(profileLi) {
+                 profileLi.onclick = () => {
+                      if(navbar.classList.contains('active')) { // Only close if active
+                         menu.classList.remove('bx-x');
+                         navbar.classList.remove('active');
+                     }
+                 }
+             }
         }
     </script>
 
@@ -157,18 +177,13 @@
                 event.preventDefault();
                 var logoutUrl = $(this).attr('href');
 
-                // Show confirmation dialog
                 if (confirm('Are you sure you want to log out?')) {
-                    // If user clicks OK, proceed with logout (redirect)
                     window.location.href = logoutUrl;
-
-                    // Optionally close mobile menu if open
                     if (menu && navbar && navbar.classList.contains('active')) {
                          menu.classList.remove('bx-x');
                          navbar.classList.remove('active');
                      }
                 } else {
-                    // If user clicks Cancel, do nothing
                     return false;
                 }
             });
