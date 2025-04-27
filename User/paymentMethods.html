@@ -9,13 +9,14 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="usercss/paymentMethods.css">
+  
 </head>
 <body>
 
     <!-- header -->
     <header class="site-header container">
         <div class="header-content">
-            
+
             <a href="membership.html" class="btn btn-back">
                 <i class="bi bi-arrow-left-circle"></i> Back
             </a>
@@ -30,22 +31,16 @@
             <form id="payment-form">
                 <h2 class="form-title">Payment Details</h2>
 
-                
-                <div class="form-group">
-                    <label for="name" class="form-label">Full Name</label>
-                    <input type="text" class="form-control" id="name" required>
-                </div>
-                <div class="form-group">
-                    <label for="age" class="form-label">Age</label>
-                    <input type="number" class="form-control" id="age" required min="1">
-                </div>
-                <div class="form-group">
-                    <label for="contact" class="form-label">Contact Number</label>
-                    <input type="tel" class="form-control" id="contact" pattern="[0-9]+" title="Please enter digits only" required>
-                </div>
+                <!-- Email Address Field -->
                 <div class="form-group">
                     <label for="email" class="form-label">Email Address</label>
                     <input type="email" class="form-control" id="email" required>
+                </div>
+
+                <!-- Contact Number Field (Moved Below Email) -->
+                <div class="form-group">
+                    <label for="contact" class="form-label">Contact Number</label>
+                    <input type="tel" class="form-control" id="contact" pattern="[0-9]+" title="Please enter digits only" required>
                 </div>
 
                 <hr class="separator">
@@ -65,8 +60,8 @@
                     </label>
                 </div>
 
-              
-                <div id="online-payment-options" class="online-options">
+                <!-- Online Payment Options-->
+                <div id="online-payment-options" class="online-options" style="display: none;"> 
                     <h4 class="form-subtitle-small">Select Online Payment</h4>
                     <div class="form-check">
                         <input class="form-check-input" type="radio" name="onlineMethod" id="visa" value="visa">
@@ -99,13 +94,13 @@
                 <button type="submit" class="btn btn-proceed">Proceed</button>
             </form>
 
-           
-            <div id="success-message" class="success-box">
+
+            <div id="success-message" class="success-box" style="display: none;"> 
                 <i class="bi bi-check-circle-fill success-icon"></i>
                 <h3 class="success-title">Payment Completed!</h3>
                 <p class="success-text">Your details have been submitted successfully.</p>
-                <a href="membership.html" class="btn btn-back">Back to Membership</a> 
-                
+                <a href="membership.html" class="btn btn-back">Back to Membership</a>
+
             </div>
 
         </div>
@@ -116,43 +111,79 @@
             <span>© 2023 OPTILIFE. All Rights Reserved.</span>
         </div>
     </footer>
-    
-  <script src="../assets/jquery-3.7.1.min.js"></script> 
+
+  <script src="../assets/jquery-3.7.1.min.js"></script>
 <script>
-      
+
 $(document).ready(function() {
-const paymentTypeRadios = $('input[name="paymentType"]');
-const onlineOptionsDiv = $('#online-payment-options');
+    const paymentTypeRadios = $('input[name="paymentType"]');
+    const onlineOptionsDiv = $('#online-payment-options');
+    const onlineMethodRadios = $('input[name="onlineMethod"]'); 
 
-paymentTypeRadios.on('change', function() {
-    if ($(this).val() === 'online') {
-        onlineOptionsDiv.slideDown(); 
-    } else {    
-        onlineOptionsDiv.slideUp(); 
+    if ($('#online').is(':checked')) {
+        onlineOptionsDiv.show();
+    } else {
+        onlineOptionsDiv.hide(); 
     }
-});
-const paymentForm = $('#payment-form');
-const formContainer = $('.payment-form-container');
-const successMessageDiv = $('#success-message');
 
-paymentForm.on('submit', function(event) {
-    event.preventDefault();
-    const isOnlinePayment = $('#online').is(':checked');
-    const onlineMethodSelected = $('input[name="onlineMethod"]:checked').length > 0;
-
-    if (isOnlinePayment && !onlineMethodSelected) {
-        alert('Please select an online payment method (Visa, Mastercard, etc.).');
-        return; 
-    }
-   
-    formContainer.children('form').first().fadeOut(function() {
-         successMessageDiv.fadeIn();
-         m
-         formContainer.show(); 
+    paymentTypeRadios.on('change', function() {
+        if ($(this).val() === 'online') {
+            onlineOptionsDiv.slideDown();
+        } else {
+            onlineOptionsDiv.slideUp();
+             
+            onlineMethodRadios.prop('checked', false);
+        }
     });
-});
 
-}); 
-    </script>
+    const paymentForm = $('#payment-form');
+    const formContainer = $('.payment-form-container'); 
+    const successMessageDiv = $('#success-message');
+
+    paymentForm.on('submit', function(event) {
+        event.preventDefault(); 
+
+        const isOnlinePayment = $('#online').is(':checked');
+        const onlineMethodSelected = $('input[name="onlineMethod"]:checked').length > 0;
+
+        if (isOnlinePayment && !onlineMethodSelected) {
+            
+            const noteElement = onlineOptionsDiv.find('.note');
+            noteElement.css('color', 'red').css('font-weight', 'bold');
+
+            return; 
+        } else {
+            
+             const noteElement = onlineOptionsDiv.find('.note');
+             noteElement.css('color', '').css('font-weight', ''); 
+        }
+
+   
+         console.log("Form submitted (placeholder). Validation passed.");
+         paymentForm.fadeOut(function() {
+             successMessageDiv.fadeIn();
+         });
+        
+    });
+
+    
+    onlineMethodRadios.on('change', function() {
+        if ($(this).is(':checked')) {
+            const noteElement = onlineOptionsDiv.find('.note');
+            noteElement.css('color', '').css('font-weight', ''); 
+        }
+    });
+
+    $('#contact').on('input', function() {
+     
+        let currentValue = $(this).val();
+   
+        let newValue = currentValue.replace(/[^0-9]/g, '');
+        
+        $(this).val(newValue);
+    });
+
+});
+</script>
 </body>
 </html>

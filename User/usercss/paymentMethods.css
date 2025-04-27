@@ -308,7 +308,7 @@ body {
 }
 
 .success-title {
-    color: var(--text-light);
+    color: var(--gold-hover);
     margin-bottom: 10px;
     font-weight: 600;
 }

@@ -123,6 +123,10 @@ section {
     color: var(--color-black);
 }
 
+.header-signup:hover{
+    background-color: var(--color-black);
+}
+
 
 
 header {
