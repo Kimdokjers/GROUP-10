@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Choose Account - OptiLife</title>
+    <link rel="stylesheet" href="usercss/google_signup.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+
+    <div class="account-chooser-wrapper">
+        <div class="account-chooser-container">
+            <div class="chooser-header">
+                <a href="User/login_signup.html"><i class='bx bx-left-arrow-alt' style="color: white; font-size: 20px;"></i></a>
+                <div class="google">
+                    <img src="images/google.jpg" alt="Google Logo" class="google-logo">
+                    <span>Sign up with Google</span>
+                </div>
+
+            </div>
+
+            <div class="chooser-content">
+                <div class="chooser-info">
+                    <img src="images/logo.png" alt="OptiLife" class="logo">
+                    <h1>CHOOSE AN ACCOUNT</h1>
+                    <p class="p">to continue to OptiLife</p>
+                </div>
+
+                <div class="chooser-account-list">
+                    <ul class="accounts">
+                        <li>
+                            <button class="account-item" data-email="admin@gmail.com" id="admin" onclick="location.href='admindb.html'">                               
+                                <img src="/images/admin_pic.jpg" alt="" class="picture">
+                                <div class="account-details">
+                                    <span class="account-name">Admin</span>
+                                    <span class="account-email">admin@gmail.com</span>
+                                </div>
+                            </button>
+                        </li>
+        
+                         <li>
+                            <button class="account-item" data-email="user@gmail.com" id="user" onclick="location.href='home.html'">
+                                <img src="images/user_pic.jpg" alt="" class="picture">
+                                <div class="account-details">
+                                    <span class="account-name">User</span>
+                                    <span class="account-email">user@gmail.com</span>
+                                </div>
+                            </button>
+                        </li>
+                    </ul>
+
+                    <hr class="separator">
+
+                    <button class="account-item use-other">
+                         <span class="account-name">Use another account</span>
+                    </button>
+
+                    <hr class="separator">
+                </div>
+            </div>
+
+            <div class="chooser-footer">
+                 <p>Before using this website, you can review the <a href="#">privacy policy</a> and <a href="#">terms of service</a> of OptiLife.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const accountButtons = document.querySelectorAll('.account-chooser-container .account-item');
+
+            accountButtons.forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const email = button.dataset.email;
+
+                    if (email) {
+                        console.log(`Account selected: ${email}`);
+                        alert(`Proceeding with: ${email}`);
+                    } else if (button.classList.contains('use-other')) {
+                        console.log('Use another account selected');
+                        alert('Redirecting to general sign up...');
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
