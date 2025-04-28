@@ -53,6 +53,8 @@ img {
 }
 
 
+
+
 h1, h2, h3, h4 {
     margin-bottom: 1rem;
     font-weight: 600;
@@ -150,17 +152,17 @@ header .container {
 
 header .logo {
     display: block;
-    margin: 0 0 0 -20px; 
+    margin: 0 0 0 100px; 
     padding: 0;
     flex-shrink: 0; 
 }
 
 header .logo img {
-    height: 100px;
+    height: 110px;
     width: auto;
     display: block;
+    
 }
-
 .navigation-screensize {
     display: flex;
     align-items: center;
