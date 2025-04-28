@@ -142,11 +142,11 @@ header {
 }
 
 #menu-icon {
-    font-size: 3.6rem;
+    font-size: 4.5rem; /* Increased from 3.6rem, adjust as needed */
     color: var(--main-color);
     cursor: pointer;
-    display: none;
-    margin-left: 2rem;
+    display: none; /* Still initially hidden, shown in media query */
+    margin-left: 2rem; /* You might need to adjust margin if it looks off */
 }
 
 .home { padding-top: calc(120px + 3rem); padding-bottom: 8rem; display: flex; align-items: center; justify-content: space-between; gap: 3rem; min-height: auto; }
@@ -201,6 +201,7 @@ footer p { font-size: 1.4rem; color: var(--color-text-muted); margin: 0; }
     section { padding: 4rem 5% 2rem; }
 
     #menu-icon { display: block; }
+    .logo img { max-width: 140px; }
 
     .navbar {
         position: absolute;
