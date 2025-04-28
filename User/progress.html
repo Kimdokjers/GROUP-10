@@ -4,52 +4,285 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Progress - OptiLife</title>
-    <link rel="stylesheet" href="usercss/progress.css">
-    <link rel="stylesheet" href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css'>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="usercss/home.css">
+
+    <style>
+        :root {
+            --card-bg-setgoals: #ffffff;
+            --text-dark-setgoals: #333;
+            --border-color-light-setgoals: #e0e0e0;
+            --primary-color-darkest-setgoals: #B8860B;
+            --grid-gap: 1.5rem;
+            --content-padding: 1.5rem;
+            --button-primary-bg: #FFD700;
+            --button-primary-text: #0a0a0a;
+            --button-primary-hover-bg: #DAA520;
+            --button-secondary-bg: #e0e0e0;
+            --button-secondary-text: #333;
+            --button-secondary-hover-bg: #bdbdbd;
+            --modal-overlay-bg: rgba(0, 0, 0, 0.7);
+            --stat-card-icon-color: var(--primary-color-darkest-setgoals);
+            --stat-card-value-color: var(--text-dark-setgoals);
+            --stat-card-sub-increase: #4CAF50;
+            --stat-card-sub-decrease: #f44336;
+            --table-header-bg: #f8f8f8;
+            --table-border-color: var(--border-color-light-setgoals);
+            --chart-title-color: var(--text-dark-setgoals);
+        }
+
+        main.content-grid {
+            padding-top: calc(var(--header-height-desktop, 120px) + 2rem);
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: var(--grid-gap);
+            padding-left: var(--content-padding);
+            padding-right: var(--content-padding);
+            padding-bottom: var(--content-padding);
+            max-width: 1200px;
+            margin: 0 auto;
+            color: var(--text-dark-setgoals);
+        }
+
+        .card {
+            background-color: var(--card-bg-setgoals);
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--border-color-light-setgoals);
+            color: var(--text-dark-setgoals);
+        }
+
+        .calendar-widget {
+             height: fit-content;
+             border: 2px solid var(--primary-color-darkest-setgoals);
+        }
+
+        .calendar-widget h2,
+        .calendar-widget .input-block label,
+        .nutrient-header span:first-child,
+        #log-meal-modal h3,
+        #log-meal-modal .logged-items-display h4 {
+             color: var(--primary-color-darkest-setgoals) !important;
+        }
+
+        .calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; font-weight: 500; color: var(--text-dark-setgoals); }
+        .cal-nav { border: 1px solid var(--border-color-light-setgoals); color: #555; padding: 3px 8px; border-radius: 4px; cursor: pointer; background: none; }
+        .cal-nav:hover { color: var(--primary-color-darkest-setgoals); border-color: var(--primary-color-darkest-setgoals); }
+        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; text-align: center; margin-bottom: 1.5rem; }
+        .day-name { font-weight: 600; font-size: 0.8rem; color: #666; text-transform: uppercase; }
+        .date-cell { display: flex; justify-content: center; align-items: center; aspect-ratio: 1 / 1; }
+        .date-cell button { width: 100%; height: 100%; border-radius: 50%; border: 2px solid transparent; background-color: transparent; color: var(--text-dark-setgoals); cursor: pointer; font-size: 0.9rem; transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease; display: flex; align-items: center; justify-content: center; padding: 0; }
+        .date-cell button:hover:not(.selected) { background-color: #eee; border-color: var(--border-color-light-setgoals); }
+        .date-cell button.selected { background-color: var(--main-color); color: var(--color-black); font-weight: bold; border-color: var(--color-gold); }
+        .date-cell.empty { visibility: hidden; }
+
+        .calendar-widget .input-block { margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-color-light-setgoals); }
+        .calendar-widget .input-block:last-child { border-bottom: none; padding-bottom: 0; margin-bottom: 0; }
+        .calendar-widget .input-block label { font-size: 0.85rem; margin-bottom: 5px; font-weight: 500; text-transform: uppercase; display: block; }
+        .calendar-widget .info-input { background-color: #f9f9f9; border: 1px solid var(--border-color-light-setgoals); color: var(--text-dark-setgoals); font-size: 0.95rem; padding: 8px 10px; width: 100%; border-radius: 4px; }
+        .calendar-widget .info-input:focus { outline: none; border-color: var(--color-gold); box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.2); }
+        .calendar-widget .goals-list { list-style: disc; padding-left: 20px; margin: 5px 0 0 0; font-size: 0.9rem; color: #555;}
+        .calendar-widget .goals-list li { margin-bottom: 3px; }
+
+        .main-tab-content {
+            border: 2px solid var(--primary-color-darkest-setgoals);
+            border-radius: 8px;
+            background-color: var(--card-bg-setgoals);
+            color: var(--text-dark-setgoals);
+            min-width: 0; /* Prevent content overflow issues */
+            overflow: hidden; /* Contain children */
+        }
+
+        .tab-content {
+             display: none;
+        }
+        .tab-content.active {
+             display: block;
+             animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+
+        .content-placeholder { padding: 1.5rem; background-color: transparent; border-radius: 0; border: none; min-height: 300px; box-shadow: none; }
+        .content-placeholder h1 { font-size: 1.6rem; margin-bottom: 1.5rem; font-weight: 600; color: var(--text-dark-setgoals); text-align: left; padding-bottom: 0.8rem; border-bottom: 2px solid var(--main-color); display: inline-block; }
+
+        .main-content-tabs {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+            padding: 1rem 1.5rem;
+            border-bottom: 2px solid var(--border-color-light-setgoals);
+            gap: 1rem;
+        }
+
+        button.main-tab-button {
+            display: inline-flex; align-items: center; gap: 0.7rem;
+            padding: 0.8rem 1.5rem; font-size: 1.5rem; font-weight: 500;
+            color: var(--text-dark-setgoals); background-color: #f0f0f0;
+            border: 1px solid var(--border-color-light-setgoals); border-radius: 6px;
+            cursor: pointer; transition: all 0.3s ease;
+            font-family: inherit;
+        }
+        button.main-tab-button i { font-size: 1.8rem; line-height: 1; }
+        button.main-tab-button:hover { background-color: #e0e0e0; border-color: #ccc; }
+        button.main-tab-button.active {
+            background-color: var(--main-color); color: var(--color-black);
+            font-weight: 600; border-color: var(--color-gold);
+            box-shadow: 0 2px 5px rgba(218, 165, 32, 0.2);
+        }
+
+
+        #tabs-1 .content-placeholder h1::before { content: " "; font-weight: normal; color: #555; }
+        #tabs-1 .workout-type-block { border-bottom: none; padding-bottom: 0; margin-bottom: 1rem;}
+        #tabs-1 .workout-type { font-size: 1.1rem; font-weight: 500; color: var(--text-dark-setgoals); background-color: #f9f9f9; padding: 10px 15px; border-radius: 4px; border: 1px solid var(--border-color-light-setgoals);}
+        .workout-table-container { overflow-x: auto; margin-top: 1rem; }
+        .workout-table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+        .workout-table th, .workout-table td { padding: 12px 15px; text-align: left; border: 1px solid var(--table-border-color); }
+        .workout-table th { background-color: var(--table-header-bg); font-weight: 600; color: var(--primary-color-darkest-setgoals); text-transform: uppercase; font-size: 0.85rem;}
+        .workout-table tbody tr:nth-child(even) { background-color: #fdfdfd; }
+        .workout-table tbody tr:hover { background-color: #f1f1f1; }
+        .workout-table .notes-cell { font-style: italic; color: #666; font-size: 0.9em; }
+
+
+        #tabs-2 .content-placeholder h1::before { content: " "; font-weight: normal; color: #555; }
+        .card-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: var(--grid-gap); margin-bottom: 2rem; }
+        .stat-card { text-align: center; padding: 1.5rem 1rem; background-color: #fdfdfd;}
+        .stat-card .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; border-bottom: 1px solid var(--border-color-light-setgoals); padding-bottom: 0.8rem;}
+        .stat-card .card-header h3 { margin: 0; font-size: 1.1rem; color: var(--text-dark-setgoals); font-weight: 600;}
+        .stat-card .card-header i { font-size: 1.8rem; color: var(--stat-card-icon-color); }
+        .stat-card .card-body .value { font-size: 2rem; font-weight: 600; color: var(--stat-card-value-color); margin: 0 0 5px 0; line-height: 1.2; }
+        .stat-card .card-body .unit { font-size: 0.9rem; font-weight: 400; color: #666; margin-left: 3px; }
+        .stat-card .card-body .sub-value { margin: 0 0 10px 0; font-size: 0.9rem; font-weight: 500; }
+        .stat-card .card-body .sub-value.increase { color: var(--stat-card-sub-increase); }
+        .stat-card .card-body .sub-value.decrease { color: var(--stat-card-sub-decrease); }
+        .stat-card .card-body .description { font-size: 0.85rem; color: #777; margin: 0; }
+        .graph-controls { display: flex; flex-wrap: wrap; gap: 1.5rem; align-items: center; background-color: #f9f9f9; padding: 1rem; border-radius: 5px; border: 1px solid var(--border-color-light-setgoals); margin-bottom: 2rem; }
+        .control-group { display: flex; align-items: center; gap: 0.5rem; }
+        .control-group label { font-weight: 500; color: var(--text-dark-setgoals); font-size: 0.95rem;}
+        .control-group i { font-size: 1.3rem; color: var(--primary-color-darkest-setgoals);}
+        .control-group select { padding: 8px 12px; border: 1px solid var(--border-color-light-setgoals); border-radius: 4px; background-color: #fff; font-size: 0.9rem; cursor: pointer;}
+        .control-group select:focus { outline: none; border-color: var(--color-gold); box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.2); }
+        .graph-placeholder { background-color: #fff; padding: 1.5rem; border-radius: 5px; border: 1px solid var(--border-color-light-setgoals); }
+        .chart-area h3 { text-align: center; margin-bottom: 1.5rem; font-size: 1.3rem; color: var(--chart-title-color); font-weight: 600;}
+        .canvas-wrapper { position: relative; height: 300px; width: 100%; }
+
+
+        #tabs-3 .content-placeholder h1::before { content: " "; font-weight: normal; color: #555;}
+        .tabs { display: flex; justify-content: center; flex-wrap: wrap; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-color-light-setgoals); padding-bottom: 0.5rem; gap: 10px; }
+        .tabs .tab-button { color: var(--primary-color-darkest-setgoals); font-size: 0.95rem; padding: 0.6rem 1rem; border-radius: 4px; transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease; white-space: nowrap; border: 2px solid transparent; background-color: transparent; cursor: pointer; font-weight: 500; }
+        .tab-button:hover { color: var(--text-dark-setgoals); background-color: #eee; }
+        .tab-button.active { background-color: var(--main-color); color: var(--color-black); font-weight: 600; border-color: var(--color-gold); }
+
+        .nutrition-tab-content { display: none; padding-top: 1rem; animation: fadeIn 0.5s ease-in-out; }
+        .nutrition-tab-content.active { display: block; }
+        .nutrition-tab-content h2 { font-size: 1.3rem; margin-bottom: 1.5rem; font-weight: 600; color: #555; text-align: center; }
+        .nutrition-details-full { max-width: 700px; margin: 0 auto; } /* Used in Nutrients tab */
+        .chart-placeholder-container { max-width: 300px; margin: 0 auto 1.5rem auto; position: relative;} /* For Calorie/Macro charts */
+
+        .calories-breakdown { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; max-width: 700px; margin-left: auto; margin-right: auto; }
+        .meal-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; background-color: #fafafa; border-radius: 4px; border: 1px solid #eee; }
+        .meal-info { font-size: 0.9rem; flex-grow: 1; }
+        .meal-info div:first-child { font-weight: 500; color: var(--text-dark-setgoals); }
+        .meal-info div:last-child { color: #666; font-size: 0.85em; }
+        .add-food-btn { background-color: #eee; color: #555; margin-left: auto; border: 1px solid #ccc; padding: 5px 8px; font-size: 0.9rem; line-height: 1; border-radius: 50%; width: 28px; height: 28px; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; cursor: pointer;}
+        .add-food-btn:hover { background-color: #ddd; color: var(--text-dark-setgoals); border-color: #bbb; }
+        .calorie-summary { display: flex; flex-direction: column; gap: 10px; color: #666; font-size: 1em; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border-color-light-setgoals); max-width: 400px; margin-left: auto; margin-right: auto; }
+        .summary-item { display: flex; justify-content: space-between; align-items: center; }
+        .summary-item span:last-child { font-weight: 600; color: var(--text-dark-setgoals); }
+        .summary-item span.exercise { color: #f44336; }
+        .summary-item.goal span:last-child { color: var(--primary-color-darkest-setgoals); font-size: 1.1em; font-weight: bold; }
+        .summary-divider { border: none; height: 1px; background-color: var(--border-color-light-setgoals); margin: 5px 0; }
+        .editable { cursor: pointer; border-bottom: 1px dashed var(--primary-color-darkest-setgoals); padding-bottom: 1px; transition: background-color 0.2s ease; display: inline-block; }
+        .editable:hover { background-color: rgba(255, 215, 0, 0.15); }
+        .nutrient-header { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 10px; padding: 0 10px 10px 10px; font-size: 0.85em; font-weight: 600; text-align: right; border-bottom: 1px solid var(--border-color-light-setgoals); margin-bottom: 10px; text-transform: uppercase; }
+        .nutrient-list { list-style: none; max-height: 400px; overflow-y: auto; padding-right: 5px; }
+        .nutrient-list li { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 10px; padding: 10px; border-bottom: 1px solid #f0f0f0; align-items: center; font-size: 0.95em; }
+        .nutrient-list li:last-child { border-bottom: none; }
+        .nutrient-list li span:first-child { font-weight: 500; text-align: left; color: var(--text-dark-setgoals); }
+        .nutrient-list li span:not(:first-child) { text-align: right; color: #666; }
+
+        .macros-legend { display: flex; flex-direction: column; gap: 1rem; max-width: 500px; margin: 1.5rem auto 0 auto; }
+        .legend-item { display: grid; grid-template-columns: auto 1fr auto auto; align-items: center; gap: 10px; font-size: 0.95em; color: var(--text-dark-setgoals); padding: 10px; background-color: #fafafa; border-radius: 4px; border: 1px solid #eee; }
+        .color-square { width: 14px; height: 14px; display: inline-block; border-radius: 3px; border: 1px solid rgba(0,0,0,0.1); }
+        .legend-item .percentage { font-weight: 500; text-align: right; }
+        .legend-item .goal-percentage { color: #666; text-align: right; font-style: italic; font-size: 0.9em; } /* Style for goal percentage */
+
+
+        @media (max-width: 992px) {
+             main.content-grid {
+                 grid-template-columns: 1fr;
+                 padding-top: calc(var(--header-height-mobile, 90px) + 1rem);
+            }
+             .calendar-widget { order: -1; margin-bottom: var(--grid-gap); }
+             .workout-table th, .workout-table td { padding: 10px 8px; font-size: 0.9rem;}
+             .workout-table .notes-cell { font-size: 0.85em; }
+        }
+         @media (max-width: 767px) {
+             main.content-grid {
+                 padding-top: calc(var(--header-height-mobile, 90px) - 10px + 1rem);
+             }
+             .main-tab-button { font-size: 1.3rem; padding: 0.7rem 1.2rem; }
+             .workout-table thead { display: none; } /* Hide table header on small screens */
+             .workout-table, .workout-table tbody, .workout-table tr, .workout-table td { display: block; width: 100%; }
+             .workout-table tr { margin-bottom: 15px; border: 1px solid var(--table-border-color); border-radius: 4px; background-color: #fff; }
+             .workout-table td { text-align: right; padding-left: 50%; position: relative; border: none; border-bottom: 1px dotted var(--border-color-light-setgoals);}
+             .workout-table td:last-child { border-bottom: none; }
+             .workout-table td::before { content: attr(data-label); position: absolute; left: 10px; width: 45%; padding-right: 10px; white-space: nowrap; text-align: left; font-weight: bold; color: var(--primary-color-darkest-setgoals); text-transform: uppercase; font-size: 0.8em;}
+             .card-container { grid-template-columns: 1fr; }
+             .graph-controls { flex-direction: column; align-items: stretch; gap: 1rem; }
+             .control-group { justify-content: space-between; }
+             .calories-breakdown { grid-template-columns: 1fr; }
+             .nutrient-list li, .nutrient-header { font-size: 0.9em; grid-template-columns: 1.5fr 1fr 1fr 1fr; }
+             .legend-item { grid-template-columns: auto 1fr auto auto; font-size: 0.9em; }
+
+         }
+         @media (max-width: 480px) {
+              main.content-grid {
+                 padding-top: calc(var(--header-height-mobile, 90px) - 20px + 1rem);
+             }
+              .main-tab-button { font-size: 1.1rem; padding: 0.6rem 1rem; gap: 0.5rem; }
+              .main-tab-button i { font-size: 1.5rem; }
+              .content-placeholder h1 { font-size: 1.4rem; }
+              .workout-table td { padding-left: 40%;}
+              .workout-table td::before { width: 35%; }
+         }
+
+    </style>
 </head>
 <body>
 
-    <header class="header">
-        <nav class="navbar">
-            <a href="home.html" class="nav-logo"><img src="../images/logo.png" alt="OptiLife Logo"></a>
-
-            <ul class="nav-menu-desktop">
-                <li class="nav-item"><a href="home.html" class="nav-link">Home</a></li>
-                <li class="nav-item"><a href="#tabs-1" class="nav-link">Workout Log</a></li>
-                <li class="nav-item"><a href="#tabs-2" class="nav-link">Workout Status</a></li>
-                <li class="nav-item"><a href="#tabs-3" class="nav-link">Nutrition Status</a></li>
-            </ul>
-
-            <a href="#" class="nav-logo user-logo"><img src="../images/user_pic.jpg" alt="user"></a>
-
-            <button class="hamburger" id="hamburger-button" aria-label="Open menu" aria-expanded="false">
-                <i class='bx bx-menu'></i>
-            </button>
-        </nav>
-
-        <div class="sidebar" id="sidebar">
-            <div class="sidebar-header">
-                <span class="sidebar-brand"><img src="../images/logo.png" alt="OptiLife Logo" class="sidebar-logo-img"></span>
-                <button class="close-btn" id="close-button" aria-label="Close menu">×</button>
-            </div>
-            <ul class="sidebar-menu">
-                <div class="userprofile"><a href="#" class="nav-logo"><img src="../images/user_pic.jpg" alt="user" class="sidebar-user-img"></a><h4>User</h4></div>
-                <li class="nav-item"><a href="home.html" class="nav-link">Home</a></li>
-                <li class="nav-item"><a href="#tabs-1" class="nav-link">Workout Log</a></li>
-                <li class="nav-item"><a href="#tabs-2" class="nav-link">Workout Status</a></li>
-                <li class="nav-item"><a href="#tabs-3" class="nav-link">Nutrition Status</a></li>
-            </ul>
-        </div>
-        <div class="overlay" id="overlay"></div>
+    <header>
+        <a href="home.html" class="logo"><img src="../images/logo.png" alt="OptiLife Logo"></a>
+        <div class='bx bx-menu' id="menu-icon"></div>
+        <ul class="navbar">
+             <div class="navbar-left">
+                 <li><a href="/User/home.html">Home</a></li>
+                 <li><a href="/User/setGoals.html">Set Goals</a></li>
+                 <li><a href="/User/progress.html" class="active">Track Progress</a></li>
+                 <li><a href="/User/membership.html">Membership</a></li>
+             </div>
+             <div class="navbar-right">
+                 <li>
+                     <img src="../images/user_pic.jpg" alt="User Profile" class="profile-pic">
+                 </li>
+                 <li>
+                     <a href="login_signup.html" id="logout-link">Logout</a>
+                 </li>
+             </div>
+        </ul>
     </header>
 
     <main class="content-grid">
          <div class="calendar-widget card">
-            <h2 style="color: #a47e2b;">Select Date</h2>
+            <h2>Select Date</h2>
             <div class="calendar-header">
-                <button class="cal-nav prev"><</button>
+                <button class="cal-nav prev" aria-label="Previous month"><</button>
                 <span class="current-month-year">April 2025</span>
-                <button class="cal-nav next">></button>
+                <button class="cal-nav next" aria-label="Next month">></button>
             </div>
             <div class="calendar-grid">
                 <div class="day-name">S</div> <div class="day-name">M</div> <div class="day-name">T</div>
@@ -63,34 +296,46 @@
                 <div class="date-cell"><button>9</button></div> <div class="date-cell"><button>10</button></div>
                 <div class="date-cell"><button>11</button></div> <div class="date-cell"><button>12</button></div>
                 <div class="date-cell"><button>13</button></div> <div class="date-cell"><button>14</button></div>
-                <div class="date-cell"><button class="selected">15</button></div> 
-                <div class="date-cell"><button>16</button></div> <div class="date-cell"><button>17</button></div>
-                <div class="date-cell"><button>18</button></div> <div class="date-cell"><button>19</button></div>
-                <div class="date-cell"><button>20</button></div> <div class="date-cell"><button>21</button></div>
-                <div class="date-cell"><button>22</button></div> <div class="date-cell"><button>23</button></div>
-                <div class="date-cell"><button>24</button></div> <div class="date-cell"><button>25</button></div>
-                <div class="date-cell"><button>26</button></div> <div class="date-cell"><button>27</button></div>
-                <div class="date-cell"><button>28</button></div> <div class="date-cell"><button>29</button></div>
-                <div class="date-cell"><button>30</button></div> <div class="date-cell empty"></div>
+                <div class="date-cell"><button class="selected" data-date="2025-04-15">15</button></div>
+                <div class="date-cell"><button data-date="2025-04-16">16</button></div> <div class="date-cell"><button data-date="2025-04-17">17</button></div>
+                <div class="date-cell"><button data-date="2025-04-18">18</button></div> <div class="date-cell"><button data-date="2025-04-19">19</button></div>
+                <div class="date-cell"><button data-date="2025-04-20">20</button></div> <div class="date-cell"><button data-date="2025-04-21">21</button></div>
+                <div class="date-cell"><button data-date="2025-04-22">22</button></div> <div class="date-cell"><button data-date="2025-04-23">23</button></div>
+                <div class="date-cell"><button data-date="2025-04-24">24</button></div> <div class="date-cell"><button data-date="2025-04-25">25</button></div>
+                <div class="date-cell"><button data-date="2025-04-26">26</button></div>
+                <div class="date-cell"><button data-date="2025-04-27">27</button></div> <div class="date-cell"><button data-date="2025-04-28">28</button></div>
+                <div class="date-cell"><button data-date="2025-04-29">29</button></div> <div class="date-cell"><button data-date="2025-04-30">30</button></div>
+                <div class="date-cell empty"></div>
             </div>
 
             <div class="input-block">
-                <label for="startDate" style="color: #a47e2b;">Start Date</label> 
-                <input type="date" id="startDate" name="startDate" class="info-input" value="2025-01-15"> 
+                <label for="startDate">Start Date</label>
+                <input type="date" id="startDate" name="startDate" class="info-input" value="2025-01-15">
             </div>
 
             <div class="input-block">
-                <label style="color: #a47e2b;">Goals</label>
+                <label>Goals</label>
                 <ul class="goals-list">
-                    <li>Improved overall fitness</li> 
+                    <li>Improved overall fitness</li>
                     <li>Increased muscle strength</li>
                 </ul>
              </div>
         </div>
 
-         <div class="main-tab-content">
+         <div class="main-tab-content card">
+            <nav class="main-content-tabs">
+                <button class="main-tab-button active" data-target="#tabs-1">
+                    <i class='bx bx-list-ul'></i> Workout Log
+                </button>
+                <button class="main-tab-button" data-target="#tabs-2">
+                    <i class='bx bx-line-chart'></i> Workout Status
+                </button>
+                 <button class="main-tab-button" data-target="#tabs-3">
+                    <i class='bx bx-restaurant'></i> Nutrition Status
+                </button>
+            </nav>
 
-            <div id="tabs-1" class="tab-content">
+            <div id="tabs-1" class="tab-content active">
                 <div class="content-placeholder">
                     <h1>Workout Log Details:</h1>
                     <div class="input-block workout-type-block">
@@ -183,7 +428,7 @@
                             <div class="card-body">
                                 <p class="value">12000.00 <span class="unit">kcal</span></p>
                                 <p class="sub-value increase">(+10%)</p>
-                                <p class="description">Total calories burned this month</p> 
+                                <p class="description">Total calories burned this month</p>
                             </div>
                         </article>
                         <article class="card stat-card">
@@ -193,26 +438,26 @@
                             </div>
                             <div class="card-body">
                                 <p class="value">5.00</p>
-                                <p class="sub-value increase">(+1 workout)</p> 
+                                <p class="sub-value increase">(+1 workout)</p>
                                 <p class="description">Workouts completed this week</p>
                             </div>
                         </article>
                         <article class="card stat-card">
                             <div class="card-header">
-                                <h3>Avg. Duration</h3> 
+                                <h3>Avg. Duration</h3>
                                 <i class='bx bx-time-five'></i>
                             </div>
                             <div class="card-body">
-                                <p class="value">45.00 <span class="unit">min</span></p> 
-                                <p class="sub-value decrease">(-5 min)</p> 
-                                <p class="description">Average duration per workout</p> 
+                                <p class="value">45.00 <span class="unit">min</span></p>
+                                <p class="sub-value decrease">(-5 min)</p>
+                                <p class="description">Average duration per workout</p>
                             </div>
                         </article>
                     </section>
                     <div class="input-block graph-controls">
                         <div class="control-group">
                             <i class='bx bx-line-chart'></i>
-                            <label for="measurements">Measurements: </label> 
+                            <label for="measurements">Measurements: </label>
                             <select name="measurements" id="measurements">
                                 <option value="weight" data-unit="kg">Weight</option>
                                 <option value="neck" data-unit="cm">Neck</option>
@@ -222,14 +467,14 @@
                         </div>
                         <div class="control-group">
                              <i class='bx bxs-calendar-check'></i>
-                            <label for="graph-period">Period: </label> 
+                            <label for="graph-period">Period: </label>
                             <select name="graph-period" id="graph-period">
                                 <option value="weekly">1 Week</option>
                                 <option value="monthly">1 Month</option>
                                 <option value="3months">3 Months</option>
                                 <option value="6months">6 Months</option>
                                 <option value="yearly">1 Year</option>
-                                <option value="start">Since Start</option> 
+                                <option value="start">Since Start</option>
                             </select>
                         </div>
                     </div>
@@ -238,7 +483,7 @@
                         <div class="chart-area">
                             <h3 id="chart-title">Weight Progress (1 Week)</h3>
                             <div class="canvas-wrapper">
-                                 <canvas id="myChart"></canvas> 
+                                 <canvas id="myChart"></canvas>
                             </div>
                      </div>
                     </div>
@@ -254,35 +499,35 @@
                         <button class="tab-button" data-tab="macros">MACROS</button>
                     </nav>
 
-                    <div id="calories-content" class="tab-content active">
+                    <div id="calories-content" class="nutrition-tab-content active">
                          <h2>Calories Breakdown</h2>
                         <div class="chart-placeholder-container">
                             <canvas id="calorieChart"></canvas>
                         </div>
                         <div class="calories-breakdown">
                             <div class="meal-item">
-                                <span class="color-square calorie-breakfast" style="background-color: #bf9a33;"></span> 
+                                <span class="color-square calorie-breakfast" style="background-color: #bf9a33;"></span>
                                 <div class="meal-info">
                                     <div>Breakfast</div>
                                     <div data-value="breakfast-calories">0% (0 cal)</div>
                                 </div>
                             </div>
                             <div class="meal-item">
-                                <span class="color-square calorie-lunch" style="background-color: #febd14;"></span> 
+                                <span class="color-square calorie-lunch" style="background-color: #febd14;"></span>
                                 <div class="meal-info">
                                     <div>Lunch</div>
                                     <div data-value="lunch-calories">0% (0 cal)</div>
                                 </div>
                             </div>
                             <div class="meal-item">
-                                <span class="color-square calorie-dinner" style="background-color: #fece43;"></span> 
+                                <span class="color-square calorie-dinner" style="background-color: #fece43;"></span>
                                  <div class="meal-info">
                                    <div>Dinner</div>
                                    <div data-value="dinner-calories">0% (0 cal)</div>
                                  </div>
                             </div>
                             <div class="meal-item">
-                                <span class="color-square calorie-snacks" style="background-color: #feda75;"></span> 
+                                <span class="color-square calorie-snacks" style="background-color: #feda75;"></span>
                                  <div class="meal-info">
                                     <div>Snacks</div>
                                     <div data-value="snack-calories">0% (0 cal)</div>
@@ -296,9 +541,9 @@
                             </div>
                              <div class="summary-item">
                                 <span>Exercise</span>
-                                <span data-value="exercise-calories" class="exercise">0</span> 
+                                <span data-value="exercise-calories" class="exercise">0</span>
                             </div>
-                            <div class="summary-item">
+                            <div class="summary-item net-calories-item">
                                 <span>Net Calories</span>
                                 <span data-value="net-calories">0</span>
                             </div>
@@ -310,134 +555,136 @@
                         </div>
                     </div>
 
-                    <div id="nutrients-content" class="tab-content">
+                    <div id="nutrients-content" class="nutrition-tab-content">
                          <h2>Nutrient Details</h2>
-                        <div class="nutrient-header" style="color: #a47e2b;">
-                            <span>Nutrient</span>
-                            <span>Total</span>
-                            <span>Goal</span>
-                            <span>Left</span>
+                        <div class="nutrition-details-full">
+                            <div class="nutrient-header">
+                                <span>Nutrient</span>
+                                <span>Total</span>
+                                <span>Goal</span>
+                                <span>Left</span>
+                            </div>
+                            <ul class="nutrient-list">
+                                <li data-nutrient="protein">
+                                    <span>Protein</span>
+                                    <span data-value="protein-total">0 g</span>
+                                    <span data-value="protein-goal">76 g</span>
+                                    <span data-value="protein-left">76 g</span>
+                                </li>
+                                <li data-nutrient="carbohydrates">
+                                    <span>Carbohydrates</span>
+                                    <span data-value="carbs-total">0 g</span>
+                                    <span data-value="carbs-goal">190 g</span>
+                                    <span data-value="carbs-left">190 g</span>
+                                </li>
+                                <li data-nutrient="fiber">
+                                    <span>Fiber</span>
+                                    <span data-value="fiber-total">0 g</span>
+                                    <span data-value="fiber-goal">25 g</span>
+                                    <span data-value="fiber-left">25 g</span>
+                                </li>
+                                <li data-nutrient="sugar">
+                                    <span>Sugar</span>
+                                    <span data-value="sugar-total">0 g</span>
+                                    <span data-value="sugar-goal">57 g</span>
+                                    <span data-value="sugar-left">57 g</span>
+                                </li>
+                                <li data-nutrient="fat">
+                                    <span>Fat</span>
+                                    <span data-value="fat-total">0 g</span>
+                                    <span data-value="fat-goal">51 g</span>
+                                    <span data-value="fat-left">51 g</span>
+                                </li>
+                                <li data-nutrient="saturated_fat">
+                                    <span>Saturated Fat</span>
+                                    <span data-value="satfat-total">0 g</span>
+                                    <span data-value="satfat-goal">17 g</span>
+                                    <span data-value="satfat-left">17 g</span>
+                                </li>
+                                <li data-nutrient="polyunsaturated_fat">
+                                    <span>Polyunsaturated Fat</span>
+                                    <span data-value="polyfat-total">0 g</span>
+                                    <span data-value="polyfat-goal">0 g</span>
+                                    <span data-value="polyfat-left">0 g</span>
+                                </li>
+                                <li data-nutrient="monounsaturated_fat">
+                                    <span>Monounsaturated Fat</span>
+                                    <span data-value="monofat-total">0 g</span>
+                                    <span data-value="monofat-goal">0 g</span>
+                                    <span data-value="monofat-left">0 g</span>
+                                </li>
+                                <li data-nutrient="trans_fat">
+                                    <span>Trans Fat</span>
+                                    <span data-value="transfat-total">0 g</span>
+                                    <span data-value="transfat-goal">0 g</span>
+                                    <span data-value="transfat-left">0 g</span>
+                                </li>
+                                <li data-nutrient="cholesterol">
+                                    <span>Cholesterol</span>
+                                    <span data-value="cholesterol-total">0 mg</span>
+                                    <span data-value="cholesterol-goal">300 mg</span>
+                                    <span data-value="cholesterol-left">300 mg</span>
+                                </li>
+                                <li data-nutrient="sodium">
+                                    <span>Sodium</span>
+                                    <span data-value="sodium-total">0 mg</span>
+                                    <span data-value="sodium-goal">2,300 mg</span>
+                                    <span data-value="sodium-left">2,300 mg</span>
+                                </li>
+                                <li data-nutrient="potassium">
+                                    <span>Potassium</span>
+                                    <span data-value="potassium-total">0 mg</span>
+                                    <span data-value="potassium-goal">3,500 mg</span>
+                                    <span data-value="potassium-left">3,500 mg</span>
+                                </li>
+                                <li data-nutrient="vitamin_a">
+                                    <span>Vitamin A</span>
+                                    <span data-value="vita-total">0 %</span>
+                                    <span data-value="vita-goal">100 %</span>
+                                    <span data-value="vita-left">100 %</span>
+                                </li>
+                                <li data-nutrient="vitamin_c">
+                                    <span>Vitamin C</span>
+                                    <span data-value="vitc-total">0 %</span>
+                                    <span data-value="vitc-goal">100 %</span>
+                                    <span data-value="vitc-left">100 %</span>
+                                </li>
+                                <li data-nutrient="calcium">
+                                    <span>Calcium</span>
+                                    <span data-value="calcium-total">0 %</span>
+                                    <span data-value="calcium-goal">100 %</span>
+                                    <span data-value="calcium-left">100 %</span>
+                                </li>
+                                <li data-nutrient="iron">
+                                    <span>Iron</span>
+                                    <span data-value="iron-total">0 %</span>
+                                    <span data-value="iron-goal">100 %</span>
+                                    <span data-value="iron-left">100 %</span>
+                                </li>
+                            </ul>
                         </div>
-                        <ul class="nutrient-list">
-                            <li data-nutrient="protein">
-                                <span>Protein</span> 
-                                <span>0 g</span> 
-                                <span>76 g</span> 
-                                <span>76 g</span>
-                            </li>
-                            <li data-nutrient="carbohydrates">
-                                <span>Carbohydrates</span> 
-                                <span>0 g</span> 
-                                <span>190 g</span> 
-                                <span>190 g</span>
-                            </li>
-                            <li data-nutrient="fiber">
-                                <span>Fiber</span> 
-                                <span>0 g</span> 
-                                <span>25 g</span> 
-                                <span>25 g</span>
-                            </li>
-                            <li data-nutrient="sugar">
-                                <span>Sugar</span> 
-                                <span>0 g</span> 
-                                <span>57 g</span> 
-                                <span>57 g</span>
-                            </li>
-                            <li data-nutrient="fat">
-                                <span>Fat</span> 
-                                <span>0 g</span> 
-                                <span>51 g</span> 
-                                <span>51 g</span>
-                            </li>
-                            <li data-nutrient="saturated_fat">
-                                <span>Saturated Fat</span> 
-                                <span>0 g</span> 
-                                <span>17 g</span> 
-                                <span>17 g</span>
-                            </li>
-                            <li data-nutrient="polyunsaturated_fat">
-                                <span>Polyunsaturated Fat</span> 
-                                <span>0 g</span>
-                                <span>0 g</span> 
-                                <span>0 g</span>
-                            </li>
-                            <li data-nutrient="monounsaturated_fat">
-                                <span>Monounsaturated Fat</span> 
-                                <span>0 g</span> 
-                                <span>0 g</span> 
-                                <span>0 g</span>
-                            </li>
-                            <li data-nutrient="trans_fat">
-                                <span>Trans Fat</span> 
-                                <span>0 g</span> 
-                                <span>0 g</span> 
-                                <span>0 g</span>
-                            </li>
-                            <li data-nutrient="cholesterol">
-                                <span>Cholesterol</span> 
-                                <span>0 mg</span> 
-                                <span>300 mg</span> 
-                                <span>300 mg</span>
-                            </li>
-                            <li data-nutrient="sodium">
-                                <span>Sodium</span> 
-                                <span>0 mg</span> 
-                                <span>2,300 mg</span> 
-                                <span>2,300 mg</span>
-                            </li>
-                            <li data-nutrient="potassium">
-                                <span>Potassium</span> 
-                                <span>0 mg</span> 
-                                <span>3,500 mg</span> 
-                                <span>3,500 mg</span>
-                            </li>
-                            <li data-nutrient="vitamin_a">
-                                <span>Vitamin A</span> 
-                                <span>0 %</span> 
-                                <span>100 %</span> 
-                                <span>100 %</span>
-                            </li>
-                            <li data-nutrient="vitamin_c">
-                                <span>Vitamin C</span> 
-                                <span>0 %</span> 
-                                <span>100 %</span> 
-                                <span>100 %</span>
-                            </li>
-                            <li data-nutrient="calcium">
-                                <span>Calcium</span> 
-                                <span>0 %</span> 
-                                <span>100 %</span> 
-                                <span>100 %</span>
-                            </li>
-                            <li data-nutrient="iron">
-                                <span>Iron</span> 
-                                <span>0 %</span> 
-                                <span>100 %</span> 
-                                <span>100 %</span>
-                            </li>
-                        </ul>
                     </div>
 
-                    <div id="macros-content" class="tab-content">
+                    <div id="macros-content" class="nutrition-tab-content">
                          <h2>Macronutrient Ratio</h2>
                         <div class="chart-placeholder-container">
                              <canvas id="macroChart"></canvas>
                         </div>
                         <div class="macros-legend">
                              <div class="legend-item" data-macro="carbs">
-                                <span class="color-square macro-carbs" style="background-color: #c49a3c;"></span>
+                                <span class="color-square macro-carbs" style="background-color: #febd14;"></span>
                                 <span>Carbohydrates (0g)</span>
                                 <span class="percentage">0%</span>
                                 <span class="goal-percentage">50%</span>
                             </div>
                              <div class="legend-item" data-macro="fat">
-                                <span class="color-square macro-fat" style="background-color: #e6c56d;"></span>
+                                <span class="color-square macro-fat" style="background-color: #fece43;"></span>
                                 <span>Fat (0g)</span>
                                 <span class="percentage">0%</span>
                                 <span class="goal-percentage">30%</span>
                             </div>
                              <div class="legend-item" data-macro="protein">
-                                <span class="color-square macro-protein" style="background-color: #a47e2b;"></span> 
+                                <span class="color-square macro-protein" style="background-color: #feda75;"></span>
                                 <span>Protein (0g)</span>
                                 <span class="percentage">0%</span>
                                 <span class="goal-percentage">20%</span>
@@ -451,75 +698,106 @@
 
     <section id="subscribe" class="subscribe-section">
         <div class="container subscribe-content">
-            <div class="subscribe-text">
-                <h2>Subscribes</h2>
+             <div class="subscribe-text">
+                <h2>Subscribe</h2>
                 <p>Join our fitness family and get tips, exclusive updates, and special offers. Start your journey today!</p>
                 <form class="subscribe-form">
                     <input type="email" placeholder="Email" required>
                     <button type="submit" class="btn btn-primary">Send</button>
                 </form>
                 <div class="social-icons">
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                    <a href="#"><i class="fab fa-tiktok"></i></a>
-                    <a href="#"><i class="fab fa-youtube"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+                    <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
                 </div>
             </div>
             <div class="footer-links">
-                <div>
-                    <h4>Company</h4>
-                    <ul>
-                        <li><a href="#">Press</a></li>
-                        <li><a href="#">Blog</a></li>
-                        <li><a href="#">About</a></li>
-                        <li><a href="#">Careers</a></li>
-                    </ul>
-                </div>
-                 <div>
-                    <h4>Services</h4>
-                    <ul>
-                        <li><a href="#">Training</a></li>
-                        <li><a href="#">Nutrition</a></li>
-                        <li><a href="#">Lifestyles</a></li>
-                    </ul>
-                </div>
-                 <div>
-                    <h4>Legal</h4>
-                    <ul>
-                        <li><a href="#">Policy</a></li>
-                        <li><a href="#">Privacy & Cookies</a></li>
-                        <li><a href="#">Terms & Conditions</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4>Community</h4>
-                    <ul>
-                        <li><a href="#">Contact</a></li>
-                        <li><a href="#">Find a club</a></li>
-                        <li><a href="#">Membership</a></li>
-                    </ul>
-                </div>
-                 <div>
-                    <h4>Gym</h4>
-                    <ul>
-                        <li><a href="#">Book a Gym</a></li>
-                        <li><a href="#">Find a Gym</a></li>
-                    </ul>
-                </div>
+                 <div><h4>Company</h4><ul><li><a href="#">Press</a></li><li><a href="#">Blog</a></li><li><a href="#">About</a></li><li><a href="#">Careers</a></li></ul></div> <div><h4>Services</h4><ul><li><a href="#">Training</a></li><li><a href="#">Nutrition</a></li><li><a href="#">Lifestyles</a></li></ul></div> <div><h4>Legal</h4><ul><li><a href="#">Policy</a></li><li><a href="#">Privacy & Cookies</a></li><li><a href="#">Terms & Conditions</a></li></ul></div> <div><h4>Community</h4><ul><li><a href="#">Contact</a></li><li><a href="#">Find a club</a></li><li><a href="#">Membership</a></li></ul></div> <div><h4>Gym</h4><ul><li><a href="#">Book a Gym</a></li><li><a href="#">Find a Gym</a></li></ul></div>
             </div>
         </div>
     </section>
+    <footer>
+        <div class="container">
+            <p>© 2024 OPTILIFE. All Rights Reserved.</p>
+        </div>
+    </footer>
 
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script>
+      $(document).ready(function() {
+          var menuIcon = $('#menu-icon');
+          var navbar = $('.navbar');
 
-<footer>
-    <div class="container">
-        <p>© 2023 OPTILIFE. All Rights Reserved.</p>
-    </div>
-</footer>
+          if (menuIcon.length && navbar.length) {
+              menuIcon.on('click', function() {
+                  $(this).toggleClass('bx-x');
+                  navbar.toggleClass('active');
+              });
+
+              $('.navbar a').on('click', function(event) {
+                   if (navbar.hasClass('active') && !$(this).is('#logout-link')) {
+                       navbar.removeClass('active');
+                       menuIcon.removeClass('bx-x');
+                   }
+              });
+
+              $('.navbar-right li:has(.profile-pic)').on('click', function(e) {
+                   if(navbar.hasClass('active')) {
+                        navbar.removeClass('active');
+                        menuIcon.removeClass('bx-x');
+                   }
+              });
+
+              $(window).on('scroll', function() {
+                  if (navbar.hasClass('active')) {
+                      navbar.removeClass('active');
+                      menuIcon.removeClass('bx-x');
+                  }
+              });
+          } else {
+              console.warn("Header menu icon or navbar not found.");
+          }
+
+          $('.main-tab-button').on('click', function() {
+              var targetSelector = $(this).data('target');
+              var $targetContent = $(targetSelector);
+
+              if ($targetContent.length) {
+                  $('.main-tab-button').removeClass('active');
+                  $(this).addClass('active');
+                  $('.main-tab-content .tab-content').removeClass('active');
+                  $targetContent.addClass('active');
+              } else {
+                  console.warn("Main tab target content not found:", targetSelector);
+              }
+          });
+
+           $('.tabs .tab-button').on('click', function() {
+                var tabId = $(this).data('tab');
+                var $container = $(this).closest('.content-placeholder');
+
+                $container.find('.tabs .tab-button').removeClass('active');
+                $(this).addClass('active');
+
+                $container.find('.nutrition-tab-content').removeClass('active');
+                $container.find('#' + tabId + '-content').addClass('active');
+           });
+
+          $('#logout-link').on('click', function(event) {
+              event.preventDefault();
+              var confirmLogout = confirm("Are you sure you want to logout?");
+              if (confirmLogout) {
+                  window.location.href = this.href;
+              }
+          });
+
+      });
+    </script>
 
     <script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script> 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-moment@1.0.1/dist/chartjs-adapter-moment.min.js"></script>
-    <script src="userjs/progress.js"></script> 
+
 
 </body>
 </html>
