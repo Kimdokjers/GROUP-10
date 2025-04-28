@@ -4,13 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Gym Membership</title>
-  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
-  <!-- Boxicons CSS -->
   <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-  <link rel="stylesheet" href="style.css"> <!-- Link to your external CSS -->
   <style>
-    /* --- Base & Reset --- */
     * {
       margin: 0;
       padding: 0;
@@ -25,7 +21,7 @@
         --bg-color: #000;
         --snd-bf-color: #111;
         --text-color: #fff;
-        --main-color: #FFD700; /* Gold */
+        --main-color: #FFD700;
         --color-black: #0a0a0a;
         --color-dark-gray: #1a1a1a;
         --color-gold: #daa520;
@@ -33,12 +29,12 @@
         --color-text: #ffffff;
         --color-text-muted: #aaaaaa;
         --header-height-desktop: 120px;
-        --header-height-mobile: 90px; /* Adjusted mobile header height */
+        --header-height-mobile: 90px;
         --font-primary: 'Poppins', sans-serif;
     }
 
     html {
-        font-size: 62.5%; /* 1rem = 10px */
+        font-size: 62.5%;
         overflow-x: hidden;
         scroll-behavior: smooth;
     }
@@ -56,7 +52,6 @@
         display: block;
     }
 
-    /* --- Header --- */
     header {
         position: fixed;
         width: 100%;
@@ -83,7 +78,7 @@
     }
 
     .logo img {
-        max-width: 180px; /* Adjust as needed */
+        max-width: 180px;
         height: auto;
     }
 
@@ -91,7 +86,6 @@
         transform: scale(1.05);
     }
 
-    /* --- Navigation --- */
     .navbar {
         display: flex;
         justify-content: space-between;
@@ -100,7 +94,7 @@
         padding: 0;
         margin: 0;
         flex-grow: 1;
-        margin-left: 4rem; /* Space after logo */
+        margin-left: 4rem;
     }
 
     .navbar-left,
@@ -139,12 +133,12 @@
         margin-right: 1.5rem;
     }
 
-    .navbar-right li a[href="login_signup.html"] { /* Assuming this is the logout link */
+    .navbar-right li a#logout-link {
         margin-left: 0;
     }
 
     .navbar a:hover,
-    .navbar a.active { /* Add .active class via JS to highlight current page */
+    .navbar a.active {
         color: var(--main-color);
         border-bottom-color: var(--main-color);
     }
@@ -157,19 +151,16 @@
         display: block;
     }
 
-    /* --- Menu Icon (Mobile) --- */
     #menu-icon {
-        font-size: 4.5rem; /* Made slightly bigger */
+        font-size: 4.5rem;
         color: var(--main-color);
         cursor: pointer;
-        display: none; /* Hidden by default */
+        display: none;
         margin-left: 2rem;
-        z-index: 1001; /* Above navbar when closed */
+        z-index: 1001;
     }
 
-    /* --- Main Content Area --- */
     main {
-      /* Add padding top equal to header height to prevent content overlap */
       padding-top: var(--header-height-desktop);
     }
 
@@ -177,18 +168,17 @@
       max-width: 1200px;
       margin-left: auto;
       margin-right: auto;
-      padding: 3rem 2rem; /* Added padding */
+      padding: 3rem 2rem;
     }
 
     .gym-banner {
       width: 100%;
       border-radius: 10px;
-      margin-bottom: 4rem; /* Increased spacing */
+      margin-bottom: 4rem;
     }
 
-    /* --- Profile Section --- */
     .profile-section {
-      margin-bottom: 4rem; /* Increased spacing */
+      margin-bottom: 4rem;
     }
 
     .profile-section h2 {
@@ -199,72 +189,80 @@
         border-bottom: 2px solid var(--color-gold-light);
         display: inline-block;
     }
+    .profile-section h3 {
+        font-size: 2.2rem;
+        color: var(--color-gold-light);
+        margin-top: 2rem;
+        margin-bottom: 1.5rem;
+    }
 
     .profile-card {
       display: flex;
       align-items: center;
-      gap: 3rem; /* Increased gap */
-      margin-bottom: 3rem; /* Increased spacing */
+      gap: 3rem;
+      margin-bottom: 3rem;
       background-color: var(--snd-bf-color);
-      padding: 2.5rem; /* Increased padding */
+      padding: 2.5rem;
       border-radius: 10px;
-      border-left: 5px solid var(--main-color); /* Accent border */
+      border-left: 5px solid var(--main-color);
     }
 
     .profile-card img {
-      width: 120px; /* Slightly larger */
+      width: 120px;
       height: 120px;
       border-radius: 50%;
       object-fit: cover;
-      flex-shrink: 0; /* Prevent image shrinking */
-      border: 3px solid var(--main-color); /* Optional border */
+      flex-shrink: 0;
+      border: 3px solid var(--main-color);
     }
 
     .profile-info h3 {
-      font-size: 2rem; /* Increased size */
-      margin-bottom: 0.8rem; /* Adjusted spacing */
+      font-size: 2rem;
+      margin-bottom: 0.8rem;
       color: var(--color-gold-light);
+    }
+    .profile-info h3 small {
+        font-size: 0.8em;
+        font-weight: 400;
+        color: var(--color-text-muted);
     }
 
     .profile-info p {
-        font-size: 1.6rem; /* Standard paragraph size */
+        font-size: 1.6rem;
         color: var(--color-text-muted);
         line-height: 1.7;
     }
 
-    /* --- Membership Options --- */
     .membership-options {
       display: flex;
-      flex-direction: column; /* Stack buttons */
-      gap: 2rem; /* Increased gap */
+      flex-direction: column;
+      gap: 2rem;
       margin-top: 3rem;
-      align-items: center; /* Center buttons if container is wider */
+      align-items: center;
     }
 
-    /* Style for the anchor tags acting as buttons */
     .btn-membership {
-      display: inline-block; /* Allows padding and width */
+      display: inline-block;
       background-color: var(--main-color);
       color: var(--color-black);
       border: 2px solid var(--main-color);
-      padding: 1.5rem 3.5rem; /* Increased padding */
-      font-size: 1.7rem; /* Increased size */
+      padding: 1.5rem 3.5rem;
+      font-size: 1.7rem;
       font-weight: 600;
       border-radius: 8px;
       cursor: pointer;
       transition: all 0.3s ease;
       text-align: center;
-      min-width: 300px; /* Ensure buttons have a decent width */
+      min-width: 300px;
     }
 
     .btn-membership:hover {
       background-color: transparent;
       color: var(--main-color);
-      transform: translateY(-3px); /* Slight lift effect */
-       box-shadow: 0 5px 15px rgba(255, 215, 0, 0.2); /* Subtle gold glow */
+      transform: translateY(-3px);
+       box-shadow: 0 5px 15px rgba(255, 215, 0, 0.2);
     }
 
-    /* Optional: Style for the second button if needed */
     .btn-membership.secondary {
         background-color: transparent;
         color: var(--main-color);
@@ -275,44 +273,40 @@
          box-shadow: 0 5px 15px rgba(255, 215, 0, 0.2);
     }
 
-
-    /* --- Media Queries --- */
-
-    /* Larger Tablets / Small Laptops */
     @media (max-width: 991px) {
-        html { font-size: 55%; } /* Adjust base font size */
+        html { font-size: 55%; }
         header {
             height: var(--header-height-mobile);
             padding: 1rem 5%;
         }
         main {
-             padding-top: var(--header-height-mobile); /* Match mobile header height */
+             padding-top: var(--header-height-mobile);
         }
 
         #menu-icon {
-             display: block; /* Show burger menu */
+             display: block;
         }
 
         .navbar {
             position: absolute;
-            top: 100%; /* Position below header */
-            right: -100%; /* Start off-screen */
+            top: 100%;
+            right: -100%;
             width: 250px;
-            height: auto; /* Adjust height based on content */
-            background: var(--color-black); /* Solid background */
+            height: auto;
+            background: var(--color-black);
             flex-direction: column;
             align-items: center;
             padding: 2rem;
             transition: right .50s ease;
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
-            border-radius: 0 0 10px 10px; /* Rounded bottom corners */
+            border-radius: 0 0 10px 10px;
             justify-content: flex-start;
             flex-grow: 0;
-            margin-left: 0; /* Reset margin */
-            gap: 1.5rem; /* Add gap between nav sections */
+            margin-left: 0;
+            gap: 1.5rem;
         }
-        .navbar.active { /* This class needs to be toggled by JS */
-            right: 5%; /* Slide in from the right */
+        .navbar.active {
+            right: 5%;
             display: flex;
         }
 
@@ -321,7 +315,7 @@
             flex-direction: column;
             width: 100%;
             align-items: center;
-            gap: 1rem; /* Space between items in sections */
+            gap: 1rem;
         }
         .navbar-right { margin-top: 1.5rem; }
 
@@ -330,31 +324,31 @@
             text-align: center;
             margin-bottom: 1rem;
         }
-         /* Mobile order: Profile Pic first, then Logout */
         .navbar-right li:has(.profile-pic) { order: 0; margin-bottom: 1.5rem; margin-right: 0;}
-        .navbar-right li:has(a[href="login_signup.html"]) { order: 1; margin-bottom: 0;}
+        .navbar-right li:has(a#logout-link) { order: 1; margin-bottom: 0;}
 
         .navbar a {
-            display: block; /* Make links take full width */
-            margin: 0 !important; /* Override specific margins */
+            display: block;
+            margin: 0 !important;
             padding: 1rem 0;
-            font-size: 2rem; /* Larger font for mobile menu */
+            font-size: 2rem;
             text-align: center;
-            border-bottom: none; /* Remove border in mobile menu */
+            border-bottom: none;
         }
          .navbar a:hover,
          .navbar a.active {
              color: var(--main-color);
-             border-bottom: none; /* Ensure no border on hover/active */
+             border-bottom: none;
          }
 
         .navbar .profile-pic {
-            margin: 0 auto 1rem auto; /* Center pic and add margin below */
+            margin: 0 auto 1rem auto;
         }
 
         .container { padding: 2.5rem 1.5rem; }
         .gym-banner { margin-bottom: 3rem; }
         .profile-section h2 { font-size: 2.4rem; margin-bottom: 2rem; }
+        .profile-section h3 { font-size: 2rem; }
         .profile-card { padding: 2rem; gap: 2rem; margin-bottom: 2.5rem;}
         .profile-card img { width: 100px; height: 100px; }
         .profile-info h3 { font-size: 1.8rem; }
@@ -362,28 +356,27 @@
         .btn-membership { padding: 1.2rem 3rem; font-size: 1.6rem; min-width: 250px;}
     }
 
-    /* Mobile Phones */
     @media (max-width: 768px) {
-        html { font-size: 50%; } /* Further adjust base font size */
+        html { font-size: 50%; }
         header {
              padding: 1rem 4%;
-             height: calc(var(--header-height-mobile) - 10px); /* Slightly smaller header */
+             height: calc(var(--header-height-mobile) - 10px);
         }
          main {
-             padding-top: calc(var(--header-height-mobile) - 10px); /* Match header */
+             padding-top: calc(var(--header-height-mobile) - 10px);
         }
         .logo img { max-width: 150px; }
 
         .profile-card {
-            flex-direction: column; /* Stack image and text */
+            flex-direction: column;
             text-align: center;
-            align-items: center; /* Center items horizontally */
+            align-items: center;
         }
 
         .profile-card img {
-            width: 90px; /* Adjust size */
+            width: 90px;
             height: 90px;
-            margin-bottom: 1.5rem; /* Add space below image */
+            margin-bottom: 1.5rem;
         }
 
         .membership-options { gap: 1.5rem; }
@@ -398,28 +391,14 @@
         .container { padding: 2rem 1rem; }
         .gym-banner { margin-bottom: 2.5rem; }
         .profile-section h2 { font-size: 2rem; margin-bottom: 1.5rem; }
+        .profile-section h3 { font-size: 1.8rem; }
         .profile-card { padding: 1.5rem; gap: 1.5rem; margin-bottom: 2rem;}
         .profile-card img { width: 80px; height: 80px; }
         .profile-info h3 { font-size: 1.6rem; }
         .profile-info p { font-size: 1.4rem; }
-        .btn-membership { width: 100%; min-width: unset; padding: 1rem 2rem; font-size: 1.4rem;} /* Full width buttons */
+        .btn-membership { width: 100%; min-width: unset; padding: 1rem 2rem; font-size: 1.4rem;}
      }
-
   </style>
-</head>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Gym Membership</title>
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
-  <!-- Boxicons CSS -->
-  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-  <!-- Link to your external CSS (make sure CSS is in style.css) -->
-  <link rel="stylesheet" href="style.css">
-  <!-- Remove the <style> block from here if CSS is external -->
 </head>
 <body>
 
@@ -440,7 +419,7 @@
                  </a>
              </li>
              <li>
-                 <a href="login_signup.html">Logout</a>
+                 <a href="login_signup.html" id="logout-link">Logout</a>
              </li>
          </div>
     </ul>
@@ -483,44 +462,44 @@
     </div>
   </main>
 
-  <!-- jQuery CDN -->
   <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-
-  <!-- Custom jQuery Script -->
   <script>
     $(document).ready(function() {
-        // Cache jQuery selectors for performance
         var menuIcon = $('#menu-icon');
         var navbar = $('.navbar');
 
-        // Toggle menu on icon click
         menuIcon.on('click', function() {
-            // Toggle the 'bx-x' class on the icon (changes burger to X)
             $(this).toggleClass('bx-x');
-            // Toggle the 'active' class on the navbar (slides it in/out)
             navbar.toggleClass('active');
         });
 
-        // Optional: Close menu when a navigation link is clicked
-        $('.navbar a').on('click', function() {
-            // Only close if the menu is actually open (mobile view)
-            if (navbar.hasClass('active')) {
+        $('.navbar a').on('click', function(event) {
+            if (navbar.hasClass('active') && !$(this).is('#logout-link')) {
                 navbar.removeClass('active');
-                menuIcon.removeClass('bx-x'); // Reset icon to burger
+                menuIcon.removeClass('bx-x');
             }
-            // Allow default link behavior (navigation)
         });
 
-        // Optional: Close menu on scroll
         $(window).on('scroll', function() {
-            // Only close if the menu is actually open (mobile view)
             if (navbar.hasClass('active')) {
                 navbar.removeClass('active');
-                menuIcon.removeClass('bx-x'); // Reset icon to burger
+                menuIcon.removeClass('bx-x');
             }
         });
 
-    }); // End of document ready
+        $('#logout-link').on('click', function(event) {
+            event.preventDefault();
+            var confirmLogout = confirm("Are you sure you want to logout?");
+            if (confirmLogout) {
+                if (navbar.hasClass('active')) {
+                    navbar.removeClass('active');
+                    menuIcon.removeClass('bx-x');
+                }
+                window.location.href = this.href;
+            }
+        });
+
+    });
   </script>
 
 </body>
