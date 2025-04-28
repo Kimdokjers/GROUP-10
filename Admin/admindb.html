@@ -25,7 +25,7 @@
                     <li><a href="#" class="nav-link" data-target="staff-content"><i class="bi bi-headset"></i> <span class="nav-text">Staff/Coaches</span></a></li>
                     <li><a href="#" class="nav-link" data-target="gyms-content"><i class="bi bi-building"></i> <span class="nav-text">Fitness Gyms</span></a></li>
                     <li><a href="#" class="nav-link" data-target="payments-content"><i class="bi bi-credit-card-fill"></i> <span class="nav-text">Payments</span></a></li>
-                    <li><a href="../User/login_signup.html" id="logout-link"><i class="bi bi-box-arrow-left"></i> <span class="nav-text">Logout</span></a></li>
+                    <li><a href="../User/signin.html" id="logout-link"><i class="bi bi-box-arrow-left"></i> <span class="nav-text">Logout</span></a></li>
                 </ul>
             </nav>
         </aside>
@@ -35,7 +35,6 @@
                 <h1 id="page-title">Dashboard</h1>
                 <div class="admin-profile">
                     <span>Welcome, Admin!</span>
-
                 </div>
             </header>
 
@@ -61,7 +60,7 @@
                             <p>15</p>
                         </div>
                     </div>
-                   
+
                      <div class="recent-activity">
                         <h3>Recent Activity</h3>
                         <ul>
@@ -73,21 +72,34 @@
                     </div>
                 </section>
 
-               
+
                 <section id="analytics-content" class="content-section">
                     <h2>Analytics</h2>
-                     <p>Visual representation of key metrics.</p>
-                    <div class="chart-container">
-                        <h3>Membership Trends</h3>
-                        <img src="../images/graph.svg" alt="Chart showing membership trends">
-                    </div>
-                     <div class="chart-container">
-                        <h3>New User Registrations</h3>
-                         <img src="../images/graph.svg" alt=""> 
-                    </div>
-                     <div class="chart-container">
-                        <h3>New Gym</h3>
-                         <img src="../images/graph.svg" alt="Chart showing revenue growth">
+                    <p class="section-description">Visual representation of key metrics.</p>
+
+                    <div class="charts-grid">
+
+                        <div class="chart-container">
+                            <h3>Membership Trends</h3>
+                            <div class="chart-placeholder-container">
+                                <canvas id="trendsChart"></canvas>
+                            </div>
+                        </div>
+
+                        <div class="chart-container">
+                            <h3>New User Registrations</h3>
+                            <div class="chart-placeholder-container">
+                                <canvas id="newUserChart"></canvas>
+                            </div>
+                        </div>
+
+                        <div class="chart-container">
+                            <h3>New Gym Locations</h3>
+                            <div class="chart-placeholder-container">
+                                <canvas id="newGymChart"></canvas>
+                            </div>
+                        </div>
+
                     </div>
                 </section>
 
@@ -95,183 +107,180 @@
                 <section id="users-content" class="content-section">
                     <h2>Manage Users</h2>
                     <button class="btn btn-primary add-btn">Add New User</button>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Membership</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>USR001</td>
-                                <td>Alice Johnson</td>
-                                <td>alice@example.com</td>
-                                <td>Premium</td>
-                                <td>Active</td>
-                                <td>
-                                    
-                                    <button class="btn btn-sm btn-danger">Delete</button>
-                                </td>
-                            </tr>
-                             <tr>
-                                <td>USR002</td>
-                                <td>Bob Williams</td>
-                                <td>bob@example.com</td>
-                                <td>Basic</td>
-                                <td>Inactive</td>
-                                <td>
-                                  
-                                    <button class="btn btn-sm btn-danger">Delete</button>
-                                </td>
-                            </tr>
-
-                        </tbody>
-                    </table>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Membership</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>USR001</td>
+                                    <td>Alice Johnson</td>
+                                    <td>alice@example.com</td>
+                                    <td>Premium</td>
+                                    <td>Active</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-danger">Delete</button>
+                                    </td>
+                                </tr>
+                                 <tr>
+                                    <td>USR002</td>
+                                    <td>Bob Williams</td>
+                                    <td>bob@example.com</td>
+                                    <td>Basic</td>
+                                    <td>Inactive</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-danger">Delete</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </section>
 
                 <section id="staff-content" class="content-section">
                     <h2>Manage Staff / Coaches</h2>
                     <button class="btn btn-primary add-btn">Add New Staff</button>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Name</th>
-                                <th>Role</th>
-                                <th>Email</th>
-                                <th>Gym Branch</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>STF001</td>
-                                <td>Charlie Brown</td>
-                                <td>Head Coach</td>
-                                <td>charlie@gym.com</td>
-                                <td>Downtown</td>
-                                <td>
-                                  
-                                    <button class="btn btn-sm btn-danger">Delete</button>
-                                </td>
-                            </tr>
-                             <tr>
-                                <td>STF002</td>
-                                <td>Diana Prince</td>
-                                <td>Receptionist</td>
-                                <td>diana@gym.com</td>
-                                <td>Uptown</td>
-                                 <td>
-                                    
-                                    <button class="btn btn-sm btn-danger">Delete</button>
-                                </td>
-                            </tr>
-
-                        </tbody>
-                    </table>
+                     <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Role</th>
+                                    <th>Email</th>
+                                    <th>Gym Branch</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>STF001</td>
+                                    <td>Charlie Brown</td>
+                                    <td>Head Coach</td>
+                                    <td>charlie@gym.com</td>
+                                    <td>Downtown</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-danger">Delete</button>
+                                    </td>
+                                </tr>
+                                 <tr>
+                                    <td>STF002</td>
+                                    <td>Diana Prince</td>
+                                    <td>Receptionist</td>
+                                    <td>diana@gym.com</td>
+                                    <td>Uptown</td>
+                                     <td>
+                                        <button class="btn btn-sm btn-danger">Delete</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </section>
 
 
                 <section id="gyms-content" class="content-section">
                     <h2>Manage Fitness Gyms</h2>
                      <button class="btn btn-primary add-btn">Add New Gym</button>
-                     <table>
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Name</th>
-                                <th>Location</th>
-                                <th>Manager</th>
-                                <th>Capacity</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>GYM01</td>
-                                <td>Downtown Fitness Hub</td>
-                                <td>123 Main St</td>
-                                <td>Clark Kent</td>
-                                <td>150</td>
-                                <td>
-                                   
-                                    <button class="btn btn-sm btn-danger">Delete</button>
-                                </td>
-                            </tr>
-                             <tr>
-                                <td>GYM02</td>
-                                <td>Uptown Gym Center</td>
-                                <td>456 Market Ave</td>
-                                <td>Lois Lane</td>
-                                <td>100</td>
-                                 <td>
-                               
-                                    <button class="btn btn-sm btn-danger">Delete</button>
-                                </td>
-                            </tr>
-
-                        </tbody>
-                    </table>
+                      <div class="table-container">
+                         <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Location</th>
+                                    <th>Manager</th>
+                                    <th>Capacity</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>GYM01</td>
+                                    <td>Downtown Fitness Hub</td>
+                                    <td>123 Main St</td>
+                                    <td>Clark Kent</td>
+                                    <td>150</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-danger">Delete</button>
+                                    </td>
+                                </tr>
+                                 <tr>
+                                    <td>GYM02</td>
+                                    <td>Uptown Gym Center</td>
+                                    <td>456 Market Ave</td>
+                                    <td>Lois Lane</td>
+                                    <td>100</td>
+                                     <td>
+                                        <button class="btn btn-sm btn-danger">Delete</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </section>
 
 
                 <section id="payments-content" class="content-section">
                     <h2>Payment History</h2>
-
-                     <table>
-                        <thead>
-                            <tr>
-                                <th>Payment ID</th>
-                                <th>User ID</th>
-                                <th>User Name</th>
-                                <th>Amount</th>
-                                <th>Date</th>
-                                <th>Status</th>
-                                <th>Method</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>PAY001</td>
-                                <td>USR001</td>
-                                <td>Alice Johnson</td>
-                                <td>$50.00</td>
-                                <td>2023-10-26</td>
-                                <td>Completed</td>
-                                <td>Credit Card</td>
-                                <td>
-                                    
-                                    <button class="btn btn-sm btn-info">Refund</button>
-                                </td>
-                            </tr>
-                             <tr>
-                                <td>PAY002</td>
-                                <td>USR003</td>
-                                <td>Eva Green</td>
-                                <td>$50.00</td>
-                                <td>2023-10-25</td>
-                                <td>Pending</td>
-                                <td>Bank Transfer</td>
-                                 <td>
-                                    
-                                     <button class="btn btn-sm btn-success">Mark as Paid</button>
-                                </td>
-                            </tr>
-
-                        </tbody>
-                    </table>
+                     <div class="table-container">
+                         <table>
+                            <thead>
+                                <tr>
+                                    <th>Payment ID</th>
+                                    <th>User ID</th>
+                                    <th>User Name</th>
+                                    <th>Amount</th>
+                                    <th>Date</th>
+                                    <th>Status</th>
+                                    <th>Method</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>PAY001</td>
+                                    <td>USR001</td>
+                                    <td>Alice Johnson</td>
+                                    <td>$50.00</td>
+                                    <td>2023-10-26</td>
+                                    <td>Completed</td>
+                                    <td>Credit Card</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-info">Refund</button>
+                                    </td>
+                                </tr>
+                                 <tr>
+                                    <td>PAY002</td>
+                                    <td>USR003</td>
+                                    <td>Eva Green</td>
+                                    <td>$50.00</td>
+                                    <td>2023-10-25</td>
+                                    <td>Pending</td>
+                                    <td>Bank Transfer</td>
+                                     <td>
+                                         <button class="btn btn-sm btn-success">Mark as Paid</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </section>
+
             </div>
+            <!-- Removed the entire main-footer-wrapper div -->
         </main>
     </div>
 
-
+    <!-- Modals remain unchanged -->
     <div id="add-gym-modal" class="modal">
         <div class="modal-content">
             <span class="close-btn">×</span>
@@ -302,12 +311,10 @@
         </div>
     </div>
 
-    <!-- Modal for Adding User -->
     <div id="add-user-modal" class="modal">
         <div class="modal-content">
             <span class="close-btn">×</span>
             <h2>Add New User</h2>
-            <!-- ***** ADD ID HERE ***** -->
             <form id="add-user-form">
                 <div class="form-group">
                     <label for="member-id">Member ID:</label>
@@ -333,7 +340,7 @@
             </form>
         </div>
     </div>
-    <!-- Add Coach/STAFF -->
+
     <div id="add-coach-modal" class="modal">
         <div class="modal-content">
             <span class="close-btn">×</span>
@@ -357,264 +364,18 @@
                 </div>
                 <div class="form-group">
                     <label for="coach-branch">Gym Branch</label>
-                    <input type="text" id="coach-branch" name="coach-branch" required min="1" placeholder="e.g., KG">
+                    <input type="text" id="coach-branch" name="coach-branch" required placeholder="e.g., KG">
                 </div>
                 <button type="submit" class="btn btn-primary modal-add-btn">Add New Coach</button>
             </form>
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-moment@1.0.1/dist/chartjs-adapter-moment.min.js"></script>
     <script src="../assets/jquery-3.7.1.min.js"></script>
-
-  
-<script>
-    $(document).ready(function() {
-
-        // --- Logout Confirmation ---
-        const logoutButton = document.getElementById('logout-link');
-        if (logoutButton) {
-            logoutButton.addEventListener('click', function(e) {
-                e.preventDefault();
-                const userIsSure = window.confirm("Are you sure you want to log out?");
-                if (userIsSure) {
-                    console.log("User confirmed logout. Redirecting...");
-                    window.location.href = this.href;
-                } else {
-                    console.log("User cancelled logout.");
-                }
-            });
-        } else {
-            console.warn("Logout button with ID 'logout-link' not found.");
-        }
-
-        // --- Navigation Logic ---
-        $('.sidebar-nav .nav-link').on('click', function(e) {
-            e.preventDefault();
-            var targetId = $(this).data('target');
-            if (targetId) {
-                $('.sidebar-nav .nav-link').removeClass('active');
-                $(this).addClass('active');
-                $('.content-section').removeClass('active');
-                $('#' + targetId).addClass('active');
-                var titleText = $(this).clone().find('i').remove().end().text().trim();
-                $('#page-title').text(titleText);
-            }
-           
-        });
-
-        // --- Add Gym Modal Logic ---
-        var addGymModal = $('#add-gym-modal');
-        var addGymBtnDashboard = $('#quick-add-gym-btn');
-        var addGymBtnInSection = $('#gyms-content button.add-btn');
-        var addGymForm = $('#add-gym-form');
-        var gymTableBody = $('#gyms-content table tbody');
-
-        function showAddGymModal() {
-            addGymModal.show();
-        }
-
-        function hideAndResetGymModal() {
-             addGymModal.hide();
-             addGymForm[0].reset();
-        }
-
-        addGymBtnDashboard.on('click', showAddGymModal);
-        addGymBtnInSection.on('click', showAddGymModal);
-        addGymModal.find('.close-btn').on('click', hideAndResetGymModal); 
-
-        addGymForm.on('submit', function(e) {
-            e.preventDefault();
-            var gymId = $('#gym-id').val().trim();
-            var gymName = $('#gym-name').val().trim();
-            var gymLocation = $('#gym-location').val().trim();
-            var gymManager = $('#gym-manager').val().trim();
-            var gymCapacity = $('#gym-capacity').val().trim();
-
-            if (!gymId || !gymName || !gymLocation || !gymManager || !gymCapacity) {
-                alert('Please fill out all gym fields.');
-                return;
-            }
-
-            var newRowHtml = `
-                <tr>
-                    <td>${gymId}</td>
-                    <td>${gymName}</td>
-                    <td>${gymLocation}</td>
-                    <td>${gymManager}</td>
-                    <td>${gymCapacity}</td>
-                    <td>
-                        <button class="btn btn-sm btn-danger">Delete</button>
-                    </td>
-                </tr>
-            `;
-            gymTableBody.append(newRowHtml);
-            alert(`Gym "${gymName}" added successfully!`);
-            hideAndResetGymModal();
-        });
-
-        // --- Add User Modal Logic ---
-        var addUserModal = $('#add-user-modal');
-     
-        var addUserBtnInSection = $('#users-content button.add-btn');
-        var addUserBtnDashboard = $('#quick-add-user-btn');
-        var addUserForm = $('#add-user-form'); 
-        var userTableBody = $('#users-content table tbody'); 
-
-        function showAddUserModal() {
-            addUserModal.show();
-        }
-
-        function hideAndResetUserModal() {
-            addUserModal.hide();
-            addUserForm[0].reset(); 
-        }
-
-        
-        addUserBtnInSection.on('click', showAddUserModal);
-       ;
-        addUserModal.find('.close-btn').on('click', hideAndResetUserModal); 
-
-        addUserForm.on('submit', function(e) {
-            e.preventDefault();
-            var userId = $('#member-id').val().trim();
-            var userName = $('#member-name').val().trim();
-            var userEmail = $('#email').val().trim();
-            var membership = $('#membership').val().trim();
-            var status = $('#status').val().trim();
-
-            if (!userId || !userName || !userEmail || !membership || !status) {
-                alert('Please fill out all member fields.');
-                return;
-            }
-
-             var newRowHtml = `
-                <tr>
-                    <td>${userId}</td>
-                    <td>${userName}</td>
-                    <td>${userEmail}</td>
-                    <td>${membership}</td>
-                    <td>${status}</td>
-                    <td>
-                        <button class="btn btn-sm btn-danger">Delete</button>
-                    </td>
-                </tr>
-            `;
-            userTableBody.append(newRowHtml); 
-            alert(`User "${userName}" added successfully!`);
-            hideAndResetUserModal();
-        });
-
-     
-        $(window).on('click', function(event) {
-            if ($(event.target).is(addGymModal)) {
-                hideAndResetGymModal();
-            }
-            if ($(event.target).is(addUserModal)) {
-                hideAndResetUserModal();
-            }
-        });
-
-       
-    
-
-     
-         $('.content-area').on('click', '.btn-info', function() {
-             alert('Refund Action (Simulation)');
-         });
-         $('.content-area').on('click', '.btn-success', function() {
-             alert('Mark as Paid Action (Simulation)');
-              $(this).closest('tr').find('td:nth-child(6)').text('Completed');
-               $(this).remove(); 
-         });
-
-                // --- Add Coach Modal Logic ---
-                var addCoachModal = $('#add-coach-modal'); 
-        var addCoachBtnInSection = $('#staff-content button.add-btn'); 
-        var addCoachForm = $('#add-coach-form');
-        var coachTableBody = $('#staff-content table tbody'); 
-
-        function showAddCoachModal() {
-            addCoachModal.show();
-        }
-
-        function hideAndResetCoachModal() { 
-            addCoachModal.hide();
-            addCoachForm[0].reset();
-        }
-
-        addCoachBtnInSection.on('click', showAddCoachModal);
-
-       
-        addCoachModal.find('.close-btn').on('click', hideAndResetCoachModal);
-
-        addCoachForm.on('submit', function(e) {
-            e.preventDefault();
-            var coachId = $('#coach-id').val().trim();
-            var coachName = $('#coach-name').val().trim();
-            var coachRole = $('#coach-role').val().trim();
-            var coachEmail = $('#coach-email').val().trim();
-            var coachBranch = $('#coach-branch').val().trim();
-
-            if (!coachId || !coachName || !coachRole || !coachEmail || !coachBranch) {
-                alert('Please fill out all coach/staff fields.');
-                return;
-            }
-
-            var newRowHtml = `
-                <tr>
-                    <td>${coachId}</td>
-                    <td>${coachName}</td>
-                    <td>${coachRole}</td>
-                    <td>${coachEmail}</td>
-                    <td>${coachBranch}</td>
-                    <td>
-                        <button class="btn btn-sm btn-danger">Delete</button>
-                    </td>
-                </tr>
-            `;
-           
-            coachTableBody.append(newRowHtml);
-            alert(`Coach/Staff "${coachName}" added successfully!`);
-            hideAndResetCoachModal();
-        });
-      
-
-     
-        $(window).on('click', function(event) {
-            if ($(event.target).is(addGymModal)) {
-                hideAndResetGymModal();
-            }
-            if ($(event.target).is(addUserModal)) {
-                hideAndResetUserModal();
-            }
-          
-            if ($(event.target).is(addCoachModal)) {
-                 hideAndResetCoachModal();
-            }
-        });
-        
-    
-     $('.content-area').on('click', '.btn-danger', function() {
-         if (confirm('Are you sure you want to delete this item?')) {
-             $(this).closest('tr').remove(); 
-             alert('Item deleted (Simulation)!');
-           
-         }
-     });
-
-  
-      $('.content-area').on('click', '.btn-info', function() {
-          alert('Refund Action (Simulation)');
-      });
-      $('.content-area').on('click', '.btn-success', function() {
-          alert('Mark as Paid Action (Simulation)');
-           $(this).closest('tr').find('td:nth-child(6)').text('Completed');
-            $(this).remove(); 
-      });
-
-
-    });
-</script>
+    <script src="adminjs/admin.js"></script>
 
 </body>
 </html>
