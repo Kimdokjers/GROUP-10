@@ -3,9 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Gym Membership</title>
+  <title>Gym Membership - OptiLife</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
   <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <style>
     * {
       margin: 0;
@@ -28,8 +29,9 @@
         --color-gold-light: #f0c44c;
         --color-text: #ffffff;
         --color-text-muted: #aaaaaa;
-        --header-height-desktop: 120px;
-        --header-height-mobile: 90px;
+        --border-color-light: #333;
+        --header-height-desktop: 100px;
+        --header-height-mobile: 80px;
         --font-primary: 'Poppins', sans-serif;
     }
 
@@ -44,6 +46,9 @@
       color: var(--text-color);
       font-family: var(--font-primary);
       line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
     }
 
     img {
@@ -63,10 +68,11 @@
         justify-content: space-between;
         align-items: center;
         padding: 1rem 9%;
-        background: rgba(0, 0, 0, 0.5);
+        background: rgba(0, 0, 0, 0.7);
         backdrop-filter: blur(10px);
         transition: background 0.5s ease, backdrop-filter 0.5s ease, height 0.3s ease;
         box-sizing: border-box;
+        border-bottom: 1px solid var(--border-color-light);
     }
 
     .logo {
@@ -149,6 +155,7 @@
         border-radius: 50%;
         object-fit: cover;
         display: block;
+        /* Removed border: 2px solid var(--main-color); */
     }
 
     #menu-icon {
@@ -162,6 +169,7 @@
 
     main {
       padding-top: var(--header-height-desktop);
+      flex-grow: 1;
     }
 
     .container {
@@ -175,6 +183,8 @@
       width: 100%;
       border-radius: 10px;
       margin-bottom: 4rem;
+      object-fit: cover;
+      max-height: 400px;
     }
 
     .profile-section {
@@ -205,6 +215,7 @@
       padding: 2.5rem;
       border-radius: 10px;
       border-left: 5px solid var(--main-color);
+      box-shadow: 0 4px 15px rgba(255, 215, 0, 0.1);
     }
 
     .profile-card img {
@@ -241,7 +252,7 @@
       align-items: center;
     }
 
-    .btn-membership {
+    .btn-membership, .btn-primary {
       display: inline-block;
       background-color: var(--main-color);
       color: var(--color-black);
@@ -256,7 +267,7 @@
       min-width: 300px;
     }
 
-    .btn-membership:hover {
+    .btn-membership:hover, .btn-primary:hover {
       background-color: transparent;
       color: var(--main-color);
       transform: translateY(-3px);
@@ -271,6 +282,107 @@
         background-color: var(--main-color);
         color: var(--color-black);
          box-shadow: 0 5px 15px rgba(255, 215, 0, 0.2);
+    }
+
+    .subscribe-section {
+        background-color: var(--snd-bf-color);
+        padding: 4rem 0;
+        border-top: 1px solid var(--border-color-light);
+    }
+    .subscribe-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 2rem;
+        display: grid;
+        grid-template-columns: 1fr 1.5fr;
+        gap: 3rem;
+        align-items: start;
+    }
+    .subscribe-text h2 {
+        font-size: 2.4rem;
+        color: var(--main-color);
+        margin-bottom: 1rem;
+    }
+    .subscribe-text p {
+        font-size: 1.5rem;
+        color: var(--color-text-muted);
+        margin-bottom: 2rem;
+        line-height: 1.7;
+    }
+    .subscribe-form {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 2rem;
+    }
+    .subscribe-form input[type="email"] {
+        flex-grow: 1;
+        padding: 1.2rem 1.5rem;
+        font-size: 1.5rem;
+        border-radius: 6px;
+        border: 1px solid var(--border-color-light);
+        background-color: var(--color-dark-gray);
+        color: var(--text-color);
+    }
+    .subscribe-form input[type="email"]::placeholder {
+        color: var(--color-text-muted);
+    }
+    .subscribe-form button {
+        padding: 1.2rem 2.5rem;
+        font-size: 1.5rem;
+        min-width: auto;
+    }
+    .social-icons {
+        display: flex;
+        gap: 1.5rem;
+    }
+    .social-icons a {
+        color: var(--color-text-muted);
+        font-size: 2.2rem;
+        transition: color 0.3s ease, transform 0.3s ease;
+    }
+    .social-icons a:hover {
+        color: var(--main-color);
+        transform: translateY(-3px);
+    }
+    .footer-links {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 2rem;
+    }
+    .footer-links h4 {
+        font-size: 1.6rem;
+        color: var(--main-color);
+        margin-bottom: 1rem;
+        font-weight: 600;
+    }
+    .footer-links ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    .footer-links li {
+        margin-bottom: 0.8rem;
+    }
+    .footer-links a {
+        font-size: 1.4rem;
+        color: var(--color-text-muted);
+        transition: color 0.3s ease;
+    }
+    .footer-links a:hover {
+        color: var(--text-color);
+        text-decoration: underline;
+    }
+
+    footer {
+        background-color: var(--bg-color);
+        color: var(--color-text-muted);
+        text-align: center;
+        padding: 2rem 0;
+        font-size: 1.3rem;
+        border-top: 1px solid var(--border-color-light);
+    }
+    footer .container {
+        padding: 0 2rem;
     }
 
     @media (max-width: 991px) {
@@ -353,7 +465,10 @@
         .profile-card img { width: 100px; height: 100px; }
         .profile-info h3 { font-size: 1.8rem; }
         .profile-info p { font-size: 1.5rem; }
-        .btn-membership { padding: 1.2rem 3rem; font-size: 1.6rem; min-width: 250px;}
+        .btn-membership, .btn-primary { padding: 1.2rem 3rem; font-size: 1.6rem; min-width: 250px;}
+
+        .subscribe-content { grid-template-columns: 1fr; gap: 2rem; }
+        .footer-links { grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); }
     }
 
     @media (max-width: 768px) {
@@ -380,8 +495,10 @@
         }
 
         .membership-options { gap: 1.5rem; }
-        .btn-membership { min-width: 220px; padding: 1.2rem 2.5rem; font-size: 1.5rem;}
+        .btn-membership, .btn-primary { min-width: 220px; padding: 1.2rem 2.5rem; font-size: 1.5rem;}
 
+        .subscribe-form { flex-direction: column; }
+        .subscribe-form button { width: 100%; }
     }
 
      @media (max-width: 480px) {
@@ -396,20 +513,22 @@
         .profile-card img { width: 80px; height: 80px; }
         .profile-info h3 { font-size: 1.6rem; }
         .profile-info p { font-size: 1.4rem; }
-        .btn-membership { width: 100%; min-width: unset; padding: 1rem 2rem; font-size: 1.4rem;}
+        .btn-membership, .btn-primary { width: 100%; min-width: unset; padding: 1rem 2rem; font-size: 1.4rem;}
+
+        .footer-links { grid-template-columns: repeat(2, 1fr); }
      }
   </style>
 </head>
 <body>
 
   <header>
-    <a href="/User/home.html" class="logo"><img src="../images/logo.png" alt="Gym Logo"></a>
+    <a href="home.html" class="logo"><img src="../images/logo.png" alt="OptiLife Logo"></a>
     <i class='bx bx-menu' id="menu-icon"></i>
     <ul class="navbar">
          <div class="navbar-left">
-             <li><a href="/User/home.html">Home</a></li>
-             <li><a href="/User/setGoals.html">Set Goals</a></li>
-             <li><a href="/User/progress.html">Track Progress</a></li>
+             <li><a href="home.html">Home</a></li>
+             <li><a href="setGoals.html">Set Goals</a></li>
+             <li><a href="progress.html">Track Progress</a></li>
              <li><a href="membership.html" class="active">Membership</a></li>
          </div>
          <div class="navbar-right">
@@ -462,6 +581,32 @@
     </div>
   </main>
 
+    <section id="subscribe" class="subscribe-section">
+        <div class="container subscribe-content">
+             <div class="subscribe-text">
+                <h2>Subscribe</h2>
+                <p>Join our fitness family and get tips, exclusive updates, and special offers. Start your journey today!</p>
+                <form class="subscribe-form">
+                    <input type="email" placeholder="Email" required>
+                    <button type="submit" class="btn-primary">Send</button>
+                </form>
+                <div class="social-icons">
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+                    <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            <div class="footer-links">
+                 <div><h4>Company</h4><ul><li><a href="#">Press</a></li><li><a href="#">Blog</a></li><li><a href="#">About</a></li><li><a href="#">Careers</a></li></ul></div> <div><h4>Services</h4><ul><li><a href="#">Training</a></li><li><a href="#">Nutrition</a></li><li><a href="#">Lifestyles</a></li></ul></div> <div><h4>Legal</h4><ul><li><a href="#">Policy</a></li><li><a href="#">Privacy & Cookies</a></li><li><a href="#">Terms & Conditions</a></li></ul></div> <div><h4>Community</h4><ul><li><a href="#">Contact</a></li><li><a href="#">Find a club</a></li><li><a href="#">Membership</a></li></ul></div> <div><h4>Gym</h4><ul><li><a href="#">Book a Gym</a></li><li><a href="#">Find a Gym</a></li></ul></div>
+            </div>
+        </div>
+    </section>
+    <footer>
+        <div class="container">
+            <p>© 2024 OPTILIFE. All Rights Reserved.</p>
+        </div>
+    </footer>
+
   <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
   <script>
     $(document).ready(function() {
@@ -496,6 +641,24 @@
                     menuIcon.removeClass('bx-x');
                 }
                 window.location.href = this.href;
+            }
+        });
+
+        $('header .navbar-right a[href="#profile"]').on('click', function(event) {
+            event.preventDefault();
+            var target = $($(this).attr('href'));
+            if (target.length) {
+                 var headerHeight = $('header').outerHeight() || ( $(window).width() <= 991 ? parseInt(getComputedStyle(document.documentElement).getPropertyValue('--header-height-mobile')) : parseInt(getComputedStyle(document.documentElement).getPropertyValue('--header-height-desktop')) );
+                 var scrollToPosition = target.offset().top - headerHeight - 20;
+
+                 $('html, body').animate({
+                      scrollTop: scrollToPosition
+                 }, 800);
+             }
+
+            if (navbar.hasClass('active')) {
+                navbar.removeClass('active');
+                menuIcon.removeClass('bx-x');
             }
         });
 

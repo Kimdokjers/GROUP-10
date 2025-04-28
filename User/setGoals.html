@@ -4,24 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Set Goals - OptiLife</title>
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <!-- Boxicons CSS -->
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <!-- Link to the CSS file with the BLACK/GOLD theme and correct header styles -->
     <link rel="stylesheet" href="usercss/home.css">
-    <!-- IMPORTANT: Ensure usercss/setGoals.css is removed or doesn't conflict -->
 
-    <!-- Add specific styles for setGoals page content -->
     <style>
-        /* Styles specific to the layout and elements BELOW the header */
         :root {
             --card-bg-setgoals: #ffffff;
             --text-dark-setgoals: #333;
             --border-color-light-setgoals: #e0e0e0;
-            --primary-color-darkest-setgoals: #B8860B; /* Gold for highlights */
+            --primary-color-darkest-setgoals: #B8860B;
             --grid-gap: 1.5rem;
             --content-padding: 1.5rem;
             --button-primary-bg: #FFD700;
@@ -31,10 +24,15 @@
             --button-secondary-text: #333;
             --button-secondary-hover-bg: #bdbdbd;
             --modal-overlay-bg: rgba(0, 0, 0, 0.7);
+             --header-height-desktop: 100px;
+             --header-height-mobile: 80px;
+             --main-color: #FFD700;
+             --color-black: #0a0a0a;
+             --color-gold: #DAA520;
         }
 
         main.content-grid {
-            padding-top: calc(var(--header-height-desktop, 120px) + 2rem);
+            padding-top: calc(var(--header-height-desktop, 100px) + 2rem);
             display: grid;
             grid-template-columns: 300px 1fr;
             gap: var(--grid-gap);
@@ -74,10 +72,17 @@
         .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; text-align: center; margin-bottom: 1.5rem; }
         .day-name { font-weight: 600; font-size: 0.8rem; color: #666; text-transform: uppercase; }
         .date-cell { display: flex; justify-content: center; align-items: center; aspect-ratio: 1 / 1; }
-        .date-cell button { width: 100%; height: 100%; border-radius: 50%; border: 2px solid transparent; background-color: transparent; color: var(--text-dark-setgoals); cursor: pointer; font-size: 0.9rem; transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease; display: flex; align-items: center; justify-content: center; padding: 0; }
-        .date-cell button:hover:not(.selected) { background-color: #eee; border-color: var(--border-color-light-setgoals); }
+        .date-cell button {
+            width: 100%; height: 100%; border-radius: 50%; border: 2px solid transparent;
+            background-color: transparent; color: var(--text-dark-setgoals); cursor: pointer;
+            font-size: 0.9rem; transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+            display: flex; align-items: center; justify-content: center; padding: 0;
+        }
+        .date-cell button:hover:not(.selected):not(:disabled) { background-color: #eee; border-color: var(--border-color-light-setgoals); }
         .date-cell button.selected { background-color: var(--main-color); color: var(--color-black); font-weight: bold; border-color: var(--color-gold); }
         .date-cell.empty { visibility: hidden; }
+        .date-cell button:disabled { color: #aaa; cursor: default; background-color: transparent; }
+
 
         .calendar-widget .input-block { margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-color-light-setgoals); }
         .calendar-widget .input-block:last-child { border-bottom: none; padding-bottom: 0; margin-bottom: 0; }
@@ -85,7 +90,6 @@
         .calendar-widget .info-input { background-color: #f9f9f9; border: 1px solid var(--border-color-light-setgoals); color: var(--text-dark-setgoals); font-size: 0.95rem; padding: 8px 10px; width: 100%; border-radius: 4px; }
         .calendar-widget .info-input:focus { outline: none; border-color: var(--color-gold); box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.2); }
 
-        /* --- Main Tab Content --- */
         .main-tab-content {
             border: 2px solid var(--primary-color-darkest-setgoals);
             border-radius: 8px;
@@ -93,21 +97,18 @@
             color: var(--text-dark-setgoals);
             min-width: 0;
         }
-        /* === CSS REQUIRED FOR TAB FUNCTIONALITY === */
         .tab-content {
-             display: none; /* Hide sections by default */
+             display: none;
         }
         .tab-content.active {
-             display: block; /* Show only the active one */
-             animation: fadeIn 0.5s ease-in-out; /* Optional fade */
+             display: block;
+             animation: fadeIn 0.5s ease-in-out;
         }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        /* ========================================= */
 
         .content-placeholder { padding: 1.5rem; background-color: transparent; border-radius: 0; border: none; min-height: 300px; box-shadow: none; }
         .content-placeholder h1 { font-size: 1.6rem; margin-bottom: 1.5rem; font-weight: 600; color: var(--text-dark-setgoals); text-align: left; padding-bottom: 0.8rem; border-bottom: 2px solid var(--main-color); display: inline-block; }
 
-        /* --- Internal Page Tab Styles --- */
         .main-content-tabs {
             display: flex;
             justify-content: center;
@@ -117,14 +118,13 @@
             border-bottom: 2px solid var(--border-color-light-setgoals);
             gap: 1rem;
         }
-        /* Style the <button> elements */
         button.main-tab-button {
             display: inline-flex; align-items: center; gap: 0.7rem;
             padding: 0.8rem 1.5rem; font-size: 1.5rem; font-weight: 500;
             color: var(--text-dark-setgoals); background-color: #f0f0f0;
             border: 1px solid var(--border-color-light-setgoals); border-radius: 6px;
             cursor: pointer; transition: all 0.3s ease;
-            font-family: inherit; /* Ensure button uses correct font */
+            font-family: inherit;
         }
         button.main-tab-button i { font-size: 1.8rem; line-height: 1; }
         button.main-tab-button:hover { background-color: #e0e0e0; border-color: #ccc; }
@@ -133,10 +133,8 @@
             font-weight: 600; border-color: var(--color-gold);
             box-shadow: 0 2px 5px rgba(218, 165, 32, 0.2);
         }
-        /* --- End Internal Page Tab Styles --- */
 
 
-        /* --- Workout Log (#tabs-1) --- */
         #tabs-1 .content-placeholder h1::before { content: "Fitness Goals: "; font-weight: normal; color: #555; }
         .activity-planner.card { border: 1px solid var(--border-color-light-setgoals); background-color: #fdfdfd; padding: 1.5rem; border-radius: 5px; margin-top: 1rem; }
         .activity-planner h2, .activity-planner h3 { color: var(--primary-color-darkest-setgoals); margin-bottom: 1rem; }
@@ -145,21 +143,25 @@
         .input-group label { display: block; margin-bottom: 5px; color: #555; font-weight: 500; font-size: 0.9rem; }
         .input-group input[type="text"], .input-group select { width: 100%; padding: 10px; border: 1px solid var(--border-color-light-setgoals); background-color: #fff; color: var(--text-dark-setgoals); border-radius: 4px; font-size: 0.95rem; }
         .input-group input[type="text"]:focus, .input-group select:focus { outline: none; border-color: var(--color-gold); box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.2); }
-        #add-activity-btn { grid-column: 1 / -1; width: auto; justify-self: start; padding: 10px 25px; margin-top: 10px; background-color: var(--main-color); color: var(--color-black); font-weight: 600; border: none; border-radius: 4px; cursor: pointer; }
+        #add-activity-btn { grid-column: 1 / -1; width: auto; justify-self: start; padding: 10px 25px; margin-top: 10px; background-color: var(--main-color); color: var(--color-black); font-weight: 600; border: none; border-radius: 4px; cursor: pointer; transition: background-color 0.3s ease;}
         #add-activity-btn:hover { background-color: var(--color-gold); }
         #weekly-plan-display { margin-top: 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; }
         .day-schedule { background-color: #f9f9f9; padding: 1rem; border-radius: 5px; border: 1px solid var(--border-color-light-setgoals); }
         .day-schedule h4 { color: var(--text-dark-setgoals); border-bottom: 1px solid var(--main-color); padding-bottom: 5px; margin-bottom: 10px; font-weight: 600; }
-        .day-schedule ul { min-height: 30px; padding-left: 0; list-style: none; }
-        .day-schedule li { background-color: #fff; padding: 10px 15px; margin-bottom: 8px; border-radius: 4px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #eee; font-size: 0.9rem; word-break: break-word; }
+        .day-schedule ul { min-height: 30px; padding-left: 0; list-style: none; margin: 0; }
+        .day-schedule li { background-color: #fff; padding: 10px 15px; margin-bottom: 8px; border-radius: 4px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #eee; font-size: 0.9rem; word-break: break-word; position: relative; }
+        .day-schedule li .remove-activity-btn {
+            background: none; border: none; color: #f44336;
+            font-size: 1.1rem; line-height: 1; cursor: pointer;
+            padding: 2px 5px; margin-left: 10px; transition: color 0.2s ease;
+        }
+        .day-schedule li .remove-activity-btn:hover { color: #d32f2f; }
 
-         /* --- Nutrition Tabs (#tabs-3) --- */
         #tabs-3 .content-placeholder h1::before { content: "Nutrition Goals: "; font-weight: normal; color: #555;}
         .tabs { display: flex; justify-content: center; flex-wrap: wrap; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-color-light-setgoals); padding-bottom: 0.5rem; gap: 10px; }
         .tabs .tab-button { color: var(--primary-color-darkest-setgoals); font-size: 0.95rem; padding: 0.6rem 1rem; border-radius: 4px; transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease; white-space: nowrap; border: 2px solid transparent; background-color: transparent; cursor: pointer; font-weight: 500; }
         .tab-button:hover { color: var(--text-dark-setgoals); background-color: #eee; }
         .tab-button.active { background-color: var(--main-color); color: var(--color-black); font-weight: 600; border-color: var(--color-gold); }
-        /* Nutrition sub-tabs */
         .nutrition-tab-content { display: none; padding-top: 1rem; animation: fadeIn 0.5s ease-in-out; }
         .nutrition-tab-content.active { display: block; }
         .nutrition-tab-content h2 { font-size: 1.3rem; margin-bottom: 1.5rem; font-weight: 600; color: #555; text-align: center; }
@@ -169,7 +171,7 @@
         .meal-info { font-size: 0.9rem; flex-grow: 1; }
         .meal-info div:first-child { font-weight: 500; color: var(--text-dark-setgoals); }
         .meal-info div:last-child { color: #666; font-size: 0.85em; }
-        .add-food-btn { background-color: #eee; color: #555; margin-left: auto; border: 1px solid #ccc; padding: 5px 8px; font-size: 0.9rem; line-height: 1; border-radius: 50%; width: 28px; height: 28px; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; cursor: pointer;}
+        .add-food-btn { background-color: #eee; color: #555; margin-left: auto; border: 1px solid #ccc; padding: 5px 8px; font-size: 0.9rem; line-height: 1; border-radius: 50%; width: 28px; height: 28px; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; cursor: pointer; transition: background-color 0.2s ease, border-color 0.2s ease;}
         .add-food-btn:hover { background-color: #ddd; color: var(--text-dark-setgoals); border-color: #bbb; }
         .calorie-summary { display: flex; flex-direction: column; gap: 10px; color: #666; font-size: 1em; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border-color-light-setgoals); }
         .summary-item { display: flex; justify-content: space-between; align-items: center; }
@@ -180,7 +182,7 @@
         .editable { cursor: pointer; border-bottom: 1px dashed var(--primary-color-darkest-setgoals); padding-bottom: 1px; transition: background-color 0.2s ease; display: inline-block; }
         .editable:hover { background-color: rgba(255, 215, 0, 0.15); }
         .nutrient-header { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 10px; padding: 0 10px 10px 10px; font-size: 0.85em; font-weight: 600; text-align: right; border-bottom: 1px solid var(--border-color-light-setgoals); margin-bottom: 10px; text-transform: uppercase; }
-        .nutrient-list { list-style: none; max-height: 400px; overflow-y: auto; padding-right: 5px; }
+        .nutrient-list { list-style: none; max-height: 400px; overflow-y: auto; padding-right: 5px; margin: 0; }
         .nutrient-list li { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 10px; padding: 10px; border-bottom: 1px solid #f0f0f0; align-items: center; font-size: 0.95em; }
         .nutrient-list li:last-child { border-bottom: none; }
         .nutrient-list li span:first-child { font-weight: 500; text-align: left; color: var(--text-dark-setgoals); }
@@ -189,7 +191,6 @@
         .legend-item { display: grid; grid-template-columns: auto 1fr auto auto; align-items: center; gap: 10px; font-size: 0.95em; color: var(--text-dark-setgoals); padding: 10px; background-color: #fafafa; border-radius: 4px; border: 1px solid #eee; }
         .color-square { width: 14px; height: 14px; display: inline-block; border-radius: 3px; border: 1px solid rgba(0,0,0,0.1); }
 
-        /* --- Modal Styles --- */
         .modal { display: none; position: fixed; z-index: 1050; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: var(--modal-overlay-bg); align-items: center; justify-content: center; padding: 1rem; }
         .modal.active { display: flex; animation: fadeInModal 0.3s ease-out; }
         @keyframes fadeInModal { from { opacity: 0; } to { opacity: 1; } }
@@ -204,47 +205,53 @@
         #log-meal-modal .edit-input-container input, #log-meal-modal .edit-input-container select { width: 100%; font-size: 0.95rem; padding: 8px 10px; border: 1px solid var(--border-color-light-setgoals); border-radius: 4px; background-color: #fff; color: var(--text-dark-setgoals);}
         #log-meal-modal .edit-input-container input:focus, #log-meal-modal .edit-input-container select:focus { outline: none; border-color: var(--color-gold); box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.2); }
         #log-meal-modal .modal-actions { margin-top: 1.5rem; display: flex; justify-content: flex-end; gap: 10px; }
-        #log-meal-save-button { background-color: var(--main-color); color: var(--color-black); border: none; padding: 10px 18px; border-radius: 4px; font-weight: 600; cursor: pointer;}
+        #log-meal-save-button { background-color: var(--main-color); color: var(--color-black); border: none; padding: 10px 18px; border-radius: 4px; font-weight: 600; cursor: pointer; transition: background-color 0.3s ease;}
         #log-meal-save-button:hover { background-color: var(--color-gold); }
-        #log-meal-cancel-button { background-color: #ccc; color: #333; border: none; padding: 10px 18px; border-radius: 4px; font-weight: 600; cursor: pointer;}
+        #log-meal-cancel-button { background-color: #ccc; color: #333; border: none; padding: 10px 18px; border-radius: 4px; font-weight: 600; cursor: pointer; transition: background-color 0.3s ease;}
         #log-meal-cancel-button:hover { background-color: #bbb; }
         #log-meal-modal .logged-items-display { margin-top: 1.5rem; text-align: left; max-height: 150px; overflow-y: auto; border: 1px solid var(--border-color-light-setgoals); border-radius: 4px; padding: 10px; background-color: #f9f9f9; }
         #log-meal-modal .logged-items-display h4 { margin: 0 0 0.5rem 0; font-size: 1rem; border-bottom: 1px solid var(--border-color-light-setgoals); padding-bottom: 0.3rem; }
-        #log-meal-modal .logged-items-list { list-style: none; padding-left: 0; font-size: 0.9em; }
+        #log-meal-modal .logged-items-list { list-style: none; padding-left: 0; font-size: 0.9em; margin: 0; }
         #log-meal-modal .logged-items-list li { padding: 4px 0; border-bottom: 1px dashed var(--border-color-light-setgoals); display: flex; justify-content: space-between; gap: 8px; }
         #log-meal-modal .logged-items-list li:last-child { border-bottom: none; }
         #log-meal-modal .logged-items-list .item-name { font-weight: 500; flex-grow: 1; word-break: break-word; margin-right: 10px; }
         #log-meal-modal .logged-items-list .item-details { color: #666; font-size: 0.9em; white-space: nowrap; flex-shrink: 0; }
+        #log-meal-modal .logged-items-list .remove-logged-item-btn {
+            background: none; border: none; color: #f44336;
+            font-size: 1rem; line-height: 1; cursor: pointer;
+            padding: 0 3px; margin-left: 5px; transition: color 0.2s ease;
+            flex-shrink: 0;
+        }
+        #log-meal-modal .logged-items-list .remove-logged-item-btn:hover { color: #d32f2f; }
         #log-meal-modal .logged-items-list .no-items-logged { color: #666; font-style: italic; text-align: center; padding: 10px 0; border-bottom: none; display: block; }
-        .validation-error { color: #f44336; }
+        .validation-error { color: #f44336; font-size: 0.9em; margin-top: 5px; }
 
-        /* --- Responsive Adjustments --- */
         @media (max-width: 992px) {
              main.content-grid {
                  grid-template-columns: 1fr;
-                 padding-top: calc(var(--header-height-mobile, 90px) + 1rem);
+                 padding-top: calc(var(--header-height-mobile, 80px) + 1rem);
             }
              .calendar-widget { order: -1; margin-bottom: var(--grid-gap); }
         }
          @media (max-width: 767px) {
              main.content-grid {
-                 padding-top: calc(var(--header-height-mobile, 90px) - 10px + 1rem);
+                 padding-top: calc(var(--header-height-mobile, 80px) + 1rem);
              }
+             .main-tab-button { font-size: 1.3rem; padding: 0.6rem 1rem; }
          }
          @media (max-width: 480px) {
-              main.content-grid {
-                 padding-top: calc(var(--header-height-mobile, 90px) - 20px + 1rem);
-             }
               .activity-planner .activity-form { grid-template-columns: 1fr; }
               #weekly-plan-display { grid-template-columns: 1fr; }
-              .main-tab-button { font-size: 1.3rem; padding: 0.6rem 1rem; }
+              .main-tab-button { font-size: 1.2rem; padding: 0.5rem 0.8rem; gap: 0.5rem;}
+              .main-tab-button i { font-size: 1.5rem; }
+              .content-placeholder { padding: 1rem; }
+              .modal-content { padding: 1.5rem; }
          }
 
     </style>
 </head>
 <body>
 
-    <!-- Standard Header Structure -->
     <header>
         <a href="home.html" class="logo"><img src="../images/logo.png" alt="OptiLife Logo"></a>
         <div class='bx bx-menu' id="menu-icon"></div>
@@ -252,7 +259,6 @@
              <div class="navbar-left">
                  <li><a href="home.html">Home</a></li>
                  <li><a href="setGoals.html" class="active">Set Goals</a></li>
-                 <!-- Standard Site Navigation -->
                  <li><a href="progress.html">Track Progress</a></li>
                  <li><a href="membership.html">Membership</a></li>
              </div>
@@ -261,14 +267,12 @@
                      <img src="../images/hprofile.jpg" alt="User Profile" class="profile-pic">
                  </li>
                  <li>
-                     <!-- Ensure this href is correct -->
                      <a href="login_signup.html" id="logout-link">Logout</a>
                  </li>
              </div>
         </ul>
     </header>
 
-    <!-- Main content -->
     <main class="content-grid">
         <div class="calendar-widget card">
              <h2>Select Date</h2>
@@ -278,15 +282,8 @@
                 <button class="cal-nav next" aria-label="Next month">></button>
             </div>
             <div class="calendar-grid">
-                <!-- Calendar days... -->
-                <div class="day-name">S</div> <div class="day-name">M</div> <div class="day-name">T</div> <div class="day-name">W</div> <div class="day-name">T</div> <div class="day-name">F</div> <div class="day-name">S</div>
-                <div class="date-cell empty"></div> <div class="date-cell empty"></div> <div class="date-cell"><button>1</button></div> <div class="date-cell"><button>2</button></div> <div class="date-cell"><button>3</button></div> <div class="date-cell"><button>4</button></div> <div class="date-cell"><button>5</button></div>
-                <div class="date-cell"><button>6</button></div> <div class="date-cell"><button>7</button></div> <div class="date-cell"><button>8</button></div> <div class="date-cell"><button>9</button></div> <div class="date-cell"><button>10</button></div> <div class="date-cell"><button>11</button></div> <div class="date-cell"><button>12</button></div>
-                <div class="date-cell"><button>13</button></div> <div class="date-cell"><button>14</button></div> <div class="date-cell"><button class="selected" data-date="2025-04-15">15</button></div> <div class="date-cell"><button data-date="2025-04-16">16</button></div> <div class="date-cell"><button data-date="2025-04-17">17</button></div> <div class="date-cell"><button data-date="2025-04-18">18</button></div> <div class="date-cell"><button data-date="2025-04-19">19</button></div>
-                <div class="date-cell"><button data-date="2025-04-20">20</button></div> <div class="date-cell"><button data-date="2025-04-21">21</button></div> <div class="date-cell"><button data-date="2025-04-22">22</button></div> <div class="date-cell"><button data-date="2025-04-23">23</button></div> <div class="date-cell"><button data-date="2025-04-24">24</button></div> <div class="date-cell"><button data-date="2025-04-25">25</button></div> <div class="date-cell"><button data-date="2025-04-26">26</button></div>
-                <div class="date-cell"><button data-date="2025-04-27">27</button></div> <div class="date-cell"><button data-date="2025-04-28">28</button></div> <div class="date-cell"><button data-date="2025-04-29">29</button></div> <div class="date-cell"><button data-date="2025-04-30">30</button></div> <div class="date-cell empty"></div>
+
             </div>
-            <!-- Input blocks... -->
              <div class="input-block"> <label for="startDate">Start Date</label> <input type="date" id="startDate" name="startDate" class="info-input" value="2025-01-15"> </div>
              <div class="input-block"> <label for="overallGoals">Overall Goals</label> <input type="text" id="overallGoals" name="overallGoals" class="info-input" placeholder="Enter your goals here..." value="Improved overall fitness, Increased muscle strength"> </div>
              <div class="input-block"> <label for="currentWeight">Current Weight</label> <input type="text" id="currentWeight" name="currentWeight" class="info-input" placeholder="Weight (kg)" value="45 kg"> </div>
@@ -296,29 +293,22 @@
         </div>
 
          <div class="main-tab-content card">
-            <!-- Internal Tab Navigation -->
             <nav class="main-content-tabs">
-                <!-- Use buttons for show/hide logic -->
-                <!-- Fitness tab is active by default -->
                 <button class="main-tab-button active" data-target="#tabs-1">
                     <i class='bx bx-dumbbell'></i> Fitness Goals
                 </button>
-                <!-- Nutrition tab is inactive by default -->
                 <button class="main-tab-button" data-target="#tabs-3">
                     <i class='bx bx-restaurant'></i> Nutrition Goals
                 </button>
             </nav>
 
-            <!-- Fitness Goal tab -->
-            <!-- Add 'active' class to show this by default -->
             <div id="tabs-1" class="tab-content active">
                 <div class="content-placeholder">
                     <h1>Set Your Fitness Goal</h1>
                     <div class="workout-schedule-container">
                         <section class="activity-planner card">
                              <h2>Plan Your Weekly Activities</h2>
-                            <div class="activity-form">
-                                <!-- Form inputs... -->
+                            <form id="activity-form" class="activity-form">
                                 <div class="input-group"> <label for="activity-day">Day:</label> <select id="activity-day" name="activity-day"> <option value="Monday">Monday</option> <option value="Tuesday">Tuesday</option> <option value="Wednesday">Wednesday</option> <option value="Thursday">Thursday</option> <option value="Friday">Friday</option> <option value="Saturday">Saturday</option> <option value="Sunday">Sunday</option> </select> </div>
                                 <div class="input-group"> <label for="activity-type">Workout Type:</label> <select id="activity-type" name="activity-type"> <option>Upper Body and Lower Body Split</option> <option>Full Body</option> <option>Core</option> <option>Push/Pull/Legs</option> <option>Circuit Training</option> <option>Cardio</option> <option>Weightlifting</option> <option>HIIT</option> <option>CrossFit</option> <option>Yoga</option> <option>Pilates</option> <option>Stretching</option> <option>Rest Day</option> </select> </div>
                                 <div class="input-group"> <label for="activity-name">Activity:</label> <input type="text" id="activity-name" name="activityName" placeholder="e.g., Running, Bench Press"> </div>
@@ -326,20 +316,23 @@
                                 <div class="input-group"> <label for="activity-sets">Sets:</label> <input type="text" id="activity-sets" name="activitySets" placeholder="e.g., 3-5, 8-12"> </div>
                                 <div class="input-group"> <label for="activity-weight">Weight(lb):</label> <input type="text" id="activity-weight" name="activityWeight" placeholder="e.g., 50, 100"> </div>
                                 <div class="input-group"> <label for="activity-duration">Duration:</label> <input type="text" id="activity-duration" name="activityDuration" placeholder="e.g., 30 min, 1 hr"> </div>
-                                <button id="add-activity-btn">Add Activity to Plan</button>
-                            </div>
+                                <button type="submit" id="add-activity-btn">Add Activity to Plan</button>
+                            </form>
                             <h3>Weekly Schedule:</h3>
                             <div id="weekly-plan-display">
-                                <!-- Schedule display... -->
-                                <div class="day-schedule"><h4>Monday</h4><ul data-day="Monday"></ul></div> <div class="day-schedule"><h4>Tuesday</h4><ul data-day="Tuesday"></ul></div> <div class="day-schedule"><h4>Wednesday</h4><ul data-day="Wednesday"></ul></div> <div class="day-schedule"><h4>Thursday</h4><ul data-day="Thursday"></ul></div> <div class="day-schedule"><h4>Friday</h4><ul data-day="Friday"></ul></div> <div class="day-schedule"><h4>Saturday</h4><ul data-day="Saturday"></ul></div> <div class="day-schedule"><h4>Sunday</h4><ul data-day="Sunday"></ul></div>
+                                <div class="day-schedule"><h4>Monday</h4><ul data-day="Monday"></ul></div>
+                                <div class="day-schedule"><h4>Tuesday</h4><ul data-day="Tuesday"></ul></div>
+                                <div class="day-schedule"><h4>Wednesday</h4><ul data-day="Wednesday"></ul></div>
+                                <div class="day-schedule"><h4>Thursday</h4><ul data-day="Thursday"></ul></div>
+                                <div class="day-schedule"><h4>Friday</h4><ul data-day="Friday"></ul></div>
+                                <div class="day-schedule"><h4>Saturday</h4><ul data-day="Saturday"></ul></div>
+                                <div class="day-schedule"><h4>Sunday</h4><ul data-day="Sunday"></ul></div>
                             </div>
                         </section>
                     </div>
                 </div>
             </div>
 
-            <!-- Nutrition Goals tab -->
-            <!-- Starts hidden (no 'active' class) -->
             <div id="tabs-3" class="tab-content">
                  <div class="content-placeholder">
                     <h1>Nutrition Goals:</h1>
@@ -349,8 +342,6 @@
                         <button class="tab-button" data-tab="macros">MACROS</button>
                     </nav>
 
-                    <!-- Calories Content tab -->
-                    <!-- Add 'active' class to show this sub-tab by default -->
                     <div id="calories-content" class="nutrition-tab-content active">
                          <h2>Calories Breakdown</h2>
                         <div class="nutrition-details-full">
@@ -398,12 +389,12 @@
                             </div>
                             <div class="calorie-summary">
                                 <div class="summary-item">
-                                    <span>Total Calories</span>
+                                    <span>Total Calories Consumed</span>
                                     <span data-value="total-calories">0</span>
                                 </div>
                                  <div class="summary-item">
-                                    <span>Exercise</span>
-                                    <span data-value="exercise-calories" class="exercise editable" data-editable="true" data-id="exercise-calories" data-type="number" data-unit="cal" data-label="Exercise Calories" title="Click to edit">- 0 cal</span>
+                                    <span>Exercise Calories Burned</span>
+                                    <span data-value="exercise-calories" class="exercise editable" data-editable="true" data-id="exercise-calories" data-type="number" data-unit="cal" data-label="Exercise Calories" title="Click to edit">0 cal</span>
                                 </div>
                                 <div class="summary-item net-calories-item">
                                     <span>Net Calories</span>
@@ -411,14 +402,17 @@
                                 </div>
                                  <hr class="summary-divider">
                                 <div class="summary-item goal">
-                                    <span>Goal</span>
-                                    <span data-value="goal-calories" class="editable" data-editable="true" data-id="calorie-goal" data-type="number" data-unit="cal" data-label="Calorie Goal" title="Click to edit">1,520</span>
+                                    <span>Calorie Goal</span>
+                                    <span data-value="goal-calories" class="editable" data-editable="true" data-id="calorie-goal" data-type="number" data-unit="cal" data-label="Calorie Goal" title="Click to edit">1520</span>
+                                </div>
+                                <div class="summary-item">
+                                    <span>Calories Remaining</span>
+                                    <span data-value="calories-remaining">1520</span>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Nutrients Content tab -->
                     <div id="nutrients-content" class="nutrition-tab-content">
                          <h2>Nutrient Details</h2>
                         <div class="nutrient-header" style="color: var(--primary-color-darkest);">
@@ -431,125 +425,124 @@
                                <li data-nutrient="protein">
                                    <span>Protein</span>
                                    <span data-value="protein-total">0 g</span>
-                                   <span class="editable" data-editable="true" data-id="protein-goal" data-type="number" data-unit="g" data-label="Protein Goal" title="Click to edit">76 g</span>
+                                   <span class="editable" data-editable="true" data-id="protein-goal" data-type="number" data-unit="g" data-label="Protein Goal" title="Click to edit" data-goal-value="76">76 g</span>
                                    <span data-value="protein-left">76 g</span>
                                </li>
                                <li data-nutrient="carbohydrates">
                                    <span>Carbohydrates</span>
                                    <span data-value="carbs-total">0 g</span>
-                                   <span class="editable" data-editable="true" data-id="carbs-goal" data-type="number" data-unit="g" data-label="Carbohydrates Goal" title="Click to edit">190 g</span>
+                                   <span class="editable" data-editable="true" data-id="carbs-goal" data-type="number" data-unit="g" data-label="Carbohydrates Goal" title="Click to edit" data-goal-value="190">190 g</span>
                                    <span data-value="carbs-left">190 g</span>
                                </li>
                                <li data-nutrient="fiber">
                                    <span>Fiber</span>
                                    <span data-value="fiber-total">0 g</span>
-                                   <span class="editable" data-editable="true" data-id="fiber-goal" data-type="number" data-unit="g" data-label="Fiber Goal" title="Click to edit">25 g</span>
+                                   <span class="editable" data-editable="true" data-id="fiber-goal" data-type="number" data-unit="g" data-label="Fiber Goal" title="Click to edit" data-goal-value="25">25 g</span>
                                    <span data-value="fiber-left">25 g</span>
                                </li>
                                <li data-nutrient="sugar">
                                    <span>Sugar</span>
                                    <span data-value="sugar-total">0 g</span>
-                                   <span class="editable" data-editable="true" data-id="sugar-goal" data-type="number" data-unit="g" data-label="Sugar Goal" title="Click to edit">57 g</span>
+                                   <span class="editable" data-editable="true" data-id="sugar-goal" data-type="number" data-unit="g" data-label="Sugar Goal" title="Click to edit" data-goal-value="57">57 g</span>
                                    <span data-value="sugar-left">57 g</span>
                                </li>
                                 <li data-nutrient="fat">
                                    <span>Fat</span>
                                    <span data-value="fat-total">0 g</span>
-                                   <span class="editable" data-editable="true" data-id="fat-goal" data-type="number" data-unit="g" data-label="Fat Goal" title="Click to edit">51 g</span>
+                                   <span class="editable" data-editable="true" data-id="fat-goal" data-type="number" data-unit="g" data-label="Fat Goal" title="Click to edit" data-goal-value="51">51 g</span>
                                    <span data-value="fat-left">51 g</span>
                                </li>
                                <li data-nutrient="saturated_fat">
                                    <span>Saturated Fat</span>
                                    <span data-value="satfat-total">0 g</span>
-                                   <span class="editable" data-editable="true" data-id="satfat-goal" data-type="number" data-unit="g" data-label="Saturated Fat Goal" title="Click to edit">17 g</span>
+                                   <span class="editable" data-editable="true" data-id="satfat-goal" data-type="number" data-unit="g" data-label="Saturated Fat Goal" title="Click to edit" data-goal-value="17">17 g</span>
                                    <span data-value="satfat-left">17 g</span>
                                </li>
                                 <li data-nutrient="polyunsaturated_fat">
                                    <span>Polyunsaturated Fat</span>
                                    <span data-value="polyfat-total">0 g</span>
-                                   <span class="editable" data-editable="true" data-id="polyfat-goal" data-type="number" data-unit="g" data-label="Polyunsaturated Fat Goal" title="Click to edit">0 g</span>
+                                   <span class="editable" data-editable="true" data-id="polyfat-goal" data-type="number" data-unit="g" data-label="Polyunsaturated Fat Goal" title="Click to edit" data-goal-value="0">0 g</span>
                                    <span data-value="polyfat-left">0 g</span>
                                </li>
                                <li data-nutrient="monounsaturated_fat">
                                    <span>Monounsaturated Fat</span>
                                    <span data-value="monofat-total">0 g</span>
-                                   <span class="editable" data-editable="true" data-id="monofat-goal" data-type="number" data-unit="g" data-label="Monounsaturated Fat Goal" title="Click to edit">0 g</span>
+                                   <span class="editable" data-editable="true" data-id="monofat-goal" data-type="number" data-unit="g" data-label="Monounsaturated Fat Goal" title="Click to edit" data-goal-value="0">0 g</span>
                                    <span data-value="monofat-left">0 g</span>
                                </li>
                                 <li data-nutrient="trans_fat">
                                    <span>Trans Fat</span>
                                    <span data-value="transfat-total">0 g</span>
-                                   <span class="editable" data-editable="true" data-id="transfat-goal" data-type="number" data-unit="g" data-label="Trans Fat Goal" title="Click to edit">0 g</span>
+                                   <span class="editable" data-editable="true" data-id="transfat-goal" data-type="number" data-unit="g" data-label="Trans Fat Goal" title="Click to edit" data-goal-value="0">0 g</span>
                                    <span data-value="transfat-left">0 g</span>
                                </li>
                                 <li data-nutrient="cholesterol">
                                    <span>Cholesterol</span>
                                    <span data-value="cholesterol-total">0 mg</span>
-                                   <span class="editable" data-editable="true" data-id="cholesterol-goal" data-type="number" data-unit="mg" data-label="Cholesterol Goal" title="Click to edit">300 mg</span>
+                                   <span class="editable" data-editable="true" data-id="cholesterol-goal" data-type="number" data-unit="mg" data-label="Cholesterol Goal" title="Click to edit" data-goal-value="300">300 mg</span>
                                    <span data-value="cholesterol-left">300 mg</span>
                                </li>
                                <li data-nutrient="sodium">
                                    <span>Sodium</span>
                                    <span data-value="sodium-total">0 mg</span>
-                                   <span class="editable" data-editable="true" data-id="sodium-goal" data-type="number" data-unit="mg" data-label="Sodium Goal" title="Click to edit">2,300 mg</span>
+                                   <span class="editable" data-editable="true" data-id="sodium-goal" data-type="number" data-unit="mg" data-label="Sodium Goal" title="Click to edit" data-goal-value="2300">2,300 mg</span>
                                    <span data-value="sodium-left">2,300 mg</span>
                                </li>
                                 <li data-nutrient="potassium">
                                    <span>Potassium</span>
                                    <span data-value="potassium-total">0 mg</span>
-                                   <span class="editable" data-editable="true" data-id="potassium-goal" data-type="number" data-unit="mg" data-label="Potassium Goal" title="Click to edit">3,500 mg</span>
+                                   <span class="editable" data-editable="true" data-id="potassium-goal" data-type="number" data-unit="mg" data-label="Potassium Goal" title="Click to edit" data-goal-value="3500">3,500 mg</span>
                                    <span data-value="potassium-left">3,500 mg</span>
                                </li>
                                <li data-nutrient="vitamin_a">
                                    <span>Vitamin A</span>
                                    <span data-value="vita-total">0 %</span>
-                                   <span class="editable" data-editable="true" data-id="vita-goal" data-type="number" data-unit="%" data-label="Vitamin A Goal" title="Click to edit">100 %</span>
+                                   <span class="editable" data-editable="true" data-id="vita-goal" data-type="number" data-unit="%" data-label="Vitamin A Goal" title="Click to edit" data-goal-value="100">100 %</span>
                                    <span data-value="vita-left">100 %</span>
                                </li>
                                <li data-nutrient="vitamin_c">
                                    <span>Vitamin C</span>
                                    <span data-value="vitc-total">0 %</span>
-                                   <span class="editable" data-editable="true" data-id="vitc-goal" data-type="number" data-unit="%" data-label="Vitamin C Goal" title="Click to edit">100 %</span>
+                                   <span class="editable" data-editable="true" data-id="vitc-goal" data-type="number" data-unit="%" data-label="Vitamin C Goal" title="Click to edit" data-goal-value="100">100 %</span>
                                    <span data-value="vitc-left">100 %</span>
                                </li>
                                 <li data-nutrient="calcium">
                                    <span>Calcium</span>
                                    <span data-value="calcium-total">0 %</span>
-                                   <span class="editable" data-editable="true" data-id="calcium-goal" data-type="number" data-unit="%" data-label="Calcium Goal" title="Click to edit">100 %</span>
+                                   <span class="editable" data-editable="true" data-id="calcium-goal" data-type="number" data-unit="%" data-label="Calcium Goal" title="Click to edit" data-goal-value="100">100 %</span>
                                    <span data-value="calcium-left">100 %</span>
                                </li>
                                 <li data-nutrient="iron">
                                    <span>Iron</span>
                                    <span data-value="iron-total">0 %</span>
-                                   <span class="editable" data-editable="true" data-id="iron-goal" data-type="number" data-unit="%" data-label="Iron Goal" title="Click to edit">100 %</span>
+                                   <span class="editable" data-editable="true" data-id="iron-goal" data-type="number" data-unit="%" data-label="Iron Goal" title="Click to edit" data-goal-value="100">100 %</span>
                                    <span data-value="iron-left">100 %</span>
                                </li>
                            </ul>
                     </div>
 
-                    <!-- Macro Content tab -->
                     <div id="macros-content" class="nutrition-tab-content">
                          <h2>Macronutrient Ratio</h2>
-                         <p style="text-align: center;"><em>(Total must equal 100%)</em></p>
+                         <p style="text-align: center;"><em>Goals should total 100%</em></p>
                          <div class="nutrition-details-full">
                             <div class="macros-legend">
                                  <div class="legend-item" data-macro="carbs">
                                     <span class="color-square" style="background-color: #febd14;"></span>
-                                    <span>Carbohydrates (0g)</span>
-                                    <span class="percentage">0%</span>
-                                    <span class="editable" data-editable="true" data-id="carbs-goal" data-type="number" data-unit="%" data-label="Carbohydrates Goal" title="Click to edit">50%</span>
+                                    <span>Carbohydrates (<span data-value="macro-carbs-g">0g</span>)</span>
+                                    <span class="percentage" data-value="macro-carbs-perc">0%</span>
+                                    <span class="editable" data-editable="true" data-id="carbs-goal-perc" data-type="number" data-unit="%" data-label="Carbohydrates Goal %" title="Click to edit">50%</span>
                                 </div>
                                  <div class="legend-item" data-macro="fat">
                                     <span class="color-square" style="background-color: #fece43;"></span>
-                                    <span>Fat (0g)</span>
-                                    <span class="percentage">0%</span>
-                                    <span class="editable" data-editable="true" data-id="fats-goal" data-type="number" data-unit="%" data-label="Fat Goal" title="Click to edit">30%</span>
+                                    <span>Fat (<span data-value="macro-fat-g">0g</span>)</span>
+                                    <span class="percentage" data-value="macro-fat-perc">0%</span>
+                                    <span class="editable" data-editable="true" data-id="fats-goal-perc" data-type="number" data-unit="%" data-label="Fat Goal %" title="Click to edit">30%</span>
                                 </div>
                                  <div class="legend-item" data-macro="protein">
                                     <span class="color-square" style="background-color: #feda75;"></span>
-                                    <span>Protein (0g)</span>
-                                    <span class="percentage">0%</span>
-                                    <span class="editable" data-editable="true" data-id="protein-goal" data-type="number" data-unit="%" data-label="Protein Goal" title="Click to edit">20%</span>
+                                    <span>Protein (<span data-value="macro-protein-g">0g</span>)</span>
+                                    <span class="percentage" data-value="macro-protein-perc">0%</span>
+                                    <span class="editable" data-editable="true" data-id="protein-goal-perc" data-type="number" data-unit="%" data-label="Protein Goal %" title="Click to edit">20%</span>
                                 </div>
                             </div>
                          </div>
@@ -559,15 +552,19 @@
         </div>
     </main>
 
-    <!-- Modal for Logging Food -->
      <div class="modal" id="log-meal-modal" role="dialog" aria-labelledby="log-meal-title" aria-modal="true">
         <div class="modal-content card">
             <button class="modal-close-btn" aria-label="Close modal">×</button>
             <h3 id="log-meal-title">Log Food Item for <span id="log-meal-modal-date">Date</span></h3>
             <form id="log-meal-form">
                 <input type="hidden" id="log-meal-date-hidden" name="logDate">
-                <!-- Modal form inputs... -->
-                 <div class="edit-input-container"> <label for="log-meal-type">Meal Type:</label> <select id="log-meal-type" name="mealType" required> <option value="Breakfast">Breakfast</option> <option value="Lunch">Lunch</option> <option value="Dinner">Dinner</option> <option value="Snacks">Snacks</option> </select> </div> <div class="edit-input-container"> <label for="log-food-name">Food Name:</label> <input type="text" id="log-food-name" name="foodName" required placeholder="e.g., Apple, medium"> </div> <div class="edit-input-container"> <label for="log-calories">Calories (kcal):</label> <input type="number" id="log-calories" name="calories" required min="0" step="1" placeholder="e.g., 95"> </div> <div class="edit-input-container"> <label for="log-protein">Protein (g):</label> <input type="number" id="log-protein" name="protein" min="0" step="0.1" placeholder="e.g., 0.5"> </div> <div class="edit-input-container"> <label for="log-carbs">Carbs (g):</label> <input type="number" id="log-carbs" name="carbs" min="0" step="0.1" placeholder="e.g., 25"> </div> <div class="edit-input-container"> <label for="log-fat">Fat (g):</label> <input type="number" id="log-fat" name="fat" min="0" step="0.1" placeholder="e.g., 0.3"> </div>
+                 <div class="edit-input-container"> <label for="log-meal-type">Meal Type:</label> <select id="log-meal-type" name="mealType" required> <option value="Breakfast">Breakfast</option> <option value="Lunch">Lunch</option> <option value="Dinner">Dinner</option> <option value="Snacks">Snacks</option> </select> </div>
+                 <div class="edit-input-container"> <label for="log-food-name">Food Name:</label> <input type="text" id="log-food-name" name="foodName" required placeholder="e.g., Apple, medium"> </div>
+                 <div class="edit-input-container"> <label for="log-calories">Calories (kcal):</label> <input type="number" id="log-calories" name="calories" required min="0" step="1" placeholder="e.g., 95"> </div>
+                 <div class="edit-input-container"> <label for="log-protein">Protein (g):</label> <input type="number" id="log-protein" name="protein" min="0" step="0.1" placeholder="e.g., 0.5" value="0"> </div>
+                 <div class="edit-input-container"> <label for="log-carbs">Carbs (g):</label> <input type="number" id="log-carbs" name="carbs" min="0" step="0.1" placeholder="e.g., 25" value="0"> </div>
+                 <div class="edit-input-container"> <label for="log-fat">Fat (g):</label> <input type="number" id="log-fat" name="fat" min="0" step="0.1" placeholder="e.g., 0.3" value="0"> </div>
+
                  <p id="log-meal-validation-error" class="validation-error" style="display: none;"></p>
                 <div class="modal-actions">
                     <button type="submit" id="log-meal-save-button">Log Item</button>
@@ -582,9 +579,7 @@
              </div>
         </div>
     </div>
-    <!-- End Modal -->
 
-    <!-- Footer -->
      <section id="subscribe" class="subscribe-section">
         <div class="container subscribe-content">
              <div class="subscribe-text">
@@ -592,7 +587,6 @@
                 <p>Join our fitness family and get tips, exclusive updates, and special offers. Start your journey today!</p>
                 <form class="subscribe-form">
                     <input type="email" placeholder="Email" required>
-                    <!-- Use theme button classes -->
                     <button type="submit" class="btn btn-primary">Send</button>
                 </form>
                 <div class="social-icons">
@@ -602,7 +596,6 @@
                 </div>
             </div>
             <div class="footer-links">
-                 <!-- Footer link columns... -->
                  <div><h4>Company</h4><ul><li><a href="#">Press</a></li><li><a href="#">Blog</a></li><li><a href="#">About</a></li><li><a href="#">Careers</a></li></ul></div> <div><h4>Services</h4><ul><li><a href="#">Training</a></li><li><a href="#">Nutrition</a></li><li><a href="#">Lifestyles</a></li></ul></div> <div><h4>Legal</h4><ul><li><a href="#">Policy</a></li><li><a href="#">Privacy & Cookies</a></li><li><a href="#">Terms & Conditions</a></li></ul></div> <div><h4>Community</h4><ul><li><a href="#">Contact</a></li><li><a href="#">Find a club</a></li><li><a href="#">Membership</a></li></ul></div> <div><h4>Gym</h4><ul><li><a href="#">Book a Gym</a></li><li><a href="#">Find a Gym</a></li></ul></div>
             </div>
         </div>
@@ -613,11 +606,10 @@
         </div>
     </footer>
 
-    <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js"></script>
     <script>
       $(document).ready(function() {
-          // --- Header Menu Toggle ---
           var menuIcon = $('#menu-icon');
           var navbar = $('.navbar');
 
@@ -627,8 +619,7 @@
                   navbar.toggleClass('active');
               });
 
-              $('.navbar a').on('click', function(event) { // Added event parameter
-                   // Only close menu if it's NOT the logout link being confirmed
+              $('.navbar a').on('click', function(event) {
                    if (navbar.hasClass('active') && !$(this).is('#logout-link')) {
                        navbar.removeClass('active');
                        menuIcon.removeClass('bx-x');
@@ -652,70 +643,407 @@
               console.warn("Header menu icon or navbar not found.");
           }
 
-          // --- Internal Page Tab Functionality ---
-          // Handles clicks on "Fitness Goals" and "Nutrition Goals" buttons
           $('.main-tab-button').on('click', function() {
-              var targetSelector = $(this).data('target'); // Get #tabs-1 or #tabs-3
-              var $targetContent = $(targetSelector); // Find the target div
+              var targetSelector = $(this).data('target');
+              var $targetContent = $(targetSelector);
 
               if ($targetContent.length) {
-                  // Update Button Styles
-                  $('.main-tab-button').removeClass('active'); // Deactivate all buttons
-                  $(this).addClass('active'); // Activate the clicked button
-
-                  // Update Content Visibility
-                  $('.main-tab-content .tab-content').removeClass('active'); // Hide all content sections
-                  $targetContent.addClass('active'); // Show the target content section
+                  $('.main-tab-button').removeClass('active');
+                  $(this).addClass('active');
+                  $('.main-tab-content .tab-content').removeClass('active');
+                  $targetContent.addClass('active');
               } else {
                   console.warn("Main tab target content not found:", targetSelector);
               }
           });
 
-           // --- Nutrition Sub-Tab Functionality ---
-           // Handles clicks on CALORIES, NUTRIENTS, MACROS buttons
            $('.tabs .tab-button').on('click', function() {
-                var tabId = $(this).data('tab'); // e.g., 'calories'
-                var $container = $(this).closest('.content-placeholder'); // Find the parent nutrition section
+                var tabId = $(this).data('tab');
+                var $container = $(this).closest('.content-placeholder');
 
-                // Update sub-tab buttons within the nutrition section
                 $container.find('.tabs .tab-button').removeClass('active');
                 $(this).addClass('active');
 
-                // Update sub-tab content visibility within the nutrition section
                 $container.find('.nutrition-tab-content').removeClass('active');
                 $container.find('#' + tabId + '-content').addClass('active');
            });
 
-          // --- START: Logout Confirmation ---
           $('#logout-link').on('click', function(event) {
-              // Prevent the link from navigating immediately
               event.preventDefault();
-
-              // Ask the user for confirmation
               var confirmLogout = confirm("Are you sure you want to logout?");
-
-              // If the user confirmed, proceed to the logout page
               if (confirmLogout) {
-                  window.location.href = this.href; // 'this.href' gets the href attribute of the clicked link
+                  window.location.href = this.href;
               }
-              // If the user cancelled, do nothing (the default navigation was already prevented)
           });
-          // --- END: Logout Confirmation ---
 
 
-          // Initial State: Ensure only the default active tabs are shown
-          // (This is handled by adding the 'active' class directly in the HTML
-          // to #tabs-1 and #calories-content)
+          let selectedDate = moment().format('YYYY-MM-DD');
+          let currentMonthMoment = moment(selectedDate);
+          const foodLog = {};
+          const activityLog = {};
 
-      }); // End $(document).ready()
+          const $calendarGrid = $('.calendar-grid');
+          const $currentMonthYear = $('.current-month-year');
+          const $logMealModal = $('#log-meal-modal');
+          const $logMealForm = $('#log-meal-form');
+          const $logMealModalDate = $('#log-meal-modal-date');
+          const $logMealDateHidden = $('#log-meal-date-hidden');
+          const $logMealTypeSelect = $('#log-meal-type');
+          const $loggedItemsList = $('#logged-items-list');
+          const $loggedItemsDateDisplay = $('#logged-items-date-display');
+          const $validationError = $('#log-meal-validation-error');
+          const $activityForm = $('#activity-form');
+          const $weeklyPlanDisplay = $('#weekly-plan-display');
+
+          function renderCalendar(dateMoment) {
+              $calendarGrid.empty();
+              $currentMonthYear.text(dateMoment.format('MMMM YYYY'));
+
+              const dayNames = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+              dayNames.forEach(day => $calendarGrid.append(`<div class="day-name">${day}</div>`));
+
+              const startOfMonth = dateMoment.clone().startOf('month');
+              const endOfMonth = dateMoment.clone().endOf('month');
+              const startDayOfWeek = startOfMonth.day();
+
+              for (let i = 0; i < startDayOfWeek; i++) {
+                  $calendarGrid.append('<div class="date-cell empty"></div>');
+              }
+
+              let day = startOfMonth.clone();
+              while (day.isSameOrBefore(endOfMonth, 'day')) {
+                  const dateStr = day.format('YYYY-MM-DD');
+                  const $cell = $('<div class="date-cell"></div>');
+                  const $button = $(`<button data-date="${dateStr}">${day.date()}</button>`);
+
+                  if (dateStr === selectedDate) {
+                      $button.addClass('selected');
+                  }
+
+                  $cell.append($button);
+                  $calendarGrid.append($cell);
+                  day.add(1, 'day');
+              }
+          }
+
+          function updateSelectedDate(newDate) {
+              selectedDate = newDate;
+              $('.calendar-grid .date-cell button.selected').removeClass('selected');
+              $(`.calendar-grid .date-cell button[data-date="${selectedDate}"]`).addClass('selected');
+              $logMealModalDate.text(moment(selectedDate).format('MMMM D, YYYY'));
+              $logMealDateHidden.val(selectedDate);
+              $loggedItemsDateDisplay.text(moment(selectedDate).format('MMMM D'));
+              displayLoggedItemsForDate(selectedDate);
+              updateNutritionDisplay();
+          }
+
+          function addActivityToPlan(event) {
+                event.preventDefault();
+
+                const day = $('#activity-day').val();
+                const type = $('#activity-type').val();
+                const name = $('#activity-name').val().trim();
+                const reps = $('#activity-reps').val().trim();
+                const sets = $('#activity-sets').val().trim();
+                const weight = $('#activity-weight').val().trim();
+                const duration = $('#activity-duration').val().trim();
+
+                if (!day || (!name && type !== 'Rest Day')) {
+                    alert('Please select a day and enter an activity name (unless selecting Rest Day).');
+                    return;
+                }
+
+                let displayText = `<strong>${type}:</strong> ${name || ''}`;
+                const details = [];
+                if (reps) details.push(`Reps: ${reps}`);
+                if (sets) details.push(`Sets: ${sets}`);
+                if (weight) details.push(`Weight: ${weight}lb`);
+                if (duration) details.push(`Duration: ${duration}`);
+
+                if (details.length > 0) {
+                    displayText += ` (${details.join(', ')})`;
+                }
+
+                const $dayList = $weeklyPlanDisplay.find(`ul[data-day="${day}"]`);
+                const $listItem = $(`<li>${displayText}<button class="remove-activity-btn" title="Remove Activity"><i class="fas fa-times"></i></button></li>`);
+                $dayList.append($listItem);
+
+                if (!activityLog[day]) {
+                    activityLog[day] = [];
+                }
+                activityLog[day].push({ type, name, reps, sets, weight, duration });
+
+                $('#activity-name, #activity-reps, #activity-sets, #activity-weight, #activity-duration').val('');
+
+            }
+
+            function removeActivityFromPlan(event) {
+                 const $listItem = $(event.target).closest('li');
+                 const day = $listItem.closest('ul').data('day');
+                 const itemIndex = $listItem.index();
+
+                 if (activityLog[day] && activityLog[day][itemIndex]) {
+                     activityLog[day].splice(itemIndex, 1);
+                 }
+
+                 $listItem.remove();
+            }
+
+          function openLogMealModal(event) {
+              const mealType = $(event.currentTarget).data('meal-type');
+              $logMealTypeSelect.val(mealType);
+              $logMealModalDate.text(moment(selectedDate).format('MMMM D, YYYY'));
+              $logMealDateHidden.val(selectedDate);
+              $loggedItemsDateDisplay.text(moment(selectedDate).format('MMMM D'));
+              $validationError.hide().text('');
+              displayLoggedItemsForDate(selectedDate);
+              $logMealModal.addClass('active');
+              $logMealForm[0].reset();
+              $('#log-meal-type').val(mealType);
+          }
+
+          function closeLogMealModal() {
+              $logMealModal.removeClass('active');
+              $logMealForm[0].reset();
+              $validationError.hide().text('');
+          }
+
+          function displayLoggedItemsForDate(dateStr) {
+              $loggedItemsList.empty();
+              const items = foodLog[dateStr] || [];
+
+              if (items.length === 0) {
+                  $loggedItemsList.append('<li class="no-items-logged">No items logged yet for this date.</li>');
+              } else {
+                  items.forEach((item, index) => {
+                      const listItem = `
+                          <li>
+                              <span class="item-details">[${item.mealType}]</span>
+                              <span class="item-name">${item.foodName}</span>
+                              <span class="item-details">${item.calories} kcal</span>
+                              <button class="remove-logged-item-btn" data-index="${index}" title="Remove Item">
+                                  <i class="fas fa-times"></i>
+                              </button>
+                          </li>`;
+                      $loggedItemsList.append(listItem);
+                  });
+              }
+          }
+
+          function removeLoggedItem(event) {
+             const indexToRemove = $(event.currentTarget).data('index');
+             const dateStr = selectedDate;
+
+             if (foodLog[dateStr] && foodLog[dateStr][indexToRemove] !== undefined) {
+                 foodLog[dateStr].splice(indexToRemove, 1);
+
+                 if (foodLog[dateStr].length === 0) {
+                 }
+
+                 displayLoggedItemsForDate(dateStr);
+                 updateNutritionDisplay();
+             }
+          }
+
+
+          function handleLogMealSubmit(event) {
+              event.preventDefault();
+              $validationError.hide().text('');
+
+              const foodName = $('#log-food-name').val().trim();
+              const calories = $('#log-calories').val();
+
+              if (!foodName) {
+                  $validationError.text('Food Name is required.').show();
+                  return;
+              }
+              if (calories === '' || isNaN(calories) || parseFloat(calories) < 0) {
+                  $validationError.text('Valid Calories (0 or more) are required.').show();
+                  return;
+              }
+
+              const newItem = {
+                  id: Date.now(),
+                  date: selectedDate,
+                  mealType: $logMealTypeSelect.val(),
+                  foodName: foodName,
+                  calories: parseFloat(calories),
+                  protein: parseFloat($('#log-protein').val()) || 0,
+                  carbs: parseFloat($('#log-carbs').val()) || 0,
+                  fat: parseFloat($('#log-fat').val()) || 0,
+              };
+
+              if (!foodLog[selectedDate]) {
+                  foodLog[selectedDate] = [];
+              }
+              foodLog[selectedDate].push(newItem);
+
+              displayLoggedItemsForDate(selectedDate);
+              updateNutritionDisplay();
+
+              $('#log-food-name, #log-calories, #log-protein, #log-carbs, #log-fat').val('');
+              $('#log-protein, #log-carbs, #log-fat').val('0');
+
+          }
+
+          function updateNutritionDisplay() {
+              const itemsToday = foodLog[selectedDate] || [];
+              let totals = {
+                  calories: 0, protein: 0, carbs: 0, fat: 0, fiber: 0, sugar: 0,
+                  satfat: 0, polyfat: 0, monofat: 0, transfat: 0,
+                  cholesterol: 0, sodium: 0, potassium: 0,
+                  vita: 0, vitc: 0, calcium: 0, iron: 0
+              };
+              let mealTotals = { Breakfast: 0, Lunch: 0, Dinner: 0, Snacks: 0 };
+
+              itemsToday.forEach(item => {
+                  totals.calories += item.calories || 0;
+                  totals.protein += item.protein || 0;
+                  totals.carbs += item.carbs || 0;
+                  totals.fat += item.fat || 0;
+                  totals.fiber += item.fiber || 0;
+                  totals.sugar += item.sugar || 0;
+                  totals.satfat += item.satfat || 0;
+
+
+                  if (mealTotals.hasOwnProperty(item.mealType)) {
+                      mealTotals[item.mealType] += item.calories || 0;
+                  }
+              });
+
+              const totalCaloriesConsumed = totals.calories;
+              $('[data-value="total-calories"]').text(Math.round(totalCaloriesConsumed));
+
+              Object.keys(mealTotals).forEach(meal => {
+                  const mealCal = mealTotals[meal];
+                  const percentage = totalCaloriesConsumed > 0 ? Math.round((mealCal / totalCaloriesConsumed) * 100) : 0;
+                  const key = meal.toLowerCase();
+                  $(`[data-value="${key}-calories"]`).text(`${percentage}% (${Math.round(mealCal)} cal)`);
+              });
+
+              const goalCalories = parseFloat($('[data-value="goal-calories"]').text().replace(/,/g, '')) || 0;
+              const exerciseCalories = parseFloat($('[data-value="exercise-calories"]').text().replace('cal','').trim()) || 0;
+
+              const netCalories = Math.round(totalCaloriesConsumed - exerciseCalories);
+              const caloriesRemaining = Math.round(goalCalories - netCalories);
+
+              $('[data-value="net-calories"]').text(netCalories);
+              $('[data-value="exercise-calories"]').text(`${exerciseCalories} cal`);
+              $('[data-value="calories-remaining"]').text(caloriesRemaining);
+
+
+               $('.nutrient-list li').each(function() {
+                  const $li = $(this);
+                  const nutrientKey = $li.data('nutrient');
+
+                  let totalKey = nutrientKey;
+                  if (nutrientKey === 'carbohydrates') totalKey = 'carbs';
+                  else if (nutrientKey === 'saturated_fat') totalKey = 'satfat';
+                  else if (nutrientKey === 'polyunsaturated_fat') totalKey = 'polyfat';
+                  else if (nutrientKey === 'monounsaturated_fat') totalKey = 'monofat';
+                  else if (nutrientKey === 'trans_fat') totalKey = 'transfat';
+                  else if (nutrientKey === 'vitamin_a') totalKey = 'vita';
+                  else if (nutrientKey === 'vitamin_c') totalKey = 'vitc';
+
+
+                  const totalValue = totals[totalKey] || 0;
+                  const unit = $li.find('.editable').data('unit') || 'g';
+                  const $goalSpan = $li.find('.editable[data-id$="-goal"]');
+                  const goalValue = parseFloat($goalSpan.attr('data-goal-value')) || parseFloat($goalSpan.text().replace(/[^0-9.]/g, '')) || 0;
+                  const leftValue = Math.max(0, goalValue - totalValue);
+
+                  const decimals = (unit === 'g' && totalValue < 10 && totalValue !== 0) || (unit === 'mg') ? 1 : 0;
+                  const goalDecimals = (unit === 'g' || unit === 'mg') ? 0 : 0;
+                  const leftDecimals = decimals;
+
+                  $li.find(`[data-value="${totalKey}-total"]`).text(`${totalValue.toFixed(decimals)} ${unit}`);
+                  $goalSpan.text(`${goalValue.toFixed(goalDecimals)} ${unit}`);
+                  $li.find(`[data-value="${totalKey}-left"]`).text(`${leftValue.toFixed(leftDecimals)} ${unit}`);
+               });
+
+              const totalGrams = totals.protein + totals.carbs + totals.fat;
+              const proteinPerc = totalGrams > 0 ? Math.round((totals.protein * 4 / (totals.protein * 4 + totals.carbs * 4 + totals.fat * 9)) * 100) : 0;
+              const carbsPerc = totalGrams > 0 ? Math.round((totals.carbs * 4 / (totals.protein * 4 + totals.carbs * 4 + totals.fat * 9)) * 100) : 0;
+              const fatPerc = totalGrams > 0 ? Math.round((totals.fat * 9 / (totals.protein * 4 + totals.carbs * 4 + totals.fat * 9)) * 100) : 0;
+
+
+              $('[data-value="macro-protein-g"]').text(totals.protein.toFixed(1) + 'g');
+              $('[data-value="macro-carbs-g"]').text(totals.carbs.toFixed(1) + 'g');
+              $('[data-value="macro-fat-g"]').text(totals.fat.toFixed(1) + 'g');
+
+              $('[data-value="macro-protein-perc"]').text(proteinPerc + '%');
+              $('[data-value="macro-carbs-perc"]').text(carbsPerc + '%');
+              $('[data-value="macro-fat-perc"]').text(fatPerc + '%');
+
+          }
+
+           function handleEditableClick(event) {
+                const $target = $(event.currentTarget);
+                const currentValue = $target.text().replace(/[^0-9.]/g, '');
+                const label = $target.data('label') || 'value';
+                const unit = $target.data('unit') || '';
+
+                const newValue = prompt(`Enter new ${label}:`, currentValue);
+
+                if (newValue !== null && !isNaN(newValue) && parseFloat(newValue) >= 0) {
+                    const formattedValue = parseFloat(newValue);
+                    $target.attr('data-goal-value', formattedValue);
+                    $target.text(`${formattedValue}${unit ? ' ' + unit : ''}`);
+
+                    if ($target.data('id').includes('-goal')) {
+                        updateNutritionDisplay();
+                    }
+                     if ($target.data('id') === 'exercise-calories') {
+                         updateNutritionDisplay();
+                     }
+                     if ($target.data('id').includes('-goal-perc')) {
+                        checkMacroGoalTotal();
+                     }
+                } else if (newValue !== null) {
+                    alert('Invalid input. Please enter a non-negative number.');
+                }
+           }
+
+            function checkMacroGoalTotal() {
+                let totalPerc = 0;
+                $('.macros-legend .editable[data-id$="-goal-perc"]').each(function() {
+                    totalPerc += parseFloat($(this).text().replace('%','')) || 0;
+                });
+                if (totalPerc !== 100) {
+                   console.warn(`Macro goal percentages sum to ${totalPerc}%, should be 100%.`);
+                }
+            }
+
+          $('.cal-nav.prev').on('click', () => {
+              currentMonthMoment.subtract(1, 'month');
+              renderCalendar(currentMonthMoment);
+          });
+          $('.cal-nav.next').on('click', () => {
+              currentMonthMoment.add(1, 'month');
+              renderCalendar(currentMonthMoment);
+          });
+          $calendarGrid.on('click', '.date-cell button:not(:disabled)', function() {
+              const newDate = $(this).data('date');
+              updateSelectedDate(newDate);
+          });
+
+          $activityForm.on('submit', addActivityToPlan);
+          $weeklyPlanDisplay.on('click', '.remove-activity-btn', removeActivityFromPlan);
+
+
+          $('.add-food-btn').on('click', openLogMealModal);
+          $('.modal-close-btn, #log-meal-cancel-button').on('click', closeLogMealModal);
+          $logMealForm.on('submit', handleLogMealSubmit);
+          $loggedItemsList.on('click', '.remove-logged-item-btn', removeLoggedItem);
+
+          $('.main-tab-content').on('click', '.editable[data-editable="true"]', handleEditableClick);
+
+          renderCalendar(currentMonthMoment);
+          updateSelectedDate(selectedDate);
+          checkMacroGoalTotal();
+
+      });
     </script>
 
-    <!-- Page-specific Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js"></script>
-    <!-- Make sure setGoals.js doesn't re-declare the tab logic -->
-    <!-- If setGoals.js handles other things like calendar, modal, etc., keep it. -->
-    <!-- If setGoals.js ONLY handles tabs, you might consider removing it or commenting out -->
-    <!-- the conflicting parts within it, as the logic is now included above. -->
- 
 </body>
 </html>
