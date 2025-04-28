@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In - OptiLife</title>
+    <link rel="stylesheet" href="usercss/signin_signup.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+
+    <div class="container">
+        <div class="form-box signup">
+            <form id="signin-form">
+                <h1>Sign in</h1>
+
+                <div class="input-box">
+                    <input type="email" placeholder="Email" id="email" required>
+                    <i class='bx bxs-envelope'></i>
+                </div>
+
+                <div class="input-box">
+                    <input type="password" placeholder="Password" id="password" required>
+                    <i class='bx bxs-lock-alt'></i>
+                </div>
+
+                <button type="submit" class="btn" id="signin-submit">Sign in</button>
+
+                <p class="separator-text">or Sign in with</p>
+
+                <div class="social-icons">
+                    <a href="google_signin.html"><img src="../images/google.jpg" alt="Sign in with Google" class="social-icon-img"></a>
+                 </div>
+
+                <div class="navigation-link">
+                     <p>Don't have an account? <a href="signup.html">Sign up</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="../assets/jquery-3.7.1.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $("#signin-submit").on("click", function(event) {
+                event.preventDefault(); 
+                const email = $("#email").val().trim();
+                const password = $("#password").val(); 
+
+                let isValid = true;
+                $("#email, #password").css("border", "");
+
+                if (!email) {
+                    alert("Please enter your email address.");
+                    $("#email").css("border", "1px solid red");
+                    isValid = false;
+                }
+
+                if (!password) {
+                    alert("Please enter your password.");
+                    $("#password").css("border", "1px solid red");
+                    isValid = false;
+                }
+
+                if (!isValid) {
+                    return; 
+                }
+
+                const adminEmail = "admin@gmail.com";
+                const adminPassword = "admin123";
+                const ownerEmail = "gymOwner@gmail.com";
+                const ownerPassword = "gymOwner123";
+                const clientEmail = "user@gmail.com";
+                const clientPassword = "user0123";
+
+                console.log("Attempting sign in for:", email); 
+
+                if (email === clientEmail && password === clientPassword) {
+                    alert("Client Sign in successful! Redirecting...");
+                    window.location.href = "home.html";
+                } else if (email === ownerEmail && password === ownerPassword) {
+                    alert("Gym Owner Sign in successful! Redirecting...");
+                    window.location.href = "/GymOwner/gymOwner.html"; 
+                } else if (email === adminEmail && password === adminPassword) {
+                     alert("Admin Sign in successful! Redirecting...");
+                     window.location.href = "/Admin/admindb.html"; 
+                 } else {
+                    console.log("Sign in failed: Invalid credentials.");
+                    alert("Invalid email or password. Please try again.");
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

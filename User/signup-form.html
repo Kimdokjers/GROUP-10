@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up (Step 2) - OptiLife</title>
+    <link rel="stylesheet" href="usercss/signin_signup.css"> 
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+
+    <div class="container">
+        <div class="form-box signup"> 
+            <form id="signup-step2-form">
+                <h1>Welcome! Finish signing up to get started.</h1>
+
+                <div class="input-box">
+                    <input type="text" placeholder="First Name" id="firstname" required>
+                    <i class='bx bxs-user-detail'></i> 
+                </div>
+
+                <div class="input-box">
+                    <input type="text" placeholder="Last Name" id="lastname" required>
+                     <i class='bx bxs-user-detail'></i>
+                </div>
+
+                <div class="input-box">
+                    <input type="text" placeholder="Suffix (Optional)" id="suffix">
+                    <i class='bx bx-user-pin'></i> 
+                </div>
+
+                <div class="input-box">
+                    <label for="date" class="date-label">Birth Date:</label>
+                    <input type="date" id="date" min="1900-01-01" max="2025-01-01" required>
+                </div>
+
+                <div class="input-box">
+                    <input type="text" placeholder="Current Address" id="address" required>
+                    <i class='bx bxs-map'></i> 
+                </div>
+
+                <button type="submit" class="btn" id="complete-signup-btn">Complete Sign up</button>
+
+                 <div class="navigation-link" style="margin-top: 15px;">
+                     <a href="signup.html" style="color: #eee; font-size: 0.9em;">« Go Back to Step 1</a>
+                 </div>
+
+            </form>
+        </div>
+    </div>
+
+    <script src="../assets/jquery-3.7.1.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            const savedEmail = sessionStorage.getItem('signupEmail');
+            const savedPassword = sessionStorage.getItem('signupPassword');
+
+            if (!savedEmail || !savedPassword) {
+                alert("Please complete Step 1 of the signup first.");
+                window.location.href = 'signup-step1.html';
+                return;
+            }
+
+            $("#complete-signup-btn").on("click", function(event) {
+                event.preventDefault(); 
+                const firstName = $("#firstname").val().trim();
+                const lastName = $("#lastname").val().trim();
+                const suffix = $("#suffix").val().trim(); 
+                const birthDate = $("#date").val();
+                const address = $("#address").val().trim();
+
+                let isStep2Valid = true;
+                $("#firstname, #lastname, #date, #address").css("border", "");
+
+                if (!firstName) {
+                    alert("Please enter your First Name.");
+                    $("#firstname").css("border", "1px solid red");
+                    isStep2Valid = false;
+                }
+                 if (!lastName) {
+                    alert("Please enter your Last Name.");
+                    $("#lastname").css("border", "1px solid red");
+                    isStep2Valid = false;
+                }
+                 if (!birthDate) {
+                    alert("Please enter your Birth Date.");
+                    $("#date").css("border", "1px solid red");
+                    isStep2Valid = false;
+                }
+                 if (!address) {
+                    alert("Please enter your Current Address.");
+                    $("#address").css("border", "1px solid red");
+                    isStep2Valid = false;
+                }
+
+                if (isStep2Valid) {
+                    console.log("Step 2 validation passed. Using saved credentials for redirect.");
+                    alert("Sign up complete! Redirecting...");
+
+                    const adminEmail = "admin@gmail.com";
+                    const adminPassword = "admin123";
+                    const ownerEmail = "gymOwner@gmail.com";
+                    const ownerPassword = "gymOwner123";
+                    const clientEmail = "user@gmail.com";
+                    const clientPassword = "user0123";
+
+                    let redirectUrl = "signin.html";
+
+                    if (savedEmail === clientEmail && savedPassword === clientPassword) {
+                        redirectUrl = "home.html";
+                    } else if (savedEmail === ownerEmail && savedPassword === ownerPassword) {
+                        redirectUrl = "/GymOwner/gymOwner.html";
+                    } else if (savedEmail === adminEmail && savedPassword === adminPassword) {
+                        redirectUrl = "/Admin/admindb.html";
+                    } else {
+                         alert("Registration details submitted. Please sign in.");
+                         redirectUrl = "signin-form.html"; 
+                    }
+
+                    sessionStorage.removeItem('signupEmail');
+                    sessionStorage.removeItem('signupPassword');
+
+                    window.location.href = redirectUrl;
+
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
