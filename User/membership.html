@@ -4,193 +4,524 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Gym Membership</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <!-- Boxicons CSS -->
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  <link rel="stylesheet" href="style.css"> <!-- Link to your external CSS -->
   <style>
+    /* --- Base & Reset --- */
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: 'Poppins', sans-serif;
+      text-decoration: none;
+      list-style: none;
+      border: none;
+      outline: none;
+    }
+
+    :root {
+        --bg-color: #000;
+        --snd-bf-color: #111;
+        --text-color: #fff;
+        --main-color: #FFD700; /* Gold */
+        --color-black: #0a0a0a;
+        --color-dark-gray: #1a1a1a;
+        --color-gold: #daa520;
+        --color-gold-light: #f0c44c;
+        --color-text: #ffffff;
+        --color-text-muted: #aaaaaa;
+        --header-height-desktop: 120px;
+        --header-height-mobile: 90px; /* Adjusted mobile header height */
+        --font-primary: 'Poppins', sans-serif;
+    }
+
+    html {
+        font-size: 62.5%; /* 1rem = 10px */
+        overflow-x: hidden;
+        scroll-behavior: smooth;
     }
 
     body {
-      background-color: #000;
-      color: #fff;
-      padding: 20px;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      font-family: var(--font-primary);
+      line-height: 1.6;
+    }
+
+    img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+    }
+
+    /* --- Header --- */
+    header {
+        position: fixed;
+        width: 100%;
+        height: var(--header-height-desktop);
+        top: 0;
+        left: 0;
+        z-index: 1000;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 9%;
+        background: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(10px);
+        transition: background 0.5s ease, backdrop-filter 0.5s ease, height 0.3s ease;
+        box-sizing: border-box;
+    }
+
+    .logo {
+        cursor: pointer;
+        transition: 0.3s ease-in-out;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+    }
+
+    .logo img {
+        max-width: 180px; /* Adjust as needed */
+        height: auto;
+    }
+
+    .logo:hover {
+        transform: scale(1.05);
+    }
+
+    /* --- Navigation --- */
+    .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        flex-grow: 1;
+        margin-left: 4rem; /* Space after logo */
+    }
+
+    .navbar-left,
+    .navbar-right {
+        display: flex;
+        align-items: center;
+        padding: 0;
+        margin: 0;
+    }
+
+    .navbar li {
+        margin: 0;
+        padding: 0;
+        display: flex;
+        align-items: center;
+    }
+
+    .navbar a {
+        font-size: 1.8rem;
+        font-weight: 500;
+        color: var(--text-color);
+        transition: all 0.3s ease;
+        border-bottom: 3px solid transparent;
+        white-space: nowrap;
+        padding: 0.5rem 0;
+    }
+
+    .navbar-left li a {
+        margin-left: 4rem;
+    }
+    .navbar-left li:first-child a {
+        margin-left: 0;
+    }
+
+    .navbar-right li:has(.profile-pic) {
+        margin-right: 1.5rem;
+    }
+
+    .navbar-right li a[href="login_signup.html"] { /* Assuming this is the logout link */
+        margin-left: 0;
+    }
+
+    .navbar a:hover,
+    .navbar a.active { /* Add .active class via JS to highlight current page */
+        color: var(--main-color);
+        border-bottom-color: var(--main-color);
+    }
+
+    .navbar .profile-pic {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        object-fit: cover;
+        display: block;
+    }
+
+    /* --- Menu Icon (Mobile) --- */
+    #menu-icon {
+        font-size: 4.5rem; /* Made slightly bigger */
+        color: var(--main-color);
+        cursor: pointer;
+        display: none; /* Hidden by default */
+        margin-left: 2rem;
+        z-index: 1001; /* Above navbar when closed */
+    }
+
+    /* --- Main Content Area --- */
+    main {
+      /* Add padding top equal to header height to prevent content overlap */
+      padding-top: var(--header-height-desktop);
     }
 
     .container {
       max-width: 1200px;
-      margin: 0 auto;
+      margin-left: auto;
+      margin-right: auto;
+      padding: 3rem 2rem; /* Added padding */
     }
 
     .gym-banner {
       width: 100%;
       border-radius: 10px;
-      margin-bottom: 30px;
+      margin-bottom: 4rem; /* Increased spacing */
     }
 
+    /* --- Profile Section --- */
     .profile-section {
-      margin-bottom: 40px;
+      margin-bottom: 4rem; /* Increased spacing */
+    }
+
+    .profile-section h2 {
+        font-size: 2.8rem;
+        color: var(--main-color);
+        margin-bottom: 2.5rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid var(--color-gold-light);
+        display: inline-block;
     }
 
     .profile-card {
       display: flex;
       align-items: center;
-      gap: 20px;
-      margin-bottom: 20px;
-      background-color: #111;
-      padding: 20px;
+      gap: 3rem; /* Increased gap */
+      margin-bottom: 3rem; /* Increased spacing */
+      background-color: var(--snd-bf-color);
+      padding: 2.5rem; /* Increased padding */
       border-radius: 10px;
+      border-left: 5px solid var(--main-color); /* Accent border */
     }
 
     .profile-card img {
-      width: 100px;
-      height: 100px;
+      width: 120px; /* Slightly larger */
+      height: 120px;
       border-radius: 50%;
       object-fit: cover;
+      flex-shrink: 0; /* Prevent image shrinking */
+      border: 3px solid var(--main-color); /* Optional border */
     }
 
     .profile-info h3 {
-      margin-bottom: 5px;
-      color: #FFD700;
+      font-size: 2rem; /* Increased size */
+      margin-bottom: 0.8rem; /* Adjusted spacing */
+      color: var(--color-gold-light);
     }
 
+    .profile-info p {
+        font-size: 1.6rem; /* Standard paragraph size */
+        color: var(--color-text-muted);
+        line-height: 1.7;
+    }
+
+    /* --- Membership Options --- */
     .membership-options {
       display: flex;
-      flex-direction: column;
-      gap: 15px;
-      margin-top: 30px;
+      flex-direction: column; /* Stack buttons */
+      gap: 2rem; /* Increased gap */
+      margin-top: 3rem;
+      align-items: center; /* Center buttons if container is wider */
     }
 
-    .membership-options button {
-      background-color: #FFD700;
-      color: #000;
-      border: none;
-      padding: 15px;
-      font-size: 16px;
+    /* Style for the anchor tags acting as buttons */
+    .btn-membership {
+      display: inline-block; /* Allows padding and width */
+      background-color: var(--main-color);
+      color: var(--color-black);
+      border: 2px solid var(--main-color);
+      padding: 1.5rem 3.5rem; /* Increased padding */
+      font-size: 1.7rem; /* Increased size */
       font-weight: 600;
       border-radius: 8px;
       cursor: pointer;
-      transition: 0.3s ease;
+      transition: all 0.3s ease;
+      text-align: center;
+      min-width: 300px; /* Ensure buttons have a decent width */
     }
-    .site-header {
-    padding-top: 1rem; 
-    padding-bottom: 1rem;
-    margin-bottom: 2rem;
-}
 
-.header-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-   
-    
-}
-.logo {
-    height: 100px;
-    width: auto;
-    display: block; 
-}
-
-    .membership-options button:hover {
-      background-color: #f0c44c;
+    .btn-membership:hover {
+      background-color: transparent;
+      color: var(--main-color);
+      transform: translateY(-3px); /* Slight lift effect */
+       box-shadow: 0 5px 15px rgba(255, 215, 0, 0.2); /* Subtle gold glow */
     }
-    button a{
-        text-decoration: none;
-        list-style: none;
-        color: black;
+
+    /* Optional: Style for the second button if needed */
+    .btn-membership.secondary {
+        background-color: transparent;
+        color: var(--main-color);
     }
-    .btn {
-    display: inline-block;
-    padding: 8px 18px;
-    border: 1px solid transparent;
-    border-radius: 4px;
-    text-decoration: none;
-    font-weight: 400;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-size: 1rem;
-    line-height: 1.5; 
-}
+    .btn-membership.secondary:hover {
+        background-color: var(--main-color);
+        color: var(--color-black);
+         box-shadow: 0 5px 15px rgba(255, 215, 0, 0.2);
+    }
 
 
-.btn-back {
-    color: var(--gold-primary);
-    border-color: var(--gold-primary);
-    background-color: transparent;
-}
+    /* --- Media Queries --- */
 
-.btn-back:hover {
-    background-color: var(--gold-primary);
-    color: var(--dark-bg);
-}
+    /* Larger Tablets / Small Laptops */
+    @media (max-width: 991px) {
+        html { font-size: 55%; } /* Adjust base font size */
+        header {
+            height: var(--header-height-mobile);
+            padding: 1rem 5%;
+        }
+        main {
+             padding-top: var(--header-height-mobile); /* Match mobile header height */
+        }
 
-.btn-back i {
-    margin-right: 5px;
-    vertical-align: middle; 
-}
+        #menu-icon {
+             display: block; /* Show burger menu */
+        }
 
+        .navbar {
+            position: absolute;
+            top: 100%; /* Position below header */
+            right: -100%; /* Start off-screen */
+            width: 250px;
+            height: auto; /* Adjust height based on content */
+            background: var(--color-black); /* Solid background */
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem;
+            transition: right .50s ease;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+            border-radius: 0 0 10px 10px; /* Rounded bottom corners */
+            justify-content: flex-start;
+            flex-grow: 0;
+            margin-left: 0; /* Reset margin */
+            gap: 1.5rem; /* Add gap between nav sections */
+        }
+        .navbar.active { /* This class needs to be toggled by JS */
+            right: 5%; /* Slide in from the right */
+            display: flex;
+        }
+
+        .navbar-left,
+        .navbar-right {
+            flex-direction: column;
+            width: 100%;
+            align-items: center;
+            gap: 1rem; /* Space between items in sections */
+        }
+        .navbar-right { margin-top: 1.5rem; }
+
+        .navbar li {
+            width: 100%;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+         /* Mobile order: Profile Pic first, then Logout */
+        .navbar-right li:has(.profile-pic) { order: 0; margin-bottom: 1.5rem; margin-right: 0;}
+        .navbar-right li:has(a[href="login_signup.html"]) { order: 1; margin-bottom: 0;}
+
+        .navbar a {
+            display: block; /* Make links take full width */
+            margin: 0 !important; /* Override specific margins */
+            padding: 1rem 0;
+            font-size: 2rem; /* Larger font for mobile menu */
+            text-align: center;
+            border-bottom: none; /* Remove border in mobile menu */
+        }
+         .navbar a:hover,
+         .navbar a.active {
+             color: var(--main-color);
+             border-bottom: none; /* Ensure no border on hover/active */
+         }
+
+        .navbar .profile-pic {
+            margin: 0 auto 1rem auto; /* Center pic and add margin below */
+        }
+
+        .container { padding: 2.5rem 1.5rem; }
+        .gym-banner { margin-bottom: 3rem; }
+        .profile-section h2 { font-size: 2.4rem; margin-bottom: 2rem; }
+        .profile-card { padding: 2rem; gap: 2rem; margin-bottom: 2.5rem;}
+        .profile-card img { width: 100px; height: 100px; }
+        .profile-info h3 { font-size: 1.8rem; }
+        .profile-info p { font-size: 1.5rem; }
+        .btn-membership { padding: 1.2rem 3rem; font-size: 1.6rem; min-width: 250px;}
+    }
+
+    /* Mobile Phones */
     @media (max-width: 768px) {
-      .profile-card {
-        flex-direction: column;
-        text-align: center;
-      }
+        html { font-size: 50%; } /* Further adjust base font size */
+        header {
+             padding: 1rem 4%;
+             height: calc(var(--header-height-mobile) - 10px); /* Slightly smaller header */
+        }
+         main {
+             padding-top: calc(var(--header-height-mobile) - 10px); /* Match header */
+        }
+        .logo img { max-width: 150px; }
 
-      .profile-card img {
-        width: 80px;
-        height: 80px;
-      }
+        .profile-card {
+            flex-direction: column; /* Stack image and text */
+            text-align: center;
+            align-items: center; /* Center items horizontally */
+        }
+
+        .profile-card img {
+            width: 90px; /* Adjust size */
+            height: 90px;
+            margin-bottom: 1.5rem; /* Add space below image */
+        }
+
+        .membership-options { gap: 1.5rem; }
+        .btn-membership { min-width: 220px; padding: 1.2rem 2.5rem; font-size: 1.5rem;}
+
     }
+
+     @media (max-width: 480px) {
+        header { padding: 0.8rem 3%; height: calc(var(--header-height-mobile) - 20px); }
+        main { padding-top: calc(var(--header-height-mobile) - 20px); }
+        .logo img { max-width: 130px; }
+        .container { padding: 2rem 1rem; }
+        .gym-banner { margin-bottom: 2.5rem; }
+        .profile-section h2 { font-size: 2rem; margin-bottom: 1.5rem; }
+        .profile-card { padding: 1.5rem; gap: 1.5rem; margin-bottom: 2rem;}
+        .profile-card img { width: 80px; height: 80px; }
+        .profile-info h3 { font-size: 1.6rem; }
+        .profile-info p { font-size: 1.4rem; }
+        .btn-membership { width: 100%; min-width: unset; padding: 1rem 2rem; font-size: 1.4rem;} /* Full width buttons */
+     }
+
   </style>
-  
 </head>
-<header class="site-header container">
-  <div class="header-content">
-      
-      <a href="home.html" class="btn btn-back">
-          <i class="bi bi-arrow-left-circle"></i> Back
-      </a>
-
-      <img src="../images/logo.png" alt="OptiLife Logo" class="logo">
-  </div>
-</header>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gym Membership</title>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <!-- Boxicons CSS -->
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  <!-- Link to your external CSS (make sure CSS is in style.css) -->
+  <link rel="stylesheet" href="style.css">
+  <!-- Remove the <style> block from here if CSS is external -->
+</head>
 <body>
-  <div class="container">
-    <img src="../images/gymbuild.jpg" alt="Gym Image" class="gym-banner">
 
-    <div class="profile-section">
-      <h2>Owner</h2>
-      <div class="profile-card">
-        <img src="../images/owner.jpg" alt="Owner">
-        <div class="profile-info">
-          <h3>Alex Strong</h3>
-          <p>Certified trainer with 15+ years of experience in fitness and gym management.</p>
+  <header>
+    <a href="/User/home.html" class="logo"><img src="../images/logo.png" alt="Gym Logo"></a>
+    <i class='bx bx-menu' id="menu-icon"></i>
+    <ul class="navbar">
+         <div class="navbar-left">
+             <li><a href="/User/home.html">Home</a></li>
+             <li><a href="/User/setGoals.html">Set Goals</a></li>
+             <li><a href="/User/progress.html">Track Progress</a></li>
+             <li><a href="membership.html" class="active">Membership</a></li>
+         </div>
+         <div class="navbar-right">
+             <li>
+                 <a href="#profile">
+                     <img src="../images/hprofile.jpg" alt="User Profile" class="profile-pic">
+                 </a>
+             </li>
+             <li>
+                 <a href="login_signup.html">Logout</a>
+             </li>
+         </div>
+    </ul>
+  </header>
+
+  <main>
+    <div class="container">
+      <img src="../images/gymbuild.jpg" alt="Inside the Gym" class="gym-banner">
+
+      <div class="profile-section" id="profile">
+        <h2>Meet the Team</h2>
+        <div class="profile-card">
+          <img src="../images/owner.jpg" alt="Alex Strong, Owner">
+          <div class="profile-info">
+            <h3>Alex Strong <small>(Owner)</small></h3>
+            <p>Certified trainer with 15+ years of experience in fitness and gym management. Passionate about helping members achieve their peak potential.</p>
+          </div>
+        </div>
+        <h3>Coaches</h3>
+        <div class="profile-card">
+          <img src="../images/coach1.jpg" alt="Jordan Blaze, Coach">
+          <div class="profile-info">
+            <h3>Jordan Blaze</h3>
+            <p>Strength and conditioning specialist focusing on functional fitness and powerlifting techniques.</p>
+          </div>
+        </div>
+        <div class="profile-card">
+          <img src="../images/coach2.jpg" alt="Mia Storm, Coach">
+          <div class="profile-info">
+            <h3>Mia Storm</h3>
+            <p>Expert in cardio, endurance training, and group fitness classes designed to boost energy and stamina.</p>
+          </div>
         </div>
       </div>
 
-      <h2>Coaches</h2>
-      <div class="profile-card">
-        <img src="../images/coach1.jpg" alt="Coach 1">
-        <div class="profile-info">
-          <h3>Jordan Blaze</h3>
-          <p>Strength and conditioning specialist.</p>
-        </div>
-      </div>
-      <div class="profile-card">
-        <img src="../images/coach2.jpg" alt="Coach 2">
-        <div class="profile-info">
-          <h3>Mia Storm</h3>
-          <p>Cardio and endurance coach.</p>
-        </div>
+      <div class="membership-options">
+        <a href="paymentMethods.html" class="btn-membership">Join Now with Coach (Premium)</a>
+        <a href="paymentMethods.html" class="btn-membership secondary">Join Now without Coach</a>
       </div>
     </div>
+  </main>
 
-    <div class="membership-options">
-      <button><a href="paymentMethods.html">Join Now with Coach (Premium)</a></button>
-      <button><a href="paymentMethods.html">Join Now without Coach</a></button>
-    </div>
-  </div>
+  <!-- jQuery CDN -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+  <!-- Custom jQuery Script -->
+  <script>
+    $(document).ready(function() {
+        // Cache jQuery selectors for performance
+        var menuIcon = $('#menu-icon');
+        var navbar = $('.navbar');
+
+        // Toggle menu on icon click
+        menuIcon.on('click', function() {
+            // Toggle the 'bx-x' class on the icon (changes burger to X)
+            $(this).toggleClass('bx-x');
+            // Toggle the 'active' class on the navbar (slides it in/out)
+            navbar.toggleClass('active');
+        });
+
+        // Optional: Close menu when a navigation link is clicked
+        $('.navbar a').on('click', function() {
+            // Only close if the menu is actually open (mobile view)
+            if (navbar.hasClass('active')) {
+                navbar.removeClass('active');
+                menuIcon.removeClass('bx-x'); // Reset icon to burger
+            }
+            // Allow default link behavior (navigation)
+        });
+
+        // Optional: Close menu on scroll
+        $(window).on('scroll', function() {
+            // Only close if the menu is actually open (mobile view)
+            if (navbar.hasClass('active')) {
+                navbar.removeClass('active');
+                menuIcon.removeClass('bx-x'); // Reset icon to burger
+            }
+        });
+
+    }); // End of document ready
+  </script>
+
 </body>
 </html>

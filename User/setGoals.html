@@ -3,188 +3,335 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SetGoals - OptiLife</title>
-    <link rel="stylesheet" href="usercss/setGoals.css">
+    <title>Set Goals - OptiLife</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css'>
+    <!-- Boxicons CSS -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <!-- Link to the CSS file with the BLACK/GOLD theme and correct header styles -->
+    <link rel="stylesheet" href="usercss/home.css">
+    <!-- IMPORTANT: Ensure usercss/setGoals.css is removed or doesn't conflict -->
+
+    <!-- Add specific styles for setGoals page content -->
+    <style>
+        /* Styles specific to the layout and elements BELOW the header */
+        :root {
+            --card-bg-setgoals: #ffffff;
+            --text-dark-setgoals: #333;
+            --border-color-light-setgoals: #e0e0e0;
+            --primary-color-darkest-setgoals: #B8860B; /* Gold for highlights */
+            --grid-gap: 1.5rem;
+            --content-padding: 1.5rem;
+            --button-primary-bg: #FFD700;
+            --button-primary-text: #0a0a0a;
+            --button-primary-hover-bg: #DAA520;
+            --button-secondary-bg: #e0e0e0;
+            --button-secondary-text: #333;
+            --button-secondary-hover-bg: #bdbdbd;
+            --modal-overlay-bg: rgba(0, 0, 0, 0.7);
+        }
+
+        main.content-grid {
+            padding-top: calc(var(--header-height-desktop, 120px) + 2rem);
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: var(--grid-gap);
+            padding-left: var(--content-padding);
+            padding-right: var(--content-padding);
+            padding-bottom: var(--content-padding);
+            max-width: 1200px;
+            margin: 0 auto;
+            color: var(--text-dark-setgoals);
+        }
+
+        .card {
+            background-color: var(--card-bg-setgoals);
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--border-color-light-setgoals);
+            color: var(--text-dark-setgoals);
+        }
+
+        .calendar-widget {
+             height: fit-content;
+             border: 2px solid var(--primary-color-darkest-setgoals);
+        }
+
+        .calendar-widget h2,
+        .calendar-widget .input-block label,
+        .nutrient-header span:first-child,
+        #log-meal-modal h3,
+        #log-meal-modal .logged-items-display h4 {
+             color: var(--primary-color-darkest-setgoals) !important;
+        }
+
+        .calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; font-weight: 500; color: var(--text-dark-setgoals); }
+        .cal-nav { border: 1px solid var(--border-color-light-setgoals); color: #555; padding: 3px 8px; border-radius: 4px; cursor: pointer; background: none; }
+        .cal-nav:hover { color: var(--primary-color-darkest-setgoals); border-color: var(--primary-color-darkest-setgoals); }
+        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; text-align: center; margin-bottom: 1.5rem; }
+        .day-name { font-weight: 600; font-size: 0.8rem; color: #666; text-transform: uppercase; }
+        .date-cell { display: flex; justify-content: center; align-items: center; aspect-ratio: 1 / 1; }
+        .date-cell button { width: 100%; height: 100%; border-radius: 50%; border: 2px solid transparent; background-color: transparent; color: var(--text-dark-setgoals); cursor: pointer; font-size: 0.9rem; transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease; display: flex; align-items: center; justify-content: center; padding: 0; }
+        .date-cell button:hover:not(.selected) { background-color: #eee; border-color: var(--border-color-light-setgoals); }
+        .date-cell button.selected { background-color: var(--main-color); color: var(--color-black); font-weight: bold; border-color: var(--color-gold); }
+        .date-cell.empty { visibility: hidden; }
+
+        .calendar-widget .input-block { margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-color-light-setgoals); }
+        .calendar-widget .input-block:last-child { border-bottom: none; padding-bottom: 0; margin-bottom: 0; }
+        .calendar-widget .input-block label { font-size: 0.85rem; margin-bottom: 5px; font-weight: 500; text-transform: uppercase; display: block; }
+        .calendar-widget .info-input { background-color: #f9f9f9; border: 1px solid var(--border-color-light-setgoals); color: var(--text-dark-setgoals); font-size: 0.95rem; padding: 8px 10px; width: 100%; border-radius: 4px; }
+        .calendar-widget .info-input:focus { outline: none; border-color: var(--color-gold); box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.2); }
+
+        /* --- Main Tab Content --- */
+        .main-tab-content {
+            border: 2px solid var(--primary-color-darkest-setgoals);
+            border-radius: 8px;
+            background-color: var(--card-bg-setgoals);
+            color: var(--text-dark-setgoals);
+            min-width: 0;
+        }
+        /* === CSS REQUIRED FOR TAB FUNCTIONALITY === */
+        .tab-content {
+             display: none; /* Hide sections by default */
+        }
+        .tab-content.active {
+             display: block; /* Show only the active one */
+             animation: fadeIn 0.5s ease-in-out; /* Optional fade */
+        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        /* ========================================= */
+
+        .content-placeholder { padding: 1.5rem; background-color: transparent; border-radius: 0; border: none; min-height: 300px; box-shadow: none; }
+        .content-placeholder h1 { font-size: 1.6rem; margin-bottom: 1.5rem; font-weight: 600; color: var(--text-dark-setgoals); text-align: left; padding-bottom: 0.8rem; border-bottom: 2px solid var(--main-color); display: inline-block; }
+
+        /* --- Internal Page Tab Styles --- */
+        .main-content-tabs {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+            padding: 1rem 1.5rem;
+            border-bottom: 2px solid var(--border-color-light-setgoals);
+            gap: 1rem;
+        }
+        /* Style the <button> elements */
+        button.main-tab-button {
+            display: inline-flex; align-items: center; gap: 0.7rem;
+            padding: 0.8rem 1.5rem; font-size: 1.5rem; font-weight: 500;
+            color: var(--text-dark-setgoals); background-color: #f0f0f0;
+            border: 1px solid var(--border-color-light-setgoals); border-radius: 6px;
+            cursor: pointer; transition: all 0.3s ease;
+            font-family: inherit; /* Ensure button uses correct font */
+        }
+        button.main-tab-button i { font-size: 1.8rem; line-height: 1; }
+        button.main-tab-button:hover { background-color: #e0e0e0; border-color: #ccc; }
+        button.main-tab-button.active {
+            background-color: var(--main-color); color: var(--color-black);
+            font-weight: 600; border-color: var(--color-gold);
+            box-shadow: 0 2px 5px rgba(218, 165, 32, 0.2);
+        }
+        /* --- End Internal Page Tab Styles --- */
+
+
+        /* --- Workout Log (#tabs-1) --- */
+        #tabs-1 .content-placeholder h1::before { content: "Fitness Goals: "; font-weight: normal; color: #555; }
+        .activity-planner.card { border: 1px solid var(--border-color-light-setgoals); background-color: #fdfdfd; padding: 1.5rem; border-radius: 5px; margin-top: 1rem; }
+        .activity-planner h2, .activity-planner h3 { color: var(--primary-color-darkest-setgoals); margin-bottom: 1rem; }
+        .activity-planner h3 { margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--border-color-light-setgoals); }
+        .activity-planner .activity-form { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; align-items: flex-end; margin-bottom: 1.5rem; }
+        .input-group label { display: block; margin-bottom: 5px; color: #555; font-weight: 500; font-size: 0.9rem; }
+        .input-group input[type="text"], .input-group select { width: 100%; padding: 10px; border: 1px solid var(--border-color-light-setgoals); background-color: #fff; color: var(--text-dark-setgoals); border-radius: 4px; font-size: 0.95rem; }
+        .input-group input[type="text"]:focus, .input-group select:focus { outline: none; border-color: var(--color-gold); box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.2); }
+        #add-activity-btn { grid-column: 1 / -1; width: auto; justify-self: start; padding: 10px 25px; margin-top: 10px; background-color: var(--main-color); color: var(--color-black); font-weight: 600; border: none; border-radius: 4px; cursor: pointer; }
+        #add-activity-btn:hover { background-color: var(--color-gold); }
+        #weekly-plan-display { margin-top: 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; }
+        .day-schedule { background-color: #f9f9f9; padding: 1rem; border-radius: 5px; border: 1px solid var(--border-color-light-setgoals); }
+        .day-schedule h4 { color: var(--text-dark-setgoals); border-bottom: 1px solid var(--main-color); padding-bottom: 5px; margin-bottom: 10px; font-weight: 600; }
+        .day-schedule ul { min-height: 30px; padding-left: 0; list-style: none; }
+        .day-schedule li { background-color: #fff; padding: 10px 15px; margin-bottom: 8px; border-radius: 4px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #eee; font-size: 0.9rem; word-break: break-word; }
+
+         /* --- Nutrition Tabs (#tabs-3) --- */
+        #tabs-3 .content-placeholder h1::before { content: "Nutrition Goals: "; font-weight: normal; color: #555;}
+        .tabs { display: flex; justify-content: center; flex-wrap: wrap; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-color-light-setgoals); padding-bottom: 0.5rem; gap: 10px; }
+        .tabs .tab-button { color: var(--primary-color-darkest-setgoals); font-size: 0.95rem; padding: 0.6rem 1rem; border-radius: 4px; transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease; white-space: nowrap; border: 2px solid transparent; background-color: transparent; cursor: pointer; font-weight: 500; }
+        .tab-button:hover { color: var(--text-dark-setgoals); background-color: #eee; }
+        .tab-button.active { background-color: var(--main-color); color: var(--color-black); font-weight: 600; border-color: var(--color-gold); }
+        /* Nutrition sub-tabs */
+        .nutrition-tab-content { display: none; padding-top: 1rem; animation: fadeIn 0.5s ease-in-out; }
+        .nutrition-tab-content.active { display: block; }
+        .nutrition-tab-content h2 { font-size: 1.3rem; margin-bottom: 1.5rem; font-weight: 600; color: #555; text-align: center; }
+        .nutrition-details-full { max-width: 700px; margin: 0 auto; }
+        .calories-breakdown { display: flex; flex-direction: column; gap: 0.8rem; margin-bottom: 1.5rem; }
+        .meal-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; background-color: #fafafa; border-radius: 4px; border: 1px solid #eee; }
+        .meal-info { font-size: 0.9rem; flex-grow: 1; }
+        .meal-info div:first-child { font-weight: 500; color: var(--text-dark-setgoals); }
+        .meal-info div:last-child { color: #666; font-size: 0.85em; }
+        .add-food-btn { background-color: #eee; color: #555; margin-left: auto; border: 1px solid #ccc; padding: 5px 8px; font-size: 0.9rem; line-height: 1; border-radius: 50%; width: 28px; height: 28px; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; cursor: pointer;}
+        .add-food-btn:hover { background-color: #ddd; color: var(--text-dark-setgoals); border-color: #bbb; }
+        .calorie-summary { display: flex; flex-direction: column; gap: 10px; color: #666; font-size: 1em; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border-color-light-setgoals); }
+        .summary-item { display: flex; justify-content: space-between; align-items: center; }
+        .summary-item span:last-child { font-weight: 600; color: var(--text-dark-setgoals); }
+        .summary-item span.exercise { color: #f44336; }
+        .summary-item.goal span:last-child { color: var(--primary-color-darkest-setgoals); font-size: 1.1em; font-weight: bold; }
+        .summary-divider { border: none; height: 1px; background-color: var(--border-color-light-setgoals); margin: 5px 0; }
+        .editable { cursor: pointer; border-bottom: 1px dashed var(--primary-color-darkest-setgoals); padding-bottom: 1px; transition: background-color 0.2s ease; display: inline-block; }
+        .editable:hover { background-color: rgba(255, 215, 0, 0.15); }
+        .nutrient-header { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 10px; padding: 0 10px 10px 10px; font-size: 0.85em; font-weight: 600; text-align: right; border-bottom: 1px solid var(--border-color-light-setgoals); margin-bottom: 10px; text-transform: uppercase; }
+        .nutrient-list { list-style: none; max-height: 400px; overflow-y: auto; padding-right: 5px; }
+        .nutrient-list li { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 10px; padding: 10px; border-bottom: 1px solid #f0f0f0; align-items: center; font-size: 0.95em; }
+        .nutrient-list li:last-child { border-bottom: none; }
+        .nutrient-list li span:first-child { font-weight: 500; text-align: left; color: var(--text-dark-setgoals); }
+        .nutrient-list li span:not(:first-child) { text-align: right; color: #666; }
+        .macros-legend { display: flex; flex-direction: column; gap: 1rem; }
+        .legend-item { display: grid; grid-template-columns: auto 1fr auto auto; align-items: center; gap: 10px; font-size: 0.95em; color: var(--text-dark-setgoals); padding: 10px; background-color: #fafafa; border-radius: 4px; border: 1px solid #eee; }
+        .color-square { width: 14px; height: 14px; display: inline-block; border-radius: 3px; border: 1px solid rgba(0,0,0,0.1); }
+
+        /* --- Modal Styles --- */
+        .modal { display: none; position: fixed; z-index: 1050; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: var(--modal-overlay-bg); align-items: center; justify-content: center; padding: 1rem; }
+        .modal.active { display: flex; animation: fadeInModal 0.3s ease-out; }
+        @keyframes fadeInModal { from { opacity: 0; } to { opacity: 1; } }
+        .modal-content { background-color: var(--card-bg-setgoals); padding: 2rem; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); width: 100%; max-width: 500px; position: relative; animation: slideInModal 0.3s ease-out; max-height: 90vh; overflow-y: auto; color: var(--text-dark-setgoals); }
+        @keyframes slideInModal { from { transform: translateY(-30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .modal-close-btn { position: absolute; top: 10px; right: 15px; font-size: 1.8rem; font-weight: bold; color: #aaa; background: none; border: none; cursor: pointer; line-height: 1; }
+        .modal-close-btn:hover { color: #333; }
+        #log-meal-modal h3 { margin-top: 0; margin-bottom: 1.5rem; text-align: center; border-bottom: 1px solid var(--border-color-light-setgoals); padding-bottom: 0.8rem; }
+        #log-meal-modal h3 span { color: var(--text-dark-setgoals); font-weight: 500; font-size: 0.9em; }
+        #log-meal-modal form { display: flex; flex-direction: column; gap: 10px; }
+        #log-meal-modal .edit-input-container label { display: block; font-size: 0.9rem; margin-bottom: 4px; color: #555; font-weight: 500; }
+        #log-meal-modal .edit-input-container input, #log-meal-modal .edit-input-container select { width: 100%; font-size: 0.95rem; padding: 8px 10px; border: 1px solid var(--border-color-light-setgoals); border-radius: 4px; background-color: #fff; color: var(--text-dark-setgoals);}
+        #log-meal-modal .edit-input-container input:focus, #log-meal-modal .edit-input-container select:focus { outline: none; border-color: var(--color-gold); box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.2); }
+        #log-meal-modal .modal-actions { margin-top: 1.5rem; display: flex; justify-content: flex-end; gap: 10px; }
+        #log-meal-save-button { background-color: var(--main-color); color: var(--color-black); border: none; padding: 10px 18px; border-radius: 4px; font-weight: 600; cursor: pointer;}
+        #log-meal-save-button:hover { background-color: var(--color-gold); }
+        #log-meal-cancel-button { background-color: #ccc; color: #333; border: none; padding: 10px 18px; border-radius: 4px; font-weight: 600; cursor: pointer;}
+        #log-meal-cancel-button:hover { background-color: #bbb; }
+        #log-meal-modal .logged-items-display { margin-top: 1.5rem; text-align: left; max-height: 150px; overflow-y: auto; border: 1px solid var(--border-color-light-setgoals); border-radius: 4px; padding: 10px; background-color: #f9f9f9; }
+        #log-meal-modal .logged-items-display h4 { margin: 0 0 0.5rem 0; font-size: 1rem; border-bottom: 1px solid var(--border-color-light-setgoals); padding-bottom: 0.3rem; }
+        #log-meal-modal .logged-items-list { list-style: none; padding-left: 0; font-size: 0.9em; }
+        #log-meal-modal .logged-items-list li { padding: 4px 0; border-bottom: 1px dashed var(--border-color-light-setgoals); display: flex; justify-content: space-between; gap: 8px; }
+        #log-meal-modal .logged-items-list li:last-child { border-bottom: none; }
+        #log-meal-modal .logged-items-list .item-name { font-weight: 500; flex-grow: 1; word-break: break-word; margin-right: 10px; }
+        #log-meal-modal .logged-items-list .item-details { color: #666; font-size: 0.9em; white-space: nowrap; flex-shrink: 0; }
+        #log-meal-modal .logged-items-list .no-items-logged { color: #666; font-style: italic; text-align: center; padding: 10px 0; border-bottom: none; display: block; }
+        .validation-error { color: #f44336; }
+
+        /* --- Responsive Adjustments --- */
+        @media (max-width: 992px) {
+             main.content-grid {
+                 grid-template-columns: 1fr;
+                 padding-top: calc(var(--header-height-mobile, 90px) + 1rem);
+            }
+             .calendar-widget { order: -1; margin-bottom: var(--grid-gap); }
+        }
+         @media (max-width: 767px) {
+             main.content-grid {
+                 padding-top: calc(var(--header-height-mobile, 90px) - 10px + 1rem);
+             }
+         }
+         @media (max-width: 480px) {
+              main.content-grid {
+                 padding-top: calc(var(--header-height-mobile, 90px) - 20px + 1rem);
+             }
+              .activity-planner .activity-form { grid-template-columns: 1fr; }
+              #weekly-plan-display { grid-template-columns: 1fr; }
+              .main-tab-button { font-size: 1.3rem; padding: 0.6rem 1rem; }
+         }
+
+    </style>
 </head>
 <body>
 
-    <header class="header">
-        <nav class="navbar">
-            <a href="home.html" class="nav-logo"><img src="../images/logo.png" alt="OptiLife Logo"></a>
-            <ul class="nav-menu-desktop">
-                <li class="nav-item"><a href="home.html" class="nav-link">Home</a></li>
-                <li class="nav-item"><a href="#tabs-1" class="nav-link">Fitness Goals</a></li>
-                <li class="nav-item"><a href="#tabs-3" class="nav-link">Nutrition Goals</a></li>
-            </ul>
-            <a href="#" class="nav-logo user-logo"><img src="../images/user_pic.jpg" alt="User profile picture"></a>
-            <button class="hamburger" id="hamburger-button" aria-label="Open menu" aria-expanded="false">
-                <i class='bx bx-menu'></i>
-            </button>
-        </nav>
-        <div class="sidebar" id="sidebar">
-            <div class="sidebar-header">
-                <span class="sidebar-brand"><img src="../images/logo.png" alt="OptiLife Logo" class="sidebar-logo-img"></span>
-                <button class="close-btn" id="close-button" aria-label="Close menu">×</button>
-            </div>
-            <ul class="sidebar-menu">
-                <div class="userprofile"><a href="#" class="nav-logo"><img src="../images/user_pic.jpg" alt="User profile picture" class="sidebar-user-img"></a><h4>User</h4></div>
-                <li class="nav-item"><a href="home.html" class="nav-link">Home</a></li>
-                <li class="nav-item"><a href="#tabs-1" class="nav-link">Fitness Goals</a></li>
-                <li class="nav-item"><a href="#tabs-3" class="nav-link">Nutrition Goals</a></li>
-            </ul>
-        </div>
-        <div class="overlay" id="overlay"></div> <!-- Sidebar overlay -->
+    <!-- Standard Header Structure -->
+    <header>
+        <a href="home.html" class="logo"><img src="../images/logo.png" alt="OptiLife Logo"></a>
+        <div class='bx bx-menu' id="menu-icon"></div>
+        <ul class="navbar">
+             <div class="navbar-left">
+                 <li><a href="home.html">Home</a></li>
+                 <li><a href="setGoals.html" class="active">Set Goals</a></li>
+                 <!-- Standard Site Navigation -->
+                 <li><a href="progress.html">Track Progress</a></li>
+                 <li><a href="membership.html">Membership</a></li>
+             </div>
+             <div class="navbar-right">
+                 <li>
+                     <img src="../images/user_pic.jpg" alt="User Profile" class="profile-pic">
+                 </li>
+                 <li>
+                     <!-- Ensure this href is correct -->
+                     <a href="login_signup.html" id="logout-link">Logout</a>
+                 </li>
+             </div>
+        </ul>
     </header>
 
+    <!-- Main content -->
     <main class="content-grid">
-         <div class="calendar-widget card">
-            <h2 style="color: var(--primary-color-darkest);">Select Date</h2>
+        <div class="calendar-widget card">
+             <h2>Select Date</h2>
             <div class="calendar-header">
                 <button class="cal-nav prev" aria-label="Previous month"><</button>
-                <span class="current-month-year">April 2025</span> 
+                <span class="current-month-year">April 2025</span>
                 <button class="cal-nav next" aria-label="Next month">></button>
             </div>
             <div class="calendar-grid">
-                <!-- Static calendar days -->
-                <div class="day-name">S</div> <div class="day-name">M</div> <div class="day-name">T</div>
-                <div class="day-name">W</div> <div class="day-name">T</div> <div class="day-name">F</div>
-                <div class="day-name">S</div>
-                <div class="date-cell empty"></div> <div class="date-cell empty"></div>
-                <div class="date-cell"><button>1</button></div> <div class="date-cell"><button>2</button></div>
-                <div class="date-cell"><button>3</button></div> <div class="date-cell"><button>4</button></div>
-                <div class="date-cell"><button>5</button></div> <div class="date-cell"><button>6</button></div>
-                <div class="date-cell"><button>7</button></div> <div class="date-cell"><button>8</button></div>
-                <div class="date-cell"><button>9</button></div> <div class="date-cell"><button>10</button></div>
-                <div class="date-cell"><button>11</button></div> <div class="date-cell"><button>12</button></div>
-                <div class="date-cell"><button>13</button></div> <div class="date-cell"><button>14</button></div>
-                <div class="date-cell"><button class="selected" data-date="2025-04-15">15</button></div> 
-                <div class="date-cell"><button data-date="2025-04-16">16</button></div> <div class="date-cell"><button data-date="2025-04-17">17</button></div>
-                <div class="date-cell"><button data-date="2025-04-18">18</button></div> <div class="date-cell"><button data-date="2025-04-19">19</button></div>
-                <div class="date-cell"><button data-date="2025-04-20">20</button></div> <div class="date-cell"><button data-date="2025-04-21">21</button></div>
-                <div class="date-cell"><button data-date="2025-04-22">22</button></div> <div class="date-cell"><button data-date="2025-04-23">23</button></div>
-                <div class="date-cell"><button data-date="2025-04-24">24</button></div> <div class="date-cell"><button data-date="2025-04-25">25</button></div>
-                <div class="date-cell"><button data-date="2025-04-26">26</button></div> <div class="date-cell"><button data-date="2025-04-27">27</button></div>
-                <div class="date-cell"><button data-date="2025-04-28">28</button></div> <div class="date-cell"><button data-date="2025-04-29">29</button></div>
-                <div class="date-cell"><button data-date="2025-04-30">30</button></div> <div class="date-cell empty"></div>
+                <!-- Calendar days... -->
+                <div class="day-name">S</div> <div class="day-name">M</div> <div class="day-name">T</div> <div class="day-name">W</div> <div class="day-name">T</div> <div class="day-name">F</div> <div class="day-name">S</div>
+                <div class="date-cell empty"></div> <div class="date-cell empty"></div> <div class="date-cell"><button>1</button></div> <div class="date-cell"><button>2</button></div> <div class="date-cell"><button>3</button></div> <div class="date-cell"><button>4</button></div> <div class="date-cell"><button>5</button></div>
+                <div class="date-cell"><button>6</button></div> <div class="date-cell"><button>7</button></div> <div class="date-cell"><button>8</button></div> <div class="date-cell"><button>9</button></div> <div class="date-cell"><button>10</button></div> <div class="date-cell"><button>11</button></div> <div class="date-cell"><button>12</button></div>
+                <div class="date-cell"><button>13</button></div> <div class="date-cell"><button>14</button></div> <div class="date-cell"><button class="selected" data-date="2025-04-15">15</button></div> <div class="date-cell"><button data-date="2025-04-16">16</button></div> <div class="date-cell"><button data-date="2025-04-17">17</button></div> <div class="date-cell"><button data-date="2025-04-18">18</button></div> <div class="date-cell"><button data-date="2025-04-19">19</button></div>
+                <div class="date-cell"><button data-date="2025-04-20">20</button></div> <div class="date-cell"><button data-date="2025-04-21">21</button></div> <div class="date-cell"><button data-date="2025-04-22">22</button></div> <div class="date-cell"><button data-date="2025-04-23">23</button></div> <div class="date-cell"><button data-date="2025-04-24">24</button></div> <div class="date-cell"><button data-date="2025-04-25">25</button></div> <div class="date-cell"><button data-date="2025-04-26">26</button></div>
+                <div class="date-cell"><button data-date="2025-04-27">27</button></div> <div class="date-cell"><button data-date="2025-04-28">28</button></div> <div class="date-cell"><button data-date="2025-04-29">29</button></div> <div class="date-cell"><button data-date="2025-04-30">30</button></div> <div class="date-cell empty"></div>
             </div>
-
-            <!-- Input block -->
-            <div class="input-block">
-                <label for="startDate" style="color: var(--primary-color-darkest);">Start Date</label>
-                <input type="date" id="startDate" name="startDate" class="info-input" value="2025-01-15">
-            </div>
-            <div class="input-block">
-                <label for="goals" style="color: var(--primary-color-darkest);">Overall Goals</label>
-                <input type="text" id="goals" name="goals" class="info-input" placeholder="Enter your goals here..." value="Improved overall fitness, Increased muscle strength">
-            </div>
-            <div class="input-block">
-                <label for="goals" style="color: var(--primary-color-darkest);">Current Weight</label>
-                <input type="text" id="goals" name="goals" class="info-input" placeholder="Weight (kg)" value="45 kg">
-            </div>
-            <div class="input-block">
-                <label for="goals" style="color: var(--primary-color-darkest);">Goal Weight</label>
-                <input type="text" id="goals" name="goals" class="info-input" placeholder="Weight (kg)" value="40 kg">
-            </div>
-            <div class="input-block">
-                <label for="goals" style="color: var(--primary-color-darkest);">Current Weight</label>
-                <input type="text" id="goals" name="goals" class="info-input" placeholder="Weight (kg)" value="45 kg">
-            </div>
-            <div class="input-block">
-                <label for="goals" style="color: var(--primary-color-darkest);">Weight Loss Goal (per week)</label>
-                <select id="goals" name="goals" class="info-input">
-                    <option value="Not Very Active">Loose 1 kg per week</option>
-                    <option value="Lightly Active">Loose 0.75 kg per week</option>
-                    <option value="Active">Loose 0.5 kg per week</option>
-                    <option value="Very Active">Loose 0.25 kg per week</option>
-                    <option value="Lightly Active">Maintain my current weight</option>
-                    <option value="Active">Gain 0.25 kg per week</option>
-                    <option value="Very Active">Gain 0.5 kg per week</option>                    
-                </select>
-            </div>
-            <div class="input-block">
-                <label for="activity-level" style="color: var(--primary-color-darkest);">Activity Level</label>
-                <select id="activity-level" name="activity-level" class="info-input">
-                    <option value="Not Very Active">Not Very Active</option>
-                    <option value="Lightly Active">Lightly Active</option>
-                    <option value="Active">Active</option>
-                    <option value="Very Active">Very Active</option>
-                </select>
-            </div>
+            <!-- Input blocks... -->
+             <div class="input-block"> <label for="startDate">Start Date</label> <input type="date" id="startDate" name="startDate" class="info-input" value="2025-01-15"> </div>
+             <div class="input-block"> <label for="overallGoals">Overall Goals</label> <input type="text" id="overallGoals" name="overallGoals" class="info-input" placeholder="Enter your goals here..." value="Improved overall fitness, Increased muscle strength"> </div>
+             <div class="input-block"> <label for="currentWeight">Current Weight</label> <input type="text" id="currentWeight" name="currentWeight" class="info-input" placeholder="Weight (kg)" value="45 kg"> </div>
+             <div class="input-block"> <label for="goalWeight">Goal Weight</label> <input type="text" id="goalWeight" name="goalWeight" class="info-input" placeholder="Weight (kg)" value="40 kg"> </div>
+             <div class="input-block"> <label for="weightLossGoal">Weight Loss Goal (per week)</label> <select id="weightLossGoal" name="weightLossGoal" class="info-input"> <option>Loose 1 kg per week</option> <option>Loose 0.75 kg per week</option> <option selected>Loose 0.5 kg per week</option> <option>Loose 0.25 kg per week</option> <option>Maintain my current weight</option> <option>Gain 0.25 kg per week</option> <option>Gain 0.5 kg per week</option> </select> </div>
+             <div class="input-block"> <label for="activity-level">Activity Level</label> <select id="activity-level" name="activity-level" class="info-input"> <option value="Not Very Active">Not Very Active</option> <option value="Lightly Active" selected>Lightly Active</option> <option value="Active">Active</option> <option value="Very Active">Very Active</option> </select> </div>
         </div>
 
-         <div class="main-tab-content">
+         <div class="main-tab-content card">
+            <!-- Internal Tab Navigation -->
+            <nav class="main-content-tabs">
+                <!-- Use buttons for show/hide logic -->
+                <!-- Fitness tab is active by default -->
+                <button class="main-tab-button active" data-target="#tabs-1">
+                    <i class='bx bx-dumbbell'></i> Fitness Goals
+                </button>
+                <!-- Nutrition tab is inactive by default -->
+                <button class="main-tab-button" data-target="#tabs-3">
+                    <i class='bx bx-restaurant'></i> Nutrition Goals
+                </button>
+            </nav>
 
-            <!--Fitness Goal tab -->
-            <div id="tabs-1" class="tab-content">
+            <!-- Fitness Goal tab -->
+            <!-- Add 'active' class to show this by default -->
+            <div id="tabs-1" class="tab-content active">
                 <div class="content-placeholder">
-                    <h1>Set Your Fitness Goal:</h1>
+                    <h1>Set Your Fitness Goal</h1>
                     <div class="workout-schedule-container">
                         <section class="activity-planner card">
-                            <h2>Plan Your Weekly Activities</h2>
+                             <h2>Plan Your Weekly Activities</h2>
                             <div class="activity-form">
-                                <div class="input-group">
-                                    <label for="activity-day">Day:</label>
-                                    <select id="activity-day" name="activity-day">
-                                        <option value="Monday">Monday</option>
-                                        <option value="Tuesday">Tuesday</option>
-                                        <option value="Wednesday">Wednesday</option>
-                                        <option value="Thursday">Thursday</option>
-                                        <option value="Friday">Friday</option>
-                                        <option value="Saturday">Saturday</option>
-                                        <option value="Sunday">Sunday</option>
-                                    </select>
-                                </div>
-                                <div class="input-group">
-                                    <label for="activity-type">Workout Type:</label>
-                                    <select id="activity-type" name="activity-type">
-                                        <option value="Upper Body and Lower Body Split">Upper Body and Lower Body Split</option>     
-                                         <option value="Full Body">Full Body</option>
-                                         <option value="Core">Core</option>
-                                         <option value="Push/Pull/Legs">Push/Pull/Legs</option>  
-                                         <option value="Circuit Training">Circuit Training</option>
-                                         <option value="Example: Cardio">Cardio</option>
-                                         <option value="Weightlifting">Weightlifting</option>
-                                         <option value="HIIT">HIIT</option>
-                                         <option value="CrossFit">CrossFit</option>
-                                         <option value="Yoga">Yoga</option>
-                                         <option value="Pilates">Pilates</option>
-                                         <option value="Stretching">Stretching</option>
-                                         <option value="Rest Day">Rest Day</option>                                           
-                                    </select>
-                                </div>
-                                <div class="input-group">
-                                    <label for="activity-description">Activity:</label>
-                                    <input type="text" id="activity-description" name="activity-description" placeholder="e.g., Running, Bench Press">
-                                </div>
-                                <div class="input-group">
-                                    <label for="activity-description">Reps:</label>
-                                    <input type="text" id="activity-description" name="activity-description" placeholder="e.g., 3-5, 8-12">
-                                </div>
-                                <div class="input-group">
-                                    <label for="activity-description">Sets:</label>
-                                    <input type="text" id="activity-description" name="activity-description" placeholder="e.g., 3-5, 8-12">
-                                </div>
-                                <div class="input-group">
-                                    <label for="activity-description">Weight(lb):</label>
-                                    <input type="text" id="activity-description" name="activity-description" placeholder="e.g., 50, 100">
-                                </div>
-                                <div class="input-group">
-                                    <label for="activity-description">Duration:</label>
-                                    <input type="text" id="activity-description" name="activity-description" placeholder="e.g., 30 min, 1 hr">
-                                </div>
-                                 <button id="add-activity-btn" class="btn btn-primary">Add Activity to Plan</button>
+                                <!-- Form inputs... -->
+                                <div class="input-group"> <label for="activity-day">Day:</label> <select id="activity-day" name="activity-day"> <option value="Monday">Monday</option> <option value="Tuesday">Tuesday</option> <option value="Wednesday">Wednesday</option> <option value="Thursday">Thursday</option> <option value="Friday">Friday</option> <option value="Saturday">Saturday</option> <option value="Sunday">Sunday</option> </select> </div>
+                                <div class="input-group"> <label for="activity-type">Workout Type:</label> <select id="activity-type" name="activity-type"> <option>Upper Body and Lower Body Split</option> <option>Full Body</option> <option>Core</option> <option>Push/Pull/Legs</option> <option>Circuit Training</option> <option>Cardio</option> <option>Weightlifting</option> <option>HIIT</option> <option>CrossFit</option> <option>Yoga</option> <option>Pilates</option> <option>Stretching</option> <option>Rest Day</option> </select> </div>
+                                <div class="input-group"> <label for="activity-name">Activity:</label> <input type="text" id="activity-name" name="activityName" placeholder="e.g., Running, Bench Press"> </div>
+                                <div class="input-group"> <label for="activity-reps">Reps:</label> <input type="text" id="activity-reps" name="activityReps" placeholder="e.g., 3-5, 8-12"> </div>
+                                <div class="input-group"> <label for="activity-sets">Sets:</label> <input type="text" id="activity-sets" name="activitySets" placeholder="e.g., 3-5, 8-12"> </div>
+                                <div class="input-group"> <label for="activity-weight">Weight(lb):</label> <input type="text" id="activity-weight" name="activityWeight" placeholder="e.g., 50, 100"> </div>
+                                <div class="input-group"> <label for="activity-duration">Duration:</label> <input type="text" id="activity-duration" name="activityDuration" placeholder="e.g., 30 min, 1 hr"> </div>
+                                <button id="add-activity-btn">Add Activity to Plan</button>
                             </div>
                             <h3>Weekly Schedule:</h3>
                             <div id="weekly-plan-display">
-                                <div class="day-schedule"><h4>Monday</h4><ul data-day="Monday"></ul></div>
-                                <div class="day-schedule"><h4>Tuesday</h4><ul data-day="Tuesday"></ul></div>
-                                <div class="day-schedule"><h4>Wednesday</h4><ul data-day="Wednesday"></ul></div>
-                                <div class="day-schedule"><h4>Thursday</h4><ul data-day="Thursday"></ul></div>
-                                <div class="day-schedule"><h4>Friday</h4><ul data-day="Friday"></ul></div>
-                                <div class="day-schedule"><h4>Saturday</h4><ul data-day="Saturday"></ul></div>
-                                <div class="day-schedule"><h4>Sunday</h4><ul data-day="Sunday"></ul></div>
+                                <!-- Schedule display... -->
+                                <div class="day-schedule"><h4>Monday</h4><ul data-day="Monday"></ul></div> <div class="day-schedule"><h4>Tuesday</h4><ul data-day="Tuesday"></ul></div> <div class="day-schedule"><h4>Wednesday</h4><ul data-day="Wednesday"></ul></div> <div class="day-schedule"><h4>Thursday</h4><ul data-day="Thursday"></ul></div> <div class="day-schedule"><h4>Friday</h4><ul data-day="Friday"></ul></div> <div class="day-schedule"><h4>Saturday</h4><ul data-day="Saturday"></ul></div> <div class="day-schedule"><h4>Sunday</h4><ul data-day="Sunday"></ul></div>
                             </div>
                         </section>
                     </div>
@@ -192,8 +339,9 @@
             </div>
 
             <!-- Nutrition Goals tab -->
+            <!-- Starts hidden (no 'active' class) -->
             <div id="tabs-3" class="tab-content">
-                <div class="content-placeholder">
+                 <div class="content-placeholder">
                     <h1>Nutrition Goals:</h1>
                     <nav class="tabs">
                         <button class="tab-button active" data-tab="calories">CALORIES</button>
@@ -202,6 +350,7 @@
                     </nav>
 
                     <!-- Calories Content tab -->
+                    <!-- Add 'active' class to show this sub-tab by default -->
                     <div id="calories-content" class="nutrition-tab-content active">
                          <h2>Calories Breakdown</h2>
                         <div class="nutrition-details-full">
@@ -411,52 +560,21 @@
     </main>
 
     <!-- Modal for Logging Food -->
-    <div class="modal" id="log-meal-modal" role="dialog" aria-labelledby="log-meal-title" aria-modal="true">
-        <div class="modal-content card"> 
+     <div class="modal" id="log-meal-modal" role="dialog" aria-labelledby="log-meal-title" aria-modal="true">
+        <div class="modal-content card">
             <button class="modal-close-btn" aria-label="Close modal">×</button>
             <h3 id="log-meal-title">Log Food Item for <span id="log-meal-modal-date">Date</span></h3>
             <form id="log-meal-form">
-                <input type="hidden" id="log-meal-date-hidden" name="logDate"> 
-                <div class="edit-input-container">
-                    <label for="log-meal-type">Meal Type:</label>
-                    <select id="log-meal-type" name="mealType" required>
-                        <option value="Breakfast">Breakfast</option>
-                        <option value="Lunch">Lunch</option>
-                        <option value="Dinner">Dinner</option>
-                        <option value="Snacks">Snacks</option>
-                    </select>
-                </div>
-                <div class="edit-input-container">
-                    <label for="log-food-name">Food Name:</label>
-                    <input type="text" id="log-food-name" name="foodName" required placeholder="e.g., Apple, medium">
-                </div>
-                 <div class="edit-input-container">
-                    <label for="log-calories">Calories (kcal):</label>
-                    <input type="number" id="log-calories" name="calories" required min="0" step="1" placeholder="e.g., 95">
-                </div>
-                <div class="edit-input-container">
-                    <label for="log-protein">Protein (g):</label>
-                    <input type="number" id="log-protein" name="protein" min="0" step="0.1" placeholder="e.g., 0.5">
-                </div>
-                 <div class="edit-input-container">
-                    <label for="log-carbs">Carbs (g):</label>
-                    <input type="number" id="log-carbs" name="carbs" min="0" step="0.1" placeholder="e.g., 25">
-                </div>
-                 <div class="edit-input-container">
-                    <label for="log-fat">Fat (g):</label>
-                    <input type="number" id="log-fat" name="fat" min="0" step="0.1" placeholder="e.g., 0.3">
-                </div>
-                <!-- Add more nutrient inputs here if desired (e.g., fiber, sugar) -->
-
-                <p id="log-meal-validation-error" class="validation-error" style="display: none;"></p>
-
+                <input type="hidden" id="log-meal-date-hidden" name="logDate">
+                <!-- Modal form inputs... -->
+                 <div class="edit-input-container"> <label for="log-meal-type">Meal Type:</label> <select id="log-meal-type" name="mealType" required> <option value="Breakfast">Breakfast</option> <option value="Lunch">Lunch</option> <option value="Dinner">Dinner</option> <option value="Snacks">Snacks</option> </select> </div> <div class="edit-input-container"> <label for="log-food-name">Food Name:</label> <input type="text" id="log-food-name" name="foodName" required placeholder="e.g., Apple, medium"> </div> <div class="edit-input-container"> <label for="log-calories">Calories (kcal):</label> <input type="number" id="log-calories" name="calories" required min="0" step="1" placeholder="e.g., 95"> </div> <div class="edit-input-container"> <label for="log-protein">Protein (g):</label> <input type="number" id="log-protein" name="protein" min="0" step="0.1" placeholder="e.g., 0.5"> </div> <div class="edit-input-container"> <label for="log-carbs">Carbs (g):</label> <input type="number" id="log-carbs" name="carbs" min="0" step="0.1" placeholder="e.g., 25"> </div> <div class="edit-input-container"> <label for="log-fat">Fat (g):</label> <input type="number" id="log-fat" name="fat" min="0" step="0.1" placeholder="e.g., 0.3"> </div>
+                 <p id="log-meal-validation-error" class="validation-error" style="display: none;"></p>
                 <div class="modal-actions">
-                    <button type="submit" id="log-meal-save-button" class="btn btn-primary">Log Item</button>
-                    <button type="button" id="log-meal-cancel-button" class="btn btn-secondary">Cancel</button>
+                    <button type="submit" id="log-meal-save-button">Log Item</button>
+                    <button type="button" id="log-meal-cancel-button">Cancel</button>
                 </div>
             </form>
-             <!-- Display logged items for the day -->
-             <div class="logged-items-display">
+            <div class="logged-items-display">
                  <h4>Logged Today (<span id="logged-items-date-display">Date</span>):</h4>
                  <ul id="logged-items-list">
                      <li class="no-items-logged">No items logged yet for this date.</li>
@@ -466,13 +584,15 @@
     </div>
     <!-- End Modal -->
 
-    <section id="subscribe" class="subscribe-section">
+    <!-- Footer -->
+     <section id="subscribe" class="subscribe-section">
         <div class="container subscribe-content">
-            <div class="subscribe-text">
+             <div class="subscribe-text">
                 <h2>Subscribe</h2>
                 <p>Join our fitness family and get tips, exclusive updates, and special offers. Start your journey today!</p>
                 <form class="subscribe-form">
                     <input type="email" placeholder="Email" required>
+                    <!-- Use theme button classes -->
                     <button type="submit" class="btn btn-primary">Send</button>
                 </form>
                 <div class="social-icons">
@@ -482,39 +602,120 @@
                 </div>
             </div>
             <div class="footer-links">
-                 <div>
-                    <h4>Company</h4>
-                    <ul><li><a href="#">Press</a></li><li><a href="#">Blog</a></li><li><a href="#">About</a></li><li><a href="#">Careers</a></li></ul>
-                </div>
-                 <div>
-                    <h4>Services</h4>
-                    <ul><li><a href="#">Training</a></li><li><a href="#">Nutrition</a></li><li><a href="#">Lifestyles</a></li></ul>
-                </div>
-                 <div>
-                    <h4>Legal</h4>
-                    <ul><li><a href="#">Policy</a></li><li><a href="#">Privacy & Cookies</a></li><li><a href="#">Terms & Conditions</a></li></ul>
-                </div>
-                <div>
-                    <h4>Community</h4>
-                    <ul><li><a href="#">Contact</a></li><li><a href="#">Find a club</a></li><li><a href="#">Membership</a></li></ul>
-                </div>
-                 <div>
-                    <h4>Gym</h4>
-                    <ul><li><a href="#">Book a Gym</a></li><li><a href="#">Find a Gym</a></li></ul>
-                </div>
+                 <!-- Footer link columns... -->
+                 <div><h4>Company</h4><ul><li><a href="#">Press</a></li><li><a href="#">Blog</a></li><li><a href="#">About</a></li><li><a href="#">Careers</a></li></ul></div> <div><h4>Services</h4><ul><li><a href="#">Training</a></li><li><a href="#">Nutrition</a></li><li><a href="#">Lifestyles</a></li></ul></div> <div><h4>Legal</h4><ul><li><a href="#">Policy</a></li><li><a href="#">Privacy & Cookies</a></li><li><a href="#">Terms & Conditions</a></li></ul></div> <div><h4>Community</h4><ul><li><a href="#">Contact</a></li><li><a href="#">Find a club</a></li><li><a href="#">Membership</a></li></ul></div> <div><h4>Gym</h4><ul><li><a href="#">Book a Gym</a></li><li><a href="#">Find a Gym</a></li></ul></div>
             </div>
         </div>
     </section>
-
     <footer>
         <div class="container">
             <p>© 2024 OPTILIFE. All Rights Reserved.</p>
         </div>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js"></script>
-    <!-- Removed Chart.js Script -->
-    <script src="userjs/setGoals.js"></script>
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script>
+      $(document).ready(function() {
+          // --- Header Menu Toggle ---
+          var menuIcon = $('#menu-icon');
+          var navbar = $('.navbar');
 
+          if (menuIcon.length && navbar.length) {
+              menuIcon.on('click', function() {
+                  $(this).toggleClass('bx-x');
+                  navbar.toggleClass('active');
+              });
+
+              $('.navbar a').on('click', function(event) { // Added event parameter
+                   // Only close menu if it's NOT the logout link being confirmed
+                   if (navbar.hasClass('active') && !$(this).is('#logout-link')) {
+                       navbar.removeClass('active');
+                       menuIcon.removeClass('bx-x');
+                   }
+              });
+
+              $('.navbar-right li:has(.profile-pic)').on('click', function(e) {
+                   if(navbar.hasClass('active')) {
+                        navbar.removeClass('active');
+                        menuIcon.removeClass('bx-x');
+                   }
+              });
+
+              $(window).on('scroll', function() {
+                  if (navbar.hasClass('active')) {
+                      navbar.removeClass('active');
+                      menuIcon.removeClass('bx-x');
+                  }
+              });
+          } else {
+              console.warn("Header menu icon or navbar not found.");
+          }
+
+          // --- Internal Page Tab Functionality ---
+          // Handles clicks on "Fitness Goals" and "Nutrition Goals" buttons
+          $('.main-tab-button').on('click', function() {
+              var targetSelector = $(this).data('target'); // Get #tabs-1 or #tabs-3
+              var $targetContent = $(targetSelector); // Find the target div
+
+              if ($targetContent.length) {
+                  // Update Button Styles
+                  $('.main-tab-button').removeClass('active'); // Deactivate all buttons
+                  $(this).addClass('active'); // Activate the clicked button
+
+                  // Update Content Visibility
+                  $('.main-tab-content .tab-content').removeClass('active'); // Hide all content sections
+                  $targetContent.addClass('active'); // Show the target content section
+              } else {
+                  console.warn("Main tab target content not found:", targetSelector);
+              }
+          });
+
+           // --- Nutrition Sub-Tab Functionality ---
+           // Handles clicks on CALORIES, NUTRIENTS, MACROS buttons
+           $('.tabs .tab-button').on('click', function() {
+                var tabId = $(this).data('tab'); // e.g., 'calories'
+                var $container = $(this).closest('.content-placeholder'); // Find the parent nutrition section
+
+                // Update sub-tab buttons within the nutrition section
+                $container.find('.tabs .tab-button').removeClass('active');
+                $(this).addClass('active');
+
+                // Update sub-tab content visibility within the nutrition section
+                $container.find('.nutrition-tab-content').removeClass('active');
+                $container.find('#' + tabId + '-content').addClass('active');
+           });
+
+          // --- START: Logout Confirmation ---
+          $('#logout-link').on('click', function(event) {
+              // Prevent the link from navigating immediately
+              event.preventDefault();
+
+              // Ask the user for confirmation
+              var confirmLogout = confirm("Are you sure you want to logout?");
+
+              // If the user confirmed, proceed to the logout page
+              if (confirmLogout) {
+                  window.location.href = this.href; // 'this.href' gets the href attribute of the clicked link
+              }
+              // If the user cancelled, do nothing (the default navigation was already prevented)
+          });
+          // --- END: Logout Confirmation ---
+
+
+          // Initial State: Ensure only the default active tabs are shown
+          // (This is handled by adding the 'active' class directly in the HTML
+          // to #tabs-1 and #calories-content)
+
+      }); // End $(document).ready()
+    </script>
+
+    <!-- Page-specific Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js"></script>
+    <!-- Make sure setGoals.js doesn't re-declare the tab logic -->
+    <!-- If setGoals.js handles other things like calendar, modal, etc., keep it. -->
+    <!-- If setGoals.js ONLY handles tabs, you might consider removing it or commenting out -->
+    <!-- the conflicting parts within it, as the logic is now included above. -->
+ 
 </body>
 </html>
