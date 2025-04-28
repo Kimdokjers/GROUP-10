@@ -5,50 +5,58 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <link rel="stylesheet" href="usercss/style2.css">
+    <link rel="stylesheet" href="usercss/home.css">
     <title>Home Page</title>
+ 
 </head>
-<body> 
+<body>
     <header>
         <a href="#home" class="logo"><img src="../images/logo.png"></a>
-        
+
         <div class='bx bx-menu' id="menu-icon"></div>
 
         <ul class="navbar">
-            <li><a href="#home">Home</a></li>
-            <li><a href="setGoals.html">Set Goals</a></li>
-            <li><a href="progress.html">Track Progess</a></li>
-            <li><a href="membership.html">Membership</a></li>
-            <li><a href="login_signup.html">Logout</a></li>
+             <div class="navbar-left">
+                 <li><a href="#home">Home</a></li>
+                 <li><a href="setGoals.html">Set Goals</a></li>
+                 <li><a href="progress.html">Track Progess</a></li>
+                 <li><a href="membership.html">Membership</a></li>
+             </div>
+             <div class="navbar-right">
+                 <li>
+                     <img src="/images/hprofile.jpg" alt="User Profile" class="profile-pic">
+                 </li>
+                 <li>
+                     <a href="login_signup.html">Logout</a>
+                 </li>
+             </div>
         </ul>
 
     </header>
     <section class="gym-search-section">
         <div class="gym-search-container">
-             <form id="gym-search-form" onsubmit="return false;"> 
+             <form id="gym-search-form" onsubmit="return false;">
                  <input type="search" id="gym-search-input" placeholder="Find Your Gym (e.g., Apex, Ironclad)...">
-                 <button type="button" id="gym-search-button"> 
+                 <button type="button" id="gym-search-button">
                      <i class='bx bx-search'></i> Search
                  </button>
              </form>
         </div>
-        
     </section>
-    
+
     <section class="home" id="home">
         <div class="home-content">
             <h1><span>Apex Atlethics</span></h1>
-            <p>This is more than a gym it’s your launchpad to a stronger, fitter, and more confident you. From cutting-edge equipment to dynamic group classes and one-on-one coaching, we’re here to help you crush your goals and build a lifestyle you’re proud of.
-
-            </p>
+            <p>This is more than a gym it’s your launchpad to a stronger, fitter, and more confident you. From cutting-edge equipment to dynamic group classes and one-on-one coaching, we’re here to help you crush your goals and build a lifestyle you’re proud of.</p>
             <a href="membership.html" class="btn">Apply Now</a>
         </div>
         <div class="home-img">
             <img src="../images/gymcorp3.jpg" alt="Home Image">
         </div>
-    </section> 
-    <section class="home" id="home">
+    </section>
+    <section class="home" id="home-ironclad">
         <div class="home-content">
             <h1><span>Ironclad Fitness</span></h1>
             <p> Step into a space where your goals become reality. Whether you're aiming to build muscle, burn fat, or simply lead a healthier lifestyle, Elevate Fitness is your ultimate destination. With state-of-the-art equipment, expert trainers, and a motivating community, you'll not only transform your body but your mindset too.</p>
@@ -58,6 +66,7 @@
             <img src="../images/gymcorp2.webp" alt="Home Image">
         </div>
     </section>
+
     <section id="subscribe" class="subscribe-section">
         <div class="container subscribe-content">
             <div class="subscribe-text">
@@ -118,16 +127,69 @@
         </div>
     </section>
 
+    <footer>
+        <div class="container">
+            <p>© 2023 OPTILIFE. All Rights Reserved.</p>
+        </div>
+    </footer>
 
-<footer>
-    <div class="container">
-        <p>© 2023 OPTILIFE. All Rights Reserved.</p>
-    </div>
-</footer>
+    <script>
+        let menu = document.querySelector('#menu-icon');
+        let navbar = document.querySelector('.navbar');
 
-<script>
-    
-  </script>
-<script src="../assets/jquery-3.7.1.min.js"></script>
+        if (menu && navbar) {
+            menu.onclick = () => {
+                menu.classList.toggle('bx-x');
+                navbar.classList.toggle('active');
+            };
+
+            window.onscroll = () => {
+                 menu.classList.remove('bx-x');
+                 navbar.classList.remove('active');
+            }
+             navbar.querySelectorAll('a').forEach(link => {
+                if (link.getAttribute('href') !== 'login_signup.html') {
+                    link.onclick = () => {
+                        menu.classList.remove('bx-x');
+                        navbar.classList.remove('active');
+                    }
+                }
+            });
+             // Close menu also if clicking the profile pic LI
+             let profileLi = navbar.querySelector('li:has(.profile-pic)');
+             if(profileLi) {
+                 profileLi.onclick = () => {
+                      if(navbar.classList.contains('active')) { // Only close if active
+                         menu.classList.remove('bx-x');
+                         navbar.classList.remove('active');
+                     }
+                 }
+             }
+        }
+    </script>
+
+    <script src="../assets/jquery-3.7.1.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+
+            $('a[href="login_signup.html"]').on('click', function(event) {
+                event.preventDefault();
+                var logoutUrl = $(this).attr('href');
+
+                if (confirm('Are you sure you want to log out?')) {
+                    window.location.href = logoutUrl;
+                    if (menu && navbar && navbar.classList.contains('active')) {
+                         menu.classList.remove('bx-x');
+                         navbar.classList.remove('active');
+                     }
+                } else {
+                    return false;
+                }
+            });
+
+        });
+    </script>
+
 </body>
 </html>
