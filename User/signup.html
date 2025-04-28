@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up (Step 1) - OptiLife</title>
+    <link rel="stylesheet" href="usercss/signin_signup.css"> 
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+
+    <div class="container">
+        <div class="form-box signup"> 
+            <form id="signup-step1-form"> 
+                <h1>Sign up</h1>
+
+                <div class="input-box">
+                    <input type="text" placeholder="Username" id="username" required>
+                    <i class='bx bxs-user'></i>
+                </div>
+
+                <div class="input-box">
+                    <input type="email" placeholder="Email" id="email" required>
+                    <i class='bx bxs-envelope'></i> 
+                </div>
+
+                <div class="input-box">
+                    <input type="password" placeholder="Password (min 8 characters)" id="password" required>
+                    <i class='bx bxs-lock-alt'></i>
+                </div>
+
+                <button type="submit" class="btn" id="next-step-btn">Continue</button>
+
+                <p class="separator-text">or Sign up with</p>
+
+                <div class="social-icons">
+                    <a href="google_signup.html"><img src="../images/google.jpg" alt="Sign up with Google" class="social-icon-img"></a>
+                 </div>
+
+                <div class="navigation-link">
+                     <p>Already have an account? <a href="signin.html">Sign in</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="../assets/jquery-3.7.1.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $("#next-step-btn").on("click", function(event) {
+                event.preventDefault(); 
+
+                const username = $("#username").val().trim();
+                const email = $("#email").val().trim(); 
+                const password = $("#password").val(); 
+
+                let isValid = true;
+                $("#username, #email, #password").css("border", "");
+
+                if (!username) {
+                    alert("Please enter a username.");
+                    $("#username").css("border", "1px solid red");
+                    isValid = false;
+                }
+                if (!email) {
+                    alert("Please enter an email address.");
+                    $("#email").css("border", "1px solid red");
+                    isValid = false;
+                } else {
+                     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                     if (!emailRegex.test(email)) {
+                         alert("Please enter a valid email address.");
+                         $("#email").css("border", "1px solid red");
+                         isValid = false;
+                     }
+                 }
+                 if (!password) {
+                     alert("Please enter a password.");
+                     $("#password").css("border", "1px solid red");
+                     isValid = false;
+                 } else if (password.length < 8) {
+                     alert("Password must be 8 or more characters long.");
+                     $("#password").css("border", "1px solid red");
+                     isValid = false;
+                 }
+
+                if (isValid) {
+                    sessionStorage.setItem('signupEmail', email);
+                    sessionStorage.setItem('signupPassword', password);
+
+                    window.location.href = 'signup-form.html'; 
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
