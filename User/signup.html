@@ -44,7 +44,68 @@
         </div>
     </div>
 
+    <div id="Modal" class="modal">
+        <div class="modal-content">
+            <button id="closeModalButton" class="close-button">×</button>
+            <p>Sign up successful!</p>
+            <button id="closeModalButton" class="close-button">Ok</button>
+        </div>
+    </div>
+
     <script src="../assets/jquery-3.7.1.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+        const modal = document.getElementById('userModal');
+        const profilePic = document.getElementById('profilePicTrigger');
+        const closeButton = document.getElementById('closeModalButton');
+
+        const openModal = () => {
+            if (modal) {
+            modal.classList.add('show');
+            }
+            };
+
+        const closeModal = () => {
+        if (modal) {
+        modal.classList.remove('show');
+        }
+        };
+
+
+if (profilePic) {
+    profilePic.addEventListener('click', openModal);
+} else {
+    console.error("");
+}
+
+
+if (closeButton) {
+    closeButton.addEventListener('click', closeModal);
+} else {
+    console.error("Close button element not found!");
+}
+
+
+if (modal) {
+    modal.addEventListener('click', (event) => {
+
+        if (event.target === modal) {
+            closeModal();
+        }
+    });
+        }
+
+
+document.addEventListener('keydown', (event) => {
+
+    if (modal && modal.classList.contains('show') && event.key === 'Escape') {
+        closeModal();
+    }
+});
+
+});
+    </script>
     <script>
         $(document).ready(function() {
             $("#next-step-btn").on("click", function(event) {

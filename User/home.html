@@ -233,6 +233,70 @@
             min-height: auto; /* Allow this section to be shorter if content is less */
         }
 
+        .modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place even if scrolling */
+    z-index: 1000; /* Sit on top of everything */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0, 0, 0, 0.6); /* Black background with opacity */
+    /* Use Flexbox to center the modal content vertically and horizontally */
+    display: flex; /* This will be toggled by JS */
+    justify-content: center;
+    align-items: center;
+    opacity: 0; /* Start fully transparent */
+    visibility: hidden; /* Start hidden */
+    transition: opacity 0.3s ease, visibility 0.3s ease; /* Smooth transition */
+}
+
+/* Class added by JavaScript to show the modal */
+.modal.show {
+    display: flex; /* Make it visible using flex */
+    opacity: 1; /* Fade in */
+    visibility: visible; /* Make it interactable */
+}
+
+/* Modal Content Box */
+.modal-content {
+    background-color: #fefefe;
+    margin: auto; /* Not strictly needed with flex parent, but good fallback */
+    padding: 25px;
+    border: 1px solid #888;
+    width: 80%; /* Could be more specific e.g. 500px */
+    max-width: 500px;
+    border-radius: 8px;
+    position: relative; /* Needed for positioning the close button */
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+    transform: scale(0.9); /* Start slightly smaller */
+    transition: transform 0.3s ease; /* Smooth scale transition */
+}
+
+.modal.show .modal-content {
+    transform: scale(1); 
+}
+
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+    background: none;
+    border: none;
+    padding: 0;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: black;
+    text-decoration: none;
+}
 
         /* Button Styles */
         .btn, .btn-primary /* Combined for consistency */ {
@@ -583,7 +647,7 @@
              </div>
              <div class="navbar-right">
                  <li>
-                     <img src="../images/user_pic.jpg" alt="User Profile" class="profile-pic">
+                    <img id="profilePicTrigger" src="../images/user_pic.jpg" alt="User Profile" class="profile-pic">
                  </li>
                  <li>
                      <a href="signin.html" id="logout-link">Logout</a> <!-- Added ID for JS -->
@@ -649,6 +713,59 @@
             </div>
         </div>
     </section>
+
+    <div id="userModal" class="modal">
+        <div class="modal-content">
+            <button id="closeModalButton" class="close-button">×</button>
+            <h2 style="color: #000;">User Profile</h2>
+            <div style="display: flex; flex-direction: row; text-align: center; align-items: center; margin-top: 10px;">
+                <img src="../images/user_pic.jpg" alt="User Profile" class="profile-pic" style="width: 50px; height: 50px; border-radius: 50%; margin-bottom: 1rem;">
+                <h2 style="color: #000;">Safari Hoegan</h2>
+            </div>
+            <div class="profile-content">
+                <div>
+                <p style="color: #000;">Username:</p>
+                <p style="color: #5494da;">User</p>
+                </div>
+
+                <div>
+                <p style="color: #000;">Email:</p>
+                <p style="color: #5494da;">user@gmail.com</p>
+                </div>
+
+                <div>
+                <p style="color: #000;">Password:</p>
+                <p style="color: #5494da;">********</p>
+                </div>
+
+                <div>
+                <p style="color: #000;">First Name:</p>
+                <p style="color: #5494da;">Safari</p>
+                </div>
+
+                <div>
+                <p style="color: #000;">Last Name:</p>
+                <p style="color: #5494da;">Hoegan</p>
+                </div>
+
+                <div>
+                <p style="color: #000;">Suffix:</p>
+                <p style="color: #5494da;">None</p>
+                </div>
+
+                <div>
+                <p style="color: #000;">Birth Date:</p>
+                <p style="color: #5494da;">01/01/2002</p>
+                </div>
+
+                <div>
+                <p style="color: #000;">Current Address:</p>
+                <p style="color: #5494da;">Zamboanga City</p>
+                </div>
+
+        </div>
+    </div>
+
     <footer>
         <div class="container">
             <p>© 2024 OPTILIFE. All Rights Reserved.</p> <!-- Updated Year -->
@@ -660,6 +777,57 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script> <!-- Use CDN for jQuery -->
 
     <script>
+            document.addEventListener('DOMContentLoaded', () => {
+
+            const modal = document.getElementById('userModal');
+            const profilePic = document.getElementById('profilePicTrigger');
+            const closeButton = document.getElementById('closeModalButton');
+
+            const openModal = () => {
+                if (modal) {
+                    modal.classList.add('show');
+                }
+            };
+
+            const closeModal = () => {
+                if (modal) {
+                    modal.classList.remove('show');
+                }
+            };
+
+
+            if (profilePic) {
+                profilePic.addEventListener('click', openModal);
+            } else {
+                console.error("Profile picture trigger element not found!");
+            }
+
+
+            if (closeButton) {
+                closeButton.addEventListener('click', closeModal);
+            } else {
+                console.error("Close button element not found!");
+            }
+
+
+            if (modal) {
+                modal.addEventListener('click', (event) => {
+
+                    if (event.target === modal) {
+                        closeModal();
+                    }
+                });
+            }
+
+
+            document.addEventListener('keydown', (event) => {
+
+                if (modal && modal.classList.contains('show') && event.key === 'Escape') {
+                    closeModal();
+                }
+            });
+
+        });
         $(document).ready(function() { // Use jQuery ready function
             var menuIcon = $('#menu-icon'); // Use jQuery selector
             var navbar = $('.navbar'); // Use jQuery selector
