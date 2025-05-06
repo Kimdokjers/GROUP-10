@@ -76,70 +76,40 @@
                 <section id="analytics-content" class="content-section">
                     <h2>Analytics</h2>
                     <p class="section-description">Visual representation of key metrics.</p>
-
                     <div class="charts-grid">
-
                         <div class="chart-container">
                             <h3>Membership Trends</h3>
-                            <div class="chart-placeholder-container">
-                                <canvas id="trendsChart"></canvas>
-                            </div>
+                            <div class="chart-placeholder-container"><canvas id="trendsChart"></canvas></div>
                         </div>
-
                         <div class="chart-container">
                             <h3>New User Registrations</h3>
-                            <div class="chart-placeholder-container">
-                                <canvas id="newUserChart"></canvas>
-                            </div>
+                            <div class="chart-placeholder-container"><canvas id="newUserChart"></canvas></div>
                         </div>
-
                         <div class="chart-container">
                             <h3>New Gym Locations</h3>
-                            <div class="chart-placeholder-container">
-                                <canvas id="newGymChart"></canvas>
-                            </div>
+                            <div class="chart-placeholder-container"><canvas id="newGymChart"></canvas></div>
                         </div>
-
                     </div>
                 </section>
 
 
                 <section id="users-content" class="content-section">
                     <h2>Manage Users</h2>
-                    <button class="btn btn-primary add-btn">Add New User</button>
+                    <div class="controls-container">
+                        <button class="btn btn-primary add-btn">Add New User</button>
+                        <div class="search-container">
+                            <input type="text" id="user-search-input" class="search-input" placeholder="Search Users...">
+                            <button class="btn search-btn" id="user-search-btn"><i class="bi bi-search"></i></button>
+                        </div>
+                    </div>
                     <div class="table-container">
                         <table>
                             <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Membership</th>
-                                    <th>Status</th>
-                                    <th>Actions</th>
-                                </tr>
+                                <tr><th>ID</th><th>Name</th><th>Email</th><th>Membership</th><th>Status</th><th>Actions</th></tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>USR001</td>
-                                    <td>Alice Johnson</td>
-                                    <td>alice@example.com</td>
-                                    <td>Premium</td>
-                                    <td>Active</td>
-                                    <td>
-                                        <button class="btn btn-sm btn-danger">Delete</button>
-                                    </td>
-                                </tr>
-                                 <tr>
-                                    <td>USR002</td>
-                                    <td>Bob Williams</td>
-                                    <td>bob@example.com</td>
-                                    <td>Basic</td>
-                                    <td>Inactive</td>
-                                    <td>
-                                        <button class="btn btn-sm btn-danger">Delete</button>
-                                    </td>
-                                </tr>
+                                <tr data-id="USR001"><td data-label="ID">USR001</td><td data-label="Name">Alice Johnson</td><td data-label="Email">alice@example.com</td><td data-label="Membership">Premium</td><td data-label="Status">Active</td><td data-label="Actions"><button class="btn btn-sm btn-danger">Delete</button></td></tr>
+                                <tr data-id="USR002"><td data-label="ID">USR002</td><td data-label="Name">Bob Williams</td><td data-label="Email">bob@example.com</td><td data-label="Membership">Basic</td><td data-label="Status">Inactive</td><td data-label="Actions"><button class="btn btn-sm btn-danger">Delete</button></td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -147,40 +117,21 @@
 
                 <section id="staff-content" class="content-section">
                     <h2>Manage Staff / Coaches</h2>
-                    <button class="btn btn-primary add-btn">Add New Staff</button>
+                    <div class="controls-container">
+                        <button class="btn btn-primary add-btn">Add New Staff</button>
+                        <div class="search-container">
+                            <input type="text" id="staff-search-input" class="search-input" placeholder="Search Staff...">
+                            <button class="btn search-btn" id="staff-search-btn"><i class="bi bi-search"></i></button>
+                        </div>
+                    </div>
                      <div class="table-container">
                         <table>
                             <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Name</th>
-                                    <th>Role</th>
-                                    <th>Email</th>
-                                    <th>Gym Branch</th>
-                                    <th>Actions</th>
-                                </tr>
+                                <tr><th>ID</th><th>Name</th><th>Role</th><th>Email</th><th>Gym Branch</th><th>Actions</th></tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>STF001</td>
-                                    <td>Charlie Brown</td>
-                                    <td>Head Coach</td>
-                                    <td>charlie@gym.com</td>
-                                    <td>Downtown</td>
-                                    <td>
-                                        <button class="btn btn-sm btn-danger">Delete</button>
-                                    </td>
-                                </tr>
-                                 <tr>
-                                    <td>STF002</td>
-                                    <td>Diana Prince</td>
-                                    <td>Receptionist</td>
-                                    <td>diana@gym.com</td>
-                                    <td>Uptown</td>
-                                     <td>
-                                        <button class="btn btn-sm btn-danger">Delete</button>
-                                    </td>
-                                </tr>
+                                <tr data-id="STF001"><td data-label="ID">STF001</td><td data-label="Name">Charlie Brown</td><td data-label="Role">Head Coach</td><td data-label="Email">charlie@gym.com</td><td data-label="Gym Branch">Downtown</td><td data-label="Actions"><button class="btn btn-sm btn-danger">Delete</button></td></tr>
+                                <tr data-id="STF002"><td data-label="ID">STF002</td><td data-label="Name">Diana Prince</td><td data-label="Role">Receptionist</td><td data-label="Email">diana@gym.com</td><td data-label="Gym Branch">Uptown</td><td data-label="Actions"><button class="btn btn-sm btn-danger">Delete</button></td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -189,40 +140,21 @@
 
                 <section id="gyms-content" class="content-section">
                     <h2>Manage Fitness Gyms</h2>
-                     <button class="btn btn-primary add-btn">Add New Gym</button>
+                    <div class="controls-container">
+                         <button class="btn btn-primary add-btn">Add New Gym</button>
+                         <div class="search-container">
+                            <input type="text" id="gym-search-input" class="search-input" placeholder="Search Gyms...">
+                            <button class="btn search-btn" id="gym-search-btn"><i class="bi bi-search"></i></button>
+                        </div>
+                    </div>
                       <div class="table-container">
                          <table>
                             <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Name</th>
-                                    <th>Location</th>
-                                    <th>Manager</th>
-                                    <th>Capacity</th>
-                                    <th>Actions</th>
-                                </tr>
+                                <tr><th>ID</th><th>Name</th><th>Location</th><th>Manager</th><th>Capacity</th><th>Actions</th></tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>GYM01</td>
-                                    <td>Downtown Fitness Hub</td>
-                                    <td>123 Main St</td>
-                                    <td>Clark Kent</td>
-                                    <td>150</td>
-                                    <td>
-                                        <button class="btn btn-sm btn-danger">Delete</button>
-                                    </td>
-                                </tr>
-                                 <tr>
-                                    <td>GYM02</td>
-                                    <td>Uptown Gym Center</td>
-                                    <td>456 Market Ave</td>
-                                    <td>Lois Lane</td>
-                                    <td>100</td>
-                                     <td>
-                                        <button class="btn btn-sm btn-danger">Delete</button>
-                                    </td>
-                                </tr>
+                                <tr data-id="GYM01"><td data-label="ID">GYM01</td><td data-label="Name">Downtown Fitness Hub</td><td data-label="Location">123 Main St</td><td data-label="Manager">Clark Kent</td><td data-label="Capacity">150</td><td data-label="Actions"><button class="btn btn-sm btn-danger">Delete</button></td></tr>
+                                <tr data-id="GYM02"><td data-label="ID">GYM02</td><td data-label="Name">Uptown Gym Center</td><td data-label="Location">456 Market Ave</td><td data-label="Manager">Lois Lane</td><td data-label="Capacity">100</td><td data-label="Actions"><button class="btn btn-sm btn-danger">Delete</button></td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -231,61 +163,32 @@
 
                 <section id="payments-content" class="content-section">
                     <h2>Payment History</h2>
+                    <div class="search-container">
+                        <input type="text" id="payment-search-input" class="search-input" placeholder="Search Payments...">
+                        <button class="btn search-btn" id="payment-search-btn"><i class="bi bi-search"></i></button>
+                    </div>
                      <div class="table-container">
                          <table>
                             <thead>
-                                <tr>
-                                    <th>Payment ID</th>
-                                    <th>User ID</th>
-                                    <th>User Name</th>
-                                    <th>Amount</th>
-                                    <th>Date</th>
-                                    <th>Status</th>
-                                    <th>Method</th>
-                                    <th>Actions</th>
-                                </tr>
+                                <tr><th>Payment ID</th><th>User ID</th><th>User Name</th><th>Amount</th><th>Date</th><th>Status</th><th>Method</th><th>Actions</th></tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>PAY001</td>
-                                    <td>USR001</td>
-                                    <td>Alice Johnson</td>
-                                    <td>$50.00</td>
-                                    <td>2023-10-26</td>
-                                    <td>Completed</td>
-                                    <td>Credit Card</td>
-                                    <td>
-                                        <button class="btn btn-sm btn-info">Refund</button>
-                                    </td>
-                                </tr>
-                                 <tr>
-                                    <td>PAY002</td>
-                                    <td>USR003</td>
-                                    <td>Eva Green</td>
-                                    <td>$50.00</td>
-                                    <td>2023-10-25</td>
-                                    <td>Pending</td>
-                                    <td>Bank Transfer</td>
-                                     <td>
-                                         <button class="btn btn-sm btn-success">Mark as Paid</button>
-                                    </td>
-                                </tr>
+                                <tr data-id="PAY001"><td data-label="Payment ID">PAY001</td><td data-label="User ID">USR001</td><td data-label="User Name">Alice Johnson</td><td data-label="Amount">$50.00</td><td data-label="Date">2023-10-26</td><td data-label="Status">Completed</td><td data-label="Method">Credit Card</td><td data-label="Actions"><button class="btn btn-sm btn-info">Refund</button></td></tr>
+                                <tr data-id="PAY002"><td data-label="Payment ID">PAY002</td><td data-label="User ID">USR003</td><td data-label="User Name">Eva Green</td><td data-label="Amount">$50.00</td><td data-label="Date">2023-10-25</td><td data-label="Status">Pending</td><td data-label="Method">Bank Transfer</td><td data-label="Actions"><button class="btn btn-sm btn-success">Mark as Paid</button></td></tr>
                             </tbody>
                         </table>
                     </div>
                 </section>
 
             </div>
-            <!-- Removed the entire main-footer-wrapper div -->
         </main>
     </div>
 
-    <!-- Modals remain unchanged -->
     <div id="add-gym-modal" class="modal">
         <div class="modal-content">
-            <span class="close-btn">×</span>
+            <button class="close-btn">×</button>
             <h2>Add New Fitness Gym</h2>
-            <form id="add-gym-form">
+            <form id="add-gym-form" novalidate>
                 <div class="form-group">
                     <label for="gym-id">Gym ID:</label>
                     <input type="text" id="gym-id" name="gym-id" required placeholder="e.g., GYM03">
@@ -313,9 +216,9 @@
 
     <div id="add-user-modal" class="modal">
         <div class="modal-content">
-            <span class="close-btn">×</span>
+            <button class="close-btn">×</button>
             <h2>Add New User</h2>
-            <form id="add-user-form">
+            <form id="add-user-form" novalidate>
                 <div class="form-group">
                     <label for="member-id">Member ID:</label>
                     <input type="text" id="member-id" name="member-id" required placeholder="e.g., user03">
@@ -343,9 +246,9 @@
 
     <div id="add-coach-modal" class="modal">
         <div class="modal-content">
-            <span class="close-btn">×</span>
+            <button class="close-btn">×</button>
             <h2>Add New Coach/Staff</h2>
-            <form id="add-coach-form">
+            <form id="add-coach-form" novalidate>
                 <div class="form-group">
                     <label for="coach-id">ID</label>
                     <input type="text" id="coach-id" name="coach-id" required placeholder="e.g., STFF01">
@@ -370,6 +273,29 @@
             </form>
         </div>
     </div>
+
+    <div id="logoutConfirmationModal" class="modal">
+        <div class="modal-content">
+            <button id="closeLogoutModalButton" class="close-button">×</button>
+            <p id="logoutModalMessage">Are you sure you want to logout?</p>
+            <div class="modal-actions" style="text-align: center;">
+                 <button id="cancelLogoutButton" class="btn btn-secondary" style="margin-right: 15px;">Cancel</button>
+                 <button id="okLogoutButton" class="btn btn-primary">Logout</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="alertModal" class="modal alert-modal">
+        <div class="modal-content">
+            <button class="close-btn alert-modal-close">×</button>
+            <h3 id="alertModalTitle" style="text-align: center; margin-top:10px; margin-bottom: 15px;">Notification</h3>
+            <p id="alertModalMessage" style="margin-bottom: 25px; text-align: center; line-height: 1.6;"></p>
+            <div class="modal-actions" style="text-align: center;">
+                 <button id="alertModalOkButton" class="btn btn-primary" style="min-width: 100px;">OK</button>
+            </div>
+        </div>
+    </div>
+
 
     <script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>

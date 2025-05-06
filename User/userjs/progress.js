@@ -1,533 +1,449 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const body = document.body;
-    let workoutLineChart; 
-    let calorieDoughnutChart;
-    let macroDoughnutChart;
+$(document).ready(function() {
+    // --- Header Menu Toggle ---
+    var menuIcon = $('#menu-icon');
+    var navbar = $('.navbar');
+    var logoutLink = $('#logout-link');
+    var logoutModal = $('#logoutConfirmationModal');
+    var closeLogoutModalBtn = $('#closeLogoutModalButton');
+    var cancelLogoutBtn = $('#cancelLogoutButton');
+    var okLogoutBtn = $('#okLogoutButton');
 
-    const hamburgerButton = document.getElementById('hamburger-button');
-    const closeButton = document.getElementById('close-button');
-    const sidebar = document.getElementById('sidebar');
-    const overlay = document.getElementById('overlay');
-
-    function openSidebar() {
-        if (!sidebar || !overlay || !hamburgerButton || !body) return;
-        sidebar.classList.add('active');
-        overlay.classList.add('active');
-        hamburgerButton.setAttribute('aria-expanded', 'true');
-        body.classList.add('sidebar-open');
-    }
-
-    function closeSidebar() {
-        if (!sidebar || !overlay || !hamburgerButton || !body) return;
-        sidebar.classList.remove('active');
-        overlay.classList.remove('active');
-        hamburgerButton.setAttribute('aria-expanded', 'false');
-        body.classList.remove('sidebar-open');
-    }
-
-    if (hamburgerButton) hamburgerButton.addEventListener('click', openSidebar);
-    if (closeButton) closeButton.addEventListener('click', closeSidebar);
-    if (overlay) overlay.addEventListener('click', closeSidebar);
-
-    document.addEventListener('keydown', (event) => {
-        if (event.key === 'Escape' && sidebar?.classList.contains('active')) {
-            closeSidebar();
-        }
-    });
-
-    document.querySelectorAll('.sidebar .nav-link:not([href^="#tabs-"])').forEach(link => {
-        link.addEventListener('click', closeSidebar);
-    });
-
-    const mainTabContentContainer = document.querySelector('.main-tab-content');
-    const mainTabLinks = document.querySelectorAll('.nav-link[href^="#tabs-"]'); 
-    const mainTabContents = mainTabContentContainer ? mainTabContentContainer.querySelectorAll(':scope > .tab-content') : [];
-    const desktopNavLinks = document.querySelectorAll('.nav-menu-desktop .nav-link[href^="#tabs-"]');
-    const sidebarNavLinks = document.querySelectorAll('.sidebar-menu .nav-link[href^="#tabs-"]');
-
-    function showMainTab(targetTabId) {
-        if (!targetTabId || !targetTabId.startsWith('#tabs-')) return false;
-
-        const targetTab = document.querySelector(targetTabId);
-        if (!targetTab || !mainTabContents.length) return false;
-
-        mainTabContents.forEach(tab => {
-            tab.classList.remove('active');
-            tab.style.display = 'none';
-        });
-        targetTab.style.display = 'block';
-        requestAnimationFrame(() => { 
-            targetTab.classList.add('active');
+    if (menuIcon.length && navbar.length) {
+        menuIcon.on('click', function() {
+            $(this).toggleClass('bx-x');
+            navbar.toggleClass('active');
         });
 
-        desktopNavLinks.forEach(link => {
-            link.classList.toggle('active', link.getAttribute('href') === targetTabId);
-        });
-        sidebarNavLinks.forEach(link => {
-            link.classList.toggle('active-sidebar', link.getAttribute('href') === targetTabId);
-        });
-
-        if (window.location.hash !== targetTabId) {
-            try {
-                window.location.hash = targetTabId; 
-            } catch (e) {
-                window.location.hash = targetTabId;
-            }
-        }
-
-        if (targetTabId === '#tabs-2' && workoutLineChart) {
-        }
-        if (targetTabId === '#tabs-3') {
-        }
-
-
-        return true; 
-    }
-
-    mainTabLinks.forEach(link => {
-        link.addEventListener('click', (event) => {
-            const targetTabId = link.getAttribute('href');
-            if (showMainTab(targetTabId)) {
-                event.preventDefault(); 
-                if (link.closest('.sidebar')) {
-                    closeSidebar();
-                }
-            }
-        });
-    });
-
-    function handleInitialTab() {
-        let initialTabId = window.location.hash;
-        let shown = false;
-        if (initialTabId && initialTabId.startsWith('#tabs-')) {
-            shown = showMainTab(initialTabId);
-        }
-
-        if (!shown && mainTabLinks.length > 0) {
-            const firstValidTabLink = document.querySelector('.nav-menu-desktop .nav-link[href^="#tabs-"]') || document.querySelector('.sidebar-menu .nav-link[href^="#tabs-"]');
-            if (firstValidTabLink) {
-                 initialTabId = firstValidTabLink.getAttribute('href');
-                 showMainTab(initialTabId);
-            }
-        } else if (!shown && mainTabContents.length > 0) {
-             mainTabContents[0].style.display = 'block';
-             mainTabContents[0].classList.add('active');
-             const firstTabId = mainTabContents[0].id;
-             if (firstTabId) {
-                desktopNavLinks.forEach(link => link.classList.toggle('active', link.getAttribute('href') === `#${firstTabId}`));
-                sidebarNavLinks.forEach(link => link.classList.toggle('active-sidebar', link.getAttribute('href') === `#${firstTabId}`));
+        // Close menu when a link is clicked (except logout)
+        $('.navbar a').on('click', function(event) {
+             if (navbar.hasClass('active') && !$(this).is('#logout-link')) {
+                 navbar.removeClass('active');
+                 menuIcon.removeClass('bx-x');
              }
-        }
-    }
+        });
 
-    handleInitialTab(); 
+        // Close menu if profile pic area is clicked while menu open
+        $('.navbar-right li:has(.profile-pic)').on('click', function(e) {
+             if(navbar.hasClass('active')) {
+                  navbar.removeClass('active');
+                  menuIcon.removeClass('bx-x');
+             }
+        });
 
-    window.addEventListener('popstate', handleInitialTab);
-
-
-    const calendarGrid = document.querySelector('.calendar-grid');
-    if (calendarGrid) {
-        calendarGrid.addEventListener('click', (event) => {
-            const clickedButton = event.target.closest('.date-cell:not(.empty) button');
-            if (clickedButton) {
-                const previouslySelected = calendarGrid.querySelector('.date-cell button.selected');
-                if (previouslySelected) {
-                    previouslySelected.classList.remove('selected');
-                }
-                clickedButton.classList.add('selected');
+        // Close menu on scroll
+        $(window).on('scroll', function() {
+            if (navbar.hasClass('active')) {
+                navbar.removeClass('active');
+                menuIcon.removeClass('bx-x');
             }
         });
-        const prevButton = document.querySelector('.cal-nav.prev');
-        const nextButton = document.querySelector('.cal-nav.next');
-        const monthYearSpan = document.querySelector('.current-month-year');
-        if (prevButton) prevButton.addEventListener('click', () => alert('Prev Month clicked - Full implementation needed'));
-        if (nextButton) nextButton.addEventListener('click', () => alert('Next Month clicked - Full implementation needed'));
+    } else {
+        console.warn("Header menu icon or navbar not found.");
     }
 
-    const measurementSelect = document.getElementById('measurements');
-    const periodSelect = document.getElementById('graph-period');
-    const chartTitle = document.getElementById('chart-title');
-    const chartCanvas = document.getElementById('myChart');
+    // --- Logout Modal Logic ---
+    if (logoutLink.length && logoutModal.length) {
+        logoutLink.on('click', function(event) {
+            event.preventDefault(); // Prevent default link navigation
+            logoutModal.addClass('show'); // Show the modal
+        });
 
-    if (chartCanvas && measurementSelect && periodSelect && chartTitle) {
-        const ctxLine = chartCanvas.getContext('2d');
+        closeLogoutModalBtn.on('click', function() {
+            logoutModal.removeClass('show'); // Hide modal
+        });
 
-        function generateSampleData(measurement, period) {
-            let labels = [];
-            let dataPoints = [];
-            let baseValue, fluctuation;
-            const numPointsMap = { 
-                'weekly': 7, 'monthly': 30, '3months': 13, 
-                '6months': 13, 
-                'yearly': 12, 
-                'start': 25 
-            };
-            const numPoints = numPointsMap[period] || 7;
-            const unit = measurementSelect.options[measurementSelect.selectedIndex].dataset.unit || '';
+        cancelLogoutBtn.on('click', function() {
+            logoutModal.removeClass('show'); // Hide modal
+        });
 
-            switch (measurement) {
-                case 'weight': baseValue = 80; fluctuation = 1.0; break;
-                case 'neck': baseValue = 38; fluctuation = 0.3; break;
-                case 'waist': baseValue = 90; fluctuation = 0.8; break;
-                case 'hips': baseValue = 100; fluctuation = 0.7; break;
-                default: baseValue = 50; fluctuation = 1;
+        okLogoutBtn.on('click', function() {
+            logoutModal.removeClass('show'); // Hide modal
+            // Redirect to the original logout link's href
+            window.location.href = logoutLink.attr('href');
+        });
+
+        // Close modal if clicked outside the content
+        $(window).on('click', function(event) {
+            if ($(event.target).is(logoutModal)) {
+                logoutModal.removeClass('show');
             }
-
-            const now = moment();
-            let startDate;
-            let timeUnit, format;
-
-            switch (period) {
-                case 'weekly': startDate = now.clone().subtract(numPoints - 1, 'days'); timeUnit = 'day'; format = 'ddd D'; break;
-                case 'monthly': startDate = now.clone().subtract(numPoints - 1, 'days'); timeUnit = 'day'; format = 'MMM D'; break;
-                case '3months': startDate = now.clone().subtract(numPoints - 1, 'weeks'); timeUnit = 'week'; format = 'MMM D'; break;
-                case '6months': startDate = now.clone().subtract((numPoints - 1) * 2, 'weeks'); timeUnit = 'week'; format = 'MMM D'; break; 
-                case 'yearly': startDate = now.clone().subtract(numPoints - 1, 'months'); timeUnit = 'month'; format = 'MMM YY'; break;
-                case 'start': startDate = now.clone().subtract(numPoints * 10, 'days'); timeUnit = 'day'; format = 'MMM D'; break; 
-                default: startDate = now.clone().subtract(6, 'days'); timeUnit = 'day'; format = 'ddd D';
-            }
+        });
+    } else {
+         console.warn("Logout link or modal not found.");
+         // Fallback for original non-modal behavior if needed
+         $('#logout-link').on('click', function(event) {
+              event.preventDefault();
+              var confirmLogout = confirm("Are you sure you want to logout?");
+              if (confirmLogout) {
+                  window.location.href = this.href;
+              }
+         });
+    }
 
 
-            let currentValue = baseValue;
-            for (let i = 0; i < numPoints; i++) {
-                let currentDate;
-                 if (period === '6months') {
-                     currentDate = startDate.clone().add(i * 2, 'weeks');
-                 } else if (period === 'start') {
-                      currentDate = startDate.clone().add(i * 10, 'days');
+    // --- Main Tab Switching ---
+    $('.main-tab-button').on('click', function() {
+        var targetSelector = $(this).data('target');
+        var $targetContent = $(targetSelector);
+
+        if ($targetContent.length) {
+            // Switch main tabs
+            $('.main-tab-button').removeClass('active');
+            $(this).addClass('active');
+            $('.main-tab-content > .tab-content').removeClass('active'); // Target only direct children
+            $targetContent.addClass('active');
+
+            // Initialize or update charts if the target tab contains them
+            if (targetSelector === '#tabs-2') {
+                initializeOrUpdateProgressChart();
+            } else if (targetSelector === '#tabs-3') {
+                 initializeOrUpdateNutritionCharts();
+                 // Ensure the correct inner nutrition tab is shown
+                 const activeNutritionButton = $('#tabs-3 .tabs .tab-button.active');
+                 if (activeNutritionButton.length) {
+                     const targetNutritionTab = activeNutritionButton.data('tab');
+                     $('#tabs-3 .nutrition-tab-content').removeClass('active');
+                     $('#' + targetNutritionTab + '-content').addClass('active');
                  }
-                  else {
-                      currentDate = startDate.clone().add(i, timeUnit);
-                  }
-
-                labels.push(currentDate); 
-                let trendFactor = (measurement === 'neck') ? (Math.random() - 0.5) * 0.1 : -0.05 * (i / numPoints);
-                currentValue += trendFactor + (Math.random() - 0.5) * fluctuation;
-                dataPoints.push(Math.max(0, currentValue).toFixed(1));
             }
+        } else {
+            console.warn("Main tab target content not found:", targetSelector);
+        }
+    });
 
-            return { labels: labels, dataPoints: dataPoints, unit: unit, format: format, timeUnit: timeUnit };
+    // --- Nutrition Inner Tab Switching ---
+     $('.tabs .tab-button').on('click', function() {
+          var tabId = $(this).data('tab');
+          var $container = $(this).closest('.content-placeholder');
+
+          $container.find('.tabs .tab-button').removeClass('active');
+          $(this).addClass('active');
+
+          $container.find('.nutrition-tab-content').removeClass('active');
+          $('#' + tabId + '-content').addClass('active');
+
+          // Re-initialize charts if switching back to a chart tab within nutrition
+          if (tabId === 'calories' || tabId === 'macros') {
+              initializeOrUpdateNutritionCharts();
+          }
+     });
+
+    // --- Chart.js Implementations ---
+    let progressChartInstance = null;
+    let calorieChartInstance = null;
+    let macroChartInstance = null;
+
+    // Function to get placeholder data for the progress chart
+    function getProgressChartData(period, measurement) {
+        // --- Placeholder Data ---
+        // In a real application, this data would be fetched based on period and measurement
+        let labels = [];
+        let data = [];
+        let unit = $('#measurements option:selected').data('unit') || 'kg';
+        let startDate = moment().subtract(6, 'days'); // Default to 1 week
+
+        let days = 7;
+        if (period === 'monthly') { startDate = moment().subtract(1, 'month'); days = 30; }
+        else if (period === '3months') { startDate = moment().subtract(3, 'months'); days = 90; }
+        else if (period === '6months') { startDate = moment().subtract(6, 'months'); days = 180; }
+        else if (period === 'yearly') { startDate = moment().subtract(1, 'year'); days = 365; }
+        // 'start' would require fetching the actual start date
+
+        let startValue = 70; // Example start value
+        if (measurement === 'neck') startValue = 38;
+        else if (measurement === 'waist') startValue = 85;
+        else if (measurement === 'hips') startValue = 100;
+
+        for (let i = 0; i < days; i++) {
+            labels.push(startDate.clone().add(i, 'days').toDate());
+            // Simulate some data fluctuation
+            data.push(startValue + (Math.random() * 4 - 2) * (measurement === 'weight' ? 1 : 0.5) - (i * 0.05)); // Simulate slight downward trend
         }
 
-        function updateWorkoutChart() {
-            const selectedMeasurement = measurementSelect.value;
-            const selectedPeriod = periodSelect.value;
-            const selectedMeasurementText = measurementSelect.options[measurementSelect.selectedIndex].text;
-            const selectedPeriodText = periodSelect.options[periodSelect.selectedIndex].text;
+        return { labels, data, unit };
+    }
 
-            const chartData = generateSampleData(selectedMeasurement, selectedPeriod);
+    // Initialize or Update Progress Line Chart
+    function initializeOrUpdateProgressChart() {
+        const ctx = document.getElementById('progressChart');
+        if (!ctx) return; // Exit if canvas not found
 
-            chartTitle.textContent = `${selectedMeasurementText} Progress (${selectedPeriodText})`;
+        const measurementSelect = $('#measurements');
+        const periodSelect = $('#graph-period');
+        const chartTitle = $('#chart-title');
 
-            if (workoutLineChart) {
-                workoutLineChart.destroy();
+        const selectedMeasurement = measurementSelect.val();
+        const selectedPeriod = periodSelect.val();
+        const measurementText = measurementSelect.find('option:selected').text();
+        const periodText = periodSelect.find('option:selected').text();
+
+        // Update chart title
+        chartTitle.text(`${measurementText} Progress (${periodText})`);
+
+        // Get placeholder data
+        const { labels, data, unit } = getProgressChartData(selectedPeriod, selectedMeasurement);
+
+        // Destroy previous chart instance if it exists
+        if (progressChartInstance) {
+            progressChartInstance.destroy();
+        }
+
+        // Create new chart
+        progressChartInstance = new Chart(ctx.getContext('2d'), {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: `${measurementText} (${unit})`,
+                    data: data,
+                    borderColor: 'rgba(218, 165, 32, 1)', // Goldenrod
+                    backgroundColor: 'rgba(218, 165, 32, 0.1)',
+                    borderWidth: 2,
+                    tension: 0.1, // Makes the line slightly curved
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        type: 'time',
+                        time: {
+                             unit: labels.length > 90 ? 'month' : (labels.length > 7 ? 'week' : 'day'), // Adjust time unit based on data range
+                             tooltipFormat: 'll' // e.g., Sep 4, 1986
+                        },
+                        title: {
+                            display: true,
+                            text: 'Date'
+                        }
+                    },
+                    y: {
+                        beginAtZero: false, // Don't force y-axis to start at 0 for measurements like weight
+                        title: {
+                            display: true,
+                            text: `${measurementText} (${unit})`
+                        }
+                    }
+                },
+                plugins: {
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false
+                    }
+                }
             }
+        });
+    }
 
-            workoutLineChart = new Chart(ctxLine, {
-                type: 'line',
+    // Function to update Nutrition UI based on data
+    function updateNutritionUI(calorieData, macroData, goalCalories, goalMacros) {
+        // --- Update Calorie Breakdown ---
+        const totalCalories = Object.values(calorieData).reduce((sum, val) => sum + val, 0);
+        const exerciseCalories = 250; // Placeholder exercise calories
+
+        $('[data-value="total-calories"]').text(totalCalories.toLocaleString());
+        $('[data-value="exercise-calories"]').text(exerciseCalories.toLocaleString());
+        $('[data-value="net-calories"]').text((totalCalories - exerciseCalories).toLocaleString());
+        $('[data-value="goal-calories"]').text(goalCalories.toLocaleString());
+
+        // Update meal percentages/calories
+        const mealTargets = {
+            'breakfast-calories': $('[data-value="breakfast-calories"]'),
+            'lunch-calories': $('[data-value="lunch-calories"]'),
+            'dinner-calories': $('[data-value="dinner-calories"]'),
+            'snack-calories': $('[data-value="snack-calories"]')
+        };
+        for(const meal in calorieData) {
+            const key = `${meal}-calories`;
+            if (mealTargets[key]) {
+                const percentage = totalCalories > 0 ? Math.round((calorieData[meal] / totalCalories) * 100) : 0;
+                 mealTargets[key].text(`${percentage}% (${calorieData[meal].toLocaleString()} cal)`);
+            }
+        }
+
+        // --- Update Nutrient Details (Basic Example - linking macros) ---
+        $('[data-value="protein-total"]').text(`${macroData.protein} g`);
+        $('[data-value="carbs-total"]').text(`${macroData.carbs} g`);
+        $('[data-value="fat-total"]').text(`${macroData.fat} g`);
+        // Add logic to calculate 'left' values based on goals if available
+
+        // --- Update Macros Legend ---
+        const totalGrams = macroData.carbs + macroData.fat + macroData.protein;
+        const carbsPercent = totalGrams > 0 ? Math.round((macroData.carbs / totalGrams) * 100) : 0;
+        const fatPercent = totalGrams > 0 ? Math.round((macroData.fat / totalGrams) * 100) : 0;
+        // Ensure protein makes up the remainder to avoid rounding errors summing > 100%
+        const proteinPercent = totalGrams > 0 ? (100 - carbsPercent - fatPercent) : 0;
+
+
+        $('[data-value="carbs-grams"]').text(`${macroData.carbs}g`);
+        $('[data-value="carbs-percentage"]').text(`${carbsPercent}%`);
+        $('[data-value="fat-grams"]').text(`${macroData.fat}g`);
+        $('[data-value="fat-percentage"]').text(`${fatPercent}%`);
+        $('[data-value="protein-grams"]').text(`${macroData.protein}g`);
+        $('[data-value="protein-percentage"]').text(`${proteinPercent}%`);
+
+        // Update goal percentages (if provided)
+        if (goalMacros) {
+            $('[data-macro="carbs"] .goal-percentage').text(`${goalMacros.carbs}%`);
+            $('[data-macro="fat"] .goal-percentage').text(`${goalMacros.fat}%`);
+            $('[data-macro="protein"] .goal-percentage').text(`${goalMacros.protein}%`);
+        }
+    }
+
+
+    // Initialize or Update Nutrition Pie Charts
+    function initializeOrUpdateNutritionCharts() {
+         // --- Placeholder Nutrition Data ---
+         const calorieData = {
+             breakfast: 350,
+             lunch: 550,
+             dinner: 600,
+             snacks: 180
+         };
+         const macroData = { // In grams
+             carbs: 195,
+             fat: 60,
+             protein: 75
+         };
+         const goalCalories = 1520; // From HTML
+         const goalMacros = { // Percentages
+             carbs: 50,
+             fat: 30,
+             protein: 20
+         };
+
+         // Update the UI text elements first
+         updateNutritionUI(calorieData, macroData, goalCalories, goalMacros);
+
+
+        // --- Calorie Chart ---
+        const calorieCtx = document.getElementById('calorieChart');
+        if (calorieCtx) {
+            if (calorieChartInstance) {
+                calorieChartInstance.destroy();
+            }
+            calorieChartInstance = new Chart(calorieCtx.getContext('2d'), {
+                type: 'doughnut',
                 data: {
+                    labels: ['Breakfast', 'Lunch', 'Dinner', 'Snacks'],
                     datasets: [{
-                        label: `${selectedMeasurementText}`,
-                        data: chartData.dataPoints.map((value, index) => ({
-                            x: chartData.labels[index], 
-                            y: value
-                        })),
-                        borderColor: getComputedStyle(document.documentElement).getPropertyValue('--chart-line-color').trim() || 'rgb(218, 165, 32)',
-                        backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--chart-line-bg').trim() || 'rgba(218, 165, 32, 0.2)',
-                        tension: 0.1,
-                        fill: true,
-                        pointBackgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--chart-line-color').trim() || 'rgb(218, 165, 32)',
-                        pointRadius: 4,
-                        pointHoverRadius: 7,
+                        label: 'Calories',
+                        data: [
+                            calorieData.breakfast,
+                            calorieData.lunch,
+                            calorieData.dinner,
+                            calorieData.snacks
+                        ],
+                        backgroundColor: [
+                            '#bf9a33', // breakfast color from legend
+                            '#febd14', // lunch color
+                            '#fece43', // dinner color
+                            '#feda75'  // snacks color
+                        ],
+                        borderColor: '#ffffff',
                         borderWidth: 2
                     }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    scales: {
-                        x: {
-                            type: 'time', 
-                            time: {
-                                unit: chartData.timeUnit, 
-                                tooltipFormat: 'll',
-                                displayFormats: { 
-                                    day: 'MMM D',
-                                    week: 'MMM D',
-                                    month: 'MMM YYYY',
-                                    year: 'YYYY'
-                                }
-                            },
-                            title: {
-                                display: true,
-                                text: 'Date / Time Period'
-                            },
-                            grid: {
-                                display: false 
-                            }
-                        },
-                        y: {
-                            beginAtZero: false, 
-                            title: {
-                                display: true,
-                                text: `Measurement (${chartData.unit})`
-                            },
-                            grid: {
-                                color: '#e0e0e0', 
-                                borderDash: [2, 3], 
-                            }
-                        }
-                    },
                     plugins: {
+                        legend: {
+                            display: false // Using custom HTML legend
+                        },
                         tooltip: {
                             callbacks: {
                                 label: function(context) {
-                                    let label = context.dataset.label || '';
-                                    if (label) label += ': ';
-                                    if (context.parsed.y !== null) {
-                                        label += context.parsed.y + ' ' + chartData.unit;
+                                    let label = context.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed !== null) {
+                                        label += context.parsed.toLocaleString() + ' cal';
                                     }
                                     return label;
                                 }
                             }
-                        },
-                        legend: {
-                             display: false 
-                         }
+                        }
                     },
-                    interaction: { 
-                         intersect: false,
-                         mode: 'index',
-                    },
+                    cutout: '60%' // Make it a doughnut chart
                 }
             });
         }
 
-        measurementSelect.addEventListener('change', updateWorkoutChart);
-        periodSelect.addEventListener('change', updateWorkoutChart);
-        updateWorkoutChart(); 
 
-    } else {
-         console.warn("Workout chart canvas or controls not found. Skipping chart initialization.");
-    }
+        // --- Macro Chart ---
+        const macroCtx = document.getElementById('macroChart');
+        if (macroCtx) {
+            if (macroChartInstance) {
+                macroChartInstance.destroy();
+            }
 
+            const totalGrams = macroData.carbs + macroData.fat + macroData.protein;
 
-    const nutritionData = {
-        calories: {
-            goal: 1850, 
-            breakfast: 420,
-            lunch: 610,
-            dinner: 550,
-            snacks: 230,
-            exercise: 350 
-        },
-        nutrients: {
-            protein: [95, 93, 'g'], 
-            carbohydrates: [220, 231, 'g'],
-            fiber: [28, 30, 'g'],
-            sugar: [50, 70, 'g'],
-            fat: [65, 62, 'g'], 
-            saturated_fat: [18, 20, 'g'],
-            polyunsaturated_fat: [15, 0, 'g'],
-            monounsaturated_fat: [25, 0, 'g'], 
-            trans_fat: [0.5, 0, 'g'], 
-            cholesterol: [250, 300, 'mg'],
-            sodium: [1950, 2300, 'mg'],
-            potassium: [3100, 3500, 'mg'],
-            vitamin_a: [85, 100, '%'],
-            vitamin_c: [110, 100, '%'], 
-            calcium: [90, 100, '%'],
-            iron: [75, 100, '%']
-        },
-        macrosGoalPercent: { 
-            carbs: 50,
-            fat: 30,   
-            protein: 20 
-        }
-    };
-
-    function getCssVariable(varName) {
-        return getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
-    }
-
-    function updateNutritionDisplay(data) {
-        const totalCaloriesConsumed = data.calories.breakfast + data.calories.lunch + data.calories.dinner + data.calories.snacks;
-        const netCalories = totalCaloriesConsumed - data.calories.exercise;
-        const goalCalories = data.calories.goal;
-
-        document.querySelector('[data-value="breakfast-calories"]').textContent = `${Math.round((data.calories.breakfast / totalCaloriesConsumed) * 100) || 0}% (${data.calories.breakfast} cal)`;
-        document.querySelector('[data-value="lunch-calories"]').textContent = `${Math.round((data.calories.lunch / totalCaloriesConsumed) * 100) || 0}% (${data.calories.lunch} cal)`;
-        document.querySelector('[data-value="dinner-calories"]').textContent = `${Math.round((data.calories.dinner / totalCaloriesConsumed) * 100) || 0}% (${data.calories.dinner} cal)`;
-        document.querySelector('[data-value="snack-calories"]').textContent = `${Math.round((data.calories.snacks / totalCaloriesConsumed) * 100) || 0}% (${data.calories.snacks} cal)`;
-
-        document.querySelector('[data-value="total-calories"]').textContent = totalCaloriesConsumed.toLocaleString();
-        document.querySelector('[data-value="exercise-calories"]').textContent = `- ${data.calories.exercise.toLocaleString()} cal`; 
-        document.querySelector('[data-value="net-calories"]').textContent = netCalories.toLocaleString();
-        document.querySelector('[data-value="goal-calories"]').textContent = goalCalories.toLocaleString();
-
-        const calorieCanvas = document.getElementById('calorieChart');
-        if (calorieCanvas) {
-            const ctxCalorie = calorieCanvas.getContext('2d');
-            if (calorieDoughnutChart) calorieDoughnutChart.destroy(); 
-
-            calorieDoughnutChart = new Chart(ctxCalorie, {
+            macroChartInstance = new Chart(macroCtx.getContext('2d'), {
                 type: 'doughnut',
                 data: {
-                    labels: ['Breakfast', 'Lunch', 'Dinner', 'Snacks'],
+                    labels: ['Carbohydrates', 'Fat', 'Protein'],
                     datasets: [{
-                        label: 'Calories by Meal',
+                        label: 'Macronutrients (g)',
                         data: [
-                            data.calories.breakfast,
-                            data.calories.lunch,
-                            data.calories.dinner,
-                            data.calories.snacks
+                            macroData.carbs,
+                            macroData.fat,
+                            macroData.protein
                         ],
                         backgroundColor: [
-                            getCssVariable('--chart-calorie-breakfast') || '#bf9a33',
-                            getCssVariable('--chart-calorie-lunch') || '#febd14',
-                            getCssVariable('--chart-calorie-dinner') || '#fece43',
-                            getCssVariable('--chart-calorie-snacks') || '#feda75'
+                            '#febd14', // carbs color from legend
+                            '#fece43', // fat color
+                            '#feda75'  // protein color
                         ],
-                        borderColor: getCssVariable('--card-bg') || '#ffffff', 
-                        borderWidth: 2,
-                        hoverOffset: 4
+                        borderColor: '#ffffff',
+                        borderWidth: 2
                     }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
                     plugins: {
-                        legend: { display: false }, 
+                        legend: {
+                            display: false // Using custom HTML legend
+                        },
                         tooltip: {
-                            callbacks: {
+                             callbacks: {
                                 label: function(context) {
                                     let label = context.label || '';
-                                    if (label) label += ': ';
-                                    label += context.parsed.toLocaleString() + ' cal';
+                                    let value = context.parsed || 0;
+                                    let percentage = totalGrams > 0 ? Math.round((value / totalGrams) * 100) : 0;
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    label += value.toLocaleString() + 'g (' + percentage + '%)';
                                     return label;
                                 }
                             }
                         }
                     },
-                    cutout: '70%' 
-                }
-            });
-        }
-
-        const nutrientList = document.querySelector('.nutrient-list');
-        if (nutrientList) {
-            Object.keys(data.nutrients).forEach(key => {
-                const nutrientItem = nutrientList.querySelector(`li[data-nutrient="${key}"]`);
-                if (nutrientItem) {
-                    const [total, goal, unit] = data.nutrients[key];
-                    const left = Math.max(0, goal - total); 
-                    const unitDisplay = unit !== '%' ? ` ${unit}` : unit; 
-
-                    const spans = nutrientItem.querySelectorAll('span');
-                    spans[1].textContent = `${total.toLocaleString()}${unitDisplay}`; 
-                    spans[2].textContent = `${goal.toLocaleString()}${unitDisplay}`; 
-                    spans[3].textContent = `${left.toLocaleString()}${unitDisplay}`; 
-                }
-            });
-        }
-
-        const totalProteinGrams = data.nutrients.protein[0];
-        const totalCarbsGrams = data.nutrients.carbohydrates[0];
-        const totalFatGrams = data.nutrients.fat[0];
-
-        const totalMacroGrams = totalProteinGrams + totalCarbsGrams + totalFatGrams;
-        const percentCarbs = totalMacroGrams > 0 ? Math.round((totalCarbsGrams / totalMacroGrams) * 100) : 0;
-        const percentFat = totalMacroGrams > 0 ? Math.round((totalFatGrams / totalMacroGrams) * 100) : 0;
-        const percentProtein = totalMacroGrams > 0 ? (100 - percentCarbs - percentFat) : 0;
-
-
-        const carbsLegend = document.querySelector('.legend-item[data-macro="carbs"]');
-        if (carbsLegend) {
-            carbsLegend.querySelector('span:nth-child(2)').textContent = `Carbohydrates (${totalCarbsGrams.toLocaleString()}g)`;
-            carbsLegend.querySelector('.percentage').textContent = `${percentCarbs}%`;
-            carbsLegend.querySelector('.goal-percentage').textContent = `(${data.macrosGoalPercent.carbs}%)`; 
-        }
-        const fatLegend = document.querySelector('.legend-item[data-macro="fat"]');
-         if (fatLegend) {
-            fatLegend.querySelector('span:nth-child(2)').textContent = `Fat (${totalFatGrams.toLocaleString()}g)`;
-            fatLegend.querySelector('.percentage').textContent = `${percentFat}%`;
-            fatLegend.querySelector('.goal-percentage').textContent = `(${data.macrosGoalPercent.fat}%)`;
-        }
-        const proteinLegend = document.querySelector('.legend-item[data-macro="protein"]');
-         if (proteinLegend) {
-            proteinLegend.querySelector('span:nth-child(2)').textContent = `Protein (${totalProteinGrams.toLocaleString()}g)`;
-            proteinLegend.querySelector('.percentage').textContent = `${percentProtein}%`;
-            proteinLegend.querySelector('.goal-percentage').textContent = `(${data.macrosGoalPercent.protein}%)`;
-        }
-
-
-        const macroCanvas = document.getElementById('macroChart');
-        if (macroCanvas) {
-            const ctxMacro = macroCanvas.getContext('2d');
-             if (macroDoughnutChart) macroDoughnutChart.destroy();
-
-            macroDoughnutChart = new Chart(ctxMacro, {
-                type: 'doughnut',
-                data: {
-                    labels: ['Carbs', 'Fat', 'Protein'],
-                    datasets: [{
-                        label: 'Macronutrients',
-                        data: [ percentCarbs, percentFat, percentProtein ],
-                        backgroundColor: [
-                            getCssVariable('--chart-macro-carbs') || '#c49a3c',
-                            getCssVariable('--chart-macro-fat') || '#e6c56d',
-                            getCssVariable('--chart-macro-protein') || '#a47e2b'
-                        ],
-                        borderColor: getCssVariable('--card-bg') || '#ffffff',
-                        borderWidth: 2,
-                        hoverOffset: 4
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                     plugins: {
-                        legend: { display: false },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    let label = context.label || '';
-                                    if (label) label += ': ';
-                                    label += context.parsed.toFixed(0) + '%';
-                                    return label;
-                                }
-                            }
-                        }
-                    },
-                    cutout: '70%'
-                }
-            });
-        }
-    } 
-    const nutritionTabContainer = document.querySelector('#tabs-3');
-    if (nutritionTabContainer) {
-        const nutritionTabNav = nutritionTabContainer.querySelector('nav.tabs');
-        const nutritionTabButtons = nutritionTabNav?.querySelectorAll('.tab-button');
-        const nutritionTabContents = nutritionTabContainer.querySelectorAll(':scope > .content-placeholder > div.tab-content'); 
-
-        if (nutritionTabNav && nutritionTabButtons && nutritionTabContents) {
-            nutritionTabNav.addEventListener('click', (e) => {
-                const clickedButton = e.target.closest('.tab-button');
-                if (!clickedButton || clickedButton.classList.contains('active')) return; 
-
-                const targetTabId = clickedButton.dataset.tab + '-content'; 
-                nutritionTabButtons.forEach(button => button.classList.remove('active'));
-                nutritionTabContents.forEach(content => content.classList.remove('active'));
-
-                clickedButton.classList.add('active');
-                const newActiveContent = nutritionTabContainer.querySelector(`#${targetTabId}`);
-                if (newActiveContent) {
-                    newActiveContent.classList.add('active');
+                    cutout: '60%' // Make it a doughnut chart
                 }
             });
         }
     }
 
-    updateNutritionDisplay(nutritionData); 
+    // --- Event Listeners for Chart Updates ---
+    $('#measurements, #graph-period').on('change', function() {
+        // Only update if the workout status tab is active
+        if ($('#tabs-2').hasClass('active')) {
+            initializeOrUpdateProgressChart();
+        }
+    });
 
-}); 
+    // --- Initial Chart Load on Page Ready ---
+    // Check which tab is active initially and load its charts
+    if ($('#tabs-2').hasClass('active')) {
+        initializeOrUpdateProgressChart();
+    } else if ($('#tabs-3').hasClass('active')) {
+        initializeOrUpdateNutritionCharts();
+    }
+
+}); // End document ready

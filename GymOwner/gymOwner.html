@@ -8,10 +8,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="gymownercss/gymowner.css">
+    <link rel="stylesheet" href="gymownercss/gymowner.css"> 
 </head>
 <body>
-    <div class="admin-container">
+    <div class="admin-container"> 
 
         <aside class="sidebar">
             <div class="sidebar-header">
@@ -23,7 +23,6 @@
                     <li><a href="#" class="nav-link" data-target="analytics-content"><i class="bi bi-graph-up-arrow"></i> <span class="nav-text">Analytics</span></a></li>
                     <li><a href="#" class="nav-link" data-target="users-content"><i class="bi bi-person"></i> <span class="nav-text">Users</span></a></li>
                     <li><a href="#" class="nav-link" data-target="staff-content"><i class="bi bi-headset"></i> <span class="nav-text">Staff/Coaches</span></a></li>
-                   
                     <li><a href="#" class="nav-link" data-target="payments-content"><i class="bi bi-credit-card-fill"></i> <span class="nav-text">Payments</span></a></li>
                     <li><a href="../User/signin.html" id="logout-link"><i class="bi bi-box-arrow-left"></i> <span class="nav-text">Logout</span></a></li>
                 </ul>
@@ -34,7 +33,7 @@
             <header class="main-header">
                 <h1 id="page-title">Dashboard</h1>
                 <div class="admin-profile">
-                    <span>Welcome, Gym Owner!</span> 
+                    <span>Welcome, Gym Owner!</span>
                 </div>
             </header>
 
@@ -43,72 +42,38 @@
                 <section id="dashboard-content" class="content-section active">
                     <h2>Overview</h2>
                     <div class="stats-cards">
-                        <div class="card">
-                            <h3>Total Users</h3>
-                            <p>1,250</p>
-                        </div>
-                        <div class="card">
-                            <h3>Active Members</h3>
-                            <p>980</p>
-                        </div>
-                       
-                        <div class="card">
-                            <h3>Total Coaches</h3>
-                            <p>15</p>
-                        </div>
-                         <div class="card"> 
-                            <h3>Monthly Revenue</h3>
-                            <p>$5,500</p>
-                        </div>
+                        <div class="card"><h3>Total Users</h3><p>1,250</p></div>
+                        <div class="card"><h3>Active Members</h3><p>980</p></div>
+                        <div class="card"><h3>Total Coaches</h3><p>15</p></div>
+                        <div class="card"><h3>Monthly Revenue</h3><p>$5,500</p></div>
                     </div>
-
                      <div class="recent-activity">
                         <h3>Recent Activity</h3>
                         <ul>
                             <li>John Doe checked in.</li>
-                            <li>New payment received from Jane Smith. (Pending) <button class="btn btn-sm btn-success accept-payment-btn" data-payment-id="PAY00X" style="margin-left: 10px;">Accept</button></li> 
+                            <li>New payment received from Jane Smith. (Pending) <button class="btn btn-sm btn-success accept-payment-btn" data-payment-id="PAY00X" data-user-name="Jane Smith" style="margin-left: 10px;">Accept</button></li>
                             <li>New Coach Added: Diana Prince</li>
                             <li>Mike Ross registered as a new user.</li>
-                            <li>Payment PAY002 from Eva Green is Pending. <button class="btn btn-sm btn-success accept-payment-btn" data-payment-id="PAY002" style="margin-left: 10px;">Accept</button></li> 
+                            <li>Payment PAY002 from Eva Green is Pending. <button class="btn btn-sm btn-success accept-payment-btn" data-payment-id="PAY002" data-user-name="Eva Green" style="margin-left: 10px;">Accept</button></li>
                         </ul>
                     </div>
                 </section>
 
-
+                <!-- analytics-content -->
                 <section id="analytics-content" class="content-section">
                     <h2>Analytics</h2>
                     <p class="section-description">Visual representation of key metrics.</p>
-
                     <div class="charts-grid">
-
-                        <div class="chart-container">
-                            <h3>Membership Trends</h3>
-                            <div class="chart-placeholder-container">
-                                <canvas id="trendsChart"></canvas>
-                            </div>
-                        </div>
-
-                        <div class="chart-container">
-                            <h3>New User Registrations</h3>
-                            <div class="chart-placeholder-container">
-                                <canvas id="newUserChart"></canvas>
-                            </div>
-                        </div>
-
-                        <div class="chart-container">
-                            <h3>Membership Types</h3>
-                            <div class="chart-placeholder-container">
-                                <canvas id="membershipTypeChart"></canvas> 
-                            </div>
-                        </div>
-
+                        <div class="chart-container"><h3>Membership Trends</h3><div class="chart-placeholder-container"><canvas id="trendsChart"></canvas></div></div>
+                        <div class="chart-container"><h3>New User Registrations</h3><div class="chart-placeholder-container"><canvas id="newUserChart"></canvas></div></div>
+                        <div class="chart-container"><h3>Membership Types</h3><div class="chart-placeholder-container"><canvas id="membershipTypeChart"></canvas></div></div>
                     </div>
                 </section>
 
-
+                <!-- users-content -->
                 <section id="users-content" class="content-section">
                     <h2>Manage Users</h2>
-                    <div class="controls-container"> 
+                    <div class="controls-container">
                         <button class="btn btn-primary add-btn">Add New User</button>
                         <div class="search-container">
                             <input type="text" id="user-search-id" class="search-input" placeholder="Search by User ID...">
@@ -117,47 +82,19 @@
                     </div>
                     <div class="table-container">
                         <table>
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Membership</th>
-                                    <th>Status</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
+                            <thead><tr><th>ID</th><th>Name</th><th>Email</th><th>Membership</th><th>Status</th><th>Actions</th></tr></thead>
                             <tbody>
-                               
-                                <tr>
-                                    <td>USR001</td>
-                                    <td>Alice Johnson</td>
-                                    <td>alice@example.com</td>
-                                    <td>Premium</td>
-                                    <td>Active</td>
-                                    <td>
-                                     
-                                        <button class="btn btn-sm btn-danger">Delete</button>
-                                    </td>
-                                </tr>
-                                 <tr>
-                                    <td>USR002</td>
-                                    <td>Bob Williams</td>
-                                    <td>bob@example.com</td>
-                                    <td>Basic</td>
-                                    <td>Inactive</td>
-                                    <td>
-                                        <button class="btn btn-sm btn-danger">Delete</button>
-                                    </td>
-                                </tr>
+                                <tr data-id="USR001"><td data-label="ID">USR001</td><td data-label="Name">Alice Johnson</td><td data-label="Email">alice@example.com</td><td data-label="Membership">Premium</td><td data-label="Status">Active</td><td data-label="Actions"><button class="btn btn-sm btn-danger">Delete</button></td></tr>
+                                <tr data-id="USR002"><td data-label="ID">USR002</td><td data-label="Name">Bob Williams</td><td data-label="Email">bob@example.com</td><td data-label="Membership">Basic</td><td data-label="Status">Inactive</td><td data-label="Actions"><button class="btn btn-sm btn-danger">Delete</button></td></tr>
                             </tbody>
                         </table>
                     </div>
                 </section>
 
+                <!-- staff-content -->
                 <section id="staff-content" class="content-section">
                     <h2>Manage Staff / Coaches</h2>
-                     <div class="controls-container"> 
+                     <div class="controls-container">
                         <button class="btn btn-primary add-btn">Add New Staff</button>
                         <div class="search-container">
                             <input type="text" id="staff-search-id" class="search-input" placeholder="Search by Staff ID...">
@@ -166,138 +103,53 @@
                     </div>
                      <div class="table-container">
                         <table>
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Name</th>
-                                    <th>Role</th>
-                                    <th>Email</th>
-                                 
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
+                            <thead><tr><th>ID</th><th>Name</th><th>Role</th><th>Email</th><th>Actions</th></tr></thead>
                             <tbody>
-                              
-                                <tr>
-                                    <td>STF001</td>
-                                    <td>Charlie Brown</td>
-                                    <td>Head Coach</td>
-                                    <td>charlie@gym.com</td>
-                                  
-                                    <td>
-                                       
-                                        <button class="btn btn-sm btn-danger">Delete</button>
-                                    </td>
-                                </tr>
-                                 <tr>
-                                    <td>STF002</td>
-                                    <td>Diana Prince</td>
-                                    <td>Receptionist</td>
-                                    <td>diana@gym.com</td>
-                                   
-                                    <td>
-                                        <button class="btn btn-sm btn-danger">Delete</button>
-                                    </td>
-                                </tr>
+                                <tr data-id="STF001"><td data-label="ID">STF001</td><td data-label="Name">Charlie Brown</td><td data-label="Role">Head Coach</td><td data-label="Email">charlie@gym.com</td><td data-label="Actions"><button class="btn btn-sm btn-danger">Delete</button></td></tr>
+                                <tr data-id="STF002"><td data-label="ID">STF002</td><td data-label="Name">Diana Prince</td><td data-label="Role">Receptionist</td><td data-label="Email">diana@gym.com</td><td data-label="Actions"><button class="btn btn-sm btn-danger">Delete</button></td></tr>
                             </tbody>
                         </table>
                     </div>
                 </section>
 
-
-           
-
-
-                <section id="payments-content" class="content-section">
-                    <h2>Payment History</h2>
-                     <div class="table-container">
-                         <table>
-                            <thead>
-                                <tr>
-                                    <th>Payment ID</th>
-                                    <th>User ID</th>
-                                    <th>User Name</th>
-                                    <th>Amount</th>
-                                    <th>Date</th>
-                                    <th>Status</th>
-                                    <th>Method</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                
-                                <tr>
-                                    <td>PAY001</td>
-                                    <td>USR001</td>
-                                    <td>Alice Johnson</td>
-                                    <td>$50.00</td>
-                                    <td>2023-10-26</td>
-                                    <td>Completed</td>
-                                    <td>Credit Card</td>
-                                    <td>
-                                        <button class="btn btn-sm btn-info">Refund</button>
-                                    </td>
-                                </tr>
-                                 <tr>
-                                    <td>PAY002</td>
-                                    <td>USR003</td>
-                                    <td>Eva Green</td>
-                                    <td>$50.00</td>
-                                    <td>2023-10-25</td>
-                                    <td>Pending</td> 
-                                    <td>Bank Transfer</td>
-                                     <td>
-                                        
-                                         <button class="btn btn-sm btn-success">Accept Payment</button>
-                                    </td>
-                                </tr>
-                                 <tr>
-                                    <td>PAY003</td>
-                                    <td>USR002</td>
-                                    <td>Bob Williams</td>
-                                    <td>$30.00</td>
-                                    <td>2023-10-27</td>
-                                    <td>Completed</td>
-                                    <td>Online (GCash)</td>
-                                    <td>
-                                        <button class="btn btn-sm btn-info">Refund</button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </section>
+                               <!-- payments-content -->
+                               <section id="payments-content" class="content-section">
+                                <h2>Payment History</h2>
+                                <div class="controls-container">
+                                    <div class="search-container payment-search"> 
+                                        <input type="text" id="payment-search-pid" class="search-input" placeholder="Search by Payment ID...">
+                                        <input type="number" id="payment-search-year" class="search-input" placeholder="Filter by Year (YYYY)" min="1980" max="2099" style="width: 160px; margin-left: 10px;">
+                                        <button class="btn btn-secondary search-btn" id="payment-filter-btn" style="margin-left: 5px;"><i class="bi bi-funnel"></i> Filter</button> 
+                                    </div>
+                                </div>
+                                 <div class="table-container">
+                                     <table>
+                                        <thead><tr><th>Payment ID</th><th>User ID</th><th>User Name</th><th>Amount</th><th>Date</th><th>Status</th><th>Method</th><th>Actions</th></tr></thead>
+                                        <tbody>
+                                            <tr data-id="PAY001"><td data-label="Payment ID">PAY001</td><td data-label="User ID">USR001</td><td data-label="User Name">Alice Johnson</td><td data-label="Amount">$50.00</td><td data-label="Date">2023-10-26</td><td data-label="Status" style="color: var(--success);">Completed</td><td data-label="Method">Credit Card</td><td data-label="Actions"><button class="btn btn-sm btn-info">Refund</button></td></tr>
+                                            <tr data-id="PAY002"><td data-label="Payment ID">PAY002</td><td data-label="User ID">USR003</td><td data-label="User Name">Eva Green</td><td data-label="Amount">$50.00</td><td data-label="Date">2023-10-25</td><td data-label="Status" style="color: orange;">Pending</td><td data-label="Method">Bank Transfer</td><td data-label="Actions"><button class="btn btn-sm btn-success accept-payment-btn" data-payment-id="PAY002" data-user-name="Eva Green">Accept Payment</button></td></tr>
+                                            <tr data-id="PAY003"><td data-label="Payment ID">PAY003</td><td data-label="User ID">USR002</td><td data-label="User Name">Bob Williams</td><td data-label="Amount">$30.00</td><td data-label="Date">2023-10-27</td><td data-label="Status" style="color: var(--success);">Completed</td><td data-label="Method">Online (GCash)</td><td data-label="Actions"><button class="btn btn-sm btn-info">Refund</button></td></tr>
+                                            <tr data-id="PAY004"><td data-label="Payment ID">PAY004</td><td data-label="User ID">USR001</td><td data-label="User Name">Alice Johnson</td><td data-label="Amount">$50.00</td><td data-label="Date">2022-11-15</td><td data-label="Status" style="color: var(--success);">Completed</td><td data-label="Method">Credit Card</td><td data-label="Actions"><button class="btn btn-sm btn-info">Refund</button></td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </section>
 
             </div>
         </main>
     </div>
 
-
+    <!-- Add/Edit Modals -->
     <div id="add-user-modal" class="modal">
         <div class="modal-content">
-            <span class="close-btn">×</span>
+            <button class="close-btn">×</button>
             <h2>Add New User</h2>
-            <form id="add-user-form">
-                <div class="form-group">
-                    <label for="member-id">Member ID:</label>
-                    <input type="text" id="member-id" name="member-id" required placeholder="e.g., USR003">
-                </div>
-                <div class="form-group">
-                    <label for="member-name">Name:</label>
-                    <input type="text" id="member-name" name="member-name" required placeholder="e.g., Clark Kent">
-                </div>
-                <div class="form-group">
-                    <label for="email">Email:</label>
-                    <input type="email" id="email" name="email" required placeholder="e.g., user@example.com">
-                </div>
-                <div class="form-group">
-                    <label for="membership">Membership:</label>
-                    <input type="text" id="membership" name="membership" required placeholder="e.g., Premium / Basic">
-                </div>
-                <div class="form-group">
-                    <label for="status">Status:</label>
-                    <input type="text" id="status" name="status" required placeholder="e.g., Active / Inactive">
-                </div>
+            <form id="add-user-form" novalidate>
+                <div class="form-group"><label for="member-id">Member ID:</label><input type="text" id="member-id" name="member-id" required placeholder="e.g., USR003"></div>
+                <div class="form-group"><label for="member-name">Name:</label><input type="text" id="member-name" name="member-name" required placeholder="e.g., Clark Kent"></div>
+                <div class="form-group"><label for="email">Email:</label><input type="email" id="email" name="email" required placeholder="e.g., user@example.com"></div>
+                <div class="form-group"><label for="membership">Membership:</label><input type="text" id="membership" name="membership" required placeholder="e.g., Premium / Basic"></div>
+                <div class="form-group"><label for="status">Status:</label><input type="text" id="status" name="status" required placeholder="e.g., Active / Inactive"></div>
                 <button type="submit" class="btn btn-primary modal-add-btn">Add New Member</button>
             </form>
         </div>
@@ -305,36 +157,47 @@
 
     <div id="add-coach-modal" class="modal">
         <div class="modal-content">
-            <span class="close-btn">×</span>
+            <button class="close-btn">×</button> 
             <h2>Add New Coach/Staff</h2>
-            <form id="add-coach-form">
-                <div class="form-group">
-                    <label for="coach-id">ID</label>
-                    <input type="text" id="coach-id" name="coach-id" required placeholder="e.g., STF003">
-                </div>
-                <div class="form-group">
-                    <label for="coach-name">Name</label>
-                    <input type="text" id="coach-name" name="coach-name" required placeholder="e.g., Lois Lane">
-                </div>
-                <div class="form-group">
-                    <label for="coach-role">Role</label>
-                    <input type="text" id="coach-role" name="coach-role" required placeholder="e.g., Personal Trainer / Front Desk">
-                </div>
-                <div class="form-group">
-                    <label for="coach-email">Email</label>
-                    <input type="email" id="coach-email" name="coach-email" required placeholder="e.g., staff@gym.com">
-                </div>
-               
+            <form id="add-coach-form" novalidate>
+                <div class="form-group"><label for="coach-id">ID</label><input type="text" id="coach-id" name="coach-id" required placeholder="e.g., STF003"></div>
+                <div class="form-group"><label for="coach-name">Name</label><input type="text" id="coach-name" name="coach-name" required placeholder="e.g., Lois Lane"></div>
+                <div class="form-group"><label for="coach-role">Role</label><input type="text" id="coach-role" name="coach-role" required placeholder="e.g., Personal Trainer"></div>
+                <div class="form-group"><label for="coach-email">Email</label><input type="email" id="coach-email" name="coach-email" required placeholder="e.g., staff@gym.com"></div>
                 <button type="submit" class="btn btn-primary modal-add-btn">Add New Coach/Staff</button>
             </form>
+        </div>
+    </div>
+
+     <!-- Logout Confirmation Modal -->
+     <div id="logoutConfirmationModal" class="modal">
+        <div class="modal-content">
+            <button id="closeLogoutModalButton" class="close-button">×</button>
+            <p id="logoutModalMessage">Are you sure you want to logout?</p>
+            <div class="modal-actions" style="text-align: center;">
+                 <button id="cancelLogoutButton" class="btn btn-secondary" style="margin-right: 15px;">Cancel</button>
+                 <button id="okLogoutButton" class="btn btn-primary">Logout</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="alertModal" class="modal alert-modal">
+        <div class="modal-content">
+            <button class="close-btn alert-modal-close">×</button>
+            <h3 id="alertModalTitle" style="text-align: center; margin-top:10px; margin-bottom: 15px;">Notification</h3>
+            <p id="alertModalMessage" style="margin-bottom: 25px; text-align: center; line-height: 1.6;"></p>
+            <div class="modal-actions" style="text-align: center;">
+                 <button id="alertModalOkButton" class="btn btn-primary" style="min-width: 100px;">OK</button>
+            </div>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-moment@1.0.1/dist/chartjs-adapter-moment.min.js"></script>
-    <script src="../assets/jquery-3.7.1.min.js"></script> 
-    <script src="/GymOwner/gymower js/script.js"></script> 
+    <script src="../assets/jquery-3.7.1.min.js"></script>
+
+    <script src="gymOwnerJs/script.js"></script>
 
 </body>
 </html>

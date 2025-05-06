@@ -4,14 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up (Step 1) - OptiLife</title>
-    <link rel="stylesheet" href="usercss/signin_signup.css"> 
+    <link rel="stylesheet" href="usercss/signin_signup.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+   
 </head>
 <body>
 
     <div class="container">
-        <div class="form-box signup"> 
-            <form id="signup-step1-form"> 
+        <div class="form-box signup">
+            <form id="signup-step1-form">
                 <h1>Sign up</h1>
 
                 <div class="input-box">
@@ -21,7 +22,7 @@
 
                 <div class="input-box">
                     <input type="email" placeholder="Email" id="email" required>
-                    <i class='bx bxs-envelope'></i> 
+                    <i class='bx bxs-envelope'></i>
                 </div>
 
                 <div class="input-box">
@@ -44,76 +45,68 @@
         </div>
     </div>
 
+    <!-- The Modal -->
     <div id="Modal" class="modal">
         <div class="modal-content">
             <button id="closeModalButton" class="close-button">×</button>
-            <p>Sign up successful!</p>
-            <button id="closeModalButton" class="close-button">Ok</button>
+            <p id="modalMessage">Sign up successful! Proceed to next step.</p>
+            <button id="okModalButton" >Ok</button>
         </div>
     </div>
 
     <script src="../assets/jquery-3.7.1.min.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
+        $(document).ready(function() {
+            // --- Modal Elements ---
+            const $modal = $("#Modal");
+            const $closeButton = $("#closeModalButton");
+            const $okButton = $("#okModalButton"); 
+            const $modalMessage = $("#modalMessage");      
 
-        const modal = document.getElementById('userModal');
-        const profilePic = document.getElementById('profilePicTrigger');
-        const closeButton = document.getElementById('closeModalButton');
-
-        const openModal = () => {
-            if (modal) {
-            modal.classList.add('show');
-            }
+            // --- Modal Functions ---
+            const openModal = () => {
+                $modal.addClass('show');
+                $modalMessage.text("Sign up successful! Proceed to next step.");
+                $modalMessage.css("color", "black"); 
             };
 
-        const closeModal = () => {
-        if (modal) {
-        modal.classList.remove('show');
-        }
-        };
+            const closeModal = () => {
+                $modal.removeClass('show');
+            };
+
+            $closeButton.on('click', closeModal);
+
+            $okButton.on('click', function() {
+                closeModal();
+                const email = sessionStorage.getItem('signupEmail');
+                const password = sessionStorage.getItem('signupPassword');
+                if (email && password) {
+                    window.location.href = 'signup-form.html'; 
+                } else {
+                    alert("Something went wrong. Please try signing up again.");
+                    console.error("Session storage data missing on modal OK click.");
+                }
+            });
+
+            $modal.on('click', function(event) {
+                if ($(event.target).is($modal)) { 
+                    closeModal();
+                }
+            });
+
+            $(document).on('keydown', function(event) {
+                if (event.key === 'Escape' && $modal.hasClass('show')) {
+                    closeModal();
+                }
+            });
 
 
-if (profilePic) {
-    profilePic.addEventListener('click', openModal);
-} else {
-    console.error("");
-}
-
-
-if (closeButton) {
-    closeButton.addEventListener('click', closeModal);
-} else {
-    console.error("Close button element not found!");
-}
-
-
-if (modal) {
-    modal.addEventListener('click', (event) => {
-
-        if (event.target === modal) {
-            closeModal();
-        }
-    });
-        }
-
-
-document.addEventListener('keydown', (event) => {
-
-    if (modal && modal.classList.contains('show') && event.key === 'Escape') {
-        closeModal();
-    }
-});
-
-});
-    </script>
-    <script>
-        $(document).ready(function() {
             $("#next-step-btn").on("click", function(event) {
                 event.preventDefault(); 
 
                 const username = $("#username").val().trim();
-                const email = $("#email").val().trim(); 
-                const password = $("#password").val(); 
+                const email = $("#email").val().trim();
+                const password = $("#password").val();
 
                 let isValid = true;
                 $("#username, #email, #password").css("border", "");
@@ -145,13 +138,15 @@ document.addEventListener('keydown', (event) => {
                      isValid = false;
                  }
 
+
                 if (isValid) {
                     sessionStorage.setItem('signupEmail', email);
                     sessionStorage.setItem('signupPassword', password);
-
-                    window.location.href = 'signup-form.html'; 
+                    openModal(); 
                 }
             });
+
+
         });
     </script>
 

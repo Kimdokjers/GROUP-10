@@ -39,57 +39,139 @@
         </div>
     </div>
 
+    <div id="Modal" class="modal">
+        <div class="modal-content">
+            <button id="closeModalButton" class="close-button">×</button>
+            <p id="modalMessage">Sign in successful! Welcome Back!</p>
+            <button id="okModalButton" >Ok</button>
+        </div>
+    </div>
+    
     <script src="../assets/jquery-3.7.1.min.js"></script>
     <script>
-        $(document).ready(function() {
-            $("#signin-submit").on("click", function(event) {
-                event.preventDefault(); 
-                const email = $("#email").val().trim();
-                const password = $("#password").val(); 
+$(document).ready(function() {
+    // --- Modal Elements ---
+    const $modal = $("#Modal");
+    const $closeButton = $("#closeModalButton");
+    const $okButton = $("#okModalButton");
+    const $modalMessage = $("#modalMessage");
 
-                let isValid = true;
-                $("#email, #password").css("border", "");
+    // --- State variable to store redirect URL ---
+    let redirectUrl = null; // We'll store the target URL here upon success
 
-                if (!email) {
-                    alert("Please enter your email address.");
-                    $("#email").css("border", "1px solid red");
-                    isValid = false;
-                }
+    // --- Modal Functions ---
+    const openModal = (message) => {
+        $modalMessage.text(message || "Sign in successful! Welcome Back!"); // Use provided message or default
+        $modalMessage.css("color", "black"); // Ensure text is black for success
+        $modal.addClass('show');
+    };
 
-                if (!password) {
-                    alert("Please enter your password.");
-                    $("#password").css("border", "1px solid red");
-                    isValid = false;
-                }
+    const closeModal = () => {
+        $modal.removeClass('show');
+        redirectUrl = null; // Clear the redirect URL when modal closes (this is okay here)
+    };
 
-                if (!isValid) {
-                    return; 
-                }
+    // --- Modal Event Listeners ---
+    $closeButton.on('click', closeModal);
 
-                const adminEmail = "admin@gmail.com";
-                const adminPassword = "admin123";
-                const ownerEmail = "gymOwner@gmail.com";
-                const ownerPassword = "gymOwner123";
-                const clientEmail = "user@gmail.com";
-                const clientPassword = "user0123";
+    // Corrected OK Button Logic for Sign-in
+    $okButton.on('click', function() {
+        // 1. Store the redirect URL *before* closing the modal
+        const urlToRedirect = redirectUrl;
 
-                console.log("Attempting sign in for:", email); 
+        // 2. Now close the modal (which clears the global redirectUrl)
+        closeModal();
 
-                if (email === clientEmail && password === clientPassword) {
-                    alert("Client Sign in successful! Redirecting...");
-                    window.location.href = "home.html";
-                } else if (email === ownerEmail && password === ownerPassword) {
-                    alert("Gym Owner Sign in successful! Redirecting...");
-                    window.location.href = "../GymOwner/gymOwner.html"; 
-                } else if (email === adminEmail && password === adminPassword) {
-                     alert("Admin Sign in successful! Redirecting...");
-                     window.location.href = "../Admin/admindb.html"; 
-                 } else {
-                    console.log("Sign in failed: Invalid credentials.");
-                    alert("Invalid email or password. Please try again.");
-                }
-            });
-        });
+        // 3. Check the stored URL and redirect if it exists
+        if (urlToRedirect) {
+            console.log("OK Clicked - Redirecting to:", urlToRedirect); // For debugging
+            window.location.href = urlToRedirect; // Redirect to the stored URL
+        } else {
+             console.warn("OK button clicked, but no redirect URL was available.");
+        }
+    });
+
+
+    // Close modal if clicked outside content
+    $modal.on('click', function(event) {
+        if ($(event.target).is($modal)) {
+            closeModal();
+        }
+    });
+
+    // Close modal on Escape key
+    $(document).on('keydown', function(event) {
+        if (event.key === 'Escape' && $modal.hasClass('show')) {
+            closeModal();
+        }
+    });
+
+    // --- Sign-in Form Logic ---
+    $("#signin-form").on("submit", function(event) {
+        event.preventDefault(); // Prevent default form submission
+        const email = $("#email").val().trim();
+        const password = $("#password").val();
+
+        let isValid = true;
+        $("#email, #password").css("border", ""); // Reset borders
+        redirectUrl = null; // Reset redirect URL on new attempt
+
+        // Basic Validation
+        if (!email) {
+             alert("Please enter your email address.");
+             $("#email").css("border", "1px solid red");
+            isValid = false;
+        }
+
+        if (!password) {
+             alert("Please enter your password.");
+            $("#password").css("border", "1px solid red");
+            isValid = false;
+        }
+
+        if (!isValid) {
+            return; // Stop if validation fails
+        }
+
+        // --- Credentials Check ---
+        const adminEmail = "admin@gmail.com";
+        const adminPassword = "admin123";
+        const ownerEmail = "gymOwner@gmail.com";
+        const ownerPassword = "gymOwner123";
+        const clientEmail = "user@gmail.com";
+        const clientPassword = "user0123";
+
+        console.log("Attempting sign in for:", email);
+
+        let successMessage = "";
+        let targetUrl = ""; // Variable to hold the URL if login is successful
+
+        // Check credentials and set targetUrl and successMessage
+        if (email === clientEmail && password === clientPassword) {
+            successMessage = "Client Sign in successful! Welcome Back!";
+            targetUrl = "home.html";
+        } else if (email === ownerEmail && password === ownerPassword) {
+            successMessage = "Gym Owner Sign in successful! Welcome Back!";
+            targetUrl = "../GymOwner/gymOwner.html";
+        } else if (email === adminEmail && password === adminPassword) {
+             successMessage = "Admin Sign in successful! Welcome Back!";
+             targetUrl = "../Admin/admindb.html";
+         }
+
+        // --- Handle Result ---
+        if (targetUrl) {
+            // Success! Store the redirect URL and open the modal
+            console.log("Sign in successful for:", email, "- Storing redirect URL:", targetUrl);
+            redirectUrl = targetUrl; // Store the URL for the okButton handler
+            openModal(successMessage); // Show the success modal
+        } else {
+            // Failure
+            console.log("Sign in failed: Invalid credentials.");
+            alert("Wrong email or password. Please try again.");
+        }
+    });
+
+});
     </script>
 
 </body>

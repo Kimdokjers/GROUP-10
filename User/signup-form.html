@@ -10,13 +10,13 @@
 <body>
 
     <div class="container">
-        <div class="form-box signup"> 
-            <form id="signup-step2-form">
+        <div class="form-box signup">
+            <form id="signup-step2-form" novalidate>
                 <h1>Welcome! Finish signing up to get started.</h1>
 
                 <div class="input-box">
                     <input type="text" placeholder="First Name" id="firstname" required>
-                    <i class='bx bxs-user-detail'></i> 
+                    <i class='bx bxs-user-detail'></i>
                 </div>
 
                 <div class="input-box">
@@ -26,108 +26,197 @@
 
                 <div class="input-box">
                     <input type="text" placeholder="Suffix (Optional)" id="suffix">
-                    <i class='bx bx-user-pin'></i> 
+                    <i class='bx bx-user-pin'></i>
                 </div>
 
                 <div class="input-box">
                     <label for="date" class="date-label">Birth Date:</label>
-                    <input type="date" id="date" min="1900-01-01" max="2025-01-01" required>
+                    <input type="date" id="date" min="1900-01-01" max="2025-01-01" required> 
                 </div>
 
                 <div class="input-box">
                     <input type="text" placeholder="Current Address" id="address" required>
-                    <i class='bx bxs-map'></i> 
+                    <i class='bx bxs-map'></i>
                 </div>
 
-                <div class="input-box">
-                    <input type="text" placeholder="Phone Number" id="phoneNumber" required>
-                    <i class='bx bx-phone'></i> 
+                 <div class="input-box"> <!-- Added Phone Number Input -->
+                    <input type="tel" placeholder="Phone Number (e.g., 09xxxxxxxxx)" id="phoneNumber" required pattern="[0-9]{11}"> <!-- Basic pattern -->
+                    <i class='bx bx-phone'></i>
                 </div>
+
 
                 <button type="submit" class="btn" id="complete-signup-btn">Complete Sign up</button>
 
                  <div class="navigation-link" style="margin-top: 15px;">
-                     <a href="signup.html" style="color: #eee; font-size: 0.9em;">« Go Back to Step 1</a>
+                     <a href="signup.html" style="color: #eee; font-size: 0.9em;">« Go Back to Step 1</a> <!-- Link back to step 1 -->
                  </div>
 
             </form>
         </div>
     </div>
 
+    <!-- Modal definition -->
+    <div id="Modal" class="modal">
+        <div class="modal-content">
+            <button id="closeModalButton" class="close-button">×</button>
+            <p id="modalMessage">Sign up successful! Welcome!</p>
+            <button id="okModalButton">OK</button>
+        </div>
+    </div>
+
     <script src="../assets/jquery-3.7.1.min.js"></script>
     <script>
         $(document).ready(function() {
+            // --- Modal Elements ---
+            const $modal = $("#Modal");
+            const $closeButton = $("#closeModalButton");
+            const $okButton = $("#okModalButton");
+            const $modalMessage = $("#modalMessage");
+            let currentOkAction = null; // To store function for OK button
+
+            // --- Modal Functions ---
+            const openModal = (message, isError = true, onOkAction = null) => {
+                $modalMessage.text(message);
+                $modalMessage.css("color", isError ? "red" : "black"); // Red for errors, black otherwise
+                currentOkAction = onOkAction; // Store the action for the OK button
+                $modal.addClass('show');
+            };
+
+            const closeModal = () => {
+                $modal.removeClass('show');
+                currentOkAction = null; // Clear the action when closing
+            };
+
+            // --- Modal Event Handlers ---
+            $closeButton.on('click', closeModal);
+
+            $okButton.on('click', function() {
+                // Execute the stored action FIRST, then close
+                if (typeof currentOkAction === 'function') {
+                    currentOkAction(); // Execute the action (e.g., redirect)
+                }
+                closeModal(); // Always close after action or if no action
+            });
+
+            $modal.on('click', function(event) {
+                if ($(event.target).is($modal)) { // Click on background
+                    closeModal();
+                }
+            });
+
+            $(document).on('keydown', function(event) {
+                if (event.key === 'Escape' && $modal.hasClass('show')) {
+                    closeModal();
+                }
+            });
+
+            // --- Initial Check & Form Logic ---
             const savedEmail = sessionStorage.getItem('signupEmail');
             const savedPassword = sessionStorage.getItem('signupPassword');
+            const savedUsername = sessionStorage.getItem('signupUsername'); // Get username if stored
+
+            const redirectToStep1 = () => {
+                window.location.href = 'signup-step1.html';
+            };
 
             if (!savedEmail || !savedPassword) {
-                alert("Please complete Step 1 of the signup first.");
-                window.location.href = 'signup-step1.html';
-                return;
+                // Use modal instead of alert, provide redirect action for OK button
+                openModal("Please complete Step 1 of the signup first.", true, redirectToStep1);
+                return; // Stop further execution
             }
 
-            $("#complete-signup-btn").on("click", function(event) {
-                event.preventDefault(); 
+            $("#signup-step2-form").on("submit", function(event) { // Use submit event on form
+                event.preventDefault(); // Prevent default form submission
+
+                // Get form values
                 const firstName = $("#firstname").val().trim();
                 const lastName = $("#lastname").val().trim();
-                const suffix = $("#suffix").val().trim(); 
+                const suffix = $("#suffix").val().trim(); // Optional
                 const birthDate = $("#date").val();
                 const address = $("#address").val().trim();
+                const phoneNumber = $("#phoneNumber").val().trim(); // Get phone number
 
-                let isStep2Valid = true;
-                $("#firstname, #lastname, #date, #address").css("border", "");
 
+                // Reset previous error styles
+                $("#firstname, #lastname, #date, #address, #phoneNumber").css("border", "");
+
+                // --- Validation Checks (using modal) ---
                 if (!firstName) {
-                    alert("Please enter your First Name.");
+                    openModal("Please enter your First Name.");
                     $("#firstname").css("border", "1px solid red");
-                    isStep2Valid = false;
+                    return; // Stop if invalid
                 }
-                 if (!lastName) {
-                    alert("Please enter your Last Name.");
+                if (!lastName) {
+                    openModal("Please enter your Last Name.");
                     $("#lastname").css("border", "1px solid red");
-                    isStep2Valid = false;
+                    return;
                 }
-                 if (!birthDate) {
-                    alert("Please enter your Birth Date.");
+                if (!birthDate) {
+                    openModal("Please select your Birth Date.");
                     $("#date").css("border", "1px solid red");
-                    isStep2Valid = false;
+                    return;
                 }
-                 if (!address) {
-                    alert("Please enter your Current Address.");
+                 // Basic phone number validation (e.g., 11 digits) - adjust regex as needed
+                const phoneRegex = /^[0-9]{11}$/;
+                 if (!phoneNumber) {
+                    openModal("Please enter your Phone Number.");
+                    $("#phoneNumber").css("border", "1px solid red");
+                    return;
+                } else if (!phoneRegex.test(phoneNumber)) {
+                     openModal("Please enter a valid 11-digit Phone Number.");
+                     $("#phoneNumber").css("border", "1px solid red");
+                     return;
+                 }
+                if (!address) {
+                    openModal("Please enter your Current Address.");
                     $("#address").css("border", "1px solid red");
-                    isStep2Valid = false;
+                    return;
                 }
 
-                if (isStep2Valid) {
-                    console.log("Step 2 validation passed. Using saved credentials for redirect.");
-                    alert("Sign up complete! Redirecting...");
 
-                    const adminEmail = "admin@gmail.com";
-                    const adminPassword = "admin123";
-                    const ownerEmail = "gymOwner@gmail.com";
-                    const ownerPassword = "gymOwner123";
-                    const clientEmail = "user@gmail.com";
-                    const clientPassword = "user0123";
+                // --- If all Step 2 validations pass ---
+                console.log("Step 2 validation passed. Preparing redirect.");
 
-                    let redirectUrl = "signin.html";
+                // Hardcoded credentials for role check (replace with actual backend logic)
+                const adminEmail = "admin@gmail.com";
+                const adminPassword = "admin123";
+                const ownerEmail = "gymOwner@gmail.com";
+                const ownerPassword = "gymOwner123";
+                const clientEmail = "user@gmail.com";
+                const clientPassword = "user0123";
 
-                    if (savedEmail === clientEmail && savedPassword === clientPassword) {
-                        redirectUrl = "home.html";
-                    } else if (savedEmail === ownerEmail && savedPassword === ownerPassword) {
-                        redirectUrl = "../GymOwner/gymOwner.html";
-                    } else if (savedEmail === adminEmail && savedPassword === adminPassword) {
-                        redirectUrl = "../Admin/admindb.html";
-                    } else {
-                         alert("Registration details submitted. Please sign in.");
-                         redirectUrl = "signin-form.html"; 
-                    }
+                let redirectUrl = "signin.html"; // Default redirect
 
-                    sessionStorage.removeItem('signupEmail');
-                    sessionStorage.removeItem('signupPassword');
-
-                    window.location.href = redirectUrl;
-
+                if (savedEmail === clientEmail && savedPassword === clientPassword) {
+                    redirectUrl = "home.html";
+                } else if (savedEmail === ownerEmail && savedPassword === ownerPassword) {
+                    redirectUrl = "../GymOwner/gymOwner.html";
+                } else if (savedEmail === adminEmail && savedPassword === adminPassword) {
+                    redirectUrl = "../Admin/admindb.html";
+                } else {
+                     // For any other new signup, redirect to signin page
+                     redirectUrl = "signin.html";
+                     console.log("New user registration (not predefined role), redirecting to signin.");
                 }
+
+                // Function to perform the actual redirect and clear storage
+                const completeSignupAndRedirect = () => {
+                     console.log("Redirecting to:", redirectUrl);
+                     // Clear sensitive signup data from session storage
+                     sessionStorage.removeItem('signupEmail');
+                     sessionStorage.removeItem('signupPassword');
+                     sessionStorage.removeItem('signupUsername'); // Clear username too if stored
+                     // Store non-sensitive info if needed AFTER login, not here
+                     window.location.href = redirectUrl;
+                };
+
+                // Show success modal (not an error)
+                // Provide the redirect function as the OK action
+                openModal("Sign up complete! Welcome!", false, completeSignupAndRedirect);
+
+                // Optionally, automatically redirect after a delay
+                 setTimeout(completeSignupAndRedirect, 2000); // Redirect after 2 seconds
+
             });
         });
     </script>

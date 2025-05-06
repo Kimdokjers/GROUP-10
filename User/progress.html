@@ -11,6 +11,9 @@
 
     <style>
         :root {
+            --color-black: #0a0a0a;
+            --main-color: #FFD700; 
+            --white: #ffffff;
             --card-bg-setgoals: #ffffff;
             --text-dark-setgoals: #333;
             --border-color-light-setgoals: #e0e0e0;
@@ -41,8 +44,6 @@
             padding-left: var(--content-padding);
             padding-right: var(--content-padding);
             padding-bottom: var(--content-padding);
-            max-width: 1200px;
-            margin: 0 auto;
             color: var(--text-dark-setgoals);
         }
 
@@ -56,7 +57,6 @@
         }
 
         .calendar-widget {
-             height: fit-content;
              border: 2px solid var(--primary-color-darkest-setgoals);
         }
 
@@ -86,7 +86,21 @@
         .calendar-widget .info-input:focus { outline: none; border-color: var(--color-gold); box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.2); }
         .calendar-widget .goals-list { list-style: disc; padding-left: 20px; margin: 5px 0 0 0; font-size: 0.9rem; color: #555;}
         .calendar-widget .goals-list li { margin-bottom: 3px; }
+        #logoutConfirmationModal .modal-content { background-color: var(--white); color: var(--color-black); max-width: 400px; padding: 30px 35px;}
+        #logoutConfirmationModal #logoutModalMessage { color: #333; font-size: 1.5rem; margin-top: 10px; margin-bottom: 30px; line-height: 1.5; text-align: center; }
+        #logoutConfirmationModal .close-button { color: #aaa; }
+        #logoutConfirmationModal .close-button:hover { color: var(--color-black); }
+        #logoutConfirmationModal .modal-actions button { font-weight: 600; font-size: 0.95rem; margin: 0 8px; min-width: 100px; }
+        #logoutConfirmationModal #cancelLogoutButton { background-color: #ccc; color: #333; }
+        #logoutConfirmationModal #cancelLogoutButton:hover { background-color: #bbb; }
+        #logoutConfirmationModal #okLogoutButton { background-color: var(--main-color); color: #333; margin-left: 20px;}
+        #logoutConfirmationModal #okLogoutButton:hover { background-color: transparent;
+            color: var(--main-color);
+            box-shadow: 0 0 1.6rem var(--main-color);
+            transform: translateY(-2px);
+            }
 
+        
         .main-tab-content {
             border: 2px solid var(--primary-color-darkest-setgoals);
             border-radius: 8px;
@@ -211,6 +225,17 @@
         .legend-item .percentage { font-weight: 500; text-align: right; }
         .legend-item .goal-percentage { color: #666; text-align: right; font-style: italic; font-size: 0.9em; } /* Style for goal percentage */
 
+        @media (max-width: 1024px) {
+            .navbar-right{
+                display: flex; justify-content: flex-end; align-items: center; gap: 10px;
+            }
+            .navbar-right img.profile-pic {
+                width: 50px; /* Slightly smaller */
+                height: 50px;
+                margin-left: 20px;
+                margin-right: 20px;
+            }
+        }
 
         @media (max-width: 992px) {
              main.content-grid {
@@ -249,6 +274,24 @@
               .content-placeholder h1 { font-size: 1.4rem; }
               .workout-table td { padding-left: 40%;}
               .workout-table td::before { width: 35%; }
+              .navbar-right img.profile-pic {
+                 width: 35px; /* Slightly smaller */
+                 height: 35px;
+             }
+             .navbar-right li {
+                 margin-bottom: 12px; /* Adjust spacing */
+             }
+         }
+
+         @media (max-width: 320px) {
+              main.content-grid {
+                 padding-top: calc(var(--header-height-mobile, 90px) - 20px + 1rem);
+             }
+              .main-tab-button { font-size: 1.1rem; padding: 0.6rem 1rem; gap: 0.5rem; }
+              .main-tab-button i { font-size: 1.5rem; }
+              .content-placeholder h1 { font-size: 1.4rem; }
+              .workout-table td { padding-left: 40%;}
+              .workout-table td::before { width: 35%; }
          }
 
     </style>
@@ -260,15 +303,15 @@
         <div class='bx bx-menu' id="menu-icon"></div>
         <ul class="navbar">
              <div class="navbar-left">
-                 <li><a href="/User/home.html">Home</a></li>
-                 <li><a href="/User/setGoals.html">Set Goals</a></li>
-                 <li><a href="/User/progress.html" class="active">Track Progress</a></li>
-                 <li><a href="/User/membership.html">Membership</a></li>
+                 <li><a href="../User/home.html">Home</a></li>
+                 <li><a href="../User/setGoals.html">Set Goals</a></li>
+                 <li><a href="../User/progress.html" class="active">Track Progress</a></li>
+                 <li><a href="../User/membership.html">Membership</a></li>
              </div>
              <div class="navbar-right">
-                 <li>
-                     <img src="../images/user_pic.jpg" alt="User Profile" class="profile-pic">
-                 </li>
+                <li>
+                    <img id="profilePicTrigger" src="../images/user_pic.jpg" alt="User Profile" class="profile-pic">
+                </li>
                  <li>
                      <a href="signin.html" id="logout-link">Logout</a>
                  </li>
@@ -277,7 +320,7 @@
     </header>
 
     <main class="content-grid">
-         <div class="calendar-widget card">
+         <aside class="calendar-widget card">
             <h2>Select Date</h2>
             <div class="calendar-header">
                 <button class="cal-nav prev" aria-label="Previous month"><</button>
@@ -285,9 +328,11 @@
                 <button class="cal-nav next" aria-label="Next month">></button>
             </div>
             <div class="calendar-grid">
+                <!-- Day names -->
                 <div class="day-name">S</div> <div class="day-name">M</div> <div class="day-name">T</div>
                 <div class="day-name">W</div> <div class="day-name">T</div> <div class="day-name">F</div>
                 <div class="day-name">S</div>
+                <!-- Dates (Example for April 2025) -->
                 <div class="date-cell empty"></div> <div class="date-cell empty"></div>
                 <div class="date-cell"><button>1</button></div> <div class="date-cell"><button>2</button></div>
                 <div class="date-cell"><button>3</button></div> <div class="date-cell"><button>4</button></div>
@@ -320,9 +365,9 @@
                     <li>Increased muscle strength</li>
                 </ul>
              </div>
-        </div>
+        </aside>
 
-         <div class="main-tab-content card">
+         <section class="main-tab-content card">
             <nav class="main-content-tabs">
                 <button class="main-tab-button active" data-target="#tabs-1">
                     <i class='bx bx-list-ul'></i> Workout Log
@@ -469,7 +514,7 @@
                              <i class='bx bxs-calendar-check'></i>
                             <label for="graph-period">Period: </label>
                             <select name="graph-period" id="graph-period">
-                                <option value="weekly">1 Week</option>
+                                <option value="weekly" selected>1 Week</option>
                                 <option value="monthly">1 Month</option>
                                 <option value="3months">3 Months</option>
                                 <option value="6months">6 Months</option>
@@ -483,7 +528,7 @@
                         <div class="chart-area">
                             <h3 id="chart-title">Weight Progress (1 Week)</h3>
                             <div class="canvas-wrapper">
-                                 <canvas id="myChart"></canvas>
+                                 <canvas id="progressChart"></canvas> <!-- Changed ID from myChart -->
                             </div>
                      </div>
                     </div>
@@ -673,28 +718,40 @@
                         <div class="macros-legend">
                              <div class="legend-item" data-macro="carbs">
                                 <span class="color-square macro-carbs" style="background-color: #febd14;"></span>
-                                <span>Carbohydrates (0g)</span>
-                                <span class="percentage">0%</span>
+                                <span>Carbohydrates (<span data-value="carbs-grams">0g</span>)</span>
+                                <span class="percentage" data-value="carbs-percentage">0%</span>
                                 <span class="goal-percentage">50%</span>
                             </div>
                              <div class="legend-item" data-macro="fat">
                                 <span class="color-square macro-fat" style="background-color: #fece43;"></span>
-                                <span>Fat (0g)</span>
-                                <span class="percentage">0%</span>
+                                <span>Fat (<span data-value="fat-grams">0g</span>)</span>
+                                <span class="percentage" data-value="fat-percentage">0%</span>
                                 <span class="goal-percentage">30%</span>
                             </div>
                              <div class="legend-item" data-macro="protein">
                                 <span class="color-square macro-protein" style="background-color: #feda75;"></span>
-                                <span>Protein (0g)</span>
-                                <span class="percentage">0%</span>
+                                <span>Protein (<span data-value="protein-grams">0g</span>)</span>
+                                <span class="percentage" data-value="protein-percentage">0%</span>
                                 <span class="goal-percentage">20%</span>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
     </main>
+
+    <!-- Modal structure (Keep outside main if it overlays everything) -->
+    <div id="logoutConfirmationModal" class="modal">
+        <div class="modal-content">
+            <button id="closeLogoutModalButton" class="close-button">×</button>
+            <p id="logoutModalMessage">Are you sure you want to logout?</p>
+            <div style="text-align: center;">
+                 <button id="cancelLogoutButton" class="btn-secondary">Cancel</button>
+                 <button id="okLogoutButton" class="btn-primary">Logout</button>
+            </div>
+        </div>
+    </div>
 
     <section id="subscribe" class="subscribe-section">
         <div class="container subscribe-content">
@@ -711,6 +768,7 @@
                     <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
                 </div>
             </div>
+
             <div class="footer-links">
                  <div><h4>Company</h4><ul><li><a href="#">Press</a></li><li><a href="#">Blog</a></li><li><a href="#">About</a></li><li><a href="#">Careers</a></li></ul></div> <div><h4>Services</h4><ul><li><a href="#">Training</a></li><li><a href="#">Nutrition</a></li><li><a href="#">Lifestyles</a></li></ul></div> <div><h4>Legal</h4><ul><li><a href="#">Policy</a></li><li><a href="#">Privacy & Cookies</a></li><li><a href="#">Terms & Conditions</a></li></ul></div> <div><h4>Community</h4><ul><li><a href="#">Contact</a></li><li><a href="#">Find a club</a></li><li><a href="#">Membership</a></li></ul></div> <div><h4>Gym</h4><ul><li><a href="#">Book a Gym</a></li><li><a href="#">Find a Gym</a></li></ul></div>
             </div>
@@ -722,82 +780,499 @@
         </div>
     </footer>
 
+    <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script>
-      $(document).ready(function() {
-          var menuIcon = $('#menu-icon');
-          var navbar = $('.navbar');
-
-          if (menuIcon.length && navbar.length) {
-              menuIcon.on('click', function() {
-                  $(this).toggleClass('bx-x');
-                  navbar.toggleClass('active');
-              });
-
-              $('.navbar a').on('click', function(event) {
-                   if (navbar.hasClass('active') && !$(this).is('#logout-link')) {
-                       navbar.removeClass('active');
-                       menuIcon.removeClass('bx-x');
-                   }
-              });
-
-              $('.navbar-right li:has(.profile-pic)').on('click', function(e) {
-                   if(navbar.hasClass('active')) {
-                        navbar.removeClass('active');
-                        menuIcon.removeClass('bx-x');
-                   }
-              });
-
-              $(window).on('scroll', function() {
-                  if (navbar.hasClass('active')) {
-                      navbar.removeClass('active');
-                      menuIcon.removeClass('bx-x');
-                  }
-              });
-          } else {
-              console.warn("Header menu icon or navbar not found.");
-          }
-
-          $('.main-tab-button').on('click', function() {
-              var targetSelector = $(this).data('target');
-              var $targetContent = $(targetSelector);
-
-              if ($targetContent.length) {
-                  $('.main-tab-button').removeClass('active');
-                  $(this).addClass('active');
-                  $('.main-tab-content .tab-content').removeClass('active');
-                  $targetContent.addClass('active');
-              } else {
-                  console.warn("Main tab target content not found:", targetSelector);
-              }
-          });
-
-           $('.tabs .tab-button').on('click', function() {
-                var tabId = $(this).data('tab');
-                var $container = $(this).closest('.content-placeholder');
-
-                $container.find('.tabs .tab-button').removeClass('active');
-                $(this).addClass('active');
-
-                $container.find('.nutrition-tab-content').removeClass('active');
-                $container.find('#' + tabId + '-content').addClass('active');
-           });
-
-          $('#logout-link').on('click', function(event) {
-              event.preventDefault();
-              var confirmLogout = confirm("Are you sure you want to logout?");
-              if (confirmLogout) {
-                  window.location.href = this.href;
-              }
-          });
-
-      });
-    </script>
-
     <script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-moment@1.0.1/dist/chartjs-adapter-moment.min.js"></script>
+    <!-- Removed link to external JS file -->
+    <!-- <script src="progress.js"></script> -->
 
+    <script>
+        $(document).ready(function() {
+            // --- Header Menu Toggle ---
+            var menuIcon = $('#menu-icon');
+            var navbar = $('.navbar');
+            var logoutLink = $('#logout-link');
+            var logoutModal = $('#logoutConfirmationModal');
+            var closeLogoutModalBtn = $('#closeLogoutModalButton');
+            var cancelLogoutBtn = $('#cancelLogoutButton');
+            var okLogoutBtn = $('#okLogoutButton');
+
+            if (menuIcon.length && navbar.length) {
+                menuIcon.on('click', function() {
+                    $(this).toggleClass('bx-x');
+                    navbar.toggleClass('active');
+                });
+
+                // Close menu when a link is clicked (except logout)
+                $('.navbar a').on('click', function(event) {
+                     if (navbar.hasClass('active') && !$(this).is('#logout-link')) {
+                         navbar.removeClass('active');
+                         menuIcon.removeClass('bx-x');
+                     }
+                });
+
+                // Close menu if profile pic area is clicked while menu open
+                $('.navbar-right li:has(.profile-pic)').on('click', function(e) {
+                     if(navbar.hasClass('active')) {
+                          navbar.removeClass('active');
+                          menuIcon.removeClass('bx-x');
+                     }
+                });
+
+                // Close menu on scroll
+                $(window).on('scroll', function() {
+                    if (navbar.hasClass('active')) {
+                        navbar.removeClass('active');
+                        menuIcon.removeClass('bx-x');
+                    }
+                });
+            } else {
+                console.warn("Header menu icon or navbar not found.");
+            }
+
+            // --- Logout Modal Logic ---
+            if (logoutLink.length && logoutModal.length) {
+                logoutLink.on('click', function(event) {
+                    event.preventDefault(); // Prevent default link navigation
+                    logoutModal.addClass('show'); // Show the modal
+                });
+
+                closeLogoutModalBtn.on('click', function() {
+                    logoutModal.removeClass('show'); // Hide modal
+                });
+
+                cancelLogoutBtn.on('click', function() {
+                    logoutModal.removeClass('show'); // Hide modal
+                });
+
+                okLogoutBtn.on('click', function() {
+                    logoutModal.removeClass('show'); // Hide modal
+                    // Redirect to the original logout link's href
+                    window.location.href = logoutLink.attr('href');
+                });
+
+                // Close modal if clicked outside the content
+                $(window).on('click', function(event) {
+                    if ($(event.target).is(logoutModal)) {
+                        logoutModal.removeClass('show');
+                    }
+                });
+            } else {
+                 console.warn("Logout link or modal not found.");
+                 // Fallback for original non-modal behavior if needed
+                 $('#logout-link').on('click', function(event) {
+                      event.preventDefault();
+                      var confirmLogout = confirm("Are you sure you want to logout?");
+                      if (confirmLogout) {
+                          window.location.href = this.href;
+                      }
+                 });
+            }
+
+
+            // --- Main Tab Switching ---
+            $('.main-tab-button').on('click', function() {
+                var targetSelector = $(this).data('target');
+                var $targetContent = $(targetSelector);
+
+                if ($targetContent.length) {
+                    // Switch main tabs
+                    $('.main-tab-button').removeClass('active');
+                    $(this).addClass('active');
+                    $('.main-tab-content > .tab-content').removeClass('active'); // Target only direct children
+                    $targetContent.addClass('active');
+
+                    // Initialize or update charts if the target tab contains them
+                    if (targetSelector === '#tabs-2') {
+                        initializeOrUpdateProgressChart();
+                    } else if (targetSelector === '#tabs-3') {
+                         initializeOrUpdateNutritionCharts();
+                         // Ensure the correct inner nutrition tab is shown
+                         const activeNutritionButton = $('#tabs-3 .tabs .tab-button.active');
+                         if (activeNutritionButton.length) {
+                             const targetNutritionTab = activeNutritionButton.data('tab');
+                             $('#tabs-3 .nutrition-tab-content').removeClass('active');
+                             $('#' + targetNutritionTab + '-content').addClass('active');
+                         }
+                    }
+                } else {
+                    console.warn("Main tab target content not found:", targetSelector);
+                }
+            });
+
+            // --- Nutrition Inner Tab Switching ---
+             $('.tabs .tab-button').on('click', function() {
+                  var tabId = $(this).data('tab');
+                  var $container = $(this).closest('.content-placeholder');
+
+                  $container.find('.tabs .tab-button').removeClass('active');
+                  $(this).addClass('active');
+
+                  $container.find('.nutrition-tab-content').removeClass('active');
+                  $('#' + tabId + '-content').addClass('active');
+
+                  // Re-initialize charts if switching back to a chart tab within nutrition
+                  if (tabId === 'calories' || tabId === 'macros') {
+                      initializeOrUpdateNutritionCharts();
+                  }
+             });
+
+            // --- Chart.js Implementations ---
+            let progressChartInstance = null;
+            let calorieChartInstance = null;
+            let macroChartInstance = null;
+
+            // Function to get placeholder data for the progress chart
+            function getProgressChartData(period, measurement) {
+                // --- Placeholder Data ---
+                // In a real application, this data would be fetched based on period and measurement
+                let labels = [];
+                let data = [];
+                let unit = $('#measurements option:selected').data('unit') || 'kg';
+                let startDate = moment().subtract(6, 'days'); // Default to 1 week
+
+                let days = 7;
+                if (period === 'monthly') { startDate = moment().subtract(1, 'month'); days = 30; }
+                else if (period === '3months') { startDate = moment().subtract(3, 'months'); days = 90; }
+                else if (period === '6months') { startDate = moment().subtract(6, 'months'); days = 180; }
+                else if (period === 'yearly') { startDate = moment().subtract(1, 'year'); days = 365; }
+                // 'start' would require fetching the actual start date
+
+                let startValue = 70; // Example start value
+                if (measurement === 'neck') startValue = 38;
+                else if (measurement === 'waist') startValue = 85;
+                else if (measurement === 'hips') startValue = 100;
+
+                for (let i = 0; i < days; i++) {
+                    labels.push(startDate.clone().add(i, 'days').toDate());
+                    // Simulate some data fluctuation
+                    data.push(startValue + (Math.random() * 4 - 2) * (measurement === 'weight' ? 1 : 0.5) - (i * 0.05)); // Simulate slight downward trend
+                }
+
+                return { labels, data, unit };
+            }
+
+            // Initialize or Update Progress Line Chart
+            function initializeOrUpdateProgressChart() {
+                const ctx = document.getElementById('progressChart');
+                if (!ctx) return; // Exit if canvas not found
+
+                const measurementSelect = $('#measurements');
+                const periodSelect = $('#graph-period');
+                const chartTitle = $('#chart-title');
+
+                const selectedMeasurement = measurementSelect.val();
+                const selectedPeriod = periodSelect.val();
+                const measurementText = measurementSelect.find('option:selected').text();
+                const periodText = periodSelect.find('option:selected').text();
+
+                // Update chart title
+                chartTitle.text(`${measurementText} Progress (${periodText})`);
+
+                // Get placeholder data
+                const { labels, data, unit } = getProgressChartData(selectedPeriod, selectedMeasurement);
+
+                // Destroy previous chart instance if it exists
+                if (progressChartInstance) {
+                    progressChartInstance.destroy();
+                }
+
+                // Create new chart
+                progressChartInstance = new Chart(ctx.getContext('2d'), {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: `${measurementText} (${unit})`,
+                            data: data,
+                            borderColor: 'rgba(218, 165, 32, 1)', // Goldenrod
+                            backgroundColor: 'rgba(218, 165, 32, 0.1)',
+                            borderWidth: 2,
+                            tension: 0.1, // Makes the line slightly curved
+                            fill: true
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            x: {
+                                type: 'time',
+                                time: {
+                                     unit: labels.length > 90 ? 'month' : (labels.length > 7 ? 'week' : 'day'), // Adjust time unit based on data range
+                                     tooltipFormat: 'll' // e.g., Sep 4, 1986
+                                },
+                                title: {
+                                    display: true,
+                                    text: 'Date'
+                                }
+                            },
+                            y: {
+                                beginAtZero: false, // Don't force y-axis to start at 0 for measurements like weight
+                                title: {
+                                    display: true,
+                                    text: `${measurementText} (${unit})`
+                                }
+                            }
+                        },
+                        plugins: {
+                            tooltip: {
+                                mode: 'index',
+                                intersect: false
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Function to update Nutrition UI based on data
+            function updateNutritionUI(calorieData, macroData, goalCalories, goalMacros) {
+                // --- Update Calorie Breakdown ---
+                const totalCalories = Object.values(calorieData).reduce((sum, val) => sum + val, 0);
+                const exerciseCalories = 250; // Placeholder exercise calories
+
+                $('[data-value="total-calories"]').text(totalCalories.toLocaleString());
+                $('[data-value="exercise-calories"]').text(exerciseCalories.toLocaleString());
+                $('[data-value="net-calories"]').text((totalCalories - exerciseCalories).toLocaleString());
+                $('[data-value="goal-calories"]').text(goalCalories.toLocaleString());
+
+                // Update meal percentages/calories
+                const mealTargets = {
+                    'breakfast-calories': $('[data-value="breakfast-calories"]'),
+                    'lunch-calories': $('[data-value="lunch-calories"]'),
+                    'dinner-calories': $('[data-value="dinner-calories"]'),
+                    'snack-calories': $('[data-value="snack-calories"]')
+                };
+                for(const meal in calorieData) {
+                    const key = `${meal}-calories`;
+                    if (mealTargets[key]) {
+                        const percentage = totalCalories > 0 ? Math.round((calorieData[meal] / totalCalories) * 100) : 0;
+                         mealTargets[key].text(`${percentage}% (${calorieData[meal].toLocaleString()} cal)`);
+                    }
+                }
+
+                // --- Update Nutrient Details (Basic Example - linking macros) ---
+                $('[data-value="protein-total"]').text(`${macroData.protein} g`);
+                $('[data-value="carbs-total"]').text(`${macroData.carbs} g`);
+                $('[data-value="fat-total"]').text(`${macroData.fat} g`);
+                // Add logic to calculate 'left' values based on goals if available
+                 // Example for protein left:
+                const proteinGoal = parseInt($('[data-value="protein-goal"]').text()) || 0;
+                $('[data-value="protein-left"]').text(`${Math.max(0, proteinGoal - macroData.protein)} g`);
+                 // Example for carbs left:
+                const carbsGoal = parseInt($('[data-value="carbs-goal"]').text()) || 0;
+                $('[data-value="carbs-left"]').text(`${Math.max(0, carbsGoal - macroData.carbs)} g`);
+                 // Example for fat left:
+                const fatGoal = parseInt($('[data-value="fat-goal"]').text()) || 0;
+                $('[data-value="fat-left"]').text(`${Math.max(0, fatGoal - macroData.fat)} g`);
+                // ... Calculate others similarly if goals are numeric ...
+
+
+                // --- Update Macros Legend ---
+                const totalGrams = macroData.carbs + macroData.fat + macroData.protein;
+                const carbsPercent = totalGrams > 0 ? Math.round((macroData.carbs * 4 / (macroData.carbs*4 + macroData.fat*9 + macroData.protein*4)) * 100) : 0; // Calculate % calories
+                const fatPercent = totalGrams > 0 ? Math.round((macroData.fat * 9 / (macroData.carbs*4 + macroData.fat*9 + macroData.protein*4)) * 100) : 0; // Calculate % calories
+                // Ensure protein makes up the remainder to avoid rounding errors summing > 100%
+                const proteinPercent = totalGrams > 0 ? Math.max(0, 100 - carbsPercent - fatPercent) : 0;
+
+
+                $('[data-value="carbs-grams"]').text(`${macroData.carbs}g`);
+                $('[data-value="carbs-percentage"]').text(`${carbsPercent}%`);
+                $('[data-value="fat-grams"]').text(`${macroData.fat}g`);
+                $('[data-value="fat-percentage"]').text(`${fatPercent}%`);
+                $('[data-value="protein-grams"]').text(`${macroData.protein}g`);
+                $('[data-value="protein-percentage"]').text(`${proteinPercent}%`);
+
+                // Update goal percentages (if provided)
+                if (goalMacros) {
+                    $('[data-macro="carbs"] .goal-percentage').text(`${goalMacros.carbs}%`);
+                    $('[data-macro="fat"] .goal-percentage').text(`${goalMacros.fat}%`);
+                    $('[data-macro="protein"] .goal-percentage').text(`${goalMacros.protein}%`);
+                }
+            }
+
+
+            // Initialize or Update Nutrition Pie Charts
+            function initializeOrUpdateNutritionCharts() {
+                 // --- Placeholder Nutrition Data ---
+                 const calorieData = {
+                     breakfast: 350,
+                     lunch: 550,
+                     dinner: 600,
+                     snacks: 180
+                 };
+                 const macroData = { // In grams
+                     carbs: 195,
+                     fat: 60,
+                     protein: 75
+                 };
+                 const goalCalories = parseInt($('[data-value="goal-calories"]').text().replace(/,/g, '')) || 1520; // Read from HTML or default
+                 const goalMacros = { // Percentages
+                     carbs: parseInt($('[data-macro="carbs"] .goal-percentage').text()) || 50,
+                     fat: parseInt($('[data-macro="fat"] .goal-percentage').text()) || 30,
+                     protein: parseInt($('[data-macro="protein"] .goal-percentage').text()) || 20
+                 };
+
+                 // Update the UI text elements first
+                 updateNutritionUI(calorieData, macroData, goalCalories, goalMacros);
+
+
+                // --- Calorie Chart ---
+                const calorieCtx = document.getElementById('calorieChart');
+                if (calorieCtx) {
+                    if (calorieChartInstance) {
+                        calorieChartInstance.destroy();
+                    }
+                    calorieChartInstance = new Chart(calorieCtx.getContext('2d'), {
+                        type: 'doughnut',
+                        data: {
+                            labels: ['Breakfast', 'Lunch', 'Dinner', 'Snacks'],
+                            datasets: [{
+                                label: 'Calories',
+                                data: [
+                                    calorieData.breakfast,
+                                    calorieData.lunch,
+                                    calorieData.dinner,
+                                    calorieData.snacks
+                                ],
+                                backgroundColor: [
+                                    '#bf9a33', // breakfast color from legend
+                                    '#febd14', // lunch color
+                                    '#fece43', // dinner color
+                                    '#feda75'  // snacks color
+                                ],
+                                borderColor: '#ffffff',
+                                borderWidth: 2
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    display: false // Using custom HTML legend
+                                },
+                                tooltip: {
+                                    callbacks: {
+                                        label: function(context) {
+                                            let label = context.label || '';
+                                            if (label) {
+                                                label += ': ';
+                                            }
+                                            if (context.parsed !== null) {
+                                                label += context.parsed.toLocaleString() + ' cal';
+                                            }
+                                            return label;
+                                        }
+                                    }
+                                }
+                            },
+                            cutout: '60%' // Make it a doughnut chart
+                        }
+                    });
+                }
+
+
+                // --- Macro Chart ---
+                const macroCtx = document.getElementById('macroChart');
+                if (macroCtx) {
+                    if (macroChartInstance) {
+                        macroChartInstance.destroy();
+                    }
+
+                    // Use macro G GRAMS for the chart data segments
+                    const macroChartDataValues = [
+                        macroData.carbs,
+                        macroData.fat,
+                        macroData.protein
+                    ];
+                     const totalCaloriesFromMacros = (macroData.carbs * 4) + (macroData.fat * 9) + (macroData.protein * 4);
+
+
+                    macroChartInstance = new Chart(macroCtx.getContext('2d'), {
+                        type: 'doughnut',
+                        data: {
+                            labels: ['Carbohydrates', 'Fat', 'Protein'],
+                            datasets: [{
+                                label: 'Macronutrients (Calories)', // Tooltip label base
+                                data: [ // Data represents CALORIE contribution for better visual proportion
+                                    macroData.carbs * 4,
+                                    macroData.fat * 9,
+                                    macroData.protein * 4
+                                ],
+                                backgroundColor: [
+                                    '#febd14', // carbs color from legend
+                                    '#fece43', // fat color
+                                    '#feda75'  // protein color
+                                ],
+                                borderColor: '#ffffff',
+                                borderWidth: 2
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    display: false // Using custom HTML legend
+                                },
+                                tooltip: {
+                                     callbacks: {
+                                        label: function(context) {
+                                            let label = context.label || '';
+                                            let calorieValue = context.parsed || 0;
+                                            let gramValue = 0;
+                                            if (label === 'Carbohydrates') gramValue = macroData.carbs;
+                                            else if (label === 'Fat') gramValue = macroData.fat;
+                                            else if (label === 'Protein') gramValue = macroData.protein;
+
+                                            let percentage = totalCaloriesFromMacros > 0 ? Math.round((calorieValue / totalCaloriesFromMacros) * 100) : 0;
+                                            if (label) {
+                                                label += ': ';
+                                            }
+                                            // Show grams and percentage in tooltip
+                                            label += gramValue.toLocaleString() + 'g (' + percentage + '%)';
+                                            return label;
+                                        }
+                                    }
+                                }
+                            },
+                            cutout: '60%' // Make it a doughnut chart
+                        }
+                    });
+                }
+            }
+
+            // --- Event Listeners for Chart Updates ---
+            $('#measurements, #graph-period').on('change', function() {
+                // Only update if the workout status tab is active
+                if ($('#tabs-2').hasClass('active')) {
+                    initializeOrUpdateProgressChart();
+                }
+            });
+
+            // --- Initial Chart Load on Page Ready ---
+            // Check which tab is active initially and load its charts
+            if ($('#tabs-2').hasClass('active')) {
+                initializeOrUpdateProgressChart();
+            } else if ($('#tabs-3').hasClass('active')) {
+                 // Need to ensure the inner tab content is visible *before* initializing chart
+                 const activeNutritionButton = $('#tabs-3 .tabs .tab-button.active');
+                 if (activeNutritionButton.length) {
+                     const targetNutritionTab = activeNutritionButton.data('tab');
+                     $('#tabs-3 .nutrition-tab-content').removeClass('active'); // Ensure others are hidden
+                     $('#' + targetNutritionTab + '-content').addClass('active'); // Show the correct one
+                 } else {
+                      // Default to showing calories if none are active
+                      $('#calories-content').addClass('active');
+                 }
+                initializeOrUpdateNutritionCharts();
+            }
+
+        }); // End document ready
+    </script>
 
 </body>
 </html>

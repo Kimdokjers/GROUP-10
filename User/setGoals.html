@@ -39,8 +39,6 @@
             padding-left: var(--content-padding);
             padding-right: var(--content-padding);
             padding-bottom: var(--content-padding);
-            max-width: 1200px;
-            margin: 0 auto;
             color: var(--text-dark-setgoals);
         }
 
@@ -54,7 +52,6 @@
         }
 
         .calendar-widget {
-             height: fit-content;
              border: 2px solid var(--primary-color-darkest-setgoals);
         }
 
@@ -226,6 +223,18 @@
         #log-meal-modal .logged-items-list .no-items-logged { color: #666; font-style: italic; text-align: center; padding: 10px 0; border-bottom: none; display: block; }
         .validation-error { color: #f44336; font-size: 0.9em; margin-top: 5px; }
 
+        @media (max-width: 1024px) {
+            .navbar-right{
+                display: flex; justify-content: flex-end; align-items: center; gap: 10px;
+            }
+            .navbar-right img.profile-pic {
+                width: 50px; /* Slightly smaller */
+                height: 50px;
+                margin-left: 20px;
+                margin-right: 20px;
+            }
+        }
+
         @media (max-width: 992px) {
              main.content-grid {
                  grid-template-columns: 1fr;
@@ -267,6 +276,7 @@
                      <img src="../images/user_pic.jpg" alt="User Profile" class="profile-pic">
                  </li>
                  <li>
+                     <!-- Link has correct href for non-JS fallback/actual target -->
                      <a href="signin.html" id="logout-link">Logout</a>
                  </li>
              </div>
@@ -282,13 +292,13 @@
                 <button class="cal-nav next" aria-label="Next month">></button>
             </div>
             <div class="calendar-grid">
-
+                <!-- Calendar grid will be populated by JS -->
             </div>
              <div class="input-block"> <label for="startDate">Start Date</label> <input type="date" id="startDate" name="startDate" class="info-input" value="2025-01-15"> </div>
              <div class="input-block"> <label for="overallGoals">Overall Goals</label> <input type="text" id="overallGoals" name="overallGoals" class="info-input" placeholder="Enter your goals here..." value="Improved overall fitness, Increased muscle strength"> </div>
-             <div class="input-block"> <label for="currentWeight">Current Weight</label> <input type="number" id="currentWeight" name="currentWeight" class="info-input" placeholder="Weight (kg)" value="45 kg"> </div>
-             <div class="input-block"> <label for="goalWeight">Goal Weight</label> <input type="number" id="goalWeight" name="goalWeight" class="info-input" placeholder="Weight (kg)" value="40 kg"> </div>
-             <div class="input-block"> <label for="weightLossGoal">Weight Loss Goal (per week)</label> <select id="weightLossGoal" name="weightLossGoal" class="info-input"> <option>Loose 1 kg per week</option> <option>Loose 0.75 kg per week</option> <option selected>Loose 0.5 kg per week</option> <option>Loose 0.25 kg per week</option> <option>Maintain my current weight</option> <option>Gain 0.25 kg per week</option> <option>Gain 0.5 kg per week</option> </select> </div>
+             <div class="input-block"> <label for="currentWeight">Current Weight (kg)</label> <input type="number" step="0.1" id="currentWeight" name="currentWeight" class="info-input" placeholder="e.g., 70.5" value="45"> </div>
+             <div class="input-block"> <label for="goalWeight">Goal Weight (kg)</label> <input type="number" step="0.1" id="goalWeight" name="goalWeight" class="info-input" placeholder="e.g., 65.0" value="40"> </div>
+             <div class="input-block"> <label for="weightLossGoal">Weekly Goal</label> <select id="weightLossGoal" name="weightLossGoal" class="info-input"> <option value="1">Lose 1 kg per week</option> <option value="0.75">Lose 0.75 kg per week</option> <option value="0.5" selected>Lose 0.5 kg per week</option> <option value="0.25">Lose 0.25 kg per week</option> <option value="0">Maintain current weight</option> <option value="-0.25">Gain 0.25 kg per week</option> <option value="-0.5">Gain 0.5 kg per week</option> </select> </div>
              <div class="input-block"> <label for="activity-level">Activity Level</label> <select id="activity-level" name="activity-level" class="info-input"> <option value="Not Very Active">Not Very Active</option> <option value="Lightly Active" selected>Lightly Active</option> <option value="Active">Active</option> <option value="Very Active">Very Active</option> </select> </div>
         </div>
 
@@ -312,10 +322,10 @@
                                 <div class="input-group"> <label for="activity-day">Day:</label> <select id="activity-day" name="activity-day"> <option value="Monday">Monday</option> <option value="Tuesday">Tuesday</option> <option value="Wednesday">Wednesday</option> <option value="Thursday">Thursday</option> <option value="Friday">Friday</option> <option value="Saturday">Saturday</option> <option value="Sunday">Sunday</option> </select> </div>
                                 <div class="input-group"> <label for="activity-type">Workout Type:</label> <select id="activity-type" name="activity-type"> <option>Upper Body and Lower Body Split</option> <option>Full Body</option> <option>Core</option> <option>Push/Pull/Legs</option> <option>Circuit Training</option> <option>Cardio</option> <option>Weightlifting</option> <option>HIIT</option> <option>CrossFit</option> <option>Yoga</option> <option>Pilates</option> <option>Stretching</option> <option>Rest Day</option> </select> </div>
                                 <div class="input-group"> <label for="activity-name">Activity:</label> <input type="text" id="activity-name" name="activityName" placeholder="e.g., Running, Bench Press"> </div>
-                                <div class="input-group"> <label for="activity-reps">Reps:</label> <input type="number" id="activity-reps" name="activityReps" placeholder="e.g., 3-5, 8-12"> </div>
-                                <div class="input-group"> <label for="activity-sets">Sets:</label> <input type="number" id="activity-sets" name="activitySets" placeholder="e.g., 3-5, 8-12"> </div>
-                                <div class="input-group"> <label for="activity-weight">Weight(lb):</label> <input type="number" id="activity-weight" name="activityWeight" placeholder="e.g., 50, 100"> </div>
-                                <div class="input-group"> <label for="activity-duration">Duration:</label> <input type="text, number" id="activity-duration" name="activityDuration" placeholder="e.g., 30 min, 1 hr"> </div>
+                                <div class="input-group"> <label for="activity-reps">Reps:</label> <input type="text" id="activity-reps" name="activityReps" placeholder="e.g., 3-5, 8-12"> </div> <!-- Changed to text for flexibility -->
+                                <div class="input-group"> <label for="activity-sets">Sets:</label> <input type="number" id="activity-sets" name="activitySets" placeholder="e.g., 3"> </div>
+                                <div class="input-group"> <label for="activity-weight">Weight(lb):</label> <input type="number" step="0.5" id="activity-weight" name="activityWeight" placeholder="e.g., 50, 100"> </div>
+                                <div class="input-group"> <label for="activity-duration">Duration:</label> <input type="text" id="activity-duration" name="activityDuration" placeholder="e.g., 30 min, 1 hr"> </div> <!-- Changed to text for flexibility -->
                                 <button type="submit" id="add-activity-btn">Add Activity to Plan</button>
                             </form>
                             <h3>Weekly Schedule:</h3>
@@ -394,7 +404,7 @@
                                 </div>
                                  <div class="summary-item">
                                     <span>Exercise Calories Burned</span>
-                                    <span data-value="exercise-calories" class="exercise editable" data-editable="true" data-id="exercise-calories" data-type="number" data-unit="cal" data-label="Exercise Calories" title="Click to edit">0 cal</span>
+                                    <span data-value="exercise-calories" class="exercise editable" data-editable="true" data-id="exercise-calories" data-type="number" data-unit="cal" data-label="Exercise Calories" title="Click to edit" data-goal-value="0">0 cal</span>
                                 </div>
                                 <div class="summary-item net-calories-item">
                                     <span>Net Calories</span>
@@ -403,7 +413,7 @@
                                  <hr class="summary-divider">
                                 <div class="summary-item goal">
                                     <span>Calorie Goal</span>
-                                    <span data-value="goal-calories" class="editable" data-editable="true" data-id="calorie-goal" data-type="number" data-unit="cal" data-label="Calorie Goal" title="Click to edit">1520</span>
+                                    <span data-value="goal-calories" class="editable" data-editable="true" data-id="calorie-goal" data-type="number" data-unit="cal" data-label="Calorie Goal" title="Click to edit" data-goal-value="1520">1520</span>
                                 </div>
                                 <div class="summary-item">
                                     <span>Calories Remaining</span>
@@ -415,7 +425,7 @@
 
                     <div id="nutrients-content" class="nutrition-tab-content">
                          <h2>Nutrient Details</h2>
-                        <div class="nutrient-header" style="color: var(--primary-color-darkest);">
+                        <div class="nutrient-header" style="color: var(--primary-color-darkest-setgoals);"> <!-- Applied style here -->
                             <span>Nutrient</span>
                             <span>Total</span>
                             <span>Goal</span>
@@ -523,28 +533,30 @@
 
                     <div id="macros-content" class="nutrition-tab-content">
                          <h2>Macronutrient Ratio</h2>
-                         <p style="text-align: center;"><em>Goals should total 100%</em></p>
+                         <p style="text-align: center; color: #666;"><em >Goals should total 100%</em></p> <!-- Added color -->
                          <div class="nutrition-details-full">
                             <div class="macros-legend">
                                  <div class="legend-item" data-macro="carbs">
                                     <span class="color-square" style="background-color: #febd14;"></span>
                                     <span>Carbohydrates (<span data-value="macro-carbs-g">0g</span>)</span>
                                     <span class="percentage" data-value="macro-carbs-perc">0%</span>
-                                    <span class="editable" data-editable="true" data-id="carbs-goal-perc" data-type="number" data-unit="%" data-label="Carbohydrates Goal %" title="Click to edit">50%</span>
+                                    <span class="editable" data-editable="true" data-id="carbs-goal-perc" data-type="number" data-unit="%" data-label="Carbohydrates Goal %" title="Click to edit" data-goal-value="50">50%</span>
                                 </div>
                                  <div class="legend-item" data-macro="fat">
                                     <span class="color-square" style="background-color: #fece43;"></span>
                                     <span>Fat (<span data-value="macro-fat-g">0g</span>)</span>
                                     <span class="percentage" data-value="macro-fat-perc">0%</span>
-                                    <span class="editable" data-editable="true" data-id="fats-goal-perc" data-type="number" data-unit="%" data-label="Fat Goal %" title="Click to edit">30%</span>
+                                    <span class="editable" data-editable="true" data-id="fats-goal-perc" data-type="number" data-unit="%" data-label="Fat Goal %" title="Click to edit" data-goal-value="30">30%</span>
                                 </div>
                                  <div class="legend-item" data-macro="protein">
                                     <span class="color-square" style="background-color: #feda75;"></span>
                                     <span>Protein (<span data-value="macro-protein-g">0g</span>)</span>
                                     <span class="percentage" data-value="macro-protein-perc">0%</span>
-                                    <span class="editable" data-editable="true" data-id="protein-goal-perc" data-type="number" data-unit="%" data-label="Protein Goal %" title="Click to edit">20%</span>
+                                    <span class="editable" data-editable="true" data-id="protein-goal-perc" data-type="number" data-unit="%" data-label="Protein Goal %" title="Click to edit" data-goal-value="20">20%</span>
                                 </div>
                             </div>
+                            <!-- Optional warning message area -->
+                            <p id="macro-goal-warning" class="validation-error" style="text-align: center; margin-top: 1rem; display: none;"></p>
                          </div>
                     </div>
                 </div>
@@ -552,6 +564,7 @@
         </div>
     </main>
 
+     <!-- Log Meal Modal -->
      <div class="modal" id="log-meal-modal" role="dialog" aria-labelledby="log-meal-title" aria-modal="true">
         <div class="modal-content card">
             <button class="modal-close-btn" aria-label="Close modal">×</button>
@@ -564,11 +577,12 @@
                  <div class="edit-input-container"> <label for="log-protein">Protein (g):</label> <input type="number" id="log-protein" name="protein" min="0" step="0.1" placeholder="e.g., 0.5" value="0"> </div>
                  <div class="edit-input-container"> <label for="log-carbs">Carbs (g):</label> <input type="number" id="log-carbs" name="carbs" min="0" step="0.1" placeholder="e.g., 25" value="0"> </div>
                  <div class="edit-input-container"> <label for="log-fat">Fat (g):</label> <input type="number" id="log-fat" name="fat" min="0" step="0.1" placeholder="e.g., 0.3" value="0"> </div>
-
+                 <!-- Add other nutrient fields if needed -->
                  <p id="log-meal-validation-error" class="validation-error" style="display: none;"></p>
                 <div class="modal-actions">
                     <button type="submit" id="log-meal-save-button">Log Item</button>
-                    <button type="button" id="log-meal-cancel-button">Cancel</button>
+                    <!-- Changed cancel button to use common close class -->
+                    <button type="button" class="modal-close-btn" id="log-meal-cancel-button" style="margin-bottom: 20px; width: 80px; height:60; font-size: 1rem;">Cancel</button>
                 </div>
             </form>
             <div class="logged-items-display">
@@ -579,6 +593,32 @@
              </div>
         </div>
     </div>
+    <!-- End Log Meal Modal -->
+
+    <!-- Logout Confirmation Modal -->
+    <div id="logoutConfirmationModal" class="modal">
+        <div class="modal-content">
+            <button id="closeLogoutModalButton" class="modal-close-btn" aria-label="Close modal">×</button>
+            <p id="logoutModalMessage" style="font-size: 1.5rem;">Are you sure you want to logout?</p>
+            <div style="text-align: center; margin-top: 1.5rem;">
+                 <button id="cancelLogoutButton" class="btn-secondary" style="margin-right: 20px;">Cancel</button>
+                 <button id="okLogoutButton" class="btn-primary">Logout</button>
+            </div>
+        </div>
+    </div>
+    <!-- End Logout Modal -->
+
+    <!-- Generic Alert Modal -->
+    <div id="alertModal" class="modal">
+        <div class="modal-content">
+            <button id="closeAlertModalButton" class="modal-close-btn" aria-label="Close modal">×</button>
+            <p id="alertModalMessage" style="font-size: 1.5rem;">Alert Message Goes Here</p>
+            <div style="text-align: center; margin-top: 1.5rem;">
+                 <button id="alertModalOkButton" class="btn-primary">OK</button>
+            </div>
+        </div>
+    </div>
+    <!-- End Alert Modal -->
 
      <section id="subscribe" class="subscribe-section">
         <div class="container subscribe-content">
@@ -610,42 +650,138 @@
     <script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js"></script>
     <script>
       $(document).ready(function() {
-          var menuIcon = $('#menu-icon');
-          var navbar = $('.navbar');
+          // --- Cache jQuery Selectors ---
+          const $menuIcon = $('#menu-icon');
+          const $navbar = $('.navbar');
+          const $logoutLink = $('#logout-link');
+          const $logoutModal = $('#logoutConfirmationModal');
+          const $closeLogoutModalBtn = $('#closeLogoutModalButton');
+          const $cancelLogoutBtn = $('#cancelLogoutButton');
+          const $okLogoutBtn = $('#okLogoutButton');
+          const $alertModal = $('#alertModal');
+          const $alertModalMessage = $('#alertModalMessage');
+          const $closeAlertModalBtn = $('#closeAlertModalButton');
+          const $alertModalOkBtn = $('#alertModalOkButton');
 
-          if (menuIcon.length && navbar.length) {
-              menuIcon.on('click', function() {
+          const $calendarGrid = $('.calendar-grid');
+          const $currentMonthYear = $('.current-month-year');
+          const $logMealModal = $('#log-meal-modal');
+          const $logMealForm = $('#log-meal-form');
+          const $logMealModalDate = $('#log-meal-modal-date');
+          const $logMealDateHidden = $('#log-meal-date-hidden');
+          const $logMealTypeSelect = $('#log-meal-type');
+          const $loggedItemsList = $('#logged-items-list');
+          const $loggedItemsDateDisplay = $('#logged-items-date-display');
+          const $logMealValidationError = $('#log-meal-validation-error');
+          const $activityForm = $('#activity-form');
+          const $weeklyPlanDisplay = $('#weekly-plan-display');
+
+          // --- Global State ---
+          let selectedDate = moment().format('YYYY-MM-DD'); // Initialize with today's date
+          let currentMonthMoment = moment(selectedDate);
+          const foodLog = {}; // Store logged food { 'YYYY-MM-DD': [item1, item2] }
+          const activityLog = {}; // Store planned activities { 'DayName': [activity1] }
+
+          // --- Header Menu Logic ---
+          if ($menuIcon.length && $navbar.length) {
+              $menuIcon.on('click', function() {
                   $(this).toggleClass('bx-x');
-                  navbar.toggleClass('active');
+                  $navbar.toggleClass('active');
               });
 
-              $('.navbar a').on('click', function(event) {
-                   if (navbar.hasClass('active') && !$(this).is('#logout-link')) {
-                       navbar.removeClass('active');
-                       menuIcon.removeClass('bx-x');
+              // Close menu on link click (except logout) or profile pic click
+              $navbar.on('click', 'a, .profile-pic', function(event) {
+                   if ($navbar.hasClass('active') && !$(this).is('#logout-link')) {
+                       $navbar.removeClass('active');
+                       $menuIcon.removeClass('bx-x');
                    }
+                   // Do not prevent default for profile pic click unless it has specific action
               });
 
-              $('.navbar-right li:has(.profile-pic)').on('click', function(e) {
-                   if(navbar.hasClass('active')) {
-                        navbar.removeClass('active');
-                        menuIcon.removeClass('bx-x');
-                   }
-              });
-
+              // Close menu on scroll
               $(window).on('scroll', function() {
-                  if (navbar.hasClass('active')) {
-                      navbar.removeClass('active');
-                      menuIcon.removeClass('bx-x');
+                  if ($navbar.hasClass('active')) {
+                      $navbar.removeClass('active');
+                      $menuIcon.removeClass('bx-x');
                   }
               });
           } else {
               console.warn("Header menu icon or navbar not found.");
           }
 
+          // --- Modal Handling ---
+
+          // Generic Alert Modal
+          function showAlertModal(message) {
+              $alertModalMessage.text(message);
+              $alertModal.addClass('active');
+          }
+          function closeAlertModal() {
+              $alertModal.removeClass('active');
+          }
+          // Use common close button class for alert modal close actions
+          $alertModal.on('click', '.modal-close-btn, #alertModalOkButton', closeAlertModal);
+
+          // Logout Modal
+          if ($logoutLink.length && $logoutModal.length) {
+                $logoutLink.on('click', function(event) {
+                    event.preventDefault(); // Prevent default link navigation
+                    $logoutModal.addClass('active'); // Show the modal using 'active' class
+                });
+
+                // Use common close button class + cancel button
+                $logoutModal.on('click', '.modal-close-btn, #cancelLogoutButton', function() {
+                     $logoutModal.removeClass('active');
+                });
+
+                $okLogoutBtn.on('click', function() {
+                    $logoutModal.removeClass('active'); // Hide modal
+                    // Redirect to the original logout link's href
+                    window.location.href = $logoutLink.attr('href');
+                });
+            } else {
+                 console.warn("Logout link or modal not found.");
+                 // Fallback if modal elements aren't found - show basic alert
+                 $logoutLink.on('click', function(event) {
+                      event.preventDefault();
+                       alert("Logout functionality error: Modal not found.");
+                 });
+            }
+
+
+          // Log Meal Modal
+          function openLogMealModal(event) {
+              const mealType = $(event.currentTarget).data('meal-type');
+              $logMealTypeSelect.val(mealType);
+              $logMealModalDate.text(moment(selectedDate).format('MMMM D, YYYY'));
+              $logMealDateHidden.val(selectedDate);
+              $loggedItemsDateDisplay.text(moment(selectedDate).format('MMMM D'));
+              $logMealValidationError.hide().text('');
+              displayLoggedItemsForDate(selectedDate);
+              $logMealModal.addClass('active');
+              $logMealForm[0].reset();
+              $('#log-meal-type').val(mealType); // Ensure meal type is set after reset
+              $('#log-food-name').focus(); // Focus on food name field
+          }
+
+          function closeLogMealModal() {
+              $logMealModal.removeClass('active');
+              $logMealForm[0].reset();
+              $logMealValidationError.hide().text('');
+          }
+
+          // Attach event listeners for Log Meal Modal
+          $('.add-food-btn').on('click', openLogMealModal);
+          // Use common close button class for Log Meal Modal close/cancel
+          $logMealModal.on('click', '.modal-close-btn, #log-meal-cancel-button', closeLogMealModal);
+          $logMealForm.on('submit', handleLogMealSubmit);
+          $loggedItemsList.on('click', '.remove-logged-item-btn', removeLoggedItem);
+
+
+          // --- Tab Switching Logic ---
           $('.main-tab-button').on('click', function() {
-              var targetSelector = $(this).data('target');
-              var $targetContent = $(targetSelector);
+              const targetSelector = $(this).data('target');
+              const $targetContent = $(targetSelector);
 
               if ($targetContent.length) {
                   $('.main-tab-button').removeClass('active');
@@ -658,8 +794,8 @@
           });
 
            $('.tabs .tab-button').on('click', function() {
-                var tabId = $(this).data('tab');
-                var $container = $(this).closest('.content-placeholder');
+                const tabId = $(this).data('tab');
+                const $container = $(this).closest('.content-placeholder');
 
                 $container.find('.tabs .tab-button').removeClass('active');
                 $(this).addClass('active');
@@ -668,33 +804,8 @@
                 $container.find('#' + tabId + '-content').addClass('active');
            });
 
-          $('#logout-link').on('click', function(event) {
-              event.preventDefault();
-              var confirmLogout = confirm("Are you sure you want to logout?");
-              if (confirmLogout) {
-                  window.location.href = this.href;
-              }
-          });
 
-
-          let selectedDate = moment().format('YYYY-MM-DD');
-          let currentMonthMoment = moment(selectedDate);
-          const foodLog = {};
-          const activityLog = {};
-
-          const $calendarGrid = $('.calendar-grid');
-          const $currentMonthYear = $('.current-month-year');
-          const $logMealModal = $('#log-meal-modal');
-          const $logMealForm = $('#log-meal-form');
-          const $logMealModalDate = $('#log-meal-modal-date');
-          const $logMealDateHidden = $('#log-meal-date-hidden');
-          const $logMealTypeSelect = $('#log-meal-type');
-          const $loggedItemsList = $('#logged-items-list');
-          const $loggedItemsDateDisplay = $('#logged-items-date-display');
-          const $validationError = $('#log-meal-validation-error');
-          const $activityForm = $('#activity-form');
-          const $weeklyPlanDisplay = $('#weekly-plan-display');
-
+          // --- Calendar Logic ---
           function renderCalendar(dateMoment) {
               $calendarGrid.empty();
               $currentMonthYear.text(dateMoment.format('MMMM YYYY'));
@@ -704,12 +815,14 @@
 
               const startOfMonth = dateMoment.clone().startOf('month');
               const endOfMonth = dateMoment.clone().endOf('month');
-              const startDayOfWeek = startOfMonth.day();
+              const startDayOfWeek = startOfMonth.day(); // 0=Sun, 6=Sat
 
+              // Add empty cells for days before the start of the month
               for (let i = 0; i < startDayOfWeek; i++) {
                   $calendarGrid.append('<div class="date-cell empty"></div>');
               }
 
+              // Add cells for each day of the month
               let day = startOfMonth.clone();
               while (day.isSameOrBefore(endOfMonth, 'day')) {
                   const dateStr = day.format('YYYY-MM-DD');
@@ -719,24 +832,54 @@
                   if (dateStr === selectedDate) {
                       $button.addClass('selected');
                   }
+                  // Example: Disable future dates if needed
+                  // if (day.isAfter(moment(), 'day')) {
+                  //    $button.prop('disabled', true);
+                  // }
 
                   $cell.append($button);
                   $calendarGrid.append($cell);
                   day.add(1, 'day');
               }
+               // Add empty cells after the end of the month to fill the grid row
+                const totalCells = startDayOfWeek + endOfMonth.date();
+                const remainingCells = 7 - (totalCells % 7);
+                if (remainingCells < 7) {
+                    for (let i = 0; i < remainingCells; i++) {
+                         $calendarGrid.append('<div class="date-cell empty"></div>');
+                    }
+                }
           }
 
           function updateSelectedDate(newDate) {
               selectedDate = newDate;
+              // Update calendar UI
               $('.calendar-grid .date-cell button.selected').removeClass('selected');
               $(`.calendar-grid .date-cell button[data-date="${selectedDate}"]`).addClass('selected');
+              // Update other parts of UI that depend on the date
               $logMealModalDate.text(moment(selectedDate).format('MMMM D, YYYY'));
               $logMealDateHidden.val(selectedDate);
               $loggedItemsDateDisplay.text(moment(selectedDate).format('MMMM D'));
-              displayLoggedItemsForDate(selectedDate);
-              updateNutritionDisplay();
+              displayLoggedItemsForDate(selectedDate); // Refresh logged items display
+              updateNutritionDisplay(); // Recalculate nutrition totals
           }
 
+          // Calendar Navigation
+          $('.cal-nav.prev').on('click', () => {
+              currentMonthMoment.subtract(1, 'month');
+              renderCalendar(currentMonthMoment);
+          });
+          $('.cal-nav.next').on('click', () => {
+              currentMonthMoment.add(1, 'month');
+              renderCalendar(currentMonthMoment);
+          });
+          $calendarGrid.on('click', '.date-cell button:not(:disabled)', function() {
+              const newDate = $(this).data('date');
+              updateSelectedDate(newDate);
+          });
+
+
+          // --- Fitness Plan Logic ---
           function addActivityToPlan(event) {
                 event.preventDefault();
 
@@ -748,11 +891,14 @@
                 const weight = $('#activity-weight').val().trim();
                 const duration = $('#activity-duration').val().trim();
 
+                // Validation
                 if (!day || (!name && type !== 'Rest Day')) {
-                    alert('Please select a day and enter an activity name (unless selecting Rest Day).');
+                    // Use the alert modal
+                    showAlertModal('Please select a day and enter an activity name (unless selecting Rest Day).');
                     return;
                 }
 
+                // Construct display text
                 let displayText = `<strong>${type}:</strong> ${name || ''}`;
                 const details = [];
                 if (reps) details.push(`Reps: ${reps}`);
@@ -764,58 +910,61 @@
                     displayText += ` (${details.join(', ')})`;
                 }
 
+                // Add to UI
                 const $dayList = $weeklyPlanDisplay.find(`ul[data-day="${day}"]`);
                 const $listItem = $(`<li>${displayText}<button class="remove-activity-btn" title="Remove Activity"><i class="fas fa-times"></i></button></li>`);
+
+                // Remove "No activities" placeholder if present
+                $dayList.find('.no-activities').remove();
                 $dayList.append($listItem);
 
+                // Add to data store (optional, for persistence/saving later)
                 if (!activityLog[day]) {
                     activityLog[day] = [];
                 }
                 activityLog[day].push({ type, name, reps, sets, weight, duration });
 
+                // Clear relevant input fields
                 $('#activity-name, #activity-reps, #activity-sets, #activity-weight, #activity-duration').val('');
-
+                $('#activity-type').prop('selectedIndex',0); // Reset select to first option
             }
 
             function removeActivityFromPlan(event) {
+                 // Use closest('li') to handle clicks on the icon inside the button
                  const $listItem = $(event.target).closest('li');
-                 const day = $listItem.closest('ul').data('day');
+                 const $dayList = $listItem.closest('ul');
+                 const day = $dayList.data('day');
                  const itemIndex = $listItem.index();
 
-                 if (activityLog[day] && activityLog[day][itemIndex]) {
+                 // Remove from data store (if used)
+                 if (activityLog[day] && activityLog[day][itemIndex] !== undefined) {
                      activityLog[day].splice(itemIndex, 1);
                  }
 
+                 // Remove from UI
                  $listItem.remove();
+
+                 // Optional: Add back placeholder if list becomes empty
+                 // if ($dayList.children().length === 0) {
+                 //    $dayList.append('<li class="no-activities" style="color: #999; font-style: italic;">No activities planned.</li>');
+                 // }
             }
 
-          function openLogMealModal(event) {
-              const mealType = $(event.currentTarget).data('meal-type');
-              $logMealTypeSelect.val(mealType);
-              $logMealModalDate.text(moment(selectedDate).format('MMMM D, YYYY'));
-              $logMealDateHidden.val(selectedDate);
-              $loggedItemsDateDisplay.text(moment(selectedDate).format('MMMM D'));
-              $validationError.hide().text('');
-              displayLoggedItemsForDate(selectedDate);
-              $logMealModal.addClass('active');
-              $logMealForm[0].reset();
-              $('#log-meal-type').val(mealType);
-          }
+          // Attach event listeners for Fitness Plan
+          $activityForm.on('submit', addActivityToPlan);
+          $weeklyPlanDisplay.on('click', '.remove-activity-btn', removeActivityFromPlan);
 
-          function closeLogMealModal() {
-              $logMealModal.removeClass('active');
-              $logMealForm[0].reset();
-              $validationError.hide().text('');
-          }
 
+          // --- Nutrition Logging & Display Logic ---
           function displayLoggedItemsForDate(dateStr) {
-              $loggedItemsList.empty();
+              $loggedItemsList.empty(); // Clear previous items
               const items = foodLog[dateStr] || [];
 
               if (items.length === 0) {
                   $loggedItemsList.append('<li class="no-items-logged">No items logged yet for this date.</li>');
               } else {
                   items.forEach((item, index) => {
+                      // Create list item HTML
                       const listItem = `
                           <li>
                               <span class="item-details">[${item.mealType}]</span>
@@ -831,61 +980,73 @@
           }
 
           function removeLoggedItem(event) {
-             const indexToRemove = $(event.currentTarget).data('index');
-             const dateStr = selectedDate;
+             // Use closest button to handle clicks on icon
+             const $button = $(event.target).closest('.remove-logged-item-btn');
+             const indexToRemove = $button.data('index');
+             const dateStr = selectedDate; // Use the currently selected date
 
              if (foodLog[dateStr] && foodLog[dateStr][indexToRemove] !== undefined) {
+                 // Remove item from the array for the specific date
                  foodLog[dateStr].splice(indexToRemove, 1);
 
-                 if (foodLog[dateStr].length === 0) {
-                 }
-
+                 // Update the display
                  displayLoggedItemsForDate(dateStr);
-                 updateNutritionDisplay();
+                 updateNutritionDisplay(); // Recalculate totals
+             } else {
+                 console.warn("Could not find item to remove at index:", indexToRemove, "for date:", dateStr);
              }
           }
 
-
           function handleLogMealSubmit(event) {
-              event.preventDefault();
-              $validationError.hide().text('');
+              event.preventDefault(); // Prevent form submission
+              $logMealValidationError.hide().text(''); // Hide previous errors
 
+              // --- Form Validation ---
               const foodName = $('#log-food-name').val().trim();
               const calories = $('#log-calories').val();
 
               if (!foodName) {
-                  $validationError.text('Food Name is required.').show();
+                  $logMealValidationError.text('Food Name is required.').show();
                   return;
               }
               if (calories === '' || isNaN(calories) || parseFloat(calories) < 0) {
-                  $validationError.text('Valid Calories (0 or more) are required.').show();
+                  $logMealValidationError.text('Valid Calories (0 or more) are required.').show();
                   return;
               }
+              // --- End Validation ---
 
+              // Create item object
               const newItem = {
-                  id: Date.now(),
-                  date: selectedDate,
+                  id: Date.now(), // Simple unique ID
+                  date: selectedDate, // Use currently selected date
                   mealType: $logMealTypeSelect.val(),
                   foodName: foodName,
                   calories: parseFloat(calories),
                   protein: parseFloat($('#log-protein').val()) || 0,
                   carbs: parseFloat($('#log-carbs').val()) || 0,
                   fat: parseFloat($('#log-fat').val()) || 0,
+                  // Add other nutrients if fields exist
               };
 
+              // Add to data store
               if (!foodLog[selectedDate]) {
-                  foodLog[selectedDate] = [];
+                  foodLog[selectedDate] = []; // Initialize array if date is new
               }
               foodLog[selectedDate].push(newItem);
 
-              displayLoggedItemsForDate(selectedDate);
-              updateNutritionDisplay();
+              // Update UI
+              displayLoggedItemsForDate(selectedDate); // Update list in modal
+              updateNutritionDisplay(); // Update totals on main page
 
+              // Reset only necessary fields in the form for quicker logging
               $('#log-food-name, #log-calories, #log-protein, #log-carbs, #log-fat').val('');
-              $('#log-protein, #log-carbs, #log-fat').val('0');
+              $('#log-protein, #log-carbs, #log-fat').val('0'); // Default nutrients back to 0
+              $('#log-food-name').focus(); // Focus back on food name
 
+              // Don't close the modal automatically, allow multiple entries
           }
 
+          // Function to update all nutrition summary displays
           function updateNutritionDisplay() {
               const itemsToday = foodLog[selectedDate] || [];
               let totals = {
@@ -896,46 +1057,56 @@
               };
               let mealTotals = { Breakfast: 0, Lunch: 0, Dinner: 0, Snacks: 0 };
 
+              // Calculate totals from logged items for the selected date
               itemsToday.forEach(item => {
                   totals.calories += item.calories || 0;
                   totals.protein += item.protein || 0;
                   totals.carbs += item.carbs || 0;
                   totals.fat += item.fat || 0;
-                  totals.fiber += item.fiber || 0;
-                  totals.sugar += item.sugar || 0;
-                  totals.satfat += item.satfat || 0;
-
+                  // Add other nutrients if they exist in item object
+                  totals.fiber += item.fiber || 0; // Example
+                  totals.sugar += item.sugar || 0; // Example
+                  totals.satfat += item.satfat || 0; // Example
+                  // ... etc
 
                   if (mealTotals.hasOwnProperty(item.mealType)) {
                       mealTotals[item.mealType] += item.calories || 0;
                   }
               });
 
+              // --- Update Calories Tab ---
               const totalCaloriesConsumed = totals.calories;
               $('[data-value="total-calories"]').text(Math.round(totalCaloriesConsumed));
 
+              // Update meal breakdown percentages and calories
               Object.keys(mealTotals).forEach(meal => {
                   const mealCal = mealTotals[meal];
                   const percentage = totalCaloriesConsumed > 0 ? Math.round((mealCal / totalCaloriesConsumed) * 100) : 0;
-                  const key = meal.toLowerCase();
+                  const key = meal.toLowerCase(); // e.g., 'breakfast'
                   $(`[data-value="${key}-calories"]`).text(`${percentage}% (${Math.round(mealCal)} cal)`);
               });
 
-              const goalCalories = parseFloat($('[data-value="goal-calories"]').text().replace(/,/g, '')) || 0;
-              const exerciseCalories = parseFloat($('[data-value="exercise-calories"]').text().replace('cal','').trim()) || 0;
+              // Update calorie summary
+              const goalCalories = parseFloat($('[data-value="goal-calories"]').attr('data-goal-value')) || parseFloat($('[data-value="goal-calories"]').text().replace(/[^0-9.]/g, '')) || 0;
+              const exerciseCalories = parseFloat($('[data-value="exercise-calories"]').attr('data-goal-value')) || parseFloat($('[data-value="exercise-calories"]').text().replace(/[^0-9.]/g, '')) || 0;
 
               const netCalories = Math.round(totalCaloriesConsumed - exerciseCalories);
               const caloriesRemaining = Math.round(goalCalories - netCalories);
 
-              $('[data-value="net-calories"]').text(netCalories);
-              $('[data-value="exercise-calories"]').text(`${exerciseCalories} cal`);
-              $('[data-value="calories-remaining"]').text(caloriesRemaining);
+              $('[data-value="net-calories"]').text(netCalories.toLocaleString());
+              $('[data-value="calories-remaining"]').text(caloriesRemaining.toLocaleString());
+              // Ensure exercise calories display is updated if it was edited
+              $('[data-value="exercise-calories"]').text(`${exerciseCalories.toLocaleString()} cal`);
+               // Ensure goal calories display is updated if it was edited
+              $('[data-value="goal-calories"]').text(`${goalCalories.toLocaleString()}`);
 
 
+              // --- Update Nutrients Tab ---
                $('.nutrient-list li').each(function() {
                   const $li = $(this);
-                  const nutrientKey = $li.data('nutrient');
+                  const nutrientKey = $li.data('nutrient'); // e.g., 'protein', 'carbohydrates'
 
+                  // Map nutrient key to the key used in the 'totals' object
                   let totalKey = nutrientKey;
                   if (nutrientKey === 'carbohydrates') totalKey = 'carbs';
                   else if (nutrientKey === 'saturated_fat') totalKey = 'satfat';
@@ -944,105 +1115,135 @@
                   else if (nutrientKey === 'trans_fat') totalKey = 'transfat';
                   else if (nutrientKey === 'vitamin_a') totalKey = 'vita';
                   else if (nutrientKey === 'vitamin_c') totalKey = 'vitc';
-
+                  // Add mappings for others if needed
 
                   const totalValue = totals[totalKey] || 0;
-                  const unit = $li.find('.editable').data('unit') || 'g';
                   const $goalSpan = $li.find('.editable[data-id$="-goal"]');
+                  const unit = $goalSpan.data('unit') || 'g'; // Get unit from the editable goal span
+                  // Get goal value preferably from data-attribute, fallback to text parsing
                   const goalValue = parseFloat($goalSpan.attr('data-goal-value')) || parseFloat($goalSpan.text().replace(/[^0-9.]/g, '')) || 0;
                   const leftValue = Math.max(0, goalValue - totalValue);
 
-                  const decimals = (unit === 'g' && totalValue < 10 && totalValue !== 0) || (unit === 'mg') ? 1 : 0;
-                  const goalDecimals = (unit === 'g' || unit === 'mg') ? 0 : 0;
+                  // Determine decimal places based on unit/value
+                  const decimals = (unit === 'g' && totalValue < 10 && totalValue !== 0 && !Number.isInteger(totalValue)) || (unit === 'mg') ? 1 : 0;
+                  const goalDecimals = (unit === '%') ? 0 : ((unit === 'g' || unit === 'mg') ? 0 : 0); // No decimals for % goals or whole g/mg goals
                   const leftDecimals = decimals;
 
-                  $li.find(`[data-value="${totalKey}-total"]`).text(`${totalValue.toFixed(decimals)} ${unit}`);
-                  $goalSpan.text(`${goalValue.toFixed(goalDecimals)} ${unit}`);
-                  $li.find(`[data-value="${totalKey}-left"]`).text(`${leftValue.toFixed(leftDecimals)} ${unit}`);
+                  // Update Total, Goal, and Left values in the list item
+                  $li.find(`[data-value="${totalKey}-total"]`).text(`${totalValue.toFixed(decimals)} ${unit}`); // Update total span
+                  $goalSpan.text(`${goalValue.toLocaleString(undefined, {maximumFractionDigits: goalDecimals})}${unit ? ' ' + unit : ''}`); // Ensure goal display is correct with formatting
+                  $li.find(`[data-value="${totalKey}-left"], [data-value="${nutrientKey}-left"]`).text(`${leftValue.toFixed(leftDecimals)} ${unit}`); // Update left span
                });
 
+              // --- Update Macros Tab ---
               const totalGrams = totals.protein + totals.carbs + totals.fat;
-              const proteinPerc = totalGrams > 0 ? Math.round((totals.protein * 4 / (totals.protein * 4 + totals.carbs * 4 + totals.fat * 9)) * 100) : 0;
-              const carbsPerc = totalGrams > 0 ? Math.round((totals.carbs * 4 / (totals.protein * 4 + totals.carbs * 4 + totals.fat * 9)) * 100) : 0;
-              const fatPerc = totalGrams > 0 ? Math.round((totals.fat * 9 / (totals.protein * 4 + totals.carbs * 4 + totals.fat * 9)) * 100) : 0;
+              const totalMacroCalories = (totals.protein * 4) + (totals.carbs * 4) + (totals.fat * 9);
 
+              // Calculate percentages based on CALORIE contribution for accuracy
+              const proteinPerc = totalMacroCalories > 0 ? Math.round((totals.protein * 4 / totalMacroCalories) * 100) : 0;
+              const carbsPerc = totalMacroCalories > 0 ? Math.round((totals.carbs * 4 / totalMacroCalories) * 100) : 0;
+              // Calculate fat percentage carefully to ensure total is close to 100%
+              const fatPerc = totalMacroCalories > 0 ? Math.max(0, 100 - proteinPerc - carbsPerc) : 0;
 
+              // Update grams display
               $('[data-value="macro-protein-g"]').text(totals.protein.toFixed(1) + 'g');
               $('[data-value="macro-carbs-g"]').text(totals.carbs.toFixed(1) + 'g');
               $('[data-value="macro-fat-g"]').text(totals.fat.toFixed(1) + 'g');
 
+              // Update percentage display
               $('[data-value="macro-protein-perc"]').text(proteinPerc + '%');
               $('[data-value="macro-carbs-perc"]').text(carbsPerc + '%');
               $('[data-value="macro-fat-perc"]').text(fatPerc + '%');
 
+              // Ensure macro goal percentage displays are also correct after potential edits
+              checkMacroGoalTotal(); // Re-check and potentially update UI if needed
           }
 
+
+          // --- Editable Goals Logic ---
            function handleEditableClick(event) {
                 const $target = $(event.currentTarget);
-                const currentValue = $target.text().replace(/[^0-9.]/g, '');
+                // Store original value in case of cancellation or invalid input
+                const originalValueText = $target.text();
+                const currentValue = originalValueText.replace(/[^0-9.]/g, ''); // Get numeric part
                 const label = $target.data('label') || 'value';
                 const unit = $target.data('unit') || '';
 
+                // Use browser's prompt for simplicity (replace with custom modal for better UI)
                 const newValue = prompt(`Enter new ${label}:`, currentValue);
 
-                if (newValue !== null && !isNaN(newValue) && parseFloat(newValue) >= 0) {
-                    const formattedValue = parseFloat(newValue);
-                    $target.attr('data-goal-value', formattedValue);
-                    $target.text(`${formattedValue}${unit ? ' ' + unit : ''}`);
+                if (newValue !== null) { // Prompt wasn't cancelled
+                    const parsedValue = parseFloat(newValue);
+                    if (!isNaN(parsedValue) && parsedValue >= 0) {
+                         // Valid input
+                         const formattedValue = parsedValue;
+                         $target.attr('data-goal-value', formattedValue); // Store numeric value in data attribute
 
-                    if ($target.data('id').includes('-goal')) {
-                        updateNutritionDisplay();
+                         // Format displayed text based on unit
+                         let displayText;
+                         if (unit === '%') {
+                            displayText = `${formattedValue.toFixed(0)}${unit}`; // No decimals for %
+                         } else if (unit === 'cal' || unit === 'mg') {
+                            displayText = `${formattedValue.toLocaleString(undefined, {maximumFractionDigits: 0})}${unit ? ' ' + unit : ''}`; // No decimals, use locale string for calories/mg
+                         } else {
+                             displayText = `${formattedValue.toLocaleString(undefined, {maximumFractionDigits: 1})}${unit ? ' ' + unit : ''}`; // Allow 1 decimal for g (optional)
+                         }
+                         $target.text(displayText); // Update display text
+
+                         // If a goal was changed, recalculate related values
+                         if ($target.data('id').includes('-goal')) {
+                             updateNutritionDisplay(); // Recalculate remaining calories/nutrients
+                         }
+                          if ($target.data('id') === 'exercise-calories') {
+                              updateNutritionDisplay(); // Recalculate net/remaining calories
+                          }
+                          if ($target.data('id').includes('-goal-perc')) {
+                              checkMacroGoalTotal(); // Check if macro % still sums to 100
+                          }
+                    } else {
+                         // Invalid input - use the alert modal
+                         showAlertModal('Invalid input. Please enter a non-negative number.');
+                         $target.text(originalValueText); // Revert to original text
                     }
-                     if ($target.data('id') === 'exercise-calories') {
-                         updateNutritionDisplay();
-                     }
-                     if ($target.data('id').includes('-goal-perc')) {
-                        checkMacroGoalTotal();
-                     }
-                } else if (newValue !== null) {
-                    alert('Invalid input. Please enter a non-negative number.');
                 }
+                // If newValue is null (prompt cancelled), do nothing, keep original value
            }
 
+            // Function to check if macro goals sum to 100% and update warning
             function checkMacroGoalTotal() {
                 let totalPerc = 0;
                 $('.macros-legend .editable[data-id$="-goal-perc"]').each(function() {
-                    totalPerc += parseFloat($(this).text().replace('%','')) || 0;
+                    totalPerc += parseFloat($(this).attr('data-goal-value')) || parseFloat($(this).text().replace('%','')) || 0;
                 });
-                if (totalPerc !== 100) {
-                   console.warn(`Macro goal percentages sum to ${totalPerc}%, should be 100%.`);
-                }
+                 const $macroWarning = $('#macro-goal-warning');
+                 if ($macroWarning.length) {
+                     if (Math.round(totalPerc) !== 100) {
+                        $macroWarning.text(`Warning: Macro goals sum to ${totalPerc.toFixed(0)}%, should be 100%.`).show();
+                     } else {
+                        $macroWarning.hide();
+                     }
+                 } else if (Math.round(totalPerc) !== 100) {
+                    // Fallback to console if warning element doesn't exist
+                    console.warn(`Macro goal percentages sum to ${totalPerc}%, should be 100%.`);
+                 }
+
+                 // Update the display of the goal percentages themselves to ensure consistency
+                 $('.macros-legend .editable[data-id$="-goal-perc"]').each(function() {
+                     const $el = $(this);
+                     const goalVal = parseFloat($el.attr('data-goal-value')) || 0;
+                     $el.text(`${goalVal.toFixed(0)}%`);
+                 });
             }
 
-          $('.cal-nav.prev').on('click', () => {
-              currentMonthMoment.subtract(1, 'month');
-              renderCalendar(currentMonthMoment);
-          });
-          $('.cal-nav.next').on('click', () => {
-              currentMonthMoment.add(1, 'month');
-              renderCalendar(currentMonthMoment);
-          });
-          $calendarGrid.on('click', '.date-cell button:not(:disabled)', function() {
-              const newDate = $(this).data('date');
-              updateSelectedDate(newDate);
-          });
-
-          $activityForm.on('submit', addActivityToPlan);
-          $weeklyPlanDisplay.on('click', '.remove-activity-btn', removeActivityFromPlan);
-
-
-          $('.add-food-btn').on('click', openLogMealModal);
-          $('.modal-close-btn, #log-meal-cancel-button').on('click', closeLogMealModal);
-          $logMealForm.on('submit', handleLogMealSubmit);
-          $loggedItemsList.on('click', '.remove-logged-item-btn', removeLoggedItem);
-
+          // Attach listener for editable elements
           $('.main-tab-content').on('click', '.editable[data-editable="true"]', handleEditableClick);
 
+          // --- Initial Setup ---
           renderCalendar(currentMonthMoment);
-          updateSelectedDate(selectedDate);
-          checkMacroGoalTotal();
+          updateSelectedDate(selectedDate); // Set initial date and update displays
+          checkMacroGoalTotal(); // Initial check of macro goals
 
-      });
+      }); // End document ready
     </script>
 
 </body>
