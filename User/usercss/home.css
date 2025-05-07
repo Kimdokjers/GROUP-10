@@ -671,66 +671,97 @@
       #logoutModalMessage { font-size: 1.5rem; } /* Adjust modal text size */
    }
    /* === Styles for Home Page Specific Content === */
+/* === Styles for Home Page Specific Content === */
+
+/* Base styles for gym display sections */
+/* === Styles for Home Page Specific Content === */
+
+/* Base styles for gym display sections */
+/* === Styles for Home Page Specific Content === */
+
+/* Base styles for gym display sections */
 .gym-display {
-    padding-top: calc(var(--header-height-desktop) + 3rem); /* Adjust space below header */
-    padding-bottom: 8rem;
+    /* Add padding inside the section itself */
+    padding: 4rem 2rem; /* Reduced vertical padding slightly */
+    margin-bottom: 3rem; /* Add space BETWEEN bordered sections */
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 4rem; /* Increased gap */
-    min-height: calc(80vh - var(--header-height-desktop)); /* Example height */
-    max-width: 1200px; /* Limit width */
-    margin: 0 auto; /* Center the section */
-    padding-left: 2rem; /* Add padding */
-    padding-right: 2rem; /* Add padding */
+    gap: 4rem;
+    max-width: 1200px;
+    margin-left: auto; /* Center the section */
+    margin-right: auto;
+
+    /* Add the gold border to ALL sections */
+    border: 3px solid var(--main-color); /* Adjust thickness (e.g., 2px, 3px) */
+    border-radius: 10px; /* Add rounded corners to the border */
+
+    /* Set the background to match the main body background */
+    background-color: var(--bg-color); /* CHANGED from --color-dark-gray */
+
+    /* Optional: keep or remove the subtle inner shadow */
+    box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.4);
 }
 
+/* Ensure the very first section has appropriate top padding below header */
+main > section.gym-display:first-of-type {
+     margin-top: calc(var(--header-height-desktop) + 3rem); /* Add margin-top instead of padding */
+     padding-top: 4rem; /* Keep internal padding */
+}
+@media (max-width: 991px) {
+    main > section.gym-display:first-of-type {
+        margin-top: calc(var(--header-height-mobile) + 2rem);
+    }
+}
+
+/* Rest of the .gym-content, .gym-image, and responsive styles remain the same */
 .gym-content {
-    flex: 1 1 55%; /* Allow text content slightly more space */
+    flex: 1 1 55%;
     max-width: 55%;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 2rem; /* Space between h1, p, button */
+    gap: 2rem;
+    color: var(--text-color);
 }
 
 .gym-image {
-    flex: 1 1 40%; /* Image takes less space */
+    flex: 1 1 40%;
     max-width: 40%;
-    text-align: center; /* Center image if container is wider */
+    text-align: center;
 }
 
 .gym-image img {
     width: 100%;
     height: auto;
-    border-radius: 12px; /* Rounded corners */
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); /* Shadow effect */
+    border-radius: 8px; /* Slightly smaller radius than the container */
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
     display: block;
     margin: 0 auto;
+    /* Remove border from image itself if container has border */
+    /* border: 2px solid var(--border-color-light); */
 }
 
 .gym-content h1 {
-    font-size: 4rem; /* Larger font size */
+    font-size: 4rem;
     line-height: 1.2;
-    font-weight: 700; /* Bolder */
-    color: var(--text-color); /* White text */
+    font-weight: 700;
+    color: var(--text-color);
 }
 
 .gym-content h1 span {
-    color: var(--main-color); /* Gold color for gym name highlight */
+    color: var(--main-color);
 }
 
 .gym-content p {
-    font-size: 1.7rem; /* Slightly larger paragraph text */
+    font-size: 1.7rem;
     color: var(--color-text-muted);
-    line-height: 1.8; /* Improved readability */
-    margin-bottom: 1.5rem; /* Space below paragraph */
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
 }
 
 .gym-content .action-button {
-    /* Use .btn-primary styles defined earlier */
-    /* Add specific adjustments if needed */
-    padding: 1.4rem 3.2rem; /* Slightly adjusted padding */
+    padding: 1.4rem 3.2rem;
     font-size: 1.8rem;
 }
 
@@ -738,23 +769,28 @@
 
 @media (max-width: 991px) {
     .gym-display {
-        padding-top: calc(var(--header-height-mobile) + 4rem);
-        flex-direction: column-reverse; /* Stack image above text */
+        flex-direction: column-reverse;
         text-align: center;
         gap: 3rem;
-        padding-left: 1rem;
-        padding-right: 1rem;
+        padding: 3rem 1.5rem; /* Adjust padding */
+        margin-bottom: 2rem;
     }
+     /* Adjust first section margin for mobile header */
+    main > section.gym-display:first-of-type {
+        margin-top: calc(var(--header-height-mobile) + 2rem);
+        padding-top: 3rem; /* Match general mobile padding */
+    }
+
     .gym-content {
-        max-width: 90%; /* Allow content to take more width */
-        align-items: center; /* Center text and button */
+        max-width: 90%;
+        align-items: center;
     }
     .gym-image {
-        max-width: 80%; /* Adjust image width */
+        max-width: 80%;
         margin-bottom: 2rem;
     }
     .gym-content h1 {
-        font-size: 3.5rem; /* Adjust heading size */
+        font-size: 3.5rem;
     }
     .gym-content p {
         font-size: 1.6rem;
@@ -775,6 +811,9 @@
     .gym-image {
         max-width: 90%;
     }
+    .gym-display {
+        padding: 2.5rem 1rem;
+    }
 }
 
 @media (max-width: 480px) {
@@ -787,11 +826,15 @@
      .gym-content .action-button {
         font-size: 1.5rem;
         padding: 1rem 2.5rem;
-        width: 100%; /* Make button full width */
-        max-width: 300px; /* Optional: limit max width */
+        width: 100%;
+        max-width: 300px;
     }
      .gym-image {
         max-width: 95%;
+    }
+     .gym-display {
+        padding: 2rem 1rem;
+        margin-bottom: 1.5rem;
     }
 }
 
