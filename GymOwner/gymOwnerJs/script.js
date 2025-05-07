@@ -23,7 +23,7 @@ $(document).ready(function() {
 
     const headerLogoutLink = $('#header-logout-link');
 
-    let trendsChartInstance = null, newUserChartInstance = null, membershipDistChartInstance = null; // Renamed for clarity
+    let trendsChartInstance = null, newUserChartInstance = null, membershipDistChartInstance = null;
 
     // --- Recent Activity & Stats ---
     const $recentActivityList = $('#recent-activity-list');
@@ -41,20 +41,23 @@ $(document).ready(function() {
     function calculateTotalRevenue() {
         let totalRevenue = 0;
         $('#payment-table-body tr').each(function() {
-            const amountText = $(this).find('td[data-label="Amount"]').text().replace('$', '').replace(',', '');
+            // More robust parsing for currency, handles potential PHP symbols or commas
+            let amountText = $(this).find('td[data-label="Amount"]').text();
+            amountText = amountText.replace(/[₱$A-Za-z,]/g, '').trim(); // Remove symbols and commas
             const amount = parseFloat(amountText);
             if (!isNaN(amount)) {
                 totalRevenue += amount;
             }
         });
-        return '$' + totalRevenue.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        // Format to PHP currency string
+        return new Intl.NumberFormat('en-PH', { style: 'currency', currency: 'PHP' }).format(totalRevenue);
     }
 
 
     function updateDashboardStats() {
         $('#total-users-stat').text(userTableBody.find('tr').length);
         $('#active-members-stat').text(userTableBody.find('tr td[data-label="Status"]:contains("Active")').length);
-        $('#total-revenue-stat').text(calculateTotalRevenue());
+        $('#total-revenue-stat').text(calculateTotalRevenue()); // Now uses PHP formatting
         $('#total-coaches-stat').text(coachTableBody.find('tr').length);
     }
 
@@ -276,7 +279,7 @@ $(document).ready(function() {
         showAlert(`User "${firstName} ${lastName}" added successfully!`, 'Success');
         addRecentActivity(`New user added: ${firstName} ${lastName} (${id})`);
         updateDashboardStats();
-        if ($('#analytics-content').hasClass('active')) { // If analytics is visible, update charts
+        if ($('#analytics-content').hasClass('active')) {
             initializeAnalyticsCharts();
         }
         hideAndResetFormModal(addUserModal, addUserForm, userFormFields);
@@ -335,12 +338,12 @@ $(document).ready(function() {
 
         alertModalOkButton.off('click').on('click', function proceedDelete() {
             hideAlert();
-            const isUserRow = $row.closest('#user-table-body').length > 0; // Check if it's a user row
+            const isUserRow = $row.closest('#user-table-body').length > 0;
             $row.fadeOut(400, function() {
                  $(this).remove();
                  addResponsiveTableHeaders();
                  updateDashboardStats();
-                 if (isUserRow && $('#analytics-content').hasClass('active')) { // If user deleted and analytics visible
+                 if (isUserRow && $('#analytics-content').hasClass('active')) {
                      initializeAnalyticsCharts();
                  }
                  addRecentActivity(`${itemName.trim()} (ID: ${id}) deleted.`);
@@ -385,12 +388,12 @@ $(document).ready(function() {
 
         if (trendsChartInstance) trendsChartInstance.destroy();
         if (newUserChartInstance) newUserChartInstance.destroy();
-        if (membershipDistChartInstance) membershipDistChartInstance.destroy(); // Use new name
+        if (membershipDistChartInstance) membershipDistChartInstance.destroy();
         trendsChartInstance = null; newUserChartInstance = null; membershipDistChartInstance = null;
 
         const trendsCtx = document.getElementById('trendsChart')?.getContext('2d');
         const newUserCtx = document.getElementById('newUserChart')?.getContext('2d');
-        const membershipDistCtx = document.getElementById('gymPopularityChart')?.getContext('2d'); // Canvas ID remains gymPopularityChart
+        const membershipDistCtx = document.getElementById('gymPopularityChart')?.getContext('2d');
 
         if (!trendsCtx || !newUserCtx || !membershipDistCtx) {
              console.warn("One or more chart canvas elements not found. Analytics may be incomplete.");
@@ -431,14 +434,16 @@ $(document).ready(function() {
                 tooltip: {
                      backgroundColor: 'rgba(0,0,0,0.8)', titleColor: goldColor, bodyColor: textColor,
                      displayColors: true,
-                      callbacks: { // UPDATED CALLBACK FOR COUNTS
+                      callbacks: {
                         label: function(context) {
                             let label = context.label || '';
                             if (label) { label += ': '; }
                             if (context.parsed !== null) {
                                 const total = context.chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
                                 const percentage = total > 0 ? ((context.parsed / total) * 100).toFixed(1) + '%' : '0%';
-                                label += `${context.formattedValue} (${percentage})`; // Shows count and percentage
+                                // CHANGED TO PHP
+                                const currencyValue = new Intl.NumberFormat('en-PH', { style: 'currency', currency: 'PHP' }).format(context.parsed);
+                                label += `${currencyValue} (${percentage})`;
                             }
                             return label;
                         }
@@ -479,9 +484,13 @@ $(document).ready(function() {
             options: commonChartOptions('bar')
         });
 
-        // Membership Distribution Chart (Doughnut) - NEW DATA SOURCE
+        // Revenue by Membership Type Chart (Doughnut)
+        const premiumMembershipCost = 2000;
+        const basicMembershipCost = 550;
+
         let premiumMembersCount = 0;
         let basicMembersCount = 0;
+
         userTableBody.find('tr').each(function() {
             const membershipType = $(this).find('td[data-label="Membership"]').text().trim();
             if (membershipType === 'Premium') {
@@ -491,22 +500,26 @@ $(document).ready(function() {
             }
         });
 
-        const membershipTypesLabels = ['Premium Members', 'Basic Members'];
-        const membershipTypesData = [premiumMembersCount, basicMembersCount];
+        const premiumRevenue = premiumMembersCount * premiumMembershipCost;
+        const basicRevenue = basicMembersCount * basicMembershipCost;
 
-        if (premiumMembersCount === 0 && basicMembersCount === 0) { // Handle no members
-             membershipTypesLabels.push("No Member Data");
-             membershipTypesData.push(1); // Placeholder to render chart
+        const revenueLabels = ['Premium Revenue', 'Basic Revenue'];
+        const revenueData = [premiumRevenue, basicRevenue];
+
+        if (premiumRevenue === 0 && basicRevenue === 0) {
+             revenueLabels.push("No Revenue Data");
+             revenueData.push(1);
         }
 
-        membershipDistChartInstance = new Chart(membershipDistCtx, { // Use new instance name
+
+        membershipDistChartInstance = new Chart(membershipDistCtx, {
             type: 'doughnut',
             data: {
-                labels: membershipTypesLabels,
+                labels: revenueLabels,
                 datasets: [{
-                    label: 'Membership Types', // Updated dataset label
-                    data: membershipTypesData,
-                    backgroundColor: [goldColor, goldLightColor, '#E6BE8A'], // Adjusted colors for potentially 2 types
+                    label: 'Revenue',
+                    data: revenueData,
+                    backgroundColor: [goldColor, goldLightColor, '#E6BE8A'],
                     borderColor: doughnutBorderColor,
                     borderWidth: 2,
                     hoverOffset: 8
@@ -573,7 +586,7 @@ $(document).ready(function() {
 
     // --- Initial Page Load Setup ---
     addResponsiveTableHeaders();
-    updateDashboardStats();
+    updateDashboardStats(); // Will now use PHP for total revenue stat card
     addRecentActivity("Gym Owner dashboard loaded.");
 
     handleContentSearch('#user-search-input', '#user-table-body', ['First Name', 'Last Name', 'Email', 'ID', 'Membership']);
