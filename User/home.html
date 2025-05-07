@@ -1,77 +1,101 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Home Page - OptiLife</title>
-    <link rel="stylesheet" href="../User/usercss/home.css">
+    <!-- Fonts and Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Link to NEW External CSS file -->
+    <link rel="stylesheet" href="usercss/home.css">
 </head>
 <body>
+
+    <!-- === HEADER (Copied Structure from membership.html) === -->
     <header>
-        <a href="#home" class="logo"><img src="../images/logo.png" alt="OptiLife Logo"></a>
-        <div class='bx bx-menu' id="menu-icon"></div>
+        <a href="home.html" class="logo"><img src="../images/logo.png" alt="OptiLife Logo"></a>
+        <i class='bx bx-menu' id="menu-icon"></i>
         <ul class="navbar">
-            <div class="navbar-left">
-                <li><a href="#home" class="active">Home</a></li>
-                <li><a href="setGoals.html">Set Goals</a></li>
-                <li><a href="progress.html">Track Progress</a></li>
-                <li><a href="membership.html">Membership</a></li>
-            </div>
-            <div class="navbar-right">
-                <li>
-                    <img id="profilePicTrigger" src="../images/user_pic.jpg" alt="User Profile" class="profile-pic">
-                </li>
-                <li>
-                    <a href="signin.html" id="logout-link">Logout</a>
-                </li>
-            </div>
+             <div class="navbar-left">
+                 <!-- Links specific to Home Page -->
+                 <li><a href="home.html" class="active">Home</a></li>
+                 <li><a href="setGoals.html">Set Goals</a></li>
+                 <li><a href="progress.html">Track Progress</a></li>
+                 <li><a href="membership.html">Membership</a></li>
+             </div>
+             <div class="navbar-right">
+                 <li>
+                     <!-- Link wraps the image if profile pic should be clickable -->
+                     <a href="#" id="profilePicTrigger" aria-label="View Profile">
+                         <img src="../images/user_pic.jpg" alt="User Profile" class="profile-pic">
+                     </a>
+                 </li>
+                 <li>
+                     <a href="signin.html" id="logout-link">Logout</a>
+                 </li>
+             </div>
         </ul>
     </header>
+    <!-- === END HEADER === -->
 
+    <!-- === MAIN CONTENT === -->
     <main>
-        <section class="gym-search-section">
-            <div class="gym-search-container">
-                 <form id="gym-search-form" onsubmit="return false;">
-                     <input type="search" id="gym-search-input" placeholder="Find Your Gym (e.g., Apex, Ironclad)...">
-                     <button type="button" id="gym-search-button">
-                         <i class='bx bx-search'></i> Search
-                     </button>
-                 </form>
+        <section class="gym-display">
+            <div class="gym-content">
+                <h1>Welcome to <span>Elite Fitness Hub</span></h1>
+                <p>
+                    Your premier destination for achieving peak physical condition. We offer state-of-the-art equipment, expert personal trainers,
+                    a wide variety of group classes, and a motivating community atmosphere. Whether you're a beginner or a seasoned athlete,
+                    Elite Fitness Hub provides the resources and support you need to crush your goals. Join us and transform your life!
+                </p>
+                <a href="membership.html" class="btn-primary action-button">Apply Now</a>
+            </div>
+            <div class="gym-image">
+                <img src="../images/gymcorp2.webp" alt="Interior of Elite Fitness Hub">
+                 <!-- Make sure this image path is correct -->
+            </div>
+        </section>
+        <section class="gym-display">
+            <div class="gym-content">
+                <h1>Welcome to <span>Iron Haven</span></h1>
+                <p>
+                    Welcome to Iron Haven—the ultimate destination for strength training purists. Designed for serious athletes, powerlifters, and bodybuilders, this gym offers a raw and focused atmosphere with top-tier equipment, from Olympic-grade platforms and free weights to resistance machines and sled tracks. Iron Haven isn’t about frills or fluff—it’s about grit, dedication, and building raw power. Whether you're chasing a new PR or just love the clang of iron, this is your sanctuary of steel.
+                </p>
+                <a href="membership.html" class="btn-primary action-button">Apply Now</a>
+            </div>
+            <div class="gym-image">
+                <img src="../images/gymcorp3.jpg" alt="Interior of Elite Fitness Hub">
+                 <!-- Make sure this image path is correct -->
+            </div>
+        </section>
+        <section class="gym-display">
+            <div class="gym-content">
+                <h1>Welcome to <span>Elevate Athletics</span></h1>
+                <p>
+                    Redefining the fitness experience, Elevate Athletics is a premium, all-in-one training destination designed for those who demand more. With state-of-the-art equipment, spa-like amenities, and a comprehensive class schedule—including strength, HIIT, yoga, and Pilates—Elevate delivers a luxury wellness experience without compromise. Whether you’re chasing peak performance or seeking a balanced lifestyle, Elevate Athletics empowers you to train with purpose, recover with intention, and live at your highest level.
+                </p>
+                <a href="membership.html" class="btn-primary action-button">Apply Now</a>
+            </div>
+            <div class="gym-image">
+                <img src="../images/gymcorp4.jpg" alt="Interior of Elite Fitness Hub">
+                 <!-- Make sure this image path is correct -->
             </div>
         </section>
 
-        <section class="home" id="home">
-            <div class="home-content">
-                <h1><span>Apex Athletics</span></h1>
-                <p>This is more than a gym it’s your launchpad to a stronger, fitter, and more confident you. From cutting-edge equipment to dynamic group classes and one-on-one coaching, we’re here to help you crush your goals and build a lifestyle you’re proud of.</p>
-                <a href="membership.html" class="btn">Apply Now</a>
-            </div>
-            <div class="home-img">
-                <img src="../images/gymcorp3.jpg" alt="Apex Athletics Gym">
-            </div>
-        </section>
-        <section class="home" id="home-ironclad">
-            <div class="home-content">
-                <h1><span>Ironclad Fitness</span></h1>
-                <p> Step into a space where your goals become reality. Whether you're aiming to build muscle, burn fat, or simply lead a healthier lifestyle, Elevate Fitness is your ultimate destination. With state-of-the-art equipment, expert trainers, and a motivating community, you'll not only transform your body but your mindset too.</p>
-                <a href="membership.html" class="btn">Apply Now</a>
-            </div>
-            <div class="home-img">
-                <img src="../images/gymcorp2.webp" alt="Ironclad Fitness Gym">
-            </div>
-        </section>
+        <!-- Add other sections for home page as needed -->
+
     </main>
+    <!-- === END MAIN CONTENT === -->
 
-     <section id="subscribe" class="subscribe-section">
+    <!-- === FOOTER AREA (Copied Structure from membership.html) === -->
+    <section id="subscribe" class="subscribe-section">
         <div class="container subscribe-content">
              <div class="subscribe-text">
                 <h2>Subscribe</h2>
                 <p>Join our fitness family and get tips, exclusive updates, and special offers. Start your journey today!</p>
-                <form class="subscribe-form" onsubmit="alert('Subscription submitted (placeholder)!'); return false;">
+                <form class="subscribe-form">
                     <input type="email" placeholder="Email" required>
                     <button type="submit" class="btn-primary">Send</button>
                 </form>
@@ -82,257 +106,163 @@
                 </div>
             </div>
             <div class="footer-links">
-                 <div><h4>Company</h4><ul><li><a href="#">Press</a></li><li><a href="#">Blog</a></li><li><a href="#">About</a></li><li><a href="#">Careers</a></li></ul></div> <div><h4>Services</h4><ul><li><a href="#">Training</a></li><li><a href="#">Nutrition</a></li><li><a href="#">Lifestyles</a></li></ul></div> <div><h4>Legal</h4><ul><li><a href="#">Policy</a></li><li><a href="#">Privacy & Cookies</a></li><li><a href="#">Terms & Conditions</a></li></ul></div> <div><h4>Community</h4><ul><li><a href="#">Contact</a></li><li><a href="#">Find a club</a></li><li><a href="#">Membership</a></li></ul></div> <div><h4>Gym</h4><ul><li><a href="#">Book a Gym</a></li><li><a href="#">Find a Gym</a></li></ul></div>
+                 <div><h4>Company</h4><ul><li><a href="#">Press</a></li><li><a href="#">Blog</a></li><li><a href="#">About</a></li><li><a href="#">Careers</a></li></ul></div>
+                 <div><h4>Services</h4><ul><li><a href="#">Training</a></li><li><a href="#">Nutrition</a></li><li><a href="#">Lifestyles</a></li></ul></div>
+                 <div><h4>Legal</h4><ul><li><a href="#">Policy</a></li><li><a href="#">Privacy & Cookies</a></li><li><a href="#">Terms & Conditions</a></li></ul></div>
+                 <div><h4>Community</h4><ul><li><a href="#">Contact</a></li><li><a href="#">Find a club</a></li><li><a href="#">Membership</a></li></ul></div>
+                 <div><h4>Gym</h4><ul><li><a href="#">Book a Gym</a></li><li><a href="#">Find a Gym</a></li></ul></div>
             </div>
         </div>
     </section>
-
-    <div id="userModal" class="modal">
-        <div class="modal-content">
-            <button id="closeUserModalButton" class="close-button">×</button>
-            <h2 style="color: #000; margin-bottom: 15px;">User Profile</h2>
-            <div style="display: flex; flex-direction: row; align-items: center; margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 15px;">
-                <img src="../images/user_pic.jpg" alt="User Profile" class="profile-pic" style="width: 60px; height: 60px; border-radius: 50%; margin-right: 15px;">
-                <h2 style="color: #000; font-size: 2rem;">Safari Hoegan</h2>
-            </div>
-            <div class="profile-content">
-                <div class="profile-info">
-                    <p>Username:</p>
-                    <p>User</p>
-                </div>
-                <div class="profile-info">
-                    <p>Contact No.:</p>
-                    <p>09403449746</p>
-                </div>
-                <div class="profile-info">
-                    <p>Email:</p>
-                    <p>user@gmail.com</p>
-                </div>
-                <div class="profile-info">
-                    <p>Password:</p>
-                    <p>********</p>
-                </div>
-                <div class="profile-info">
-                    <p>First Name:</p>
-                    <p>Safari</p>
-                </div>
-                <div class="profile-info">
-                    <p>Last Name:</p>
-                    <p>Hoegan</p>
-                </div>
-                <div class="profile-info">
-                    <p>Suffix:</p>
-                    <p>None</p>
-                </div>
-                <div class="profile-info">
-                    <p>Birth Date:</p>
-                    <p>01/01/2002</p>
-                </div>
-                <div class="profile-info">
-                    <p>Address:</p>
-                    <p>Zamboanga City</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="logoutConfirmationModal" class="modal">
-        <div class="modal-content">
-            <button id="closeLogoutModalButton" class="close-button">×</button>
-            <p id="logoutModalMessage" style="color: #000; font-size: 1.8rem; margin-bottom: 25px; text-align: center;">Are you sure you want to logout?</p>
-            <div style="text-align: center;">
-                 <button id="cancelLogoutButton" class="btn-secondary" style="margin-right: 15px;">Cancel</button>
-                 <button id="okLogoutButton" class="btn-primary">Logout</button>
-            </div>
-        </div>
-    </div>
 
     <footer>
         <div class="container">
             <p>© 2024 OPTILIFE. All Rights Reserved.</p>
         </div>
     </footer>
+    <!-- === END FOOTER AREA === -->
 
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <!-- === MODALS (Copied Structure from membership.html) === -->
+    <!-- Logout Confirmation Modal -->
+    <div id="logoutConfirmationModal" class="modal">
+        <div class="modal-content">
+            <button id="closeLogoutModalButton" class="modal-close-btn" aria-label="Close modal">×</button>
+            <p id="logoutModalMessage">Are you sure you want to logout?</p>
+            <div style="text-align: center; margin-top: 1.5rem; display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
+                 <button id="cancelLogoutButton" class="btn-secondary">Cancel</button>
+                 <button id="okLogoutButton" class="btn-primary">Logout</button>
+            </div>
+        </div>
+    </div>
 
+    <!-- User Profile Modal (Optional - Add if needed) -->
+    <div id="userProfileModal" class="modal">
+         <div class="modal-content">
+              <button id="closeUserProfileButton" class="modal-close-btn" aria-label="Close modal">×</button>
+              <h2>User Profile</h2>
+              <!-- Add profile details structure here -->
+              <p>Profile details go here...</p>
+         </div>
+    </div>
+    <!-- === END MODALS === -->
+
+    <!-- === SCRIPTS === -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script>
         $(document).ready(function() {
-            const $menuIcon = $('#menu-icon');
-            const $navbar = $('.navbar');
-            const $userProfileModal = $('#userModal');
-            const $profilePicTrigger = $('#profilePicTrigger');
-            const $closeUserModalButton = $('#closeUserModalButton');
-            const $logoutModal = $('#logoutConfirmationModal');
-            const $logoutLink = $('#logout-link');
-            const $closeLogoutModalButton = $('#closeLogoutModalButton');
-            const $cancelLogoutButton = $('#cancelLogoutButton');
-            const $okLogoutButton = $('#okLogoutButton');
-            let logoutUrl = '';
+            // --- Header/Nav/Modal Logic (Adapted from membership.html) ---
+            var menuIcon = $('#menu-icon');
+            var navbar = $('.navbar');
+            var logoutLink = $('#logout-link');
+            var logoutModal = $('#logoutConfirmationModal');
+            var profilePicTrigger = $('#profilePicTrigger'); // Added profile pic trigger
+            var userProfileModal = $('#userProfileModal'); // Added profile modal
+            var closeUserProfileBtn = $('#closeUserProfileButton'); // Added profile modal close btn
 
-            if ($menuIcon.length && $navbar.length) {
-                $menuIcon.on('click', () => {
-                    $menuIcon.toggleClass('bx-x');
-                    $navbar.toggleClass('active');
-                });
+            // Menu Toggle
+            menuIcon.on('click', function() {
+                $(this).toggleClass('bx-x');
+                navbar.toggleClass('active');
+            });
 
-                $(window).on('scroll', () => {
-                     if ($navbar.hasClass('active')) {
-                        $menuIcon.removeClass('bx-x');
-                        $navbar.removeClass('active');
+            // Close menu on nav link click (excluding logout/profile)
+            $('.navbar a').not('#logout-link, #profilePicTrigger').on('click', function(event) {
+                // Allow default behavior for non-anchor links
+                 if (this.hash === "" || this.hash === "#" || this.hash === "#0") {
+                     // It's likely a link to another page, let it proceed
+                 } else {
+                    // Smooth scroll or same-page action, close menu
+                     if (navbar.hasClass('active')) {
+                         navbar.removeClass('active');
+                         menuIcon.removeClass('bx-x');
+                     }
+                 }
+                 // For links like setGoals.html etc., just let the browser navigate
+                 // No need to preventDefault unless it's a smooth scroll target on THIS page
+            });
+
+            // Close menu on scroll
+            $(window).on('scroll', function() {
+                if (navbar.hasClass('active')) {
+                    navbar.removeClass('active');
+                    menuIcon.removeClass('bx-x');
+                }
+            });
+
+            // Logout Modal Logic
+            if (logoutLink.length && logoutModal.length) {
+                logoutLink.on('click', function(event) {
+                    event.preventDefault();
+                    if (navbar.hasClass('active')) {
+                         navbar.removeClass('active');
+                         menuIcon.removeClass('bx-x');
                     }
+                    logoutModal.addClass('active'); // Use 'active' class
                 });
 
-                $navbar.find('a').not('#logout-link').not($profilePicTrigger).each(function() {
-                    $(this).on('click', () => {
-                         if ($navbar.hasClass('active')) {
-                            $menuIcon.removeClass('bx-x');
-                            $navbar.removeClass('active');
-                         }
-                     });
+                logoutModal.on('click', '.modal-close-btn, #cancelLogoutButton', function() {
+                     logoutModal.removeClass('active');
+                });
+
+                $('#okLogoutButton').on('click', function() { // Targeted by ID
+                     logoutModal.removeClass('active');
+                     // Redirect after closing
+                     window.location.href = logoutLink.attr('href');
+                });
+
+                 $(window).on('click', function(event) { // Close on overlay click
+                     if ($(event.target).is(logoutModal)) {
+                         logoutModal.removeClass('active');
+                     }
                  });
 
-                 let profileLi = $navbar.find('li:has(.profile-pic)');
-                 if(profileLi.length) {
-                     profileLi.on('click', (e) => {
-                          if($navbar.hasClass('active')) {
-                             $menuIcon.removeClass('bx-x');
-                             $navbar.removeClass('active');
-                         }
-                     });
-                 }
-            }
-
-            const openUserProfileModal = () => $userProfileModal.addClass('show');
-            const closeUserProfileModal = () => $userProfileModal.removeClass('show');
-
-            if ($profilePicTrigger.length && $userProfileModal.length) {
-                $profilePicTrigger.on('click', openUserProfileModal);
             } else {
-                console.error("Profile picture trigger or modal not found!");
-            }
-
-            if ($closeUserModalButton.length) {
-                $closeUserModalButton.on('click', closeUserProfileModal);
-            }
-
-            $userProfileModal.on('click', (event) => {
-                if ($(event.target).is($userProfileModal)) {
-                    closeUserProfileModal();
-                }
-            });
-
-            const openLogoutModal = () => $logoutModal.addClass('show');
-            const closeLogoutModal = () => $logoutModal.removeClass('show');
-
-            $logoutLink.on('click', function(event) {
-                event.preventDefault();
-                logoutUrl = $(this).attr('href');
-                openLogoutModal();
-            });
-
-            $closeLogoutModalButton.on('click', closeLogoutModal);
-            $cancelLogoutButton.on('click', closeLogoutModal);
-
-            $okLogoutButton.on('click', function() {
-                 if ($navbar.hasClass('active')) {
-                     $menuIcon.removeClass('bx-x');
-                     $navbar.removeClass('active');
-                 }
-                 if(logoutUrl) {
-                    window.location.href = logoutUrl;
-                 } else {
-                    console.error("Logout URL not set!");
-                    closeLogoutModal();
-                 }
-            });
-
-            $logoutModal.on('click', (event) => {
-                if ($(event.target).is($logoutModal)) {
-                    closeLogoutModal();
-                }
-            });
-
-            $(document).on('keydown', (event) => {
-                if (event.key === 'Escape') {
-                    if ($userProfileModal.hasClass('show')) {
-                        closeUserProfileModal();
-                    }
-                    if ($logoutModal.hasClass('show')) {
-                        closeLogoutModal();
-                    }
-                }
-            });
-
-
-             $('a[href*="#"]').not('[href="#"]').not('[href="#0"]').not('#logout-link').on('click', function(event) {
-                if (
-                    location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '')
-                    &&
-                    location.hostname == this.hostname
-                ) {
-                    var target = $(this.hash);
-                    target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
-                    if (target.length) {
-                        event.preventDefault();
-                        var headerHeight = $('header').outerHeight() || ( $(window).width() <= 991 ? parseInt(getComputedStyle(document.documentElement).getPropertyValue('--header-height-mobile')) : parseInt(getComputedStyle(document.documentElement).getPropertyValue('--header-height-desktop')) );
-                        var scrollToPosition = target.offset().top - headerHeight - 10;
-
-                        $('html, body').animate({
-                            scrollTop: scrollToPosition
-                        }, 800);
-
-                        $('.navbar a').removeClass('active');
-                        $(this).addClass('active');
-
-                         if ($navbar.hasClass('active')) {
-                            $menuIcon.removeClass('bx-x');
-                            $navbar.removeClass('active');
-                         }
-                        return false;
-                    }
-                }
-            });
-
-             let scrollTimeout;
-             $(window).on('scroll', function() {
-                 clearTimeout(scrollTimeout);
-                 scrollTimeout = setTimeout(function() {
-                     var scrollDistance = $(window).scrollTop();
-                     var headerHeight = $('header').outerHeight() || ( $(window).width() <= 991 ? parseInt(getComputedStyle(document.documentElement).getPropertyValue('--header-height-mobile')) : parseInt(getComputedStyle(document.documentElement).getPropertyValue('--header-height-desktop')) );
-                     var threshold = headerHeight + 50;
-
-                     var activeSection = null;
-
-                     $('section[id]').each(function() {
-                         var sectionTop = $(this).offset().top - threshold;
-                         var sectionBottom = sectionTop + $(this).outerHeight();
-
-                         if (scrollDistance >= sectionTop && scrollDistance < sectionBottom) {
-                             activeSection = $(this).attr('id');
-                             return false;
-                         }
-                     });
-
-                      const homeSectionTop = $('#home').length ? $('#home').offset().top - threshold : 0;
-                      if (scrollDistance < homeSectionTop + 100) {
-                          activeSection = 'home';
-                      }
-
-                     const currentActive = $('.navbar a.active');
-                     const targetLinkSelector = `.navbar a[href="#${activeSection}"]`;
-                     const targetLink = $(targetLinkSelector);
-
-                     if (activeSection && targetLink.length && !targetLink.hasClass('active')) {
-                         $('.navbar a').removeClass('active');
-                         targetLink.addClass('active');
-                     } else if (!activeSection && currentActive.attr('href') !== '#home') {
-                          $('.navbar a').removeClass('active');
-                          $('.navbar a[href="#home"]').addClass('active');
+                 console.warn("Logout elements not found. Using confirm fallback.");
+                 logoutLink.on('click', function(event) {
+                     event.preventDefault();
+                     if (confirm("Are you sure you want to logout?")) {
+                         window.location.href = this.href;
                      }
-                 }, 100);
-             });
+                 });
+            }
 
-             $(window).trigger('scroll');
+            // User Profile Modal Logic (Optional)
+            if (profilePicTrigger.length && userProfileModal.length) {
+                profilePicTrigger.on('click', function(event) {
+                    event.preventDefault(); // Prevent default link behavior
+                     if (navbar.hasClass('active')) {
+                         navbar.removeClass('active');
+                         menuIcon.removeClass('bx-x');
+                     }
+                     userProfileModal.addClass('active');
+                });
+
+                userProfileModal.on('click', '.modal-close-btn', function() {
+                    userProfileModal.removeClass('active');
+                });
+
+                // Close on overlay click
+                $(window).on('click', function(event) {
+                    if ($(event.target).is(userProfileModal)) {
+                         userProfileModal.removeClass('active');
+                    }
+                });
+
+                // Add listener for close button if you added one with id="closeUserProfileButton"
+                if(closeUserProfileBtn.length) {
+                    closeUserProfileBtn.on('click', function() {
+                         userProfileModal.removeClass('active');
+                    });
+                }
+
+            } else {
+                 console.log("Profile picture trigger or modal not found.");
+                 // If no modal, maybe link profile pic directly to a profile page?
+                 // profilePicTrigger.attr('href', 'profile.html'); // Example
+            }
+
+            // --- Add any home.html specific JS below ---
+
 
         });
     </script>
