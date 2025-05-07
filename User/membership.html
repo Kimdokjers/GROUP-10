@@ -36,13 +36,14 @@
         --button-primary-bg: var(--main-color);
         --button-primary-text: var(--color-black);
         --button-primary-hover-bg: transparent;
-        --button-secondary-bg: #555;
+        --button-secondary-bg: #555; /* Default secondary button (e.g., cancel in dark modal) */
         --button-secondary-text: var(--text-color);
         --button-secondary-hover-bg: #666;
         --card-bg-dark: var(--color-dark-gray);
         --input-bg-dark: #252525;
         --modal-bg-dark: var(--color-dark-gray);
         --modal-text-dark: var(--text-color);
+        --error-color: #f44336;
     }
 
     html {
@@ -242,8 +243,8 @@
     @keyframes fadeInDropdown { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
 
     .profile-dropdown li a.dropdown-item {
-        display: flex; /* Use flex for icon alignment */
-        align-items: center; /* Vertically align icon and text */
+        display: flex; 
+        align-items: center; 
         padding: 0.8rem 1.5rem;
         font-size: 1.4rem;
         color: var(--text-color);
@@ -343,20 +344,11 @@
         line-height: 1.7;
     }
 
-    .membership-status-section {
-      background-color: var(--snd-bf-color);
-      border: 1px solid var(--border-color-light);
-      border-left: 5px solid var(--main-color);
-      padding: 2.5rem;
-      margin-bottom: 4rem;
-      color: var(--text-color);
-      max-width: 800px;
-      margin-left: auto;
-      margin-right: auto;
-      border-radius: 10px;
-      box-shadow: 0 4px 15px rgba(255, 215, 0, 0.1);
+    #viewMembershipModal .modal-content {
+        max-width: 550px; 
+        text-align: center;
     }
-    .membership-status-section h2 {
+    #viewMembershipModal h2 {
       font-size: 2.4rem;
       color: var(--main-color);
       margin-bottom: 1.5rem;
@@ -364,52 +356,41 @@
       padding-bottom: 0.5rem;
       border-bottom: 1px solid var(--border-color-light);
     }
-    .status-details {
+    #viewMembershipModal .status-details {
       margin-bottom: 2rem;
       text-align: center;
     }
-    .status-text {
+    #viewMembershipModal .status-text {
       font-size: 1.7rem;
       margin-bottom: 0.8rem;
       color: var(--color-text-muted);
     }
-    .status-text .current-status,
-    .status-text .expiry-date {
+    #viewMembershipModal .status-text .current-status,
+    #viewMembershipModal .status-text .expiry-date {
       color: var(--text-color);
       font-weight: 600;
     }
-     .status-text .current-status {
+    #viewMembershipModal .status-text .current-status {
        color: var(--color-gold-light);
      }
-    .status-note {
+    #viewMembershipModal .status-note {
       font-size: 1.3rem;
       color: var(--color-text-muted);
       font-style: italic;
       margin-top: 1rem;
     }
-    .status-actions {
+    #viewMembershipModal .status-actions {
       display: flex;
       justify-content: center;
       gap: 1.5rem;
       flex-wrap: wrap;
+      margin-top: 2rem;
     }
-    .status-actions .btn {
+    #viewMembershipModal .status-actions .btn { 
         font-size: 1.5rem;
         padding: 1.2rem 2.5rem;
         min-width: 200px;
         border-radius: 8px;
-    }
-    .btn-stop {
-        background-color: transparent;
-        color: #f44336;
-        border-color: #f44336;
-        border-width: 2px;
-    }
-    .btn-stop:hover {
-        background-color: #f44336;
-        color: var(--text-color);
-        border-color: #f44336;
-        box-shadow: 0 0 1rem rgba(244, 67, 54, 0.4);
     }
 
     .membership-options {
@@ -460,6 +441,19 @@
          padding: 1.5rem 3.5rem;
     }
 
+    .btn-stop {
+        background-color: transparent;
+        color: #f44336;
+        border-color: #f44336;
+        border-width: 2px;
+    }
+    .btn-stop:hover {
+        background-color: #f44336;
+        color: var(--text-color);
+        border-color: #f44336;
+        box-shadow: 0 0 1rem rgba(244, 67, 54, 0.4);
+    }
+
     .modal {
         display: none;
         position: fixed;
@@ -482,7 +476,7 @@
         background-color: var(--modal-bg-dark, var(--color-dark-gray));
         color: var(--modal-text-dark, var(--text-color));
     }
-    #logoutConfirmationModal .modal-content {
+    #logoutConfirmationModal .modal-content { 
         background-color: #fefefe;
         color: var(--color-black);
         border-color: #888;
@@ -492,7 +486,7 @@
 
     .modal-close-btn, .close-button {
         position: absolute; top: 10px; right: 15px;
-        color: var(--text-muted-setgoals, #aaa);
+        color: var(--color-text-muted, #aaa);
         font-size: 2.8rem; font-weight: bold;
         border: none; background: none; cursor: pointer; line-height: 1;
     }
@@ -501,7 +495,9 @@
     #logoutConfirmationModal .close-button:hover { color: black; }
 
 
-    #logoutModalMessage, #stopModalMessage {
+    #logoutModalMessage, #stopModalMessage, #refundModalMessage, 
+    #confirmSwitchGymActionModalMessage, #switchGymSuccessModalMessage,
+    #refundRequestSubmittedModalMessage {
         font-size: 1.6rem;
         margin-bottom: 2rem;
         text-align: center;
@@ -509,7 +505,15 @@
         line-height: 1.6;
     }
     #logoutConfirmationModal #logoutModalMessage { color: var(--color-black); }
-    #stopModalMessage { color: var(--modal-text-dark); }
+    #stopModalMessage, #refundModalMessage, 
+    #confirmSwitchGymActionModalMessage, #switchGymSuccessModalMessage,
+    #refundRequestSubmittedModalMessage { color: var(--modal-text-dark); }
+
+    #confirmSwitchGymActionModalMessage strong {
+        color: var(--main-color);
+        display: block;
+        margin-top: 0.5rem;
+    }
 
     .modal-content .btn-primary,
     .modal-content .btn-secondary {
@@ -519,13 +523,13 @@
         min-width: 120px;
         margin: 0 5px;
     }
-     .modal-content .btn-secondary {
-         background-color: var(--button-secondary-bg);
-         color: var(--button-secondary-text);
+     .modal-content .btn-dark-cancel {
+         background-color: var(--button-secondary-bg); 
+         color: var(--button-secondary-text); 
          border-color: #444;
      }
-    .modal-content .btn-secondary:hover {
-         background-color: var(--button-secondary-hover-bg);
+    .modal-content .btn-dark-cancel:hover {
+         background-color: var(--button-secondary-hover-bg); 
          border-color: #555;
     }
      #logoutConfirmationModal .modal-content .btn-secondary {
@@ -535,19 +539,110 @@
          background: #888; border-color: #888;
      }
 
-    #logoutConfirmationModal .modal-content > div:last-child,
-    #stopMembershipModal .modal-content > div:last-child {
+    .modal-actions-centered {
         margin-top: 1.5rem;
         display: flex;
         justify-content: center;
         gap: 1rem;
         flex-wrap: wrap;
     }
+   
+
 
      #stopMembershipModal .modal-content { max-width: 450px; }
      #stopMembershipModal h3 { color: #d32f2f; font-size: 2rem; margin-bottom: 1.5rem; }
      #confirmStopMembershipBtn.btn-danger { background-color: #d32f2f; border-color: #d32f2f; color: white; }
      #confirmStopMembershipBtn.btn-danger:hover { background-color: #b71c1c; border-color: #b71c1c; color: white; box-shadow: 0 0 1rem rgba(183, 28, 28, 0.5); }
+
+    /* Styles for Switch Gym Modal Form */
+    #switchGymModal .modal-content, #requestRefundModal .modal-content {
+        max-width: 480px; 
+        text-align: left; 
+    }
+
+    #switchGymModal h3, #requestRefundModal h3, #confirmSwitchGymActionModal h3, 
+    #switchGymSuccessModal h3, #refundRequestSubmittedModal h3 {
+        text-align: center;
+        font-size: 2rem;
+        color: var(--main-color);
+        margin-bottom: 2rem;
+    }
+
+    #switchGymModal .form-group, #requestRefundModal .form-group {
+        margin-bottom: 1.5rem;
+    }
+    .error-message {
+        display: block;
+        color: var(--error-color);
+        font-size: 1.3rem;
+        margin-top: 0.5rem;
+        text-align: left; 
+    }
+
+    #switchGymModal label, #requestRefundModal label {
+        display: block;
+        font-size: 1.5rem;
+        color: var(--color-text-muted);
+        margin-bottom: 0.8rem;
+        font-weight: 500;
+    }
+
+    #switchGymModal select {
+        width: 100%;
+        padding: 1.2rem 1.5rem;
+        font-size: 1.5rem;
+        border-radius: 6px;
+        border: 1px solid var(--border-color-light);
+        background-color: var(--input-bg-dark, #252525);
+        color: var(--text-color);
+        outline: none;
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23aaaaaa' class='bi bi-caret-down-fill' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 1.5rem center;
+        background-size: 1em;
+        cursor: pointer;
+    }
+
+    #switchGymModal select:focus {
+        border-color: var(--main-color);
+        box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.2);
+    }
+
+    #switchGymModal select option {
+        background-color: var(--input-bg-dark, #252525); 
+        color: var(--text-color);
+    }
+    #switchGymModal .modal-actions { 
+        margin-top: 2rem;
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+    #switchGymModal .modal-actions .btn {
+        flex: 1;
+    }
+
+    #requestRefundModal textarea {
+        width: 100%;
+        padding: 1rem 1.2rem;
+        font-size: 1.5rem;
+        border-radius: 6px;
+        border: 1px solid var(--border-color-light);
+        background-color: var(--input-bg-dark, #252525);
+        color: var(--text-color);
+        outline: none;
+        min-height: 100px;
+        resize: vertical;
+    }
+    #requestRefundModal textarea:focus {
+        border-color: var(--main-color);
+        box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.2);
+    }
+
 
     .subscribe-section {
         background-color: var(--snd-bf-color);
@@ -668,8 +763,9 @@
         .profile-card img { width: 100px; height: 100px; }
         .profile-info h3 { font-size: 1.8rem; }
         .profile-info p { font-size: 1.5rem; }
-        .btn-membership, .btn-primary, .status-actions .btn { padding: 1.2rem 3rem; font-size: 1.6rem; min-width: 250px;}
-        .status-actions .btn { min-width: 180px; }
+        .btn-membership, .btn-primary, #viewMembershipModal .status-actions .btn { padding: 1.2rem 3rem; font-size: 1.6rem; min-width: 250px;}
+        #viewMembershipModal .status-actions .btn { min-width: 180px; }
+
 
         .subscribe-content { grid-template-columns: 1fr; gap: 2rem; }
         .subscribe-text{ text-align: center; }
@@ -677,9 +773,8 @@
         .social-icons { justify-content: center; }
         .footer-links { grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); text-align: center;}
         .modal-content { width: 90%; }
-        .membership-status-section { padding: 2rem; margin-bottom: 3rem; }
-        .membership-status-section h2 { font-size: 2.2rem; }
-        .status-text { font-size: 1.6rem; }
+        #switchGymModal .modal-content, #requestRefundModal .modal-content { width: 90%; max-width: 480px;}
+        #viewMembershipModal .modal-content { width: 90%; max-width: 550px; }
     }
 
     @media (max-width: 767px) {
@@ -690,13 +785,16 @@
 
         .profile-card { flex-direction: column; text-align: center; align-items: center; }
         .profile-card img { width: 90px; height: 90px; margin-bottom: 1.5rem; }
-        .membership-options, .status-actions { gap: 1.5rem; }
-        .btn-membership, .btn-primary, .status-actions .btn { min-width: 220px; padding: 1.2rem 2.5rem; font-size: 1.5rem;}
+        .membership-options, #viewMembershipModal .status-actions { gap: 1.5rem; }
+        .btn-membership, .btn-primary, #viewMembershipModal .status-actions .btn { min-width: 220px; padding: 1.2rem 2.5rem; font-size: 1.5rem;}
+
 
         .subscribe-form { flex-direction: column; align-items: stretch; }
         .subscribe-form button { width: 100%; }
-        #logoutModalMessage, #stopModalMessage { font-size: 1.6rem; }
-        .modal-content .btn-primary, .modal-content .btn-secondary { font-size: 1.5rem; }
+        #logoutModalMessage, #stopModalMessage, #refundModalMessage, 
+        #confirmSwitchGymActionModalMessage, #switchGymSuccessModalMessage,
+        #refundRequestSubmittedModalMessage { font-size: 1.6rem; }
+        .modal-content .btn-primary, .modal-content .btn-secondary, .modal-content .btn-dark-cancel { font-size: 1.5rem; }
         .footer-links { text-align: center;}
     }
 
@@ -712,16 +810,18 @@
         .profile-card img { width: 80px; height: 80px; }
         .profile-info h3 { font-size: 1.6rem; }
         .profile-info p { font-size: 1.4rem; }
-        .btn-membership, .btn-primary, .status-actions .btn { width: 100%; min-width: unset; padding: 1rem 2rem; font-size: 1.4rem;}
-        .status-actions { flex-direction: column; align-items: stretch; gap: 1rem; }
+        .btn-membership, .btn-primary, #viewMembershipModal .status-actions .btn { width: 100%; min-width: unset; padding: 1rem 2rem; font-size: 1.4rem;}
+        #viewMembershipModal .status-actions { flex-direction: column; align-items: stretch; gap: 1rem; }
+
 
         .footer-links { grid-template-columns: repeat(2, 1fr); }
-        .modal-content .btn-primary, .modal-content .btn-secondary { font-size: 1.4rem; padding: 1rem 2.5rem;}
-        #logoutModalMessage, #stopModalMessage { font-size: 1.5rem; }
-        .membership-status-section { padding: 1.5rem; }
-        .membership-status-section h2 { font-size: 2rem; }
-        .status-text { font-size: 1.5rem; }
-        .status-note { font-size: 1.2rem; }
+        .modal-content .btn-primary, .modal-content .btn-secondary, .modal-content .btn-dark-cancel { font-size: 1.4rem; padding: 1rem 2.5rem;}
+        #logoutModalMessage, #stopModalMessage, #refundModalMessage, 
+        #confirmSwitchGymActionModalMessage, #switchGymSuccessModalMessage,
+        #refundRequestSubmittedModalMessage { font-size: 1.5rem; }
+        #viewMembershipModal h2 { font-size: 2rem; }
+        #viewMembershipModal .status-text { font-size: 1.5rem; }
+        #viewMembershipModal .status-note { font-size: 1.2rem; }
      }
   </style>
 </head>
@@ -742,7 +842,7 @@
                  <img src="../images/user_pic.jpg" alt="User Profile" class="profile-pic" id="profilePicTrigger">
                  <ul class="profile-dropdown" id="profileDropdown">
                      <li>
-                         <a href="#membership-status-section" class="dropdown-item view-membership-link">
+                         <a href="#" id="view-membership-link" class="dropdown-item">
                              <i class='bx bx-id-card'></i> View Membership
                          </a>
                      </li>
@@ -801,25 +901,6 @@
         </div>
       </div>
 
-      <section class="membership-status-section card" id="membership-status-section" style="display: none;">
-          <h2>Your Current Membership</h2>
-          <div class="status-details">
-              <p class="status-text">
-                  Plan: <span class="current-status" id="user-membership-plan">Premium</span>
-              </p>
-              <p class="status-text">
-                  Expires: <span class="expiry-date" id="user-membership-expiry">2024-12-31</span>
-              </p>
-              <p class="status-note">
-                  Manage your subscription below. Extending adds time to your current expiry date.
-              </p>
-          </div>
-          <div class="status-actions">
-              <a href="paymentMethods.html?action=extend" class="btn btn-primary btn-extend">Extend Membership</a>
-              <button type="button" id="stop-membership-btn" class="btn btn-secondary btn-stop">Stop Membership</button>
-          </div>
-      </section>
-
       <div class="membership-options">
         <a href="paymentMethods.html" class="btn-membership">Join Now with Coach (Premium)</a>
         <a href="paymentMethods.html" class="btn-membership secondary">Join Now without Coach</a>
@@ -827,28 +908,156 @@
     </div>
   </main>
 
+  <!-- View Membership Modal -->
+  <div id="viewMembershipModal" class="modal">
+      <div class="modal-content">
+          <button id="closeViewMembershipModalButton" class="modal-close-btn" aria-label="Close modal">×</button>
+          <h2>Your Current Membership</h2>
+          <div class="status-details">
+              <p class="status-text">
+                  Plan: <span class="current-status" id="modal-user-membership-plan">Premium</span>
+              </p>
+              <p class="status-text">
+                  Expires: <span class="expiry-date" id="modal-user-membership-expiry">March 15, 2025</span>
+              </p>
+              <p class="status-note">
+                  Manage your subscription below. Extending adds time to your current expiry date.
+              </p>
+          </div>
+          <div class="status-actions">
+              <a href="paymentMethods.html?action=extend" id="modal-extend-membership-link" class="btn btn-primary">Extend Membership</a>
+              <button type="button" id="modal-stop-membership-button" class="btn btn-secondary">Stop Membership</button>
+          </div>
+      </div>
+  </div>
+
+  <!-- Stop Membership Confirmation Modal -->
   <div id="stopMembershipModal" class="modal">
       <div class="modal-content">
           <button id="closeStopModalButton" class="modal-close-btn" aria-label="Close modal">×</button>
           <h3>Confirm Membership Cancellation</h3>
           <p id="stopModalMessage">Are you sure you want to stop your membership at the end of the current period? This action cannot be undone easily.</p>
-          <div style="text-align: center; margin-top: 1.5rem; display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
-               <button id="cancelStopMembershipBtn" class="btn-secondary">Keep Membership</button>
-               <button id="confirmStopMembershipBtn" class="btn-primary btn-danger">Confirm Stop</button>
+          <div class="modal-actions-centered">
+               <button id="cancelStopMembershipBtn" class="btn btn-dark-cancel">Keep Membership</button>
+               <button id="confirmStopMembershipBtn" class="btn btn-primary btn-danger">Confirm Stop</button>
           </div>
       </div>
   </div>
 
+  <!-- Logout Confirmation Modal -->
   <div id="logoutConfirmationModal" class="modal">
       <div class="modal-content">
           <button id="closeLogoutModalButton" class="modal-close-btn" aria-label="Close modal">×</button>
           <p id="logoutModalMessage">Are you sure you want to logout?</p>
-          <div style="text-align: center; margin-top: 1.5rem; display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
-               <button id="cancelLogoutButton" class="btn-secondary">Cancel</button>
-               <button id="okLogoutButton" class="btn-primary">Logout</button>
+          <div class="modal-actions-centered">
+               <button id="cancelLogoutButton" class="btn btn-secondary">Cancel</button> 
+               <button id="okLogoutButton" class="btn btn-primary">Logout</button>
           </div>
       </div>
   </div>
+
+  <!-- Request Refund Modal -->
+  <div id="requestRefundModal" class="modal">
+      <div class="modal-content">
+          <button id="closeRequestRefundModalButton" class="modal-close-btn" aria-label="Close modal">×</button>
+          <h3>Request a Refund</h3>
+          <form id="requestRefundForm">
+              <div class="form-group">
+                  <label for="refund-reason">Reason for Refund:</label>
+                  <textarea id="refund-reason" name="refundReason" placeholder="Please explain why you are requesting a refund..."></textarea>
+                  <span class="error-message" id="refund-reason-error"></span>
+              </div>
+              <div class="modal-actions-centered">
+                  <button type="button" id="cancelRefundRequestBtn" class="btn btn-dark-cancel">Cancel</button>
+                  <button type="submit" id="submitRefundRequestBtn" class="btn btn-primary">Submit Request</button>
+              </div>
+          </form>
+      </div>
+  </div>
+
+  <!-- Refund Request Submitted Modal -->
+  <div id="refundRequestSubmittedModal" class="modal">
+    <div class="modal-content">
+        <button id="closeRefundRequestSubmittedModalButton" class="modal-close-btn" aria-label="Close modal">×</button>
+        <h3>Refund Request Submitted</h3>
+        <p id="refundRequestSubmittedModalMessage">
+            Your refund request has been submitted. We will review it and get back to you soon.
+        </p>
+        <div class="modal-actions-centered">
+            <button id="okRefundSubmittedButton" class="btn btn-primary">OK</button>
+        </div>
+    </div>
+  </div>
+
+
+  <!-- Switch Gym Modal (Form) -->
+  <div id="switchGymModal" class="modal">
+      <div class="modal-content">
+          <button id="closeSwitchGymModalButton" class="modal-close-btn" aria-label="Close modal">×</button>
+          <h3>Switch Your Gym</h3>
+          <form id="switchGymForm">
+              <div class="form-group">
+                  <label for="gym-select">Select Gym:</label>
+                  <select id="gym-select" name="gym">
+                      <option value="">-- Select Gym Name --</option>
+                      <option value="near">Gym Near You (Autodetect)</option>
+                      <option value="elite">Elite Fitness Hub</option>
+                      <option value="iron">Iron Haven</option>
+                      <option value="elevate">Elevate Athletics</option>
+                  </select>
+                  <span class="error-message" id="gym-select-error"></span>
+              </div>
+              <div class="form-group">
+                  <label for="location-select">Select Location (if not autodetected):</label>
+                  <select id="location-select" name="location">
+                      <option value="">-- Select Location --</option>
+                      <option value="boulder">1760 Pearl Street, Boulder, CO 80302, USA</option>
+                      <option value="manchester">52 Portland Street, Manchester M1 4QU, United Kingdom</option>
+                      <option value="qc">102 Timog Avenue, Barangay Sacred Heart, Quezon City, Metro Manila 1103, Philippines</option>
+                  </select>
+                  <span class="error-message" id="location-select-error"></span>
+              </div>
+              <div class="modal-actions">
+                  <button type="button" id="cancelSwitchGymBtn" class="btn btn-dark-cancel">Cancel</button>
+                  <button type="submit" id="confirmSwitchGymBtn" class="btn btn-primary">Confirm Switch</button>
+              </div>
+          </form>
+      </div>
+  </div>
+
+  <!-- Confirm Switch Gym Action Modal -->
+  <div id="confirmSwitchGymActionModal" class="modal">
+      <div class="modal-content">
+          <button id="closeConfirmSwitchGymActionModalButton" class="modal-close-btn" aria-label="Close modal">×</button>
+          <h3>Confirm Gym Switch</h3>
+          <p id="confirmSwitchGymActionModalMessage">
+              You are about to switch to:
+              <strong id="confirmGymNameText"></strong>
+              at location:
+              <strong id="confirmGymLocationText"></strong>
+              Are you sure you want to proceed?
+          </p>
+          <div class="modal-actions-centered">
+              <button type="button" id="cancelSwitchGymActionBtn" class="btn btn-dark-cancel">Cancel</button>
+              <button type="button" id="confirmSwitchGymActionActualBtn" class="btn btn-primary">Yes, Switch Gym</button>
+          </div>
+      </div>
+  </div>
+
+  <!-- Switch Gym Success Modal -->
+  <div id="switchGymSuccessModal" class="modal">
+      <div class="modal-content">
+          <button id="closeSwitchGymSuccessModalButton" class="modal-close-btn" aria-label="Close modal">×</button>
+          <h3>Switch Successful</h3>
+          <p id="switchGymSuccessModalMessage">
+              Your gym switch request has been submitted.
+          </p>
+          <div class="modal-actions-centered">
+              <button type="button" id="okSwitchGymSuccessBtn" class="btn btn-primary">OK</button>
+          </div>
+      </div>
+  </div>
+
 
     <section id="subscribe" class="subscribe-section">
         <div class="container subscribe-content">
@@ -887,19 +1096,43 @@
   <script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js"></script>
   <script>
     $(document).ready(function() {
+        // General UI
         var menuIcon = $('#menu-icon');
         var navbar = $('.navbar');
-        var logoutLink = $('#logout-link');
-        var logoutModal = $('#logoutConfirmationModal');
         const $profilePicTrigger = $('#profilePicTrigger');
         const $profileDropdown = $('#profileDropdown');
-        const $viewMembershipLink = $('.view-membership-link');
-        const $membershipStatusSection = $('#membership-status-section');
-        const $stopMembershipBtn = $('#stop-membership-btn');
-        const $stopMembershipModal = $('#stopMembershipModal');
-        const $requestRefundLink = $('#request-refund-link');
-        const $switchGymLink = $('#switch-gym-link');
 
+        // Modal Elements
+        var logoutLink = $('#logout-link');
+        var logoutModal = $('#logoutConfirmationModal');
+        
+        const $stopMembershipModal = $('#stopMembershipModal');
+        
+        const $viewMembershipLink = $('#view-membership-link');
+        const $viewMembershipModal = $('#viewMembershipModal');
+        const $modalStopMembershipButton = $('#modal-stop-membership-button');
+
+        const $requestRefundLink = $('#request-refund-link');
+        const $requestRefundModal = $('#requestRefundModal');
+        const $refundRequestSubmittedModal = $('#refundRequestSubmittedModal');
+        
+        const $switchGymLink = $('#switch-gym-link');
+        const $switchGymModal = $('#switchGymModal'); 
+        const $confirmSwitchGymActionModal = $('#confirmSwitchGymActionModal');
+        const $switchGymSuccessModal = $('#switchGymSuccessModal');
+
+
+        function closeOverlays() {
+            if ($profileDropdown.hasClass('active')) {
+                $profileDropdown.removeClass('active');
+                $profilePicTrigger.removeClass('active');
+            }
+            if (navbar.hasClass('active') && $(window).width() <= 991) {
+                navbar.removeClass('active');
+                menuIcon.removeClass('bx-x');
+            }
+        }
+        
         if (menuIcon.length && navbar.length) {
             menuIcon.on('click', function() {
                 $(this).toggleClass('bx-x');
@@ -909,38 +1142,26 @@
                     $profilePicTrigger.removeClass('active');
                 }
             });
-
-            $('.navbar a').not('#profilePicTrigger').not('.dropdown-item').on('click', function(event) {
+            $('.navbar a').not('#profilePicTrigger').not('.dropdown-item').on('click', function() {
                  if (navbar.hasClass('active')) {
                      navbar.removeClass('active');
                      menuIcon.removeClass('bx-x');
                  }
             });
-
-            $(window).on('scroll', function() {
-                if (navbar.hasClass('active')) {
-                    navbar.removeClass('active');
-                    menuIcon.removeClass('bx-x');
-                }
-                if ($profileDropdown.hasClass('active')) {
-                    $profileDropdown.removeClass('active');
-                    $profilePicTrigger.removeClass('active');
-                }
-            });
-        } else { console.warn("Header menu icon or navbar not found."); }
+            $(window).on('scroll', function() { closeOverlays(); });
+        }
 
         if ($profilePicTrigger.length && $profileDropdown.length) {
             $profilePicTrigger.on('click', function(event) {
                 event.stopPropagation();
                 $profileDropdown.toggleClass('active');
                 $profilePicTrigger.toggleClass('active');
-                 if ($navbar.hasClass('active') && $(window).width() > 991) {
+                 if (navbar.hasClass('active') && $(window).width() > 991) { 
                       navbar.removeClass('active');
                       menuIcon.removeClass('bx-x');
                  }
             });
-
-            $(document).on('click', function(event) {
+            $(document).on('click', function(event) { 
                 if (!$profileDropdown.is(event.target) && $profileDropdown.has(event.target).length === 0 && !$profilePicTrigger.is(event.target)) {
                     if ($profileDropdown.hasClass('active')) {
                         $profileDropdown.removeClass('active');
@@ -948,116 +1169,192 @@
                     }
                 }
             });
+        }
 
-            $profileDropdown.on('click', 'a.dropdown-item', function() {
-                $profileDropdown.removeClass('active');
-                $profilePicTrigger.removeClass('active');
-                 if (navbar.hasClass('active')) {
-                      navbar.removeClass('active');
-                      menuIcon.removeClass('bx-x');
-                 }
-            });
-
-        } else { console.warn("Profile picture trigger or dropdown not found."); }
-
-        if ($viewMembershipLink.length && $membershipStatusSection.length) {
+        if ($viewMembershipLink.length && $viewMembershipModal.length) {
             $viewMembershipLink.on('click', function(event) {
                 event.preventDefault();
-
-                $membershipStatusSection.slideDown(400, function() {
-                    var headerHeight = $('header').outerHeight() || ( $(window).width() <= 991 ? 80 : 100 );
-                    var scrollToPosition = $membershipStatusSection.offset().top - headerHeight - 30;
-                    $('html, body').animate({ scrollTop: scrollToPosition }, 600);
-                });
+                closeOverlays();
+                loadMembershipStatus(); 
+                $viewMembershipModal.addClass('active');
             });
-        } else { console.warn("View Membership link or Status Section not found."); }
+            $viewMembershipModal.on('click', '#closeViewMembershipModalButton', function() {
+                 $viewMembershipModal.removeClass('active');
+            });
+            if ($modalStopMembershipButton.length && $stopMembershipModal.length) {
+                $modalStopMembershipButton.on('click', function() {
+                    $viewMembershipModal.removeClass('active'); 
+                    $stopMembershipModal.addClass('active');    
+                });
+            }
+        }
+
+        if ($stopMembershipModal.length) {
+            $stopMembershipModal.on('click', '#closeStopModalButton, #cancelStopMembershipBtn', function() {
+                 $stopMembershipModal.removeClass('active');
+            });
+            $('#confirmStopMembershipBtn').on('click', function() {
+                 console.log("Membership stop confirmed (placeholder action)");
+                 // For real app, you'd make an API call here
+                 alert("Your request to stop the membership has been processed (placeholder).");
+                 $stopMembershipModal.removeClass('active');
+            });
+        }
 
         if (logoutLink.length && logoutModal.length) {
             logoutLink.on('click', function(event) {
                 event.preventDefault();
-                if (navbar.hasClass('active')) { navbar.removeClass('active'); menuIcon.removeClass('bx-x'); }
-                if ($profileDropdown.hasClass('active')) { $profileDropdown.removeClass('active'); $profilePicTrigger.removeClass('active'); }
+                closeOverlays();
                 logoutModal.addClass('active');
             });
-
             logoutModal.on('click', '.modal-close-btn, #cancelLogoutButton', function() {
                  logoutModal.removeClass('active');
             });
-
             $('#okLogoutButton').on('click', function() {
                  logoutModal.removeClass('active');
                  window.location.href = logoutLink.attr('href');
             });
-
-             $(window).on('click', function(event) {
-                 if ($(event.target).is(logoutModal)) { logoutModal.removeClass('active'); }
-             });
-        } else {
-             console.warn("Logout elements not found.");
-             logoutLink.on('click', function(event) { event.preventDefault(); if (confirm("Are you sure?")) { window.location.href = this.href; } });
         }
 
-        if ($stopMembershipBtn.length && $stopMembershipModal.length) {
-            $stopMembershipBtn.on('click', function() {
-                $stopMembershipModal.addClass('active');
-            });
-
-            $stopMembershipModal.on('click', '.modal-close-btn, #cancelStopMembershipBtn', function() {
-                 $stopMembershipModal.removeClass('active');
-            });
-
-            $('#confirmStopMembershipBtn').on('click', function() {
-                 console.log("Membership stop confirmed (placeholder action)");
-                 alert("Your request to stop the membership has been processed (placeholder).");
-                 $stopMembershipModal.removeClass('active');
-                 $stopMembershipBtn.prop('disabled', true).text('Cancellation Pending');
-            });
-
-             $(window).on('click', function(event) {
-                 if ($(event.target).is($stopMembershipModal)) { $stopMembershipModal.removeClass('active'); }
-             });
-
-        } else { console.warn("Stop membership button or modal not found."); }
-
-        if ($requestRefundLink.length) {
+        // --- Request Refund Modal Logic ---
+        if ($requestRefundLink.length && $requestRefundModal.length && $refundRequestSubmittedModal.length) {
             $requestRefundLink.on('click', function(event) {
                 event.preventDefault();
-                console.log("Request Refund clicked (placeholder action)");
-                alert("Refund request feature coming soon!");
+                closeOverlays();
+                $('#requestRefundForm')[0].reset(); // Reset form
+                $('#refund-reason-error').text(''); // Clear previous errors
+                $requestRefundModal.addClass('active');
+            });
+
+            // Close/Cancel for Request Refund Modal
+            $requestRefundModal.on('click', '#closeRequestRefundModalButton, #cancelRefundRequestBtn', function() {
+                $requestRefundModal.removeClass('active');
+            });
+
+            // Handle Refund Form Submission
+            $('#requestRefundForm').on('submit', function(event) {
+                event.preventDefault();
+                const reason = $('#refund-reason').val().trim();
+                const $reasonError = $('#refund-reason-error');
+                $reasonError.text(''); // Clear previous error
+
+                if (!reason) {
+                    $reasonError.text('Please enter a reason for your refund request.');
+                    return;
+                }
+
+                console.log("Refund Request Submitted. Reason:", reason);
+                // Placeholder for actual API call to submit refund request
+
+                $requestRefundModal.removeClass('active');
+                $refundRequestSubmittedModal.addClass('active');
+            });
+
+            // OK button for Refund Submitted Modal
+            $refundRequestSubmittedModal.on('click', '#closeRefundRequestSubmittedModalButton, #okRefundSubmittedButton', function() {
+                $refundRequestSubmittedModal.removeClass('active');
             });
         }
 
-        if ($switchGymLink.length) {
+
+        // --- Switch Gym Modals Logic ---
+        if ($switchGymLink.length && $switchGymModal.length && $confirmSwitchGymActionModal.length && $switchGymSuccessModal.length) {
             $switchGymLink.on('click', function(event) {
                 event.preventDefault();
-                console.log("Switch Gym clicked (placeholder action)");
-                alert("Switch Gym feature coming soon!");
+                closeOverlays();
+                $('#switchGymForm')[0].reset(); // Reset form
+                $('#gym-select-error').text(''); // Clear errors
+                $('#location-select-error').text('');
+                $switchGymModal.addClass('active');
+            });
+
+            $switchGymModal.on('click', '#closeSwitchGymModalButton, #cancelSwitchGymBtn', function() {
+                $switchGymModal.removeClass('active');
+            });
+
+            $('#switchGymForm').on('submit', function(event) {
+                event.preventDefault();
+                const selectedGymValue = $('#gym-select').val();
+                const selectedGymText = $('#gym-select option:selected').text();
+                const selectedLocationValue = $('#location-select').val();
+                const selectedLocationText = $('#location-select option:selected').text();
+                const $gymError = $('#gym-select-error');
+                const $locationError = $('#location-select-error');
+                let isValid = true;
+
+                $gymError.text('');
+                $locationError.text('');
+                
+                if (!selectedGymValue) {
+                    $gymError.text('Please select a gym.');
+                    isValid = false;
+                }
+                if (selectedGymValue !== "near" && !selectedLocationValue) {
+                     $locationError.text('Please select a location for the chosen gym.');
+                     isValid = false;
+                }
+
+                if (!isValid) return;
+
+                $('#confirmGymNameText').text(selectedGymText);
+                $('#confirmGymLocationText').text(selectedLocationValue ? selectedLocationText : (selectedGymValue === "near" ? "Autodetected" : "N/A"));
+                
+                $switchGymModal.removeClass('active'); 
+                $confirmSwitchGymActionModal.addClass('active'); 
+            });
+
+            $confirmSwitchGymActionModal.on('click', '#closeConfirmSwitchGymActionModalButton, #cancelSwitchGymActionBtn', function() {
+                $confirmSwitchGymActionModal.removeClass('active');
+            });
+
+            $('#confirmSwitchGymActionActualBtn').on('click', function() {
+                const gymText = $('#confirmGymNameText').text();
+                const locationText = $('#confirmGymLocationText').text();
+
+                console.log("Switch Gym Confirmed and Processed:");
+                console.log("Selected Gym:", gymText);
+                console.log("Selected Location:", locationText);
+                // Placeholder for actual API call
+                
+                $confirmSwitchGymActionModal.removeClass('active');
+                $('#switchGymSuccessModalMessage').html(`Your gym switch request to <strong>${gymText}</strong> (Location: <strong>${locationText}</strong>) has been submitted.`);
+                $switchGymSuccessModal.addClass('active');
+                $('#switchGymForm')[0].reset(); 
+            });
+
+            // OK button for Switch Gym Success Modal
+            $switchGymSuccessModal.on('click', '#closeSwitchGymSuccessModalButton, #okSwitchGymSuccessBtn', function() {
+                $switchGymSuccessModal.removeClass('active');
             });
         }
-
+        
+        $(window).on('click', function(event) {
+             if ($(event.target).is('.modal')) { 
+                 $(event.target).removeClass('active');
+             }
+        });
 
         $('a[href="#profile"]').on('click', function(event) {
             event.preventDefault();
+            closeOverlays();
             var target = $($(this).attr('href'));
             if (target.length) {
                  var headerHeight = $('header').outerHeight() || ( $(window).width() <= 991 ? 80 : 100 );
                  var scrollToPosition = target.offset().top - headerHeight - 20;
                  $('html, body').animate({ scrollTop: scrollToPosition }, 800);
              }
-            if (navbar.hasClass('active')) { navbar.removeClass('active'); menuIcon.removeClass('bx-x'); }
-            if ($profileDropdown.hasClass('active')) { $profileDropdown.removeClass('active'); $profilePicTrigger.removeClass('active');}
         });
 
         function loadMembershipStatus() {
-            let userName = "Han Soyoung";
+            let userName = "Han Soyoung"; 
             $('#header-user-name').text(userName);
 
-            const userPlan = "Premium";
+            const userPlan = "Premium"; 
             const expiryDate = "2025-03-15";
-            $('#user-membership-plan').text(userPlan);
-            $('#user-membership-expiry').text(moment(expiryDate).format('MMMM D, YYYY'));
+            $('#modal-user-membership-plan').text(userPlan);
+            $('#modal-user-membership-expiry').text(moment(expiryDate).format('MMMM D, YYYY'));
         }
-        loadMembershipStatus();
+        loadMembershipStatus(); 
 
     });
   </script>
