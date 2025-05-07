@@ -7,7 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <link rel="stylesheet" href="usercss/home.css">
+    <link rel="stylesheet" href="usercss/home.css"> <!-- Assuming this file exists and provides base styles -->
 
     <style>
 
@@ -26,34 +26,49 @@
         --header-height-mobile: 80px;
         --font-primary: 'Poppins', sans-serif;
 
-        /* Progress Page Specific Theme Variables */
-        --card-bg-setgoals: var(--color-dark-gray); /* CHANGED: Dark background for cards */
-        --text-dark-setgoals: var(--text-color); /* CHANGED: Light text for dark cards */
-        --text-muted-setgoals: var(--color-text-muted); /* Use muted light text */
-        --border-color-light-setgoals: var(--border-color-light); /* CHANGED: Darker border */
-        --primary-color-darkest-setgoals: var(--main-color); /* CHANGED: Use main gold for emphasis */
+        /* Progress Page Specific Theme Variables (Now more generic) */
+        --card-bg: var(--color-dark-gray);
+        --card-text-color: var(--text-color);
+        --card-muted-text-color: var(--color-text-muted);
+        --card-border-color: var(--border-color-light);
+        --card-accent-color: var(--main-color);
+
         --grid-gap: 1.5rem;
         --content-padding: 1.5rem;
-        --button-primary-bg: var(--main-color); /* Keep Gold */
-        --button-primary-text: var(--color-black); /* Keep Black text */
-        --button-primary-hover-bg: var(--color-gold-light); /* Lighter gold hover */
-        --button-secondary-bg: #555; /* CHANGED: Darker secondary button */
-        --button-secondary-text: var(--text-color); /* Light text */
-        --button-secondary-hover-bg: #666; /* Slightly lighter dark hover */
+
+        --button-primary-bg: var(--main-color);
+        --button-primary-text: var(--color-black);
+        --button-primary-hover-bg: var(--color-gold-light);
+        --button-secondary-bg: #555;
+        --button-secondary-text: var(--text-color);
+        --button-secondary-hover-bg: #666;
+
         --modal-overlay-bg: rgba(0, 0, 0, 0.7);
-        --stat-card-icon-color: var(--main-color); /* CHANGED: Use main gold */
-        --stat-card-value-color: var(--text-color); /* CHANGED: Light text */
-        --stat-card-sub-increase: #4CAF50; /* Keep green */
-        --stat-card-sub-decrease: #f44336; /* Keep red */
-        --table-header-bg: #252525; /* CHANGED: Darker header bg */
-        --table-row-even-bg: #222; /* CHANGED: Slightly different dark for stripes */
-        --table-row-hover-bg: #303030; /* CHANGED: Darker hover */
-        --table-border-color: var(--border-color-light-setgoals); /* Use dark border var */
-        --chart-title-color: var(--text-color); /* CHANGED: Light text */
-        --input-bg-setgoals: #252525; /* CHANGED: Dark input bg */
-        --input-focus-shadow: rgba(255, 215, 0, 0.3); /* Gold focus glow */
-        --modal-bg-setgoals: var(--color-dark-gray); /* CHANGED: Dark modal background */
-        --modal-text-setgoals: var(--text-color); /* CHANGED: Light modal text */
+        --modal-bg: var(--color-dark-gray);
+        --modal-text-color: var(--text-color);
+
+        --input-bg: #252525;
+        --input-border-color: var(--border-color-light);
+        --input-text-color: var(--text-color);
+        --input-focus-border-color: var(--main-color);
+        --input-focus-shadow: rgba(255, 215, 0, 0.3);
+
+        --table-header-bg: #252525;
+        --table-row-even-bg: #222;
+        --table-row-hover-bg: #303030;
+        --table-border-color: var(--border-color-light);
+
+        --chart-title-color: var(--text-color);
+        --stat-card-icon-color: var(--main-color);
+        --stat-card-value-color: var(--text-color);
+        --stat-card-sub-increase: #4CAF50;
+        --stat-card-sub-decrease: #f44336;
+
+        /* Renamed for clarity from setgoals specific vars */
+        --tab-inactive-bg: #333;
+        --tab-inactive-text: var(--card-muted-text-color);
+        --tab-hover-bg: #444;
+        --tab-hover-text: var(--card-text-color);
     }
 
     * {
@@ -67,15 +82,16 @@
     }
 
     html {
-        font-size: 62.5%;
+        font-size: 62.5%; /* 1rem = 10px */
         overflow-x: hidden;
         scroll-behavior: smooth;
     }
 
-    body { /* Ensure body background is dark */
+    body {
       background-color: var(--bg-color);
-      color: var(--text-color); /* Default text color */
+      color: var(--text-color);
       font-family: var(--font-primary);
+      font-size: 1.6rem; /* Base font size: 16px */
       line-height: 1.6;
       display: flex;
       flex-direction: column;
@@ -89,423 +105,567 @@
     }
 
     main.content-grid {
-        padding-top: calc(var(--header-height-desktop, 100px) + 2rem); /* Ensure enough space */
+        padding-top: calc(var(--header-height-desktop, 100px) + 2rem);
         display: grid;
         grid-template-columns: 300px 1fr;
         gap: var(--grid-gap);
         padding-left: var(--content-padding);
         padding-right: var(--content-padding);
         padding-bottom: var(--content-padding);
-        color: var(--text-dark-setgoals); /* Use light text variable */
+        color: var(--card-text-color);
     }
 
     .card {
-        background-color: var(--card-bg-setgoals); /* Use dark bg variable */
+        background-color: var(--card-bg);
         padding: 1.5rem;
         border-radius: 8px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3); /* Darker shadow */
-        border: 1px solid var(--border-color-light-setgoals); /* Use dark border variable */
-        color: var(--text-dark-setgoals); /* Use light text variable */
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        border: 1px solid var(--card-border-color);
+        color: var(--card-text-color);
     }
 
     .calendar-widget {
-         border: 2px solid var(--primary-color-darkest-setgoals); /* Keep gold border */
+         border: 2px solid var(--card-accent-color);
     }
 
-    .calendar-widget h2,
-    .calendar-widget .input-block label,
-    .nutrient-header span:first-child,
-    #log-meal-modal h3,
-    #log-meal-modal .logged-items-display h4 {
-         color: var(--primary-color-darkest-setgoals) !important; /* Keep Gold for these specific labels */
+    .calendar-widget h2 { /* Section Title */
+         color: var(--card-accent-color) !important;
+         font-size: 1.7rem; /* H2 Level */
+         margin-bottom: 1rem;
     }
+    .calendar-widget .input-block label {
+        color: var(--card-accent-color) !important;
+        font-size: 1.3rem; /* Label Level */
+        display: block;
+        margin-bottom: 0.5rem;
+    }
+
 
     .calendar-header {
         display: flex; justify-content: space-between; align-items: center;
         margin-bottom: 1rem; font-weight: 500;
-        color: var(--text-dark-setgoals); /* Light text */
+        color: var(--card-text-color);
+        font-size: 1.4rem; /* Slightly smaller than h4 */
     }
     .cal-nav {
-        border: 1px solid var(--border-color-light-setgoals); /* Dark border */
-        color: var(--text-muted-setgoals); /* Muted light text */
-        padding: 3px 8px; border-radius: 4px; cursor: pointer; background: none;
+        border: 1px solid var(--card-border-color);
+        color: var(--card-muted-text-color);
+        padding: 0.3rem 0.8rem; border-radius: 4px; cursor: pointer; background: none;
+        font-size: 1.4rem;
     }
     .cal-nav:hover {
-        color: var(--primary-color-darkest-setgoals); /* Gold hover text */
-        border-color: var(--primary-color-darkest-setgoals); /* Gold hover border */
+        color: var(--card-accent-color);
+        border-color: var(--card-accent-color);
     }
     .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; text-align: center; margin-bottom: 1.5rem; }
     .day-name {
-        font-weight: 600; font-size: 0.8rem;
-        color: var(--text-muted-setgoals); /* Muted light text */
+        font-weight: 600; font-size: 1.1rem; /* Small utility text */
+        color: var(--card-muted-text-color);
         text-transform: uppercase;
     }
     .date-cell { display: flex; justify-content: center; align-items: center; aspect-ratio: 1 / 1; }
     .date-cell button {
         width: 100%; height: 100%; border-radius: 50%; border: 2px solid transparent; background-color: transparent;
-        color: var(--text-dark-setgoals); /* Light text */
-        cursor: pointer; font-size: 0.9rem; transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease; display: flex; align-items: center; justify-content: center; padding: 0;
+        color: var(--card-text-color);
+        cursor: pointer; font-size: 1.3rem; /* Text in buttons */
+        transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease; display: flex; align-items: center; justify-content: center; padding: 0;
     }
     .date-cell button:hover:not(.selected) {
-        background-color: #333; /* Darker hover bg */
-        border-color: var(--border-color-light-setgoals);
+        background-color: #333;
+        border-color: var(--card-border-color);
     }
     .date-cell button.selected {
-        background-color: var(--main-color); /* Gold selected bg */
-        color: var(--color-black); /* Black selected text */
+        background-color: var(--main-color);
+        color: var(--color-black);
         font-weight: bold;
-        border-color: var(--color-gold-light); /* Lighter gold border */
+        border-color: var(--color-gold-light);
     }
     .date-cell.empty { visibility: hidden; }
 
-    .calendar-widget .input-block { margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-color-light-setgoals); }
+    .calendar-widget .input-block { margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid var(--card-border-color); }
     .calendar-widget .input-block:last-child { border-bottom: none; padding-bottom: 0; margin-bottom: 0; }
-    /* Label color already set to gold via specific rule above */
-    .calendar-widget .info-input {
-        background-color: var(--input-bg-setgoals); /* Dark input bg */
-        border: 1px solid var(--border-color-light-setgoals); /* Dark border */
-        color: var(--text-dark-setgoals); /* Light text */
-        font-size: 0.95rem; padding: 8px 10px; width: 100%; border-radius: 4px;
+    .calendar-widget .info-input { /* Smaller input fields */
+        background-color: var(--input-bg);
+        border: 1px solid var(--input-border-color);
+        color: var(--input-text-color);
+        font-size: 1.25rem;
+        padding: 0.8rem 1rem; width: 100%; border-radius: 4px;
     }
     .calendar-widget .info-input:focus {
-        outline: none; border-color: var(--main-color); /* Gold focus border */
-        box-shadow: 0 0 0 2px var(--input-focus-shadow); /* Gold focus glow */
+        outline: none; border-color: var(--input-focus-border-color);
+        box-shadow: 0 0 0 2px var(--input-focus-shadow);
     }
     .calendar-widget .goals-list {
-        list-style: disc; padding-left: 20px; margin: 5px 0 0 0; font-size: 0.9rem;
-        color: var(--text-muted-setgoals); /* Muted light text */
+        list-style: disc; padding-left: 2rem; margin: 0.5rem 0 0 0;
+        font-size: 1.2rem; /* List item text */
+        color: var(--card-muted-text-color);
     }
-    .calendar-widget .goals-list li { margin-bottom: 3px; }
+    .calendar-widget .goals-list li { margin-bottom: 0.3rem; }
 
-    /* --- Modal Theming --- */
-    #logoutConfirmationModal .modal-content {
-        background-color: var(--modal-bg-setgoals); /* CHANGED: Dark modal bg */
-        color: var(--modal-text-setgoals); /* CHANGED: Light modal text */
-        max-width: 400px; padding: 30px 35px;
-        border-color: var(--border-color-light); /* Dark border */
+    /* Modal Styles (Generic for Logout, Alert, etc.) */
+    .modal {
+        /* Assuming modal visibility is handled by adding/removing an 'active' or 'show' class in JS */
+        /* display: none; */ /* Handled by JS */
+        position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%;
+        overflow: auto; background-color: var(--modal-overlay-bg);
+        align-items: center; justify-content: center; /* For centering content */
+        /* These are for the .show class that JS will toggle */
+        opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0s linear 0.3s;
+        display: flex; /* Added for centering */
     }
-    #logoutConfirmationModal #logoutModalMessage {
-        color: var(--modal-text-setgoals); /* Light text */
-        font-size: 1.5rem; margin-top: 10px; margin-bottom: 30px; line-height: 1.5; text-align: center;
+    .modal.show, .modal.active { /* .active is used in SetGoals */
+        opacity: 1; visibility: visible; transition: opacity 0.3s ease;
     }
-    #logoutConfirmationModal .close-button {
-        color: var(--text-muted-setgoals); /* Muted light text */
-    }
-    #logoutConfirmationModal .close-button:hover {
-        color: var(--text-color); /* Brighter light text */
-    }
-    #logoutConfirmationModal .modal-actions button { font-weight: 600; font-size: 0.95rem; margin: 0 8px; min-width: 100px; }
-    #logoutConfirmationModal #cancelLogoutButton {
-        background-color: var(--button-secondary-bg); /* Dark secondary bg */
-        color: var(--button-secondary-text); /* Light text */
-        border-color: #444; /* Slightly darker border */
-    }
-    #logoutConfirmationModal #cancelLogoutButton:hover {
-        background-color: var(--button-secondary-hover-bg); /* Darker hover */
-    }
-    #logoutConfirmationModal #okLogoutButton {
-        background-color: var(--button-primary-bg); /* Gold primary bg */
-        color: var(--button-primary-text); /* Black text */
-        border-color: var(--main-color); /* Match bg border */
-        margin-left: 15px; /* Adjusted margin */
-    }
-    #logoutConfirmationModal #okLogoutButton:hover { /* Keep Gold hover */
-        background-color: transparent;
-        color: var(--main-color);
-        box-shadow: 0 0 1.6rem var(--main-color);
-        transform: translateY(-2px);
-        border-color: var(--main-color);
-    }
-
-
-    .main-tab-content {
-        border: 2px solid var(--primary-color-darkest-setgoals); /* Keep gold border */
+    .modal-content {
+        background-color: var(--modal-bg);
+        color: var(--modal-text-color);
+        margin: auto; /* For older centering, flex handles it now */
+        padding: 2rem 2.5rem; /* Adjusted padding */
+        border: 1px solid var(--card-border-color);
         border-radius: 8px;
-        background-color: var(--card-bg-setgoals); /* Use dark card bg */
-        color: var(--text-dark-setgoals); /* Light text */
-        min-width: 0;
-        overflow: hidden;
+        width: 90%;
+        max-width: 450px; /* Consistent max-width */
+        box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        position: relative;
+        font-size: 1.4rem; /* Base font for modal content */
+    }
+    .modal-content .close-button, .modal-content .modal-close-btn { /* Target both close button classes */
+        color: var(--card-muted-text-color);
+        position: absolute; top: 1rem; right: 1.5rem;
+        font-size: 2.4rem; font-weight: bold; cursor: pointer; line-height: 1;
+    }
+    .modal-content .close-button:hover, .modal-content .modal-close-btn:hover {
+        color: var(--card-text-color);
+    }
+    .modal-content p, .modal-content #logoutModalMessage, .modal-content #alertModalMessage {
+        font-size: 1.5rem; /* Modal message text */
+        margin-top: 1rem; margin-bottom: 2rem; line-height: 1.5; text-align: center;
+    }
+    .modal-content .modal-actions { /* SetGoals specific, good for general use */
+        text-align: center; margin-top: 1.5rem;
+    }
+     .modal-content .modal-actions button,
+     .modal-content #cancelLogoutButton, .modal-content #okLogoutButton, .modal-content #alertModalOkButton { /* General modal buttons */
+        font-weight: 600; font-size: 1.4rem; margin: 0 0.8rem; min-width: 100px;
+        padding: 0.9rem 1.8rem; border-radius: 6px; cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    /* Logout Modal Specific Button Styling */
+    #logoutConfirmationModal #cancelLogoutButton, #alertModal .btn-secondary {
+        background-color: var(--button-secondary-bg); color: var(--button-secondary-text);
+        border: 1px solid #444;
+    }
+    #logoutConfirmationModal #cancelLogoutButton:hover, #alertModal .btn-secondary:hover {
+        background-color: var(--button-secondary-hover-bg);
+    }
+    #logoutConfirmationModal #okLogoutButton, #alertModal .btn-primary, .modal-content button[type="submit"], .modal-content .btn-primary {
+        background-color: var(--button-primary-bg); color: var(--button-primary-text);
+        border: 1px solid var(--main-color);
+    }
+    #logoutConfirmationModal #okLogoutButton:hover, #alertModal .btn-primary:hover, .modal-content button[type="submit"]:hover, .modal-content .btn-primary:hover {
+        background-color: var(--button-primary-hover-bg);
+        border-color: var(--color-gold-light);
     }
 
-    .tab-content {
-         display: none;
+
+    .main-tab-content { /* This outer card for tabs */
+        border: 2px solid var(--card-accent-color);
+        background-color: var(--card-bg); color: var(--card-text-color);
     }
-    .tab-content.active {
-         display: block;
-         animation: fadeIn 0.5s ease-in-out;
-    }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; animation: fadeIn 0.5s ease-in-out; }
     @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-
     .content-placeholder {
-        padding: 1.5rem; background-color: transparent; /* Ensure transparent */
+        padding: 1.5rem; background-color: transparent;
         border-radius: 0; border: none; min-height: 300px; box-shadow: none;
     }
-    .content-placeholder h1 {
+    .content-placeholder > h1 { /* Main Tab Titles */
         font-size: 1.8rem; margin-bottom: 1.5rem; font-weight: 600;
-        color: var(--text-dark-setgoals); /* Light text */
-        text-align: left; padding-bottom: 0.8rem;
-        border-bottom: 2px solid var(--main-color); /* Gold border */
-        display: inline-block;
+        color: var(--card-text-color); text-align: left; padding-bottom: 0.8rem;
+        border-bottom: 2px solid var(--main-color); display: inline-block;
     }
+    .content-placeholder > h1::before { content: " "; } /* Remove prefix if any */
+
 
     .main-content-tabs {
-        display: flex;
-        justify-content: center;
-        flex-wrap: wrap;
-        margin-bottom: 2rem;
-        padding: 1rem 1.5rem;
-        border-bottom: 2px solid var(--border-color-light-setgoals); /* Dark border */
-        gap: 1rem;
+        display: flex; justify-content: center; flex-wrap: wrap; margin-bottom: 2rem;
+        padding: 1rem 1.5rem; border-bottom: 2px solid var(--card-border-color); gap: 1rem;
     }
-
     button.main-tab-button {
         display: inline-flex; align-items: center; gap: 0.7rem;
         padding: 0.8rem 1.5rem; font-size: 1.5rem; font-weight: 500;
-        color: var(--text-muted-setgoals); /* Muted light default text */
-        background-color: #333; /* Darker default bg */
-        border: 1px solid #444; /* Darker border */
-        border-radius: 6px;
-        cursor: pointer; transition: all 0.3s ease;
-        font-family: inherit;
+        color: var(--tab-inactive-text); background-color: var(--tab-inactive-bg);
+        border: 1px solid #444; border-radius: 6px; cursor: pointer; transition: all 0.3s ease; font-family: inherit;
     }
     button.main-tab-button i { font-size: 1.8rem; line-height: 1; }
-    button.main-tab-button:hover {
-        background-color: #444; /* Slightly lighter dark hover */
-        border-color: #555;
-        color: var(--text-color); /* Brighter text on hover */
-    }
+    button.main-tab-button:hover { background-color: var(--tab-hover-bg); border-color: #555; color: var(--tab-hover-text); }
     button.main-tab-button.active {
-        background-color: var(--main-color); /* Gold active bg */
-        color: var(--color-black); /* Black active text */
-        font-weight: 600; border-color: var(--color-gold-light); /* Lighter gold border */
-        box-shadow: 0 2px 5px rgba(218, 165, 32, 0.2);
+        background-color: var(--main-color); color: var(--color-black); font-weight: 600;
+        border-color: var(--color-gold-light); box-shadow: 0 2px 5px rgba(218, 165, 32, 0.2);
     }
 
-
-    #tabs-1 .content-placeholder h1::before { content: " "; } /* Removed unnecessary content */
+    /* Workout Log Tab (#tabs-1 Progress Page) */
     #tabs-1 .workout-type-block { border-bottom: none; padding-bottom: 0; margin-bottom: 1rem;}
     #tabs-1 .workout-type {
-        font-size: 1.1rem; font-weight: 500;
-        color: var(--text-dark-setgoals); /* Light text */
-        background-color: var(--input-bg-setgoals); /* Dark bg */
-        padding: 10px 15px; border-radius: 4px;
-        border: 1px solid var(--border-color-light-setgoals); /* Dark border */
+        font-size: 1.4rem; font-weight: 500; color: var(--card-text-color);
+        background-color: var(--input-bg); padding: 1rem 1.5rem; border-radius: 4px;
+        border: 1px solid var(--card-border-color);
     }
-    .workout-table-container { overflow-x: auto; margin-top: 1rem; }
-    .workout-table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+    .workout-table-container { overflow-x: auto; margin-top: 1.5rem; }
+    .workout-table { width: 100%; border-collapse: collapse; font-size: 1.2rem; /* Table base text */ }
     .workout-table th, .workout-table td {
-        padding: 12px 15px; text-align: left;
-        border: 1px solid var(--table-border-color); /* Dark border */
-        color: var(--text-dark-setgoals); /* Light text for cells */
+        padding: 1.2rem 1.5rem; text-align: left; border: 1px solid var(--table-border-color);
+        color: var(--card-text-color);
     }
     .workout-table th {
-        background-color: var(--table-header-bg); /* Dark header bg */
-        font-weight: 600;
-        color: var(--primary-color-darkest-setgoals); /* Gold header text */
-        text-transform: uppercase; font-size: 0.85rem;
+        background-color: var(--table-header-bg); font-weight: 600;
+        color: var(--card-accent-color); text-transform: uppercase; font-size: 1.1rem; /* Table header text */
     }
-    .workout-table tbody tr:nth-child(even) {
-        background-color: var(--table-row-even-bg); /* Dark stripe bg */
+    .workout-table th.date-col, .workout-table td.date-col {
+        width: 130px; white-space: nowrap;
     }
-    .workout-table tbody tr:hover {
-        background-color: var(--table-row-hover-bg); /* Dark hover bg */
+    .workout-table tbody tr:nth-child(even) { background-color: var(--table-row-even-bg); }
+    .workout-table tbody tr:hover { background-color: var(--table-row-hover-bg); }
+    .workout-table .notes-cell { font-style: italic; color: var(--card-muted-text-color); font-size: 0.9em; /* Relative to 1.2rem cell */ }
+
+    /* --- Daily Log & Coach Feedback Common Styles (Progress Page) --- */
+    .daily-log-section, .coach-feedback-section, .meal-logging-section { /* These are main sections within a tab */
+        margin-top: 2.5rem; padding: 1.5rem; background-color: var(--snd-bf-color);
+        border: 1px solid var(--card-border-color); border-radius: 6px;
     }
-    .workout-table .notes-cell {
-        font-style: italic;
-        color: var(--text-muted-setgoals); /* Muted light text */
-        font-size: 0.9em;
+    .daily-log-section h3, .coach-feedback-section h3, .meal-logging-section h3 { /* Section Titles H3 */
+        font-size: 1.6rem; color: var(--card-accent-color); margin-bottom: 1.2rem;
+        padding-bottom: 0.6rem; border-bottom: 1px solid var(--card-border-color); font-weight: 600;
+    }
+    .daily-log-section h4, .meal-logging-section h4 { /* Sub-section Titles H4 */
+        font-size: 1.5rem; color: var(--card-text-color); font-weight: 500;
+        margin-bottom: 1rem; margin-top: 1.5rem;
+    }
+    .meal-logging-section h4 i { /* Icon next to meal title */
+        margin-right: 0.8rem; font-size: 1.6rem; /* Match h4 size */
+        color: var(--card-accent-color);
     }
 
+    /* Exercise Log Specific (Progress Page) */
+    .exercise-log-entry-fields {
+        border: 1px solid var(--card-border-color); padding: 1.2rem; border-radius: 4px;
+        margin-bottom: 1.5rem; background-color: var(--color-dark-gray); /* Darker inner card */
+    }
+    .exercise-log-entry-grid {
+        display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.2rem; margin-bottom: 1.5rem;
+    }
+    .exercise-log-form-group { display: flex; flex-direction: column; }
+    .exercise-log-form-group.full-width { grid-column: 1 / -1; }
+    .exercise-log-form-group label { /* Main form labels */
+        font-size: 1.4rem; font-weight: 500; color: var(--card-muted-text-color); margin-bottom: 0.6rem;
+    }
+    /* Common Input Field Style for Log Forms */
+    .log-input-field, .general-summary-area textarea, .coach-comment-input-area textarea {
+        width: 100%; padding: 1rem 1.2rem; font-size: 1.3rem; /* Main form input text */
+        font-family: var(--font-primary);
+        background-color: var(--input-bg); border: 1px solid var(--input-border-color);
+        color: var(--input-text-color); border-radius: 4px;
+    }
+    .log-input-field::placeholder, .general-summary-area textarea::placeholder, .coach-comment-input-area textarea::placeholder {
+        color: var(--card-muted-text-color); font-size: 1.2rem;
+    }
+    .log-input-field:focus, .general-summary-area textarea:focus, .coach-comment-input-area textarea:focus {
+        outline: none; border-color: var(--input-focus-border-color); box-shadow: 0 0 0 2px var(--input-focus-shadow);
+    }
+    .exercise-log-form-group textarea.log-input-field, .general-summary-area textarea, .coach-comment-input-area textarea {
+        min-height: 80px; resize: vertical; line-height: 1.5;
+    }
 
-    #tabs-2 .content-placeholder h1::before { content: " "; }
+    #addExerciseToLogBtn { /* Progress Page Button */
+        margin-bottom: 1.5rem; background-color: var(--button-secondary-bg);
+        color: var(--button-secondary-text); border: 1px solid #444;
+        /* Inherits .action-button font-size if that class is also applied, or define here */
+    }
+    #addExerciseToLogBtn:hover { background-color: var(--button-secondary-hover-bg); border-color: #555; }
+
+    /* General Summary Area (Progress Page) */
+    .general-summary-area { margin-bottom: 1.5rem; margin-top: 1.5rem; }
+    .general-summary-area label { /* Main form label */
+        display: block; font-size: 1.4rem; font-weight: 500;
+        color: var(--card-text-color); margin-bottom: 0.8rem;
+    }
+
+    /* Meal Logging Specific (Progress Page, also in SetGoals) */
+    .meal-log-group {
+        padding: 1.5rem 0; /* Increased padding */
+        border-bottom: 1px dashed var(--card-border-color);
+    }
+    .meal-log-group:last-of-type { border-bottom: none; }
+    .food-item-entry-form {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 1rem;
+        align-items: end;
+        margin-bottom: 1rem;
+    }
+     .food-item-entry-form label { /* Smaller context labels */
+        display: block;
+        font-size: 1.3rem;
+        font-weight: 500;
+        color: var(--card-muted-text-color);
+        margin-bottom: 0.5rem;
+    }
+    .food-item-entry-form .log-input-field { /* Smaller context inputs */
+        font-size: 1.25rem; padding: 0.8rem 1rem;
+    }
+    .food-item-entry-form .log-input-field::placeholder { font-size: 1.15rem; }
+
+    .add-food-item-btn { /* This button is an action button */
+        padding: 0.9rem 1.5rem; /* Slightly adjusted padding */
+        font-size: 1.3rem; /* Text on button, consistent with other smaller action buttons */
+        grid-column: 1 / -1;
+         margin-top: 1rem;
+    }
+    /* Responsive adjustments for add-food-item-btn are further down */
+
+    .logged-food-list {
+        list-style: none; padding-left: 0; margin-top: 1rem;
+    }
+    .logged-food-list li {
+        font-size: 1.3rem; /* Logged item text */
+        color: var(--card-muted-text-color);
+        padding: 0.8rem 1rem; background-color: var(--input-bg);
+        border-radius: 3px; margin-bottom: 0.8rem; border-left: 3px solid var(--main-color);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .logged-food-list li .remove-food-item {
+        color: var(--stat-card-sub-decrease);
+        cursor: pointer;
+        font-size: 1.6rem; /* Icon size */
+        margin-left: 1rem;
+    }
+    .logged-food-list li .remove-food-item:hover { color: red; }
+    #updateNutritionSummaryBtn { margin-top: 1.5rem; }
+
+
+    /* Action Buttons (Save, Submit, etc.) */
+    .action-button {
+        padding: 0.9rem 1.8rem; font-size: 1.4rem; font-weight: 500;
+        color: var(--button-primary-text); background-color: var(--button-primary-bg);
+        border: 1px solid var(--main-color); border-radius: 6px; cursor: pointer;
+        transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 0.8rem;
+    }
+    .action-button:hover {
+        background-color: var(--button-primary-hover-bg); border-color: var(--color-gold-light);
+        transform: translateY(-1px);
+    }
+    .action-button i { font-size: 1.6rem; } /* Icon in button */
+
+    /* Coach Feedback Specific (Progress Page) */
+    .coach-comment-input-area { margin-bottom: 1.5rem;}
+    .coach-comment-input-area label { /* Main form label */
+        display: block; font-size: 1.4rem; font-weight: 500;
+        color: var(--card-text-color); margin-bottom: 0.8rem;
+    }
+    /* Textarea uses .log-input-field style */
+    .coach-comments-display { margin-bottom: 1.5rem; }
+    .coach-comment-item {
+        background-color: var(--color-dark-gray); padding: 1.2rem 1.5rem; border-radius: 4px;
+        margin-bottom: 1.2rem; border-left: 4px solid var(--main-color);
+        box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    }
+    .coach-comment-item p {
+        font-size: 1.3rem; /* Comment text */
+        color: var(--card-text-color);
+        margin: 0 0 0.5rem 0; line-height: 1.6;
+    }
+    .coach-comment-item .comment-meta {
+        font-size: 1.1rem; /* Small utility text */
+        color: var(--card-muted-text-color); font-style: italic;
+    }
+    .coach-comment-item .comment-meta .coach-name {
+        font-weight: 600; color: var(--card-accent-color);
+    }
+    .no-comments {
+        font-size: 1.3rem; color: var(--card-muted-text-color); padding: 1rem; text-align: center;
+        border: 1px dashed var(--card-border-color); border-radius: 4px;
+    }
+
+    /* --- Workout Status & Nutrition Chart Styles (Progress Page) --- */
     .card-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: var(--grid-gap); margin-bottom: 2rem; }
-    .stat-card {
-        text-align: center; padding: 1.5rem 1rem;
-        background-color: var(--snd-bf-color); /* Use secondary dark bg */
-        border-color: var(--border-color-light-setgoals); /* Ensure dark border */
+    .stat-card { /* This is a .card already */
+        text-align: center; padding: 1.5rem 1rem; background-color: var(--snd-bf-color);
+        /* border-color already set by .card */
     }
-    .stat-card .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; border-bottom: 1px solid var(--border-color-light-setgoals); padding-bottom: 0.8rem;}
-    .stat-card .card-header h3 { margin: 0; font-size: 1.1rem; color: var(--text-dark-setgoals); font-weight: 600;}
-    .stat-card .card-header i { font-size: 1.8rem; color: var(--stat-card-icon-color); /* Gold icon */ }
-    .stat-card .card-body .value { font-size: 2rem; font-weight: 600; color: var(--stat-card-value-color); /* Light text */ margin: 0 0 5px 0; line-height: 1.2; }
-    .stat-card .card-body .unit { font-size: 0.9rem; font-weight: 400; color: var(--text-muted-setgoals); margin-left: 3px; }
-    .stat-card .card-body .sub-value { margin: 0 0 10px 0; font-size: 0.9rem; font-weight: 500; }
+    .stat-card .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; border-bottom: 1px solid var(--card-border-color); padding-bottom: 0.8rem;}
+    .stat-card .card-header h3 { margin: 0; font-size: 1.4rem; color: var(--card-text-color); font-weight: 600;} /* Stat card title */
+    .stat-card .card-header i { font-size: 2rem; color: var(--stat-card-icon-color); } /* Icon size */
+    .stat-card .card-body .value { font-size: 2.2rem; font-weight: 600; color: var(--stat-card-value-color); margin: 0 0 0.5rem 0; line-height: 1.2; } /* Large value */
+    .stat-card .card-body .unit { font-size: 1.1rem; font-weight: 400; color: var(--card-muted-text-color); margin-left: 0.3rem; } /* Small utility text */
+    .stat-card .card-body .sub-value { margin: 0 0 1rem 0; font-size: 1.2rem; font-weight: 500; }
     .stat-card .card-body .sub-value.increase { color: var(--stat-card-sub-increase); }
     .stat-card .card-body .sub-value.decrease { color: var(--stat-card-sub-decrease); }
-    .stat-card .card-body .description { font-size: 0.85rem; color: var(--text-muted-setgoals); margin: 0; }
+    .stat-card .card-body .description { font-size: 1.2rem; color: var(--card-muted-text-color); margin: 0; } /* Description text */
 
     .graph-controls {
         display: flex; flex-wrap: wrap; gap: 1.5rem; align-items: center;
-        background-color: var(--input-bg-setgoals); /* Dark bg */
-        padding: 1rem; border-radius: 5px;
-        border: 1px solid var(--border-color-light-setgoals); margin-bottom: 2rem;
+        background-color: var(--input-bg); padding: 1rem; border-radius: 5px;
+        border: 1px solid var(--card-border-color); margin-bottom: 2rem;
     }
-    .control-group { display: flex; align-items: center; gap: 0.5rem; }
-    .control-group label {
-        font-weight: 500;
-        color: var(--text-dark-setgoals); /* Light text */
-        font-size: 0.95rem;
-    }
-    .control-group i { font-size: 1.3rem; color: var(--primary-color-darkest-setgoals); /* Gold icon */ }
+    .control-group { display: flex; align-items: center; gap: 0.8rem; }
+    .control-group label { font-weight: 500; color: var(--card-text-color); font-size: 1.3rem; } /* Control label */
+    .control-group i { font-size: 1.6rem; color: var(--card-accent-color); } /* Icon size */
     .control-group select {
-        padding: 8px 12px; border: 1px solid var(--border-color-light-setgoals); border-radius: 4px;
-        background-color: var(--snd-bf-color); /* Dark select bg */
-        color: var(--text-dark-setgoals); /* Light text */
-        font-size: 0.9rem; cursor: pointer;
+        padding: 0.8rem 1.2rem; border: 1px solid var(--input-border-color); border-radius: 4px;
+        background-color: var(--snd-bf-color); color: var(--input-text-color);
+        font-size: 1.2rem; cursor: pointer; /* Select text */
     }
     .control-group select:focus {
-        outline: none; border-color: var(--main-color); /* Gold focus border */
-        box-shadow: 0 0 0 2px var(--input-focus-shadow); /* Gold focus glow */
+        outline: none; border-color: var(--input-focus-border-color); box-shadow: 0 0 0 2px var(--input-focus-shadow);
     }
     .graph-placeholder {
-        background-color: var(--snd-bf-color); /* Dark graph bg */
-        padding: 1.5rem; border-radius: 5px;
-        border: 1px solid var(--border-color-light-setgoals);
+        background-color: var(--snd-bf-color); padding: 1.5rem; border-radius: 5px;
+        border: 1px solid var(--card-border-color);
     }
-    .chart-area h3 { text-align: center; margin-bottom: 1.5rem; font-size: 1.3rem; color: var(--chart-title-color); font-weight: 600;}
+    .chart-area h3 { text-align: center; margin-bottom: 1.5rem; font-size: 1.5rem; color: var(--chart-title-color); font-weight: 600;} /* Chart H3 */
     .canvas-wrapper { position: relative; height: 300px; width: 100%; }
-    /* Chart.js automatically handles canvas background, but ensure text/ticks are visible */
-    /* Chart.js options in JS will handle tick colors */
 
-
-    #tabs-3 .content-placeholder h1::before { content: " "; }
-    .tabs { display: flex; justify-content: center; flex-wrap: wrap; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-color-light-setgoals); padding-bottom: 0.5rem; gap: 10px; }
+    /* Nutrition Inner Tabs (Progress & SetGoals) */
+    .tabs { display: flex; justify-content: center; flex-wrap: wrap; margin-bottom: 1.5rem; border-bottom: 1px solid var(--card-border-color); padding-bottom: 0.5rem; gap: 1rem; }
     .tabs .tab-button {
-        color: var(--text-muted-setgoals); /* Muted light default text */
-        font-size: 0.95rem; padding: 0.6rem 1rem; border-radius: 4px; transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease; white-space: nowrap;
+        color: var(--tab-inactive-text); font-size: 1.3rem; padding: 0.8rem 1.2rem; border-radius: 4px; /* Inner tab button text */
+        transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease; white-space: nowrap;
         border: 2px solid transparent; background-color: transparent; cursor: pointer; font-weight: 500;
     }
-    .tab-button:hover {
-        color: var(--text-color); /* Brighter text */
-        background-color: #333; /* Darker bg */
+    .tabs .tab-button:hover { color: var(--tab-hover-text); background-color: var(--tab-hover-bg); }
+    .tabs .tab-button.active {
+        background-color: var(--main-color); color: var(--color-black); font-weight: 600;
+        border-color: var(--color-gold-light);
     }
-    .tab-button.active {
-        background-color: var(--main-color); /* Gold active bg */
-        color: var(--color-black); /* Black active text */
-        font-weight: 600; border-color: var(--color-gold-light); /* Lighter gold border */
-    }
-
     .nutrition-tab-content { display: none; padding-top: 1rem; animation: fadeIn 0.5s ease-in-out; }
     .nutrition-tab-content.active { display: block; }
-    .nutrition-tab-content h2 {
-        font-size: 1.3rem; margin-bottom: 1.5rem; font-weight: 600;
-        color: var(--text-muted-setgoals); /* Muted light text */
-        text-align: center;
+    .nutrition-tab-content h2 { /* Sub-titles within nutrition tabs e.g. "Calories Breakdown" - H4 level effectively */
+        font-size: 1.5rem; margin-bottom: 1.5rem; font-weight: 600;
+        color: var(--card-muted-text-color); text-align: center;
     }
     .nutrition-details-full { max-width: 700px; margin: 0 auto; }
     .chart-placeholder-container { max-width: 300px; margin: 0 auto 1.5rem auto; position: relative;}
 
     .calories-breakdown { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; max-width: 700px; margin-left: auto; margin-right: auto; }
     .meal-item {
-        display: flex; align-items: center; gap: 10px; padding: 10px 12px;
-        background-color: var(--snd-bf-color); /* Secondary dark bg */
-        border-radius: 4px; border: 1px solid var(--border-color-light-setgoals); /* Dark border */
+        display: flex; align-items: center; gap: 1rem; padding: 1rem 1.2rem;
+        background-color: var(--snd-bf-color); border-radius: 4px;
+        border: 1px solid var(--card-border-color);
     }
-    .meal-info { font-size: 0.9rem; flex-grow: 1; }
-    .meal-info div:first-child { font-weight: 500; color: var(--text-dark-setgoals); /* Light text */ }
-    .meal-info div:last-child { color: var(--text-muted-setgoals); font-size: 0.85em; }
-
-    /* Add food button needs adjustment if kept */
-    .add-food-btn {
-        background-color: #444; color: var(--text-muted-setgoals); margin-left: auto; border: 1px solid #555; padding: 5px 8px; font-size: 0.9rem; line-height: 1; border-radius: 50%; width: 28px; height: 28px; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; cursor: pointer;
-    }
-    .add-food-btn:hover { background-color: #555; color: var(--text-color); border-color: #666; }
+    .meal-info { font-size: 1.2rem; flex-grow: 1; } /* Meal item text */
+    .meal-info div:first-child { font-weight: 500; color: var(--card-text-color); }
+    .meal-info div:last-child { color: var(--card-muted-text-color); font-size: 0.9em; /* Relative to 1.2rem */ }
 
     .calorie-summary {
-        display: flex; flex-direction: column; gap: 10px;
-        color: var(--text-muted-setgoals); font-size: 1em; margin-top: 1rem; padding-top: 1rem;
-        border-top: 1px solid var(--border-color-light-setgoals); max-width: 400px; margin-left: auto; margin-right: auto;
+        display: flex; flex-direction: column; gap: 1rem; color: var(--card-muted-text-color);
+        font-size: 1.3rem; margin-top: 1rem; padding-top: 1rem; /* Summary text */
+        border-top: 1px solid var(--card-border-color); max-width: 400px; margin-left: auto; margin-right: auto;
     }
     .summary-item { display: flex; justify-content: space-between; align-items: center; }
-    .summary-item span:last-child { font-weight: 600; color: var(--text-dark-setgoals); /* Light text */ }
-    .summary-item span.exercise { color: #f44336; } /* Keep red */
-    .summary-item.goal span:last-child { color: var(--primary-color-darkest-setgoals); /* Gold text */ font-size: 1.1em; font-weight: bold; }
-    .summary-divider { border: none; height: 1px; background-color: var(--border-color-light-setgoals); margin: 5px 0; }
-    .editable {
-        cursor: pointer; border-bottom: 1px dashed var(--primary-color-darkest-setgoals); padding-bottom: 1px; transition: background-color 0.2s ease; display: inline-block;
-        color: var(--text-dark-setgoals); /* Ensure editable text is light */
-    }
-    .editable:hover { background-color: rgba(255, 215, 0, 0.1); }
+    .summary-item span:last-child { font-weight: 600; color: var(--card-text-color); }
+    .summary-item span.exercise { color: #f44336; }
+    .summary-item.goal span:last-child { color: var(--card-accent-color); font-size: 1.1em; font-weight: bold; } /* Relative to 1.3rem */
+    .summary-divider { border: none; height: 1px; background-color: var(--card-border-color); margin: 0.5rem 0; }
 
-    .nutrient-header { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 10px; padding: 0 10px 10px 10px; font-size: 0.85em; font-weight: 600; text-align: right; border-bottom: 1px solid var(--border-color-light-setgoals); margin-bottom: 10px; text-transform: uppercase; color: var(--text-muted-setgoals); } /* Muted text for header */
-    .nutrient-list { list-style: none; max-height: 400px; overflow-y: auto; padding-right: 5px; }
-    .nutrient-list li { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 10px; padding: 10px; border-bottom: 1px solid #282828; align-items: center; font-size: 0.95em; }
+    .nutrient-header { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 1rem; padding: 0 1rem 1rem 1rem; font-size: 1.1rem; font-weight: 600; text-align: right; border-bottom: 1px solid var(--card-border-color); margin-bottom: 1rem; text-transform: uppercase; color: var(--card-muted-text-color); } /* Nutrient header text */
+    .nutrient-header span:first-child { color: var(--card-accent-color) !important; } /* From Progress, ensure consistency */
+
+    .nutrient-list { list-style: none; max-height: 400px; overflow-y: auto; padding-right: 0.5rem; margin:0; }
+    .nutrient-list li { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 1rem; padding: 1rem; border-bottom: 1px solid #282828; align-items: center; font-size: 1.3rem; } /* Nutrient list item text */
     .nutrient-list li:last-child { border-bottom: none; }
-    .nutrient-list li span:first-child { font-weight: 500; text-align: left; color: var(--text-dark-setgoals); /* Light text */ }
-    .nutrient-list li span:not(:first-child) { text-align: right; color: var(--text-muted-setgoals); /* Muted light text */ }
+    .nutrient-list li span:first-child { font-weight: 500; text-align: left; color: var(--card-text-color); }
+    .nutrient-list li span:not(:first-child) { text-align: right; color: var(--card-muted-text-color); }
 
     .macros-legend { display: flex; flex-direction: column; gap: 1rem; max-width: 500px; margin: 1.5rem auto 0 auto; }
     .legend-item {
-        display: grid; grid-template-columns: auto 1fr auto auto; align-items: center; gap: 10px; font-size: 0.95em;
-        color: var(--text-dark-setgoals); /* Light text */
-        padding: 10px; background-color: var(--snd-bf-color); border-radius: 4px; border: 1px solid var(--border-color-light-setgoals);
+        display: grid; grid-template-columns: auto 1fr auto auto; align-items: center; gap: 1rem;
+        font-size: 1.3rem; color: var(--card-text-color); padding: 1rem; /* Macros legend item text */
+        background-color: var(--snd-bf-color); border-radius: 4px; border: 1px solid var(--card-border-color);
     }
-    .color-square { width: 14px; height: 14px; display: inline-block; border-radius: 3px; border: 1px solid rgba(255,255,255,0.1); } /* Lighter border for dark */
+    .color-square { width: 14px; height: 14px; display: inline-block; border-radius: 3px; border: 1px solid rgba(255,255,255,0.1); }
     .legend-item .percentage { font-weight: 500; text-align: right; }
-    .legend-item .goal-percentage { color: var(--text-muted-setgoals); text-align: right; font-style: italic; font-size: 0.9em; }
+    .legend-item .goal-percentage { color: var(--card-muted-text-color); text-align: right; font-style: italic; font-size: 0.9em; /* Relative to 1.3rem */ }
 
-    /* Responsive adjustments need to consider dark theme */
-    @media (max-width: 1024px) {
-        .navbar-right img.profile-pic {
-            /* Inherits base styles */
-        }
-    }
 
+    /* Responsive Adjustments */
     @media (max-width: 992px) {
          main.content-grid {
              grid-template-columns: 1fr;
-             padding-top: calc(var(--header-height-mobile, 80px) + 1rem); /* Use correct mobile height */
+             padding-top: calc(var(--header-height-mobile, 80px) + 1rem);
         }
          .calendar-widget { order: -1; margin-bottom: var(--grid-gap); }
-         .workout-table th, .workout-table td { padding: 10px 8px; font-size: 0.9rem;}
-         .workout-table .notes-cell { font-size: 0.85em; }
+         .workout-table th, .workout-table td { padding: 1rem 0.8rem; font-size: 1.1rem;}
+         .workout-table .notes-cell { font-size: 0.9em; }
+         .workout-table th.date-col, .workout-table td.date-col { width: auto; }
     }
      @media (max-width: 767px) {
          main.content-grid {
-             padding-top: calc(var(--header-height-mobile, 80px) - 10px + 1rem); /* Use correct mobile height */
+             padding-top: calc(var(--header-height-mobile, 80px) - 10px + 1rem);
          }
          .main-tab-button { font-size: 1.3rem; padding: 0.7rem 1.2rem; }
          .workout-table thead { display: none; }
          .workout-table, .workout-table tbody, .workout-table tr, .workout-table td { display: block; width: 100%; }
          .workout-table tr {
-             margin-bottom: 15px; border: 1px solid var(--table-border-color); border-radius: 4px;
-             background-color: var(--card-bg-setgoals); /* Use dark card bg for rows */
+             margin-bottom: 1.5rem; border: 1px solid var(--table-border-color); border-radius: 4px;
+             background-color: var(--card-bg);
           }
-         .workout-table td { text-align: right; padding-left: 50%; position: relative; border: none; border-bottom: 1px dotted var(--border-color-light-setgoals);}
+         .workout-table td { text-align: right; padding-left: 50%; position: relative; border: none; border-bottom: 1px dotted var(--card-border-color);}
          .workout-table td:last-child { border-bottom: none; }
          .workout-table td::before {
-             content: attr(data-label); position: absolute; left: 10px; width: 45%; padding-right: 10px; white-space: nowrap; text-align: left; font-weight: bold;
-             color: var(--primary-color-darkest-setgoals); /* Gold label */
-             text-transform: uppercase; font-size: 0.8em;
+             content: attr(data-label); position: absolute; left: 1rem; width: 45%; padding-right: 1rem;
+             white-space: nowrap; text-align: left; font-weight: bold;
+             color: var(--card-accent-color); text-transform: uppercase; font-size: 0.9em; /* Relative to cell */
          }
+          .workout-table td.date-col::before { content: attr(data-label); }
+
          .card-container { grid-template-columns: 1fr; }
          .graph-controls { flex-direction: column; align-items: stretch; gap: 1rem; }
          .control-group { justify-content: space-between; }
          .calories-breakdown { grid-template-columns: 1fr; }
-         .nutrient-list li, .nutrient-header { font-size: 0.9em; grid-template-columns: 1.5fr 1fr 1fr 1fr; }
-         .legend-item { grid-template-columns: auto 1fr auto auto; font-size: 0.9em; }
+         .nutrient-list li, .nutrient-header { font-size: 1.2rem; grid-template-columns: 1.5fr 1fr 1fr 1fr; } /* Adjusted from em */
+         .legend-item { grid-template-columns: auto 1fr auto auto; font-size: 1.2rem; } /* Adjusted from em */
+         .exercise-log-entry-grid { grid-template-columns: 1fr; }
+         .food-item-entry-form { grid-template-columns: 1fr; }
+         .food-item-entry-form .log-input-field { margin-bottom: 0.5rem; }
+         .food-item-entry-form .add-food-item-btn { grid-column: 1 / -1; width: 100%; margin-top: 0.5rem; }
 
      }
      @media (max-width: 480px) {
           main.content-grid {
-             padding-top: calc(var(--header-height-mobile, 80px) - 20px + 1rem); /* Use correct mobile height */
+             padding-top: calc(var(--header-height-mobile, 80px) - 20px + 1rem);
          }
-          .main-tab-button { font-size: 1.1rem; padding: 0.6rem 1rem; gap: 0.5rem; }
-          .main-tab-button i { font-size: 1.5rem; }
-          .content-placeholder h1 { font-size: 1.4rem; }
+          .main-tab-button { font-size: 1.2rem; padding: 0.6rem 1rem; gap: 0.5rem; }
+          .main-tab-button i { font-size: 1.6rem; }
+          .content-placeholder > h1 { font-size: 1.6rem; } /* Main Tab Title */
           .workout-table td { padding-left: 40%;}
           .workout-table td::before { width: 35%; }
-          .navbar-right img.profile-pic {
-             width: 35px;
-             height: 35px;
-         }
-         .navbar-right li {
-             margin-bottom: 12px;
-         }
-     }
 
-     /* Removed duplicate 320px breakpoint as 480px covers small screens */
+        .daily-log-section h3, .coach-feedback-section h3, .meal-logging-section h3 { font-size: 1.5rem; } /* Section H3 */
+        .daily-log-section h4, .meal-logging-section h4 { font-size: 1.4rem; } /* Section H4 */
+        .exercise-log-form-group label { font-size: 1.3rem; } /* Form Label */
+        .log-input-field, .general-summary-area textarea, .coach-comment-input-area textarea { font-size: 1.25rem; padding: 0.8rem 1rem; } /* Input text */
+        .log-input-field::placeholder { font-size: 1.15rem; }
+        .food-item-entry-form label { font-size: 1.25rem; } /* Smaller form label */
+        .food-item-entry-form .log-input-field { font-size: 1.2rem; } /* Smaller input text */
+
+        .general-summary-area label, .coach-comment-input-area label { font-size: 1.3rem; }
+        .action-button { font-size: 1.3rem; padding: 0.8rem 1.5rem; }
+        .coach-comment-item p { font-size: 1.2rem; }
+        .coach-comment-item .comment-meta { font-size: 1.0rem; }
+        .logged-food-list li { font-size: 1.2rem; } /* List item text */
+        .calendar-widget h2 { font-size: 1.6rem; }
+        .calendar-widget .input-block label { font-size: 1.2rem; }
+        .calendar-widget .info-input { font-size: 1.2rem; }
+        .stat-card .card-header h3 { font-size: 1.3rem; }
+        .stat-card .card-body .value { font-size: 2rem; }
+        .chart-area h3 { font-size: 1.4rem; }
+        .tabs .tab-button { font-size: 1.2rem; }
+        .nutrition-tab-content h2 { font-size: 1.4rem; }
+     }
 
 </style>
 
@@ -546,7 +706,7 @@
                 <div class="day-name">S</div> <div class="day-name">M</div> <div class="day-name">T</div>
                 <div class="day-name">W</div> <div class="day-name">T</div> <div class="day-name">F</div>
                 <div class="day-name">S</div>
-                <!-- Dates (Example for April 2025) -->
+                <!-- Dates -->
                 <div class="date-cell empty"></div> <div class="date-cell empty"></div>
                 <div class="date-cell"><button>1</button></div> <div class="date-cell"><button>2</button></div>
                 <div class="date-cell"><button>3</button></div> <div class="date-cell"><button>4</button></div>
@@ -554,7 +714,7 @@
                 <div class="date-cell"><button>7</button></div> <div class="date-cell"><button>8</button></div>
                 <div class="date-cell"><button>9</button></div> <div class="date-cell"><button>10</button></div>
                 <div class="date-cell"><button>11</button></div> <div class="date-cell"><button>12</button></div>
-                <div class="date-cell"><button>13</button></div> <div class="date-cell"><button>14</button></div>
+                <div class="date-cell"><button>13</button></div> <div class="date-cell"><button data-date="2025-04-14">14</button></div>
                 <div class="date-cell"><button class="selected" data-date="2025-04-15">15</button></div>
                 <div class="date-cell"><button data-date="2025-04-16">16</button></div> <div class="date-cell"><button data-date="2025-04-17">17</button></div>
                 <div class="date-cell"><button data-date="2025-04-18">18</button></div> <div class="date-cell"><button data-date="2025-04-19">19</button></div>
@@ -596,7 +756,7 @@
 
             <div id="tabs-1" class="tab-content active">
                 <div class="content-placeholder">
-                    <h1>Workout Log Details:</h1>
+                    <h1>Workout Log Details</h1> <!-- Changed H1 text -->
                     <div class="input-block workout-type-block">
                         <p class="workout-type">Workout Type: Upper Body and Lower Body Split </p>
                     </div>
@@ -604,6 +764,7 @@
                         <table class="workout-table">
                             <thead>
                                 <tr>
+                                    <th scope="col" class="date-col">Date</th>
                                     <th scope="col">Exercise</th>
                                     <th scope="col">Sets</th>
                                     <th scope="col">Reps</th>
@@ -614,6 +775,7 @@
                             </thead>
                             <tbody>
                                 <tr>
+                                    <td data-label="Date" class="date-col">Apr 14, 2025</td>
                                     <td data-label="Exercise">Squats</td>
                                     <td data-label="Sets">3</td>
                                     <td data-label="Reps">10-12</td>
@@ -622,6 +784,7 @@
                                     <td data-label="Notes" class="notes-cell">Focus on form</td>
                                 </tr>
                                 <tr>
+                                     <td data-label="Date" class="date-col">Apr 14, 2025</td>
                                     <td data-label="Exercise">Push-ups</td>
                                     <td data-label="Sets">3</td>
                                     <td data-label="Reps">AMRAP</td>
@@ -629,129 +792,102 @@
                                     <td data-label="Duration">10 min</td>
                                     <td data-label="Notes" class="notes-cell">Modify on knees if needed</td>
                                 </tr>
-                                <tr>
-                                    <td data-label="Exercise">Bent-over Rows</td>
-                                    <td data-label="Sets">3</td>
-                                    <td data-label="Reps">10-12</td>
-                                    <td data-label="Weight">15 lbs dumbbells</td>
-                                    <td data-label="Duration">15 min</td>
-                                    <td data-label="Notes" class="notes-cell">Maintain straight back</td>
-                                </tr>
-                                <tr>
-                                    <td data-label="Exercise">Overhead Press</td>
-                                    <td data-label="Sets">3</td>
-                                    <td data-label="Reps">10-12</td>
-                                    <td data-label="Weight">15 lbs dumbbells</td>
-                                    <td data-label="Duration">15 min</td>
-                                    <td data-label="Notes" class="notes-cell">Controlled movement</td>
-                                </tr>
-                                <tr>
-                                    <td data-label="Exercise">Walking Lunges</td>
-                                    <td data-label="Sets">3</td>
-                                    <td data-label="Reps">10 / leg</td>
-                                    <td data-label="Weight">Bodyweight / 10 lbs</td>
-                                    <td data-label="Duration">15 min</td>
-                                    <td data-label="Notes" class="notes-cell">Good posture</td>
-                                </tr>
-                                <tr>
-                                    <td data-label="Exercise">Plank</td>
-                                    <td data-label="Sets">3</td>
-                                    <td data-label="Reps">45 sec</td>
-                                    <td data-label="Weight">Bodyweight</td>
-                                    <td data-label="Duration">5 min</td>
-                                    <td data-label="Notes" class="notes-cell">Engage core</td>
-                                </tr>
-                                <tr>
-                                    <td data-label="Exercise">Calf Raises</td>
-                                    <td data-label="Sets">3</td>
-                                    <td data-label="Reps">15-20</td>
-                                    <td data-label="Weight">Bodyweight / 10 lbs</td>
-                                    <td data-label="Duration">7 min</td>
-                                    <td data-label="Notes" class="notes-cell">Controlled movement</td>
-                                </tr>
                             </tbody>
                         </table>
                     </div>
+
+                    <section class="daily-log-section">
+                        <h3>Daily Activity Summary</h3>
+                        <div class="exercise-log-entry-fields">
+                            <h4>Log Exercise Details</h4>
+                            <div class="exercise-log-entry-grid">
+                                <div class="exercise-log-form-group">
+                                    <label for="logExerciseName">Exercise Name</label>
+                                    <input type="text" id="logExerciseName" name="logExerciseName" class="log-input-field" placeholder="e.g., Squats" required>
+                                </div>
+                                <div class="exercise-log-form-group">
+                                    <label for="logSets">Sets</label>
+                                    <input type="number" id="logSets" name="logSets" class="log-input-field" placeholder="e.g., 3" required>
+                                </div>
+                                <div class="exercise-log-form-group">
+                                    <label for="logReps">Reps</label>
+                                    <input type="number" id="logReps" name="logReps" class="log-input-field" placeholder="e.g., 10-12" required> <!-- Changed from text to number for consistency -->
+                                </div>
+                                <div class="exercise-log-form-group">
+                                    <label for="logWeight">Weight</label>
+                                    <input type="number" id="logWeight" name="logWeight" class="log-input-field" placeholder="e.g., 10 lbs" required> <!-- Kept as text for "Bodyweight" etc. -->
+                                </div>
+                                <div class="exercise-log-form-group">
+                                    <label for="logDuration">Duration</label>
+                                    <input type="text" id="logDuration" name="logDuration" class="log-input-field" placeholder="e.g., 15 min">
+                                </div>
+                                <div class="exercise-log-form-group full-width">
+                                    <label for="logExerciseNotes">Exercise Notes</label>
+                                    <textarea id="logExerciseNotes" name="logExerciseNotes" rows="3" class="log-input-field" placeholder="e.g., Focus on form"></textarea>
+                                </div>
+                            </div>
+                            <button type="button" id="addExerciseToLogBtn" class="action-button"> <!-- Applied action-button for consistency -->
+                                <i class='bx bx-plus-circle'></i> Add Exercise to Log
+                            </button>
+                        </div>
+
+
+                        <div class="general-summary-area">
+                            <label for="dailySummaryNotes">Overall Daily Notes / How were your goals met?</label>
+                            <textarea id="dailySummaryNotes" name="dailySummaryNotes" rows="4" placeholder="Example: Managed 45 mins of total workout..."></textarea>
+                        </div>
+                        <button type="button" id="saveFullLogBtn" class="action-button">
+                            <i class='bx bx-save'></i> Save Notes
+                        </button>
+                    </section>
+
+                    <section class="coach-feedback-section">
+                        <h3>Coach Feedback</h3>
+                        <div class="coach-comments-display">
+                            <div class="coach-comment-item">
+                                <p>Great job on consistency this week, Alex!...</p>
+                                <div class="comment-meta"><span class="coach-name">Coach Dave</span> - April 15, 2025</div>
+                            </div>
+                        </div>
+                        <div class="coach-comment-input-area">
+                            <label for="coachComment">Add a comment (Coach View):</label>
+                            <textarea id="coachComment" name="coachComment" rows="4" placeholder="Enter feedback..."></textarea>
+                        </div>
+                        <button type="button" id="submitCoachFeedbackBtn" class="action-button">
+                            <i class='bx bx-send'></i> Submit Feedback
+                        </button>
+                    </section>
                 </div>
             </div>
 
             <div id="tabs-2" class="tab-content">
-                <div class="content-placeholder">
+                 <div class="content-placeholder">
                     <h1>Workout Status</h1>
                     <section class="card-container">
                         <article class="card stat-card">
-                            <div class="card-header">
-                                <h3>Calories Burned</h3>
-                                <i class='bx bxs-hot'></i>
-                            </div>
-                            <div class="card-body">
-                                <p class="value">12000.00 <span class="unit">kcal</span></p>
-                                <p class="sub-value increase">(+10%)</p>
-                                <p class="description">Total calories burned this month</p>
-                            </div>
+                            <div class="card-header"><h3>Calories Burned</h3><i class='bx bxs-hot'></i></div>
+                            <div class="card-body"><p class="value">12000.00 <span class="unit">kcal</span></p><p class="sub-value increase">(+10%)</p><p class="description">Total calories burned this month</p></div>
                         </article>
                         <article class="card stat-card">
-                            <div class="card-header">
-                                <h3>Workouts</h3>
-                                <i class='bx bx-dumbbell'></i>
-                            </div>
-                            <div class="card-body">
-                                <p class="value">5.00</p>
-                                <p class="sub-value increase">(+1 workout)</p>
-                                <p class="description">Workouts completed this week</p>
-                            </div>
+                            <div class="card-header"><h3>Workouts</h3><i class='bx bx-dumbbell'></i></div>
+                            <div class="card-body"><p class="value">5.00</p><p class="sub-value increase">(+1 workout)</p><p class="description">Workouts completed this week</p></div>
                         </article>
                         <article class="card stat-card">
-                            <div class="card-header">
-                                <h3>Avg. Duration</h3>
-                                <i class='bx bx-time-five'></i>
-                            </div>
-                            <div class="card-body">
-                                <p class="value">45.00 <span class="unit">min</span></p>
-                                <p class="sub-value decrease">(-5 min)</p>
-                                <p class="description">Average duration per workout</p>
-                            </div>
+                            <div class="card-header"><h3>Avg. Duration</h3><i class='bx bx-time-five'></i></div>
+                            <div class="card-body"><p class="value">45.00 <span class="unit">min</span></p><p class="sub-value decrease">(-5 min)</p><p class="description">Average duration per workout</p></div>
                         </article>
                     </section>
-                    <div class="input-block graph-controls">
-                        <div class="control-group">
-                            <i class='bx bx-line-chart'></i>
-                            <label for="measurements">Measurements: </label>
-                            <select name="measurements" id="measurements">
-                                <option value="weight" data-unit="kg">Weight</option>
-                                <option value="neck" data-unit="cm">Neck</option>
-                                <option value="waist" data-unit="cm">Waist</option>
-                                <option value="hips" data-unit="cm">Hips</option>
-                            </select>
-                        </div>
-                        <div class="control-group">
-                             <i class='bx bxs-calendar-check'></i>
-                            <label for="graph-period">Period: </label>
-                            <select name="graph-period" id="graph-period">
-                                <option value="weekly" selected>1 Week</option>
-                                <option value="monthly">1 Month</option>
-                                <option value="3months">3 Months</option>
-                                <option value="6months">6 Months</option>
-                                <option value="yearly">1 Year</option>
-                                <option value="start">Since Start</option>
-                            </select>
-                        </div>
+                    <div class="input-block graph-controls"> <!-- input-block class for potential margin consistency -->
+                        <div class="control-group"><i class='bx bx-line-chart'></i><label for="measurements">Measurements: </label><select name="measurements" id="measurements"><option value="weight" data-unit="kg">Weight</option><option value="neck" data-unit="cm">Neck</option><option value="waist" data-unit="cm">Waist</option><option value="hips" data-unit="cm">Hips</option></select></div>
+                        <div class="control-group"><i class='bx bxs-calendar-check'></i><label for="graph-period">Period: </label><select name="graph-period" id="graph-period"><option value="weekly" selected>1 Week</option><option value="monthly">1 Month</option><option value="3months">3 Months</option><option value="6months">6 Months</option><option value="yearly">1 Year</option><option value="start">Since Start</option></select></div>
                     </div>
-
-                    <div class="graph-placeholder">
-                        <div class="chart-area">
-                            <h3 id="chart-title">Weight Progress (1 Week)</h3>
-                            <div class="canvas-wrapper">
-                                 <canvas id="progressChart"></canvas> <!-- Changed ID from myChart -->
-                            </div>
-                     </div>
-                    </div>
+                    <div class="graph-placeholder"><div class="chart-area"><h3 id="chart-title">Weight Progress (1 Week)</h3><div class="canvas-wrapper"><canvas id="progressChart"></canvas></div></div></div>
                  </div>
             </div>
 
             <div id="tabs-3" class="tab-content">
                 <div class="content-placeholder">
-                    <h1>Nutrition Status:</h1>
+                    <h1>Nutrition Status</h1> <!-- Changed H1 text -->
                     <nav class="tabs">
                         <button class="tab-button active" data-tab="calories">CALORIES</button>
                         <button class="tab-button" data-tab="nutrients">NUTRIENTS</button>
@@ -760,194 +896,126 @@
 
                     <div id="calories-content" class="nutrition-tab-content active">
                          <h2>Calories Breakdown</h2>
-                        <div class="chart-placeholder-container">
-                            <canvas id="calorieChart"></canvas>
-                        </div>
+                        <div class="chart-placeholder-container"><canvas id="calorieChart"></canvas></div>
                         <div class="calories-breakdown">
-                            <div class="meal-item">
-                                <span class="color-square calorie-breakfast" style="background-color: #bf9a33;"></span>
-                                <div class="meal-info">
-                                    <div>Breakfast</div>
-                                    <div data-value="breakfast-calories">0% (0 cal)</div>
-                                </div>
-                            </div>
-                            <div class="meal-item">
-                                <span class="color-square calorie-lunch" style="background-color: #febd14;"></span>
-                                <div class="meal-info">
-                                    <div>Lunch</div>
-                                    <div data-value="lunch-calories">0% (0 cal)</div>
-                                </div>
-                            </div>
-                            <div class="meal-item">
-                                <span class="color-square calorie-dinner" style="background-color: #fece43;"></span>
-                                 <div class="meal-info">
-                                   <div>Dinner</div>
-                                   <div data-value="dinner-calories">0% (0 cal)</div>
-                                 </div>
-                            </div>
-                            <div class="meal-item">
-                                <span class="color-square calorie-snacks" style="background-color: #feda75;"></span>
-                                 <div class="meal-info">
-                                    <div>Snacks</div>
-                                    <div data-value="snack-calories">0% (0 cal)</div>
-                                 </div>
-                            </div>
+                            <div class="meal-item"><span class="color-square calorie-breakfast" style="background-color: #bf9a33;"></span><div class="meal-info"><div>Breakfast</div><div data-value="breakfast-calories">0% (0 cal)</div></div></div>
+                            <div class="meal-item"><span class="color-square calorie-lunch" style="background-color: #febd14;"></span><div class="meal-info"><div>Lunch</div><div data-value="lunch-calories">0% (0 cal)</div></div></div>
+                            <div class="meal-item"><span class="color-square calorie-dinner" style="background-color: #fece43;"></span><div class="meal-info"><div>Dinner</div><div data-value="dinner-calories">0% (0 cal)</div></div></div>
+                            <div class="meal-item"><span class="color-square calorie-snacks" style="background-color: #feda75;"></span><div class="meal-info"><div>Snacks</div><div data-value="snack-calories">0% (0 cal)</div></div></div>
                         </div>
                         <div class="calorie-summary">
-                            <div class="summary-item">
-                                <span>Total Calories</span>
-                                <span data-value="total-calories">0</span>
-                            </div>
-                             <div class="summary-item">
-                                <span>Exercise</span>
-                                <span data-value="exercise-calories" class="exercise">0</span>
-                            </div>
-                            <div class="summary-item net-calories-item">
-                                <span>Net Calories</span>
-                                <span data-value="net-calories">0</span>
-                            </div>
-                             <hr class="summary-divider">
-                            <div class="summary-item goal">
-                                <span>Goal</span>
-                                <span data-value="goal-calories">1,520</span>
-                            </div>
+                            <div class="summary-item"><span>Total Calories</span><span data-value="total-calories">0</span></div>
+                            <div class="summary-item"><span>Exercise</span><span data-value="exercise-calories" class="exercise">0</span></div>
+                            <div class="summary-item net-calories-item"><span>Net Calories</span><span data-value="net-calories">0</span></div>
+                            <hr class="summary-divider">
+                            <div class="summary-item goal"><span>Goal</span><span data-value="goal-calories">1,520</span></div>
                         </div>
+
+                        <section class="meal-logging-section">
+                            <h3>Log Your Meals for <span id="selectedDateForMealLog">Today</span></h3>
+                            <div class="meal-log-group" id="breakfastLogGroup">
+                                <h4><i class='bx bx-sun'></i> Breakfast</h4>
+                                <form class="food-item-entry-form">
+                                    <div class="food-name-group"><label for="breakfast-food-name">Food</label><input type="text" id="breakfast-food-name" class="log-input-field food-name" placeholder="Food item"></div>
+                                    <div><label for="breakfast-food-calories">Cals</label><input type="number" id="breakfast-food-calories" class="log-input-field food-calories" placeholder="Cals"></div>
+                                    <div><label for="breakfast-food-protein">P(g)</label><input type="number" id="breakfast-food-protein" class="log-input-field food-protein" placeholder="P (g)"></div>
+                                    <div><label for="breakfast-food-carbs">C(g)</label><input type="number" id="breakfast-food-carbs" class="log-input-field food-carbs" placeholder="C (g)"></div>
+                                    <div><label for="breakfast-food-fat">F(g)</label><input type="number" id="breakfast-food-fat" class="log-input-field food-fat" placeholder="F (g)"></div>
+                                    <button type="button" class="action-button add-food-item-btn" data-meal="breakfast"><i class='bx bx-plus'></i> Add</button>
+                                </form>
+                                <ul class="logged-food-list breakfast-list"></ul>
+                            </div>
+                            <div class="meal-log-group" id="lunchLogGroup">
+                                <h4><i class='bx bxs-pizza'></i> Lunch</h4>
+                                <form class="food-item-entry-form">
+                                    <div class="food-name-group"><label for="lunch-food-name">Food</label><input type="text" id="lunch-food-name" class="log-input-field food-name" placeholder="Food item"></div>
+                                    <div><label for="lunch-food-calories">Cals</label><input type="number" id="lunch-food-calories" class="log-input-field food-calories" placeholder="Cals"></div>
+                                    <div><label for="lunch-food-protein">P(g)</label><input type="number" id="lunch-food-protein" class="log-input-field food-protein" placeholder="P (g)"></div>
+                                    <div><label for="lunch-food-carbs">C(g)</label><input type="number" id="lunch-food-carbs" class="log-input-field food-carbs" placeholder="C (g)"></div>
+                                    <div><label for="lunch-food-fat">F(g)</label><input type="number" id="lunch-food-fat" class="log-input-field food-fat" placeholder="F (g)"></div>
+                                    <button type="button" class="action-button add-food-item-btn" data-meal="lunch"><i class='bx bx-plus'></i> Add</button>
+                                </form>
+                                <ul class="logged-food-list lunch-list"></ul>
+                            </div>
+                            <div class="meal-log-group" id="dinnerLogGroup">
+                                <h4><i class='bx bx-bowl-rice'></i> Dinner</h4>
+                                <form class="food-item-entry-form">
+                                    <div class="food-name-group"><label for="dinner-food-name">Food</label><input type="text" id="dinner-food-name" class="log-input-field food-name" placeholder="Food item"></div>
+                                    <div><label for="dinner-food-calories">Cals</label><input type="number" id="dinner-food-calories" class="log-input-field food-calories" placeholder="Cals"></div>
+                                    <div><label for="dinner-food-protein">P(g)</label><input type="number" id="dinner-food-protein" class="log-input-field food-protein" placeholder="P (g)"></div>
+                                    <div><label for="dinner-food-carbs">C(g)</label><input type="number" id="dinner-food-carbs" class="log-input-field food-carbs" placeholder="C (g)"></div>
+                                    <div><label for="dinner-food-fat">F(g)</label><input type="number" id="dinner-food-fat" class="log-input-field food-fat" placeholder="F (g)"></div>
+                                    <button type="button" class="action-button add-food-item-btn" data-meal="dinner"><i class='bx bx-plus'></i> Add</button>
+                                </form>
+                                <ul class="logged-food-list dinner-list"></ul>
+                            </div>
+                            <div class="meal-log-group" id="snacksLogGroup">
+                                <h4><i class='bx bx-cookie'></i> Snacks</h4>
+                                <form class="food-item-entry-form">
+                                    <div class="food-name-group"><label for="snacks-food-name">Food</label><input type="text" id="snacks-food-name" class="log-input-field food-name" placeholder="Food item"></div>
+                                    <div><label for="snacks-food-calories">Cals</label><input type="number" id="snacks-food-calories" class="log-input-field food-calories" placeholder="Cals"></div>
+                                    <div><label for="snacks-food-protein">P(g)</label><input type="number" id="snacks-food-protein" class="log-input-field food-protein" placeholder="P (g)"></div>
+                                    <div><label for="snacks-food-carbs">C(g)</label><input type="number" id="snacks-food-carbs" class="log-input-field food-carbs" placeholder="C (g)"></div>
+                                    <div><label for="snacks-food-fat">F(g)</label><input type="number" id="snacks-food-fat" class="log-input-field food-fat" placeholder="F (g)"></div>
+                                    <button type="button" class="action-button add-food-item-btn" data-meal="snacks"><i class='bx bx-plus'></i> Add</button>
+                                </form>
+                                <ul class="logged-food-list snacks-list"></ul>
+                            </div>
+                            <button type="button" id="updateNutritionSummaryBtn" class="action-button">
+                                <i class='bx bx-refresh'></i> Update Full Nutrition Summary
+                            </button>
+
+                            <section class="coach-feedback-section"> <!-- Nested coach feedback, ensure consistent styling -->
+                                <h3>Coach Feedback</h3>
+                                <div class="coach-comments-display">
+                                    <div class="coach-comment-item">
+                                        <p>Good effort on the diet. That unplanned snack is okay...</p>
+                                        <div class="comment-meta"><span class="coach-name">Coach Dave</span> - April 15, 2025</div>
+                                    </div>
+                                </div>
+                                <div class="coach-comment-input-area">
+                                    <label for="coachComment_nutrition">Add a comment (Coach View):</label>
+                                    <textarea id="coachComment_nutrition" name="coachComment_nutrition" rows="4" placeholder="Enter feedback..."></textarea>
+                                </div>
+                                <button type="button" id="submitCoachFeedbackBtn_nutrition" class="action-button">
+                                    <i class='bx bx-send'></i> Submit Feedback
+                                </button>
+                            </section>
+                        </section>
                     </div>
 
                     <div id="nutrients-content" class="nutrition-tab-content">
-                         <h2>Nutrient Details</h2>
+                        <h2>Nutrient Details</h2>
                         <div class="nutrition-details-full">
-                            <div class="nutrient-header">
-                                <span>Nutrient</span>
-                                <span>Total</span>
-                                <span>Goal</span>
-                                <span>Left</span>
-                            </div>
+                            <div class="nutrient-header"><span>Nutrient</span><span>Total</span><span>Goal</span><span>Left</span></div>
                             <ul class="nutrient-list">
-                                <li data-nutrient="protein">
-                                    <span>Protein</span>
-                                    <span data-value="protein-total">0 g</span>
-                                    <span data-value="protein-goal">76 g</span>
-                                    <span data-value="protein-left">76 g</span>
-                                </li>
-                                <li data-nutrient="carbohydrates">
-                                    <span>Carbohydrates</span>
-                                    <span data-value="carbs-total">0 g</span>
-                                    <span data-value="carbs-goal">190 g</span>
-                                    <span data-value="carbs-left">190 g</span>
-                                </li>
-                                <li data-nutrient="fiber">
-                                    <span>Fiber</span>
-                                    <span data-value="fiber-total">0 g</span>
-                                    <span data-value="fiber-goal">25 g</span>
-                                    <span data-value="fiber-left">25 g</span>
-                                </li>
-                                <li data-nutrient="sugar">
-                                    <span>Sugar</span>
-                                    <span data-value="sugar-total">0 g</span>
-                                    <span data-value="sugar-goal">57 g</span>
-                                    <span data-value="sugar-left">57 g</span>
-                                </li>
-                                <li data-nutrient="fat">
-                                    <span>Fat</span>
-                                    <span data-value="fat-total">0 g</span>
-                                    <span data-value="fat-goal">51 g</span>
-                                    <span data-value="fat-left">51 g</span>
-                                </li>
-                                <li data-nutrient="saturated_fat">
-                                    <span>Saturated Fat</span>
-                                    <span data-value="satfat-total">0 g</span>
-                                    <span data-value="satfat-goal">17 g</span>
-                                    <span data-value="satfat-left">17 g</span>
-                                </li>
-                                <li data-nutrient="polyunsaturated_fat">
-                                    <span>Polyunsaturated Fat</span>
-                                    <span data-value="polyfat-total">0 g</span>
-                                    <span data-value="polyfat-goal">0 g</span>
-                                    <span data-value="polyfat-left">0 g</span>
-                                </li>
-                                <li data-nutrient="monounsaturated_fat">
-                                    <span>Monounsaturated Fat</span>
-                                    <span data-value="monofat-total">0 g</span>
-                                    <span data-value="monofat-goal">0 g</span>
-                                    <span data-value="monofat-left">0 g</span>
-                                </li>
-                                <li data-nutrient="trans_fat">
-                                    <span>Trans Fat</span>
-                                    <span data-value="transfat-total">0 g</span>
-                                    <span data-value="transfat-goal">0 g</span>
-                                    <span data-value="transfat-left">0 g</span>
-                                </li>
-                                <li data-nutrient="cholesterol">
-                                    <span>Cholesterol</span>
-                                    <span data-value="cholesterol-total">0 mg</span>
-                                    <span data-value="cholesterol-goal">300 mg</span>
-                                    <span data-value="cholesterol-left">300 mg</span>
-                                </li>
-                                <li data-nutrient="sodium">
-                                    <span>Sodium</span>
-                                    <span data-value="sodium-total">0 mg</span>
-                                    <span data-value="sodium-goal">2,300 mg</span>
-                                    <span data-value="sodium-left">2,300 mg</span>
-                                </li>
-                                <li data-nutrient="potassium">
-                                    <span>Potassium</span>
-                                    <span data-value="potassium-total">0 mg</span>
-                                    <span data-value="potassium-goal">3,500 mg</span>
-                                    <span data-value="potassium-left">3,500 mg</span>
-                                </li>
-                                <li data-nutrient="vitamin_a">
-                                    <span>Vitamin A</span>
-                                    <span data-value="vita-total">0 %</span>
-                                    <span data-value="vita-goal">100 %</span>
-                                    <span data-value="vita-left">100 %</span>
-                                </li>
-                                <li data-nutrient="vitamin_c">
-                                    <span>Vitamin C</span>
-                                    <span data-value="vitc-total">0 %</span>
-                                    <span data-value="vitc-goal">100 %</span>
-                                    <span data-value="vitc-left">100 %</span>
-                                </li>
-                                <li data-nutrient="calcium">
-                                    <span>Calcium</span>
-                                    <span data-value="calcium-total">0 %</span>
-                                    <span data-value="calcium-goal">100 %</span>
-                                    <span data-value="calcium-left">100 %</span>
-                                </li>
-                                <li data-nutrient="iron">
-                                    <span>Iron</span>
-                                    <span data-value="iron-total">0 %</span>
-                                    <span data-value="iron-goal">100 %</span>
-                                    <span data-value="iron-left">100 %</span>
-                                </li>
+                                <li data-nutrient="protein"><span>Protein</span><span data-value="protein-total">0 g</span><span data-value="protein-goal">76 g</span><span data-value="protein-left">76 g</span></li>
+                                <li data-nutrient="carbohydrates"><span>Carbohydrates</span><span data-value="carbs-total">0 g</span><span data-value="carbs-goal">190 g</span><span data-value="carbs-left">190 g</span></li>
+                                <li data-nutrient="fiber"><span>Fiber</span><span data-value="fiber-total">0 g</span><span data-value="fiber-goal">25 g</span><span data-value="fiber-left">25 g</span></li>
+                                <li data-nutrient="sugar"><span>Sugar</span><span data-value="sugar-total">0 g</span><span data-value="sugar-goal">57 g</span><span data-value="sugar-left">57 g</span></li>
+                                <li data-nutrient="fat"><span>Fat</span><span data-value="fat-total">0 g</span><span data-value="fat-goal">51 g</span><span data-value="fat-left">51 g</span></li>
+                                <li data-nutrient="saturated_fat"><span>Saturated Fat</span><span data-value="satfat-total">0 g</span><span data-value="satfat-goal">17 g</span><span data-value="satfat-left">17 g</span></li>
+                                <li data-nutrient="polyunsaturated_fat"><span>Polyunsaturated Fat</span><span data-value="polyfat-total">0 g</span><span data-value="polyfat-goal">0 g</span><span data-value="polyfat-left">0 g</span></li>
+                                <li data-nutrient="monounsaturated_fat"><span>Monounsaturated Fat</span><span data-value="monofat-total">0 g</span><span data-value="monofat-goal">0 g</span><span data-value="monofat-left">0 g</span></li>
+                                <li data-nutrient="trans_fat"><span>Trans Fat</span><span data-value="transfat-total">0 g</span><span data-value="transfat-goal">0 g</span><span data-value="transfat-left">0 g</span></li>
+                                <li data-nutrient="cholesterol"><span>Cholesterol</span><span data-value="cholesterol-total">0 mg</span><span data-value="cholesterol-goal">300 mg</span><span data-value="cholesterol-left">300 mg</span></li>
+                                <li data-nutrient="sodium"><span>Sodium</span><span data-value="sodium-total">0 mg</span><span data-value="sodium-goal">2,300 mg</span><span data-value="sodium-left">2,300 mg</span></li>
+                                <li data-nutrient="potassium"><span>Potassium</span><span data-value="potassium-total">0 mg</span><span data-value="potassium-goal">3,500 mg</span><span data-value="potassium-left">3,500 mg</span></li>
+                                <li data-nutrient="vitamin_a"><span>Vitamin A</span><span data-value="vita-total">0 %</span><span data-value="vita-goal">100 %</span><span data-value="vita-left">100 %</span></li>
+                                <li data-nutrient="vitamin_c"><span>Vitamin C</span><span data-value="vitc-total">0 %</span><span data-value="vitc-goal">100 %</span><span data-value="vitc-left">100 %</span></li>
+                                <li data-nutrient="calcium"><span>Calcium</span><span data-value="calcium-total">0 %</span><span data-value="calcium-goal">100 %</span><span data-value="calcium-left">100 %</span></li>
+                                <li data-nutrient="iron"><span>Iron</span><span data-value="iron-total">0 %</span><span data-value="iron-goal">100 %</span><span data-value="iron-left">100 %</span></li>
                             </ul>
                         </div>
                     </div>
 
                     <div id="macros-content" class="nutrition-tab-content">
                          <h2>Macronutrient Ratio</h2>
-                        <div class="chart-placeholder-container">
-                             <canvas id="macroChart"></canvas>
-                        </div>
+                        <div class="chart-placeholder-container"><canvas id="macroChart"></canvas></div>
                         <div class="macros-legend">
-                             <div class="legend-item" data-macro="carbs">
-                                <span class="color-square macro-carbs" style="background-color: #febd14;"></span>
-                                <span>Carbohydrates (<span data-value="carbs-grams">0g</span>)</span>
-                                <span class="percentage" data-value="carbs-percentage">0%</span>
-                                <span class="goal-percentage">50%</span>
-                            </div>
-                             <div class="legend-item" data-macro="fat">
-                                <span class="color-square macro-fat" style="background-color: #fece43;"></span>
-                                <span>Fat (<span data-value="fat-grams">0g</span>)</span>
-                                <span class="percentage" data-value="fat-percentage">0%</span>
-                                <span class="goal-percentage">30%</span>
-                            </div>
-                             <div class="legend-item" data-macro="protein">
-                                <span class="color-square macro-protein" style="background-color: #feda75;"></span>
-                                <span>Protein (<span data-value="protein-grams">0g</span>)</span>
-                                <span class="percentage" data-value="protein-percentage">0%</span>
-                                <span class="goal-percentage">20%</span>
-                            </div>
+                             <div class="legend-item" data-macro="carbs"><span class="color-square macro-carbs" style="background-color: #febd14;"></span><span>Carbohydrates (<span data-value="carbs-grams">0g</span>)</span><span class="percentage" data-value="carbs-percentage">0%</span><span class="goal-percentage">50%</span></div>
+                             <div class="legend-item" data-macro="fat"><span class="color-square macro-fat" style="background-color: #fece43;"></span><span>Fat (<span data-value="fat-grams">0g</span>)</span><span class="percentage" data-value="fat-percentage">0%</span><span class="goal-percentage">30%</span></div>
+                             <div class="legend-item" data-macro="protein"><span class="color-square macro-protein" style="background-color: #feda75;"></span><span>Protein (<span data-value="protein-grams">0g</span>)</span><span class="percentage" data-value="protein-percentage">0%</span><span class="goal-percentage">20%</span></div>
                         </div>
                     </div>
                 </div>
@@ -955,12 +1023,11 @@
         </section>
     </main>
 
-    <!-- Modal structure (Keep outside main if it overlays everything) -->
-    <div id="logoutConfirmationModal" class="modal">
+    <div id="logoutConfirmationModal" class="modal"> <!-- Added .modal class for generic handling -->
         <div class="modal-content">
-            <button id="closeLogoutModalButton" class="close-button">×</button>
+            <button id="closeLogoutModalButton" class="close-button">×</button> <!-- Ensure this is styled by .close-button or .modal-close-btn -->
             <p id="logoutModalMessage">Are you sure you want to logout?</p>
-            <div style="text-align: center;">
+            <div class="modal-actions"> <!-- Use modal-actions for centering -->
                  <button id="cancelLogoutButton" class="btn-secondary">Cancel</button>
                  <button id="okLogoutButton" class="btn-primary">Logout</button>
             </div>
@@ -972,8 +1039,8 @@
              <div class="subscribe-text">
                 <h2>Subscribe</h2>
                 <p>Join our fitness family and get tips, exclusive updates, and special offers. Start your journey today!</p>
-                <form class="subscribe-form">
-                    <input type="email" placeholder="Email" required>
+                <form class="subscribe-form" id="subscribeForm">
+                    <input type="email" id="subscribeEmail" placeholder="Email" required>
                     <button type="submit" class="btn btn-primary">Send</button>
                 </form>
                 <div class="social-icons">
@@ -982,7 +1049,6 @@
                     <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
                 </div>
             </div>
-
             <div class="footer-links">
                  <div><h4>Company</h4><ul><li><a href="#">Press</a></li><li><a href="#">Blog</a></li><li><a href="#">About</a></li><li><a href="#">Careers</a></li></ul></div> <div><h4>Services</h4><ul><li><a href="#">Training</a></li><li><a href="#">Nutrition</a></li><li><a href="#">Lifestyles</a></li></ul></div> <div><h4>Legal</h4><ul><li><a href="#">Policy</a></li><li><a href="#">Privacy & Cookies</a></li><li><a href="#">Terms & Conditions</a></li></ul></div> <div><h4>Community</h4><ul><li><a href="#">Contact</a></li><li><a href="#">Find a club</a></li><li><a href="#">Membership</a></li></ul></div> <div><h4>Gym</h4><ul><li><a href="#">Book a Gym</a></li><li><a href="#">Find a Gym</a></li></ul></div>
             </div>
@@ -994,499 +1060,324 @@
         </div>
     </footer>
 
-    <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-moment@1.0.1/dist/chartjs-adapter-moment.min.js"></script>
-    <!-- Removed link to external JS file -->
-    <!-- <script src="progress.js"></script> -->
 
     <script>
         $(document).ready(function() {
             // --- Header Menu Toggle ---
             var menuIcon = $('#menu-icon');
             var navbar = $('.navbar');
-            var logoutLink = $('#logout-link');
-            var logoutModal = $('#logoutConfirmationModal');
-            var closeLogoutModalBtn = $('#closeLogoutModalButton');
-            var cancelLogoutBtn = $('#cancelLogoutButton');
-            var okLogoutBtn = $('#okLogoutButton');
-
             if (menuIcon.length && navbar.length) {
-                menuIcon.on('click', function() {
-                    $(this).toggleClass('bx-x');
-                    navbar.toggleClass('active');
-                });
-
-                // Close menu when a link is clicked (except logout)
-                $('.navbar a').on('click', function(event) {
-                     if (navbar.hasClass('active') && !$(this).is('#logout-link')) {
-                         navbar.removeClass('active');
-                         menuIcon.removeClass('bx-x');
-                     }
-                });
-
-                // Close menu if profile pic area is clicked while menu open
-                $('.navbar-right li:has(.profile-pic)').on('click', function(e) {
-                     if(navbar.hasClass('active')) {
-                          navbar.removeClass('active');
-                          menuIcon.removeClass('bx-x');
-                     }
-                });
-
-                // Close menu on scroll
-                $(window).on('scroll', function() {
-                    if (navbar.hasClass('active')) {
-                        navbar.removeClass('active');
-                        menuIcon.removeClass('bx-x');
-                    }
-                });
-            } else {
-                console.warn("Header menu icon or navbar not found.");
+                menuIcon.on('click', function() { $(this).toggleClass('bx-x'); navbar.toggleClass('active'); });
+                $('.navbar a').on('click', function() { if (navbar.hasClass('active') && !$(this).is('#logout-link')) { navbar.removeClass('active'); menuIcon.removeClass('bx-x'); } });
+                $('.navbar-right li:has(.profile-pic)').on('click', function() { if(navbar.hasClass('active')) { navbar.removeClass('active'); menuIcon.removeClass('bx-x'); } });
+                $(window).on('scroll', function() { if (navbar.hasClass('active')) { navbar.removeClass('active'); menuIcon.removeClass('bx-x'); } });
             }
 
             // --- Logout Modal Logic ---
+            var logoutLink = $('#logout-link');
+            var logoutModal = $('#logoutConfirmationModal');
             if (logoutLink.length && logoutModal.length) {
-                logoutLink.on('click', function(event) {
-                    event.preventDefault(); // Prevent default link navigation
-                    logoutModal.addClass('show'); // Show the modal
-                });
-
-                closeLogoutModalBtn.on('click', function() {
-                    logoutModal.removeClass('show'); // Hide modal
-                });
-
-                cancelLogoutBtn.on('click', function() {
-                    logoutModal.removeClass('show'); // Hide modal
-                });
-
-                okLogoutBtn.on('click', function() {
-                    logoutModal.removeClass('show'); // Hide modal
-                    // Redirect to the original logout link's href
-                    window.location.href = logoutLink.attr('href');
-                });
-
-                // Close modal if clicked outside the content
-                $(window).on('click', function(event) {
-                    if ($(event.target).is(logoutModal)) {
-                        logoutModal.removeClass('show');
-                    }
-                });
+                logoutLink.on('click', function(e) { e.preventDefault(); logoutModal.addClass('show'); });
+                $('#closeLogoutModalButton, #cancelLogoutButton').on('click', function() { logoutModal.removeClass('show'); });
+                $('#okLogoutButton').on('click', function() { logoutModal.removeClass('show'); window.location.href = logoutLink.attr('href'); });
+                $(window).on('click', function(e) { if ($(e.target).is(logoutModal) && logoutModal.hasClass('show')) { logoutModal.removeClass('show'); } });
             } else {
-                 console.warn("Logout link or modal not found.");
-                 // Fallback for original non-modal behavior if needed
-                 $('#logout-link').on('click', function(event) {
-                      event.preventDefault();
-                      var confirmLogout = confirm("Are you sure you want to logout?");
-                      if (confirmLogout) {
-                          window.location.href = this.href;
-                      }
-                 });
+                 $('#logout-link').on('click', function(e) { e.preventDefault(); if (confirm("Are you sure?")) { window.location.href = this.href; }});
             }
-
 
             // --- Main Tab Switching ---
             $('.main-tab-button').on('click', function() {
-                var targetSelector = $(this).data('target');
-                var $targetContent = $(targetSelector);
-
-                if ($targetContent.length) {
-                    // Switch main tabs
-                    $('.main-tab-button').removeClass('active');
-                    $(this).addClass('active');
-                    $('.main-tab-content > .tab-content').removeClass('active'); // Target only direct children
-                    $targetContent.addClass('active');
-
-                    // Initialize or update charts if the target tab contains them
-                    if (targetSelector === '#tabs-2') {
-                        initializeOrUpdateProgressChart();
-                    } else if (targetSelector === '#tabs-3') {
-                         initializeOrUpdateNutritionCharts();
-                         // Ensure the correct inner nutrition tab is shown
-                         const activeNutritionButton = $('#tabs-3 .tabs .tab-button.active');
-                         if (activeNutritionButton.length) {
-                             const targetNutritionTab = activeNutritionButton.data('tab');
-                             $('#tabs-3 .nutrition-tab-content').removeClass('active');
-                             $('#' + targetNutritionTab + '-content').addClass('active');
-                         }
-                    }
-                } else {
-                    console.warn("Main tab target content not found:", targetSelector);
+                var target = $(this).data('target');
+                $('.main-tab-button').removeClass('active'); $(this).addClass('active');
+                $('.main-tab-content > .tab-content').removeClass('active'); $(target).addClass('active');
+                if (target === '#tabs-2') initializeOrUpdateProgressChart();
+                else if (target === '#tabs-3') {
+                    initializeOrUpdateNutritionCharts();
+                    const activeNutriTab = $('#tabs-3 .tabs .tab-button.active').data('tab');
+                    $('#' + activeNutriTab + '-content').addClass('active');
                 }
             });
 
             // --- Nutrition Inner Tab Switching ---
              $('.tabs .tab-button').on('click', function() {
-                  var tabId = $(this).data('tab');
-                  var $container = $(this).closest('.content-placeholder');
-
-                  $container.find('.tabs .tab-button').removeClass('active');
-                  $(this).addClass('active');
-
-                  $container.find('.nutrition-tab-content').removeClass('active');
-                  $('#' + tabId + '-content').addClass('active');
-
-                  // Re-initialize charts if switching back to a chart tab within nutrition
+                  var tabId = $(this).data('tab'); var container = $(this).closest('.content-placeholder');
+                  container.find('.tabs .tab-button').removeClass('active'); $(this).addClass('active');
+                  container.find('.nutrition-tab-content').removeClass('active'); $('#' + tabId + '-content').addClass('active');
                   if (tabId === 'calories' || tabId === 'macros') {
-                      initializeOrUpdateNutritionCharts();
+                      $('#updateNutritionSummaryBtn').trigger('click');
                   }
              });
 
-            // --- Chart.js Implementations ---
-            let progressChartInstance = null;
-            let calorieChartInstance = null;
-            let macroChartInstance = null;
+            // --- Chart.js Instances ---
+            let progressChartInstance, calorieChartInstance, macroChartInstance;
 
-            // Function to get placeholder data for the progress chart
             function getProgressChartData(period, measurement) {
-                // --- Placeholder Data ---
-                // In a real application, this data would be fetched based on period and measurement
-                let labels = [];
-                let data = [];
+                let labels = []; let data = [];
                 let unit = $('#measurements option:selected').data('unit') || 'kg';
-                let startDate = moment().subtract(6, 'days'); // Default to 1 week
-
+                let startDate = moment().subtract(6, 'days');
                 let days = 7;
                 if (period === 'monthly') { startDate = moment().subtract(1, 'month'); days = 30; }
                 else if (period === '3months') { startDate = moment().subtract(3, 'months'); days = 90; }
                 else if (period === '6months') { startDate = moment().subtract(6, 'months'); days = 180; }
                 else if (period === 'yearly') { startDate = moment().subtract(1, 'year'); days = 365; }
-                // 'start' would require fetching the actual start date
-
-                let startValue = 70; // Example start value
+                let startValue = 70;
                 if (measurement === 'neck') startValue = 38;
                 else if (measurement === 'waist') startValue = 85;
                 else if (measurement === 'hips') startValue = 100;
-
                 for (let i = 0; i < days; i++) {
                     labels.push(startDate.clone().add(i, 'days').toDate());
-                    // Simulate some data fluctuation
-                    data.push(startValue + (Math.random() * 4 - 2) * (measurement === 'weight' ? 1 : 0.5) - (i * 0.05)); // Simulate slight downward trend
+                    data.push(startValue + (Math.random() * 4 - 2) * (measurement === 'weight' ? 1 : 0.5) - (i * 0.05));
                 }
-
                 return { labels, data, unit };
-            }
-
-            // Initialize or Update Progress Line Chart
+             }
             function initializeOrUpdateProgressChart() {
-                const ctx = document.getElementById('progressChart');
-                if (!ctx) return; // Exit if canvas not found
-
-                const measurementSelect = $('#measurements');
-                const periodSelect = $('#graph-period');
-                const chartTitle = $('#chart-title');
-
-                const selectedMeasurement = measurementSelect.val();
-                const selectedPeriod = periodSelect.val();
-                const measurementText = measurementSelect.find('option:selected').text();
-                const periodText = periodSelect.find('option:selected').text();
-
-                // Update chart title
-                chartTitle.text(`${measurementText} Progress (${periodText})`);
-
-                // Get placeholder data
-                const { labels, data, unit } = getProgressChartData(selectedPeriod, selectedMeasurement);
-
-                // Destroy previous chart instance if it exists
-                if (progressChartInstance) {
-                    progressChartInstance.destroy();
-                }
-
-                // Create new chart
+                const ctx = document.getElementById('progressChart'); if (!ctx) return;
+                const mSelect = $('#measurements'), pSelect = $('#graph-period'), chartTitle = $('#chart-title');
+                const selM = mSelect.val(), selP = pSelect.val();
+                const mText = mSelect.find('option:selected').text(), pText = pSelect.find('option:selected').text();
+                chartTitle.text(`${mText} Progress (${pText})`);
+                const { labels, data, unit } = getProgressChartData(selP, selM);
+                if (progressChartInstance) progressChartInstance.destroy();
                 progressChartInstance = new Chart(ctx.getContext('2d'), {
-                    type: 'line',
-                    data: {
-                        labels: labels,
-                        datasets: [{
-                            label: `${measurementText} (${unit})`,
-                            data: data,
-                            borderColor: 'rgba(218, 165, 32, 1)', // Goldenrod
-                            backgroundColor: 'rgba(218, 165, 32, 0.1)',
-                            borderWidth: 2,
-                            tension: 0.1, // Makes the line slightly curved
-                            fill: true
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        scales: {
-                            x: {
-                                type: 'time',
-                                time: {
-                                     unit: labels.length > 90 ? 'month' : (labels.length > 7 ? 'week' : 'day'), // Adjust time unit based on data range
-                                     tooltipFormat: 'll' // e.g., Sep 4, 1986
-                                },
-                                title: {
-                                    display: true,
-                                    text: 'Date'
-                                }
-                            },
-                            y: {
-                                beginAtZero: false, // Don't force y-axis to start at 0 for measurements like weight
-                                title: {
-                                    display: true,
-                                    text: `${measurementText} (${unit})`
-                                }
-                            }
-                        },
-                        plugins: {
-                            tooltip: {
-                                mode: 'index',
-                                intersect: false
-                            }
-                        }
-                    }
+                    type: 'line', data: { labels: labels, datasets: [{ label: `${mText} (${unit})`, data: data, borderColor: 'var(--main-color)', backgroundColor: 'rgba(255,215,0,0.1)', borderWidth: 2, tension: 0.1, fill: true }] },
+                    options: { responsive: true, maintainAspectRatio: false, scales: { x: { type: 'time', time: { unit: labels.length > 90 ? 'month' : (labels.length > 7 ? 'week' : 'day'), tooltipFormat: 'll' }, title: { display: true, text: 'Date', color: 'var(--card-muted-text-color)' }, ticks: { color: 'var(--card-muted-text-color)' }, grid: { color: 'var(--card-border-color)' } }, y: { beginAtZero: false, title: { display: true, text: `${mText} (${unit})`, color: 'var(--card-muted-text-color)' }, ticks: { color: 'var(--card-muted-text-color)' }, grid: { color: 'var(--card-border-color)' } } }, plugins: { legend: { labels: { color: 'var(--card-text-color)' } }, tooltip: { mode: 'index', intersect: false, titleColor: 'var(--main-color)', bodyColor: 'var(--card-text-color)', backgroundColor: 'var(--card-bg)', borderColor: 'var(--main-color)', borderWidth: 1 } } }
                 });
-            }
+             }
+            $('#measurements, #graph-period').on('change', function() { if ($('#tabs-2').hasClass('active')) initializeOrUpdateProgressChart(); });
 
-            // Function to update Nutrition UI based on data
-            function updateNutritionUI(calorieData, macroData, goalCalories, goalMacros) {
-                // --- Update Calorie Breakdown ---
+
+            // --- Nutrition UI and Charts ---
+            let currentCalorieData = { breakfast: 0, lunch: 0, dinner: 0, snacks: 0 };
+            let currentMacroData = { carbs: 0, fat: 0, protein: 0 };
+
+            function updateNutritionUI(calorieData, macroData) {
                 const totalCalories = Object.values(calorieData).reduce((sum, val) => sum + val, 0);
-                const exerciseCalories = 250; // Placeholder exercise calories
+                const exerciseCalories = parseInt($('[data-value="exercise-calories"]').text().replace(/,/g, '')) || 0;
 
                 $('[data-value="total-calories"]').text(totalCalories.toLocaleString());
-                $('[data-value="exercise-calories"]').text(exerciseCalories.toLocaleString());
                 $('[data-value="net-calories"]').text((totalCalories - exerciseCalories).toLocaleString());
-                $('[data-value="goal-calories"]').text(goalCalories.toLocaleString());
 
-                // Update meal percentages/calories
                 const mealTargets = {
-                    'breakfast-calories': $('[data-value="breakfast-calories"]'),
-                    'lunch-calories': $('[data-value="lunch-calories"]'),
-                    'dinner-calories': $('[data-value="dinner-calories"]'),
-                    'snack-calories': $('[data-value="snack-calories"]')
+                    'breakfast-calories': $('[data-value="breakfast-calories"]'), 'lunch-calories': $('[data-value="lunch-calories"]'),
+                    'dinner-calories': $('[data-value="dinner-calories"]'), 'snack-calories': $('[data-value="snack-calories"]')
                 };
-                for(const meal in calorieData) {
-                    const key = `${meal}-calories`;
+                for (const meal in calorieData) {
+                    const key = `${meal.toLowerCase()}-calories`;
                     if (mealTargets[key]) {
                         const percentage = totalCalories > 0 ? Math.round((calorieData[meal] / totalCalories) * 100) : 0;
-                         mealTargets[key].text(`${percentage}% (${calorieData[meal].toLocaleString()} cal)`);
+                        mealTargets[key].text(`${percentage}% (${calorieData[meal].toLocaleString()} cal)`);
                     }
                 }
 
-                // --- Update Nutrient Details (Basic Example - linking macros) ---
-                $('[data-value="protein-total"]').text(`${macroData.protein} g`);
-                $('[data-value="carbs-total"]').text(`${macroData.carbs} g`);
-                $('[data-value="fat-total"]').text(`${macroData.fat} g`);
-                // Add logic to calculate 'left' values based on goals if available
-                 // Example for protein left:
-                const proteinGoal = parseInt($('[data-value="protein-goal"]').text()) || 0;
-                $('[data-value="protein-left"]').text(`${Math.max(0, proteinGoal - macroData.protein)} g`);
-                 // Example for carbs left:
-                const carbsGoal = parseInt($('[data-value="carbs-goal"]').text()) || 0;
-                $('[data-value="carbs-left"]').text(`${Math.max(0, carbsGoal - macroData.carbs)} g`);
-                 // Example for fat left:
-                const fatGoal = parseInt($('[data-value="fat-goal"]').text()) || 0;
-                $('[data-value="fat-left"]').text(`${Math.max(0, fatGoal - macroData.fat)} g`);
-                // ... Calculate others similarly if goals are numeric ...
+                $('[data-value="protein-total"]').text(`${macroData.protein.toFixed(1)} g`);
+                $('[data-value="carbs-total"]').text(`${macroData.carbs.toFixed(1)} g`);
+                $('[data-value="fat-total"]').text(`${macroData.fat.toFixed(1)} g`);
+                const proteinGoalGrams = parseFloat($('[data-value="protein-goal"]').text().replace(/[^0-9.]/g, '')) || 0;
+                $('[data-value="protein-left"]').text(`${Math.max(0, proteinGoalGrams - macroData.protein).toFixed(1)} g`);
+                const carbsGoalGrams = parseFloat($('[data-value="carbs-goal"]').text().replace(/[^0-9.]/g, '')) || 0;
+                $('[data-value="carbs-left"]').text(`${Math.max(0, carbsGoalGrams - macroData.carbs).toFixed(1)} g`);
+                const fatGoalGrams = parseFloat($('[data-value="fat-goal"]').text().replace(/[^0-9.]/g, '')) || 0;
+                $('[data-value="fat-left"]').text(`${Math.max(0, fatGoalGrams - macroData.fat).toFixed(1)} g`);
 
 
-                // --- Update Macros Legend ---
-                const totalGrams = macroData.carbs + macroData.fat + macroData.protein;
-                const carbsPercent = totalGrams > 0 ? Math.round((macroData.carbs * 4 / (macroData.carbs*4 + macroData.fat*9 + macroData.protein*4)) * 100) : 0; // Calculate % calories
-                const fatPercent = totalGrams > 0 ? Math.round((macroData.fat * 9 / (macroData.carbs*4 + macroData.fat*9 + macroData.protein*4)) * 100) : 0; // Calculate % calories
-                // Ensure protein makes up the remainder to avoid rounding errors summing > 100%
-                const proteinPercent = totalGrams > 0 ? Math.max(0, 100 - carbsPercent - fatPercent) : 0;
-
-
-                $('[data-value="carbs-grams"]').text(`${macroData.carbs}g`);
-                $('[data-value="carbs-percentage"]').text(`${carbsPercent}%`);
-                $('[data-value="fat-grams"]').text(`${macroData.fat}g`);
-                $('[data-value="fat-percentage"]').text(`${fatPercent}%`);
-                $('[data-value="protein-grams"]').text(`${macroData.protein}g`);
-                $('[data-value="protein-percentage"]').text(`${proteinPercent}%`);
-
-                // Update goal percentages (if provided)
-                if (goalMacros) {
-                    $('[data-macro="carbs"] .goal-percentage').text(`${goalMacros.carbs}%`);
-                    $('[data-macro="fat"] .goal-percentage').text(`${goalMacros.fat}%`);
-                    $('[data-macro="protein"] .goal-percentage').text(`${goalMacros.protein}%`);
+                const totalMacroCalories = (macroData.carbs * 4) + (macroData.fat * 9) + (macroData.protein * 4);
+                const carbsPercent = totalMacroCalories > 0 ? Math.round((macroData.carbs * 4 / totalMacroCalories) * 100) : 0;
+                const fatPercent = totalMacroCalories > 0 ? Math.round((macroData.fat * 9 / totalMacroCalories) * 100) : 0;
+                let proteinPercent = 0;
+                if (totalMacroCalories > 0) {
+                    proteinPercent = 100 - carbsPercent - fatPercent;
+                     if (proteinPercent < 0) proteinPercent = 0; // Ensure not negative
                 }
-            }
 
 
-            // Initialize or Update Nutrition Pie Charts
-            function initializeOrUpdateNutritionCharts() {
-                 // --- Placeholder Nutrition Data ---
-                 const calorieData = {
-                     breakfast: 350,
-                     lunch: 550,
-                     dinner: 600,
-                     snacks: 180
-                 };
-                 const macroData = { // In grams
-                     carbs: 195,
-                     fat: 60,
-                     protein: 75
-                 };
-                 const goalCalories = parseInt($('[data-value="goal-calories"]').text().replace(/,/g, '')) || 1520; // Read from HTML or default
-                 const goalMacros = { // Percentages
-                     carbs: parseInt($('[data-macro="carbs"] .goal-percentage').text()) || 50,
-                     fat: parseInt($('[data-macro="fat"] .goal-percentage').text()) || 30,
-                     protein: parseInt($('[data-macro="protein"] .goal-percentage').text()) || 20
-                 };
+                $('[data-value="carbs-grams"]').text(`${macroData.carbs.toFixed(1)}g`); $('[data-value="carbs-percentage"]').text(`${carbsPercent}%`);
+                $('[data-value="fat-grams"]').text(`${macroData.fat.toFixed(1)}g`); $('[data-value="fat-percentage"]').text(`${fatPercent}%`);
+                $('[data-value="protein-grams"]').text(`${macroData.protein.toFixed(1)}g`); $('[data-value="protein-percentage"]').text(`${proteinPercent}%`);
+             }
+            function initializeOrUpdateNutritionCharts(calorieDataToDisplay = currentCalorieData, macroDataToDisplay = currentMacroData) {
+                updateNutritionUI(calorieDataToDisplay, macroDataToDisplay);
 
-                 // Update the UI text elements first
-                 updateNutritionUI(calorieData, macroData, goalCalories, goalMacros);
-
-
-                // --- Calorie Chart ---
                 const calorieCtx = document.getElementById('calorieChart');
                 if (calorieCtx) {
-                    if (calorieChartInstance) {
-                        calorieChartInstance.destroy();
-                    }
+                    if (calorieChartInstance) calorieChartInstance.destroy();
                     calorieChartInstance = new Chart(calorieCtx.getContext('2d'), {
-                        type: 'doughnut',
-                        data: {
+                        type: 'doughnut', data: {
                             labels: ['Breakfast', 'Lunch', 'Dinner', 'Snacks'],
                             datasets: [{
-                                label: 'Calories',
-                                data: [
-                                    calorieData.breakfast,
-                                    calorieData.lunch,
-                                    calorieData.dinner,
-                                    calorieData.snacks
-                                ],
-                                backgroundColor: [
-                                    '#bf9a33', // breakfast color from legend
-                                    '#febd14', // lunch color
-                                    '#fece43', // dinner color
-                                    '#feda75'  // snacks color
-                                ],
-                                borderColor: '#ffffff',
-                                borderWidth: 2
+                                label: 'Calories', data: [calorieDataToDisplay.breakfast, calorieDataToDisplay.lunch, calorieDataToDisplay.dinner, calorieDataToDisplay.snacks],
+                                backgroundColor: ['#bf9a33', '#febd14', '#fece43', '#feda75'],
+                                borderColor: 'var(--card-bg)', borderWidth: 3
                             }]
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            plugins: {
-                                legend: {
-                                    display: false // Using custom HTML legend
-                                },
-                                tooltip: {
-                                    callbacks: {
-                                        label: function(context) {
-                                            let label = context.label || '';
-                                            if (label) {
-                                                label += ': ';
-                                            }
-                                            if (context.parsed !== null) {
-                                                label += context.parsed.toLocaleString() + ' cal';
-                                            }
-                                            return label;
-                                        }
-                                    }
-                                }
-                            },
-                            cutout: '60%' // Make it a doughnut chart
-                        }
+                        }, options: { responsive: true, maintainAspectRatio: false, cutout: '60%', plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => { let l = c.label || ''; if (l) l += ': '; if (c.parsed !== null) l += c.parsed.toLocaleString() + ' cal'; return l; } }, titleColor: 'var(--main-color)', bodyColor: 'var(--card-text-color)', backgroundColor: 'var(--card-bg)', borderColor: 'var(--main-color)', borderWidth: 1 } } }
                     });
                 }
 
-
-                // --- Macro Chart ---
                 const macroCtx = document.getElementById('macroChart');
                 if (macroCtx) {
-                    if (macroChartInstance) {
-                        macroChartInstance.destroy();
-                    }
-
-                    // Use macro G GRAMS for the chart data segments
-                    const macroChartDataValues = [
-                        macroData.carbs,
-                        macroData.fat,
-                        macroData.protein
-                    ];
-                     const totalCaloriesFromMacros = (macroData.carbs * 4) + (macroData.fat * 9) + (macroData.protein * 4);
-
-
+                    if (macroChartInstance) macroChartInstance.destroy();
+                    const totalMacroCalories = (macroDataToDisplay.carbs * 4) + (macroDataToDisplay.fat * 9) + (macroDataToDisplay.protein * 4);
                     macroChartInstance = new Chart(macroCtx.getContext('2d'), {
-                        type: 'doughnut',
-                        data: {
+                        type: 'doughnut', data: {
                             labels: ['Carbohydrates', 'Fat', 'Protein'],
                             datasets: [{
-                                label: 'Macronutrients (Calories)', // Tooltip label base
-                                data: [ // Data represents CALORIE contribution for better visual proportion
-                                    macroData.carbs * 4,
-                                    macroData.fat * 9,
-                                    macroData.protein * 4
-                                ],
-                                backgroundColor: [
-                                    '#febd14', // carbs color from legend
-                                    '#fece43', // fat color
-                                    '#feda75'  // protein color
-                                ],
-                                borderColor: '#ffffff',
-                                borderWidth: 2
+                                label: 'Macronutrients (Calories)', data: [macroDataToDisplay.carbs * 4, macroDataToDisplay.fat * 9, macroDataToDisplay.protein * 4],
+                                backgroundColor: ['#febd14', '#fece43', '#feda75'],
+                                borderColor: 'var(--card-bg)', borderWidth: 3
                             }]
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            plugins: {
-                                legend: {
-                                    display: false // Using custom HTML legend
-                                },
-                                tooltip: {
-                                     callbacks: {
-                                        label: function(context) {
-                                            let label = context.label || '';
-                                            let calorieValue = context.parsed || 0;
-                                            let gramValue = 0;
-                                            if (label === 'Carbohydrates') gramValue = macroData.carbs;
-                                            else if (label === 'Fat') gramValue = macroData.fat;
-                                            else if (label === 'Protein') gramValue = macroData.protein;
-
-                                            let percentage = totalCaloriesFromMacros > 0 ? Math.round((calorieValue / totalCaloriesFromMacros) * 100) : 0;
-                                            if (label) {
-                                                label += ': ';
-                                            }
-                                            // Show grams and percentage in tooltip
-                                            label += gramValue.toLocaleString() + 'g (' + percentage + '%)';
-                                            return label;
-                                        }
-                                    }
-                                }
-                            },
-                            cutout: '60%' // Make it a doughnut chart
-                        }
+                        }, options: { responsive: true, maintainAspectRatio: false, cutout: '60%', plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => { let l = c.label || ''; let calVal = c.parsed || 0; let gVal = 0; if (l === 'Carbohydrates') gVal = macroDataToDisplay.carbs; else if (l === 'Fat') gVal = macroDataToDisplay.fat; else if (l === 'Protein') gVal = macroDataToDisplay.protein; let perc = totalMacroCalories > 0 ? Math.round((calVal / totalMacroCalories) * 100) : 0; if (l) l += ': '; l += gVal.toLocaleString(undefined, {minimumFractionDigits:1, maximumFractionDigits:1}) + 'g (' + perc + '%)'; return l; } }, titleColor: 'var(--main-color)', bodyColor: 'var(--card-text-color)', backgroundColor: 'var(--card-bg)', borderColor: 'var(--main-color)', borderWidth: 1 } } }
                     });
                 }
-            }
+             }
 
-            // --- Event Listeners for Chart Updates ---
-            $('#measurements, #graph-period').on('change', function() {
-                // Only update if the workout status tab is active
-                if ($('#tabs-2').hasClass('active')) {
-                    initializeOrUpdateProgressChart();
+            // --- Food Logging Logic ---
+            $('.add-food-item-btn').on('click', function() {
+                const $form = $(this).closest('.food-item-entry-form');
+                const mealType = $(this).data('meal');
+                const foodName = $form.find('.food-name').val().trim();
+                const calories = parseFloat($form.find('.food-calories').val()) || 0; // Ensure float
+                const protein = parseFloat($form.find('.food-protein').val()) || 0;
+                const carbs = parseFloat($form.find('.food-carbs').val()) || 0;
+                const fat = parseFloat($form.find('.food-fat').val()) || 0;
+
+                if (foodName && calories > 0) {
+                    const $list = $(`.logged-food-list.${mealType}-list`);
+                    const listItem = $(`<li><span>${foodName} - ${calories} Cals, ${protein.toFixed(1)}P, ${carbs.toFixed(1)}C, ${fat.toFixed(1)}F</span> <i class='bx bx-x remove-food-item' title='Remove item'></i></li>`)
+                                     .data({foodName, calories, protein, carbs, fat});
+                    $list.append(listItem);
+                    $form.find('input[type="text"], input[type="number"]').val('');
+                    $('#updateNutritionSummaryBtn').trigger('click');
+                } else {
+                    alert("Please enter at least food name and calories.");
                 }
+             });
+            $('.meal-logging-section').on('click', '.remove-food-item', function() {
+                 $(this).closest('li').remove();
+                $('#updateNutritionSummaryBtn').trigger('click');
+             });
+            $('#updateNutritionSummaryBtn').on('click', function() {
+                let newCalorieData = { breakfast: 0, lunch: 0, dinner: 0, snacks: 0 };
+                let newMacroData = { carbs: 0, fat: 0, protein: 0 };
+
+                $('.logged-food-list li').each(function() {
+                    const $li = $(this);
+                    const mealType = $li.parent().attr('class').split(' ')[1].split('-')[0]; // breakfast, lunch, etc.
+
+                    newCalorieData[mealType] += $li.data('calories') || 0;
+                    newMacroData.protein += $li.data('protein') || 0;
+                    newMacroData.carbs += $li.data('carbs') || 0;
+                    newMacroData.fat += $li.data('fat') || 0;
+                });
+                currentCalorieData = newCalorieData;
+                currentMacroData = newMacroData;
+                initializeOrUpdateNutritionCharts(currentCalorieData, currentMacroData);
+             });
+
+            $('#addExerciseToLogBtn').on('click', function() {
+                const exerciseName = $('#logExerciseName').val().trim();
+                const sets = $('#logSets').val();
+                const reps = $('#logReps').val();
+                const weight = $('#logWeight').val();
+                const duration = $('#logDuration').val();
+                const notes = $('#logExerciseNotes').val().trim();
+
+                if (!exerciseName) {
+                    alert("Please enter an Exercise Name.");
+                    return;
+                }
+                const selectedDateStr = getSelectedDateString();
+                const newRowHtml = `
+                    <tr>
+                        <td data-label="Date" class="date-col">${selectedDateStr}</td>
+                        <td data-label="Exercise">${exerciseName}</td>
+                        <td data-label="Sets">${sets || '-'}</td>
+                        <td data-label="Reps">${reps || '-'}</td>
+                        <td data-label="Weight">${weight || '-'}</td>
+                        <td data-label="Duration">${duration || '-'}</td>
+                        <td data-label="Notes" class="notes-cell">${notes || ''}</td>
+                    </tr>
+                `;
+                $('.workout-table tbody').append(newRowHtml);
+                $('#logExerciseName, #logSets, #logReps, #logWeight, #logDuration, #logExerciseNotes').val('');
+                alert(`"${exerciseName}" added to the log for ${selectedDateStr}.`);
             });
 
-            // --- Initial Chart Load on Page Ready ---
-            // Check which tab is active initially and load its charts
-            if ($('#tabs-2').hasClass('active')) {
+
+            $('#saveFullLogBtn').on('click', function() {
+                alert("Notes Saved! (Demo - Data is not actually saved)");
+            });
+            $('#submitCoachFeedbackBtn, #submitCoachFeedbackBtn_nutrition').on('click', function() {
+                 alert("Feedback Submitted! (Demo - Data is not actually saved)");
+                 $('#coachComment, #coachComment_nutrition').val('');
+             });
+            $('#subscribeForm').on('submit', function(e) {
+                e.preventDefault();
+                const email = $('#subscribeEmail').val();
+                alert(`Subscribed with ${email}! (Demo)`);
+                $('#subscribeEmail').val('');
+            });
+
+
+            function getSelectedDateString() {
+                const selectedDateVal = $('.calendar-grid .date-cell button.selected').data('date'); // Get YYYY-MM-DD
+                if (selectedDateVal) {
+                    return moment(selectedDateVal).format("MMM D, YYYY"); // Format it
+                }
+                return moment().format("MMM D, YYYY");
+            }
+
+            function updateMealLogDateTitle() {
+                const formattedDate = getSelectedDateString();
+                $('#selectedDateForMealLog').text(formattedDate);
+            }
+            updateMealLogDateTitle();
+
+            $('.calendar-grid .date-cell button').on('click', function() {
+                if(!$(this).parent().hasClass('empty')) {
+                    $('.calendar-grid .date-cell button').removeClass('selected');
+                    $(this).addClass('selected');
+                    updateMealLogDateTitle();
+                    $('.logged-food-list').empty(); // Clear old food for new date
+                    currentCalorieData = { breakfast: 0, lunch: 0, dinner: 0, snacks: 0 }; // Reset data
+                    currentMacroData = { carbs: 0, fat: 0, protein: 0 };
+                    initializeOrUpdateNutritionCharts(); // Update charts for the new, empty date
+                }
+            });
+             $('.cal-nav').on('click', function() { // This is a simplified simulation
+                setTimeout(() => {
+                     // Simulate calendar redraw and re-selection logic might be needed here in a real app
+                     const firstAvailableDateButton = $('.calendar-grid .date-cell button:not(:disabled)').first();
+                     if(firstAvailableDateButton.length && !$('.calendar-grid .date-cell button.selected').length) {
+                         firstAvailableDateButton.addClass('selected');
+                     }
+                     updateMealLogDateTitle();
+                     $('.logged-food-list').empty();
+                     currentCalorieData = { breakfast: 0, lunch: 0, dinner: 0, snacks: 0 };
+                     currentMacroData = { carbs: 0, fat: 0, protein: 0 };
+                     initializeOrUpdateNutritionCharts();
+                }, 100);
+            });
+
+            // Initial load
+            if ($('#tabs-1').hasClass('active')) {
+                // No chart init needed
+            } else if ($('#tabs-2').hasClass('active')) {
                 initializeOrUpdateProgressChart();
             } else if ($('#tabs-3').hasClass('active')) {
-                 // Need to ensure the inner tab content is visible *before* initializing chart
                  const activeNutritionButton = $('#tabs-3 .tabs .tab-button.active');
                  if (activeNutritionButton.length) {
                      const targetNutritionTab = activeNutritionButton.data('tab');
-                     $('#tabs-3 .nutrition-tab-content').removeClass('active'); // Ensure others are hidden
-                     $('#' + targetNutritionTab + '-content').addClass('active'); // Show the correct one
+                     $('#tabs-3 .nutrition-tab-content').removeClass('active');
+                     $('#' + targetNutritionTab + '-content').addClass('active');
                  } else {
-                      // Default to showing calories if none are active
-                      $('#calories-content').addClass('active');
+                      $('#calories-content').addClass('active'); // Default
                  }
-                initializeOrUpdateNutritionCharts();
+                initializeOrUpdateNutritionCharts(); // Initial call with default/empty data
             }
-
-        }); // End document ready
+        });
     </script>
-
 </body>
 </html>
