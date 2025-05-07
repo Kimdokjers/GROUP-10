@@ -1,9 +1,11 @@
+/* usercss/signin_signup.css */
+
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
 :root {
     --gold: #f5c518;
     --primary-bg-start: #B47B44;
-    --primary-bg-end: #A55A12; 
+    --primary-bg-end: #A55A12;
     --button-bg: #272A31;
     --text-light: #fff;
     --text-dark: #333;
@@ -11,9 +13,10 @@
     --input-placeholder: #888;
     --border-accent: #ccc;
     --body-bg-start: rgba(97, 97, 115, 1);
-    --body-bg-end: rgba(11, 11, 13, 1);  
-    --main-color: #FFD700;
-    --color-black: #0a0a0a;
+    --body-bg-end: rgba(11, 11, 13, 1);
+    --main-color: #FFD700; /* Used for modal button */
+    --color-black: #0a0a0a; /* Used for modal button text */
+    --error-color: #E57373; /* Error indication color */
 }
 
 * {
@@ -27,45 +30,54 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh; 
+    min-height: 100vh;
     background: linear-gradient(to right, var(--body-bg-start), var(--body-bg-end));
-    padding: 20px; 
+    padding: 15px; /* Slightly reduced padding for smaller viewports */
 }
 
 .container {
-    width: 100%; 
-    max-width: 40%; 
+    width: 100%;
+    /* Increased max-width for better desktop view, adjusted in media queries */
+    max-width: 800px;
     background: linear-gradient(var(--primary-bg-start), var(--primary-bg-end));
-    border-radius: 20px; 
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); 
-    overflow: hidden; 
+    border-radius: 20px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
     color: var(--text-light);
 }
 
 .form-box {
-    padding: 30px 40px; 
+    padding: 30px 40px;
     text-align: center;
 }
 
-form {
-    width: 100%; 
+/* Form grid layout for larger screens */
+/* This applies to both #signup-form elements.
+   For User form: input-box elements become grid items.
+   For Gym Owner form: .form-column elements become grid items. */
+#signup-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Two columns */
+    gap: 15px 25px; /* Row gap, Column gap */
+    margin-bottom: 20px; /* Space before the button container */
 }
 
 h1 {
-    font-size: 28px; 
-    margin-bottom: 15px; 
+    font-size: 28px;
+    margin-bottom: 25px; /* Increased margin */
     color: var(--gold);
     font-weight: 600;
 }
 
-p { 
+p {
     color: var(--text-light);
     font-size: 14px;
     line-height: 1.5;
 }
 
+/* MODAL STYLES */
 .modal {
-    display: none; 
+    display: none;
     position: fixed;
     z-index: 1000;
     left: 0;
@@ -73,8 +85,8 @@ p {
     width: 100%;
     height: 100%;
     overflow: auto;
-    background-color: rgba(0, 0, 0, 0.5); 
-    align-items: center; 
+    background-color: rgba(0, 0, 0, 0.6); /* Slightly darker overlay */
+    align-items: center;
     justify-content: center;
 }
 .modal.show {
@@ -82,48 +94,52 @@ p {
 }
 .modal-content {
     background-color: #fefefe;
-    padding: 20px;
+    padding: 25px; /* Slightly more padding */
     border: 1px solid #888;
-    width: 80%;
-    max-width: 400px; 
+    width: 90%;
+    max-width: 380px; /* Slightly reduced max-width */
     text-align: center;
-    position: relative; 
+    position: relative;
     border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    color: var(--text-dark); /* Dark text inside modal */
 }
+.modal-content p {
+    color: var(--text-dark); /* Ensure paragraph text is dark */
+    font-size: 1.1rem; /* Slightly larger text */
+    margin-bottom: 15px; /* Space before button */
+}
+
 .close-button {
     position: absolute;
-    top: 10px;
-    right: 15px;
+    top: 8px; /* Adjusted position */
+    right: 12px;
     color: #aaa;
-    font-size: 28px;
+    font-size: 24px; /* Slightly smaller */
     font-weight: bold;
     border: none;
     background: none;
     cursor: pointer;
+    line-height: 1; /* Prevent extra space */
 }
 .close-button:hover,
 .close-button:focus {
     color: black;
     text-decoration: none;
 }
-/* Style for the OK button - Made Smaller */
+
 #okModalButton {
     display: inline-block;
-    /* Further reduced padding: top/bottom and left/right */
-    padding: 0.5rem 1rem; /* Example: Reduced from 0.8rem 1.6rem */
-    /* Slightly reduced border-radius (optional, kept original) */
-    border-radius: 0.5rem;
+    padding: 8px 20px; /* Adjusted padding */
+    border-radius: 6px; /* Slightly adjusted */
     font-weight: 600;
     text-align: center;
     cursor: pointer;
-    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease, box-shadow 0.5s ease;
-    border: 2px solid var(--main-color);
-    /* Further reduced font size */
-    font-size: 0.9rem; /* Example: Reduced from 1rem */
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    border: 1px solid var(--main-color); /* Adjusted border */
+    font-size: 14px; /* Adjusted size */
     color: var(--color-black);
     background: var(--main-color);
-    /* Optional: Slightly reduce letter spacing if needed */
-    /* letter-spacing: 0.05rem; */
     box-shadow: none;
     margin-top: 10px;
 }
@@ -131,46 +147,62 @@ p {
 #okModalButton:hover {
     background-color: transparent;
     color: var(--main-color);
-    /* Keep hover effects (maybe slightly smaller shadow if desired) */
-    box-shadow: 0 0 1rem var(--main-color); /* Optional: slightly smaller shadow */
-    transform: translateY(-2px);
+    border-color: var(--main-color);
+    box-shadow: 0 0 8px rgba(255, 215, 0, 0.6); /* Adjusted shadow */
+    transform: translateY(-1px); /* Slightly less lift */
 }
 
-#signup-form{
-    display:grid;
-    grid-template-columns: 1fr 1fr;
-    gap:2rem;
-}
+
+/* INPUT BOX STYLES */
 .input-box {
     position: relative;
-    margin-bottom: 15px; 
-    text-align: left; 
+    text-align: left;
+    width: 100%; 
 }
 
+#signin-form .input-box{
+    display: block;
+    margin-bottom: 10px;
+    font-size: 13px;
+    color: #eee;
+    font-weight: 500;
+    margin-top: 10px;
+}
 .input-box label.date-label {
     display: block;
-    margin-bottom: 5px;
-    font-size: 0.9em;
-    color: #eee; 
+    margin-bottom: 10px;
+    font-size: 13px;
+    color: #eee;
     font-weight: 500;
+    margin-top: 10px;
 }
 
 .input-box input {
     width: 100%;
-    padding: 12px 45px 12px 15px; 
+    padding: 12px 45px 12px 15px;
     background: var(--input-bg);
     border-radius: 8px;
-    border: 1px solid transparent; 
+    border: 1px solid transparent;
     outline: none;
     font-size: 15px;
     color: var(--text-dark);
     font-weight: 500;
-    transition: border-color 0.3s ease; 
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
+/* Style for browser-indicated invalid fields */
+.input-box input:invalid {
+   border-color: var(--error-color) !important;
+}
+/* Add focus style */
 .input-box input:focus {
      border-color: var(--gold);
-     box-shadow: 0 0 5px rgba(245, 197, 24, 0.5); 
+     box-shadow: 0 0 5px rgba(245, 197, 24, 0.5);
+}
+/* Ensure focus overrides invalid style visually if needed */
+.input-box input:focus:invalid {
+     border-color: var(--gold); /* Keep gold border on focus even if invalid */
+     box-shadow: 0 0 5px rgba(245, 197, 24, 0.5), 0 0 5px rgba(229, 115, 115, 0.3); /* Combine shadows */
 }
 
 
@@ -180,33 +212,80 @@ p {
 }
 
 .input-box input[type="date"] {
-    padding: 12px 15px; 
-    color: var(--input-placeholder); 
+    padding: 12px 15px; /* Remove right padding for icon space */
+    color: var(--input-placeholder); /* Initial color */
+    cursor: pointer;
 }
+/* Style date input when a valid date is selected */
 .input-box input[type="date"]:valid {
-    color: var(--text-dark); 
+    color: var(--text-dark);
 }
 
 .input-box i {
     position: absolute;
     right: 15px;
-    top: 50%;
+    top: 50%; /* Default position */
     transform: translateY(-50%);
     font-size: 18px;
     color: var(--text-dark);
-    pointer-events: none; 
+    pointer-events: none;
+    z-index: 2; /* Ensure icon is above input */
 }
 
+/* Adjust icon position when there's a label above */
 .input-box label + input + i {
-    top: 70%; 
+    top: calc(50% + 12px); /* Adjust based on label height/spacing, (label height + margin-bottom)/2 + input padding approx */
 }
+/* Hide icon specifically for date input as it has its own indicator */
 .input-box label.date-label + input[type="date"] + i {
-     display: none; 
+     display: none;
+}
+
+/* Styles for the select dropdown in Gym Owner form, ensuring it looks similar to other inputs */
+.input-box #gymType {
+    width: 100%;
+    padding: 12px 15px; /* Adjusted padding as select doesn't usually have an icon on the right */
+    background: var(--input-bg);
+    border-radius: 8px;
+    border: 1px solid transparent;
+    outline: none;
+    font-size: 15px;
+    color: var(--text-dark); /* Text color of selected option */
+    font-weight: 500;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    appearance: none; /* Remove default system appearance */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23007CB2%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E');
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    background-size: .65em auto;
+    padding-right: 45px; /* Make space for custom arrow */
+}
+.input-box #gymType:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 5px rgba(245, 197, 24, 0.5);
+}
+/* Style for the initial disabled option */
+.input-box #gymType option[value=""] {
+    color: var(--input-placeholder);
+}
+
+
+/* SIGN UP BUTTON CONTAINER & BUTTON */
+.form-button-container {
+    grid-column: 1 / -1; /* Make button container span both columns in grid */
+    text-align: center;
+    width: 100%;
+    margin-top: 10px; /* Space above button */
 }
 
 .btn {
-    width: 100%;
+    width: auto; /* Allow button to size to content + padding */
+    display: inline-block; /* Allows text-align: center on parent to work */
+    min-width: 150px; /* Ensure a minimum size */
     height: 48px;
+    padding: 0 40px; /* Horizontal padding */
     background: var(--button-bg);
     border-radius: 8px;
     border: none;
@@ -214,31 +293,36 @@ p {
     font-size: 16px;
     font-weight: 600;
     color: var(--gold);
-    margin-top: 10px; 
-    transition: background-color 0.3s ease, border 0.3s ease;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    line-height: 48px; /* Vertically center text */
 }
 
 .btn:hover {
-    background-color: #3a3e45; 
+    background-color: #3a3e45;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
 
-p.separator-text { 
+p.separator-text {
+    /* grid-column: 1 / -1; /* If it were a child of the form grid */
     font-size: 14px;
-    margin: 20px 0 15px 0; 
+    margin: 20px 0 15px 0;
+    text-align: center; /* Ensure centering if not in grid */
 }
 
 .social-icons {
-    margin-bottom: 20px; 
+    /* grid-column: 1 / -1; /* If it were a child of the form grid */
+    margin-bottom: 20px;
+    text-align: center; /* Ensure centering */
 }
 
 .social-icons a {
-    display: inline-flex; 
+    display: inline-flex;
     text-decoration: none;
-    margin: 0 8px; 
+    margin: 0 8px;
 }
 
-.social-icons img.social-icon-img { 
-    width: 45px; 
+.social-icons img.social-icon-img {
+    width: 45px;
     height: 45px;
     padding: 8px;
     border: 1px solid var(--border-accent);
@@ -246,13 +330,14 @@ p.separator-text {
     transition: transform 0.2s ease;
 }
 .social-icons img.social-icon-img:hover {
-    transform: scale(1.1); 
+    transform: scale(1.1);
 }
 
 
 .navigation-link {
-    margin-top: 15px; 
-    text-align: center;
+    /* grid-column: 1 / -1; /* If it were a child of the form grid */
+    margin-top: 10px; /* Reduced margin */
+    text-align: center; /* Ensure centering */
 }
 
 .navigation-link p {
@@ -261,7 +346,7 @@ p.separator-text {
 }
 
 .navigation-link a {
-    color: var(--gold); 
+    color: var(--gold);
     text-decoration: none;
     font-weight: 600;
 }
@@ -270,28 +355,74 @@ p.separator-text {
     text-decoration: underline;
 }
 
-#signup-submit a{
-    color: var(--gold); 
-    text-decoration: none;
-    font-weight: 600;
+/* Gym Owner form specific: Column headings */
+.form-column h2 {
+    font-size: 1.2em; /* Example size, adjust as needed */
+    color: var(--text-light); /* Or var(--gold) for emphasis */
+    margin-bottom: 15px;
+    text-align: left;
+    font-weight: 500;
 }
 
+
 /* --- Responsiveness --- */
+
+/* Medium Screens (Tablets, etc.) */
+@media screen and (max-width: 768px) {
+    .container {
+        max-width: 90%; /* Allow container to be wider */
+    }
+    #signup-form {
+        grid-template-columns: 1fr; /* Stack to single column */
+        gap: 15px 0; /* Only row gap needed */
+    }
+     /* Elements that previously spanned now don't need to if they were grid children */
+    .form-button-container /* This one is a grid child */
+     {
+        grid-column: auto;
+    }
+    /* The following are not children of #signup-form, so grid-column doesn't apply to them via #signup-form
+    p.separator-text,
+    .social-icons,
+    .navigation-link {
+        grid-column: auto;
+    }
+    */
+    .form-box {
+        padding: 25px 30px;
+    }
+}
+
+
+/* Small Screens (Mobiles) */
 @media screen and (max-width: 480px) {
     body {
-        padding: 10px; 
+        padding: 10px;
+        align-items: flex-start; /* Align container to top on very small screens */
+        padding-top: 20px;
     }
 
     .container {
-        border-radius: 15px; 
+        max-width: 95%; /* Almost full width */
+        border-radius: 15px;
     }
 
     .form-box {
-        padding: 20px 25px; 
+        padding: 20px 20px; /* Further reduced padding */
     }
 
+     #signup-form {
+        gap: 12px 0; /* Slightly reduce gap */
+    }
+
+
     h1 {
-        font-size: 24px; 
+        font-size: 22px; /* Reduce further */
+        margin-bottom: 20px;
+    }
+
+    .input-box label.date-label {
+        font-size: 12px; /* Slightly smaller */
     }
 
     .input-box input {
@@ -299,27 +430,34 @@ p.separator-text {
         font-size: 14px;
     }
      .input-box input[type="date"] {
-         padding: 10px 12px; 
+         padding: 10px 12px;
      }
+    .input-box #gymType { /* Adjust select padding for mobile */
+        padding: 10px 35px 10px 12px; /* Slightly less right padding for arrow */
+        background-position: right 10px center;
+    }
+
 
     .input-box i {
         right: 12px;
         font-size: 16px;
     }
+    /* Adjust icon position again for smaller inputs/labels */
     .input-box label + input + i {
-        top: 68%;
+        top: calc(50% + 10px); /* Fine-tune */
     }
-
 
     .btn {
         height: 42px;
         font-size: 15px;
+        line-height: 42px; /* Match height */
+        padding: 0 30px; /* Adjust padding */
     }
 
     .social-icons img.social-icon-img {
-        width: 40px;
-        height: 40px;
-        padding: 6px;
+        width: 38px;
+        height: 38px;
+        padding: 5px;
     }
 
     p, .navigation-link p, .navigation-link a {
@@ -328,4 +466,23 @@ p.separator-text {
      p.separator-text {
          margin: 15px 0 10px 0;
      }
+     .navigation-link {
+         margin-top: 15px;
+     }
+      .modal-content {
+         max-width: 300px; /* Narrower modal */
+         padding: 20px;
+     }
+     .modal-content p {
+         font-size: 1rem; /* Smaller modal text */
+     }
+     #okModalButton {
+         font-size: 13px;
+         padding: 6px 15px;
+     }
+
+     .form-column h2 {
+        font-size: 1.1em;
+        margin-bottom: 10px;
+    }
 }

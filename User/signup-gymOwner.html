@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up (Gym Owner)- OptiLife</title>
+    <link rel="stylesheet" href="usercss/signin_signup.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+
+    <div class="container">
+        <div class="form-box signup">
+            <h1>Sign up</h1>
+            <form id="signup-form">
+
+                <div class="form-column left">
+                    <h2>Personal Information</h2>
+                    <div class="input-box">
+                        <label for="firstname" class="date-label">First Name:</label>
+                        <input type="text" placeholder="e.g., Juan" id="firstname" required>
+                        <i class='bx bxs-user'></i>
+                    </div>
+                    <div class="input-box">
+                        <label for="middle-name" class="date-label">Middle Name (Optional):</label>
+                        <input type="text" placeholder="e.g., Jam" id="middle-name">
+                        <i class='bx bxs-user'></i>
+                    </div>
+                    <div class="input-box">
+                        <label for="lastname" class="date-label">Last Name:</label>
+                        <input type="text" placeholder="e.g., Luna" id="lastname" required>
+                        <i class='bx bxs-user'></i>
+                    </div>
+                    <div class="input-box">
+                        <label for="suffix" class="date-label">Suffix (Optional):</label>
+                        <input type="text" placeholder="e.g, Jr." id="suffix">
+                        <i class='bx bxs-user'></i>
+                    </div>
+                    <div class="input-box">
+                        <label for="date" class="date-label">Birth Date:</label>
+                        <input type="date" id="date" min="1900-01-01" max="2025-01-01" required>
+                    </div>
+                     <div class="input-box">
+                        <label for="phoneNumber" class="date-label">Phone Number:</label>
+                        <input type="tel" placeholder="e.g., 09xxxxxxxxx" id="phoneNumber" required pattern="09[0-9]{9}">
+                        <i class='bx bx-phone'></i>
+                    </div>
+                    <div class="input-box">
+                        <label for="username" class="date-label">Username:</label>
+                        <input type="text" placeholder="User123" id="username" required>
+                        <i class='bx bxs-user'></i>
+                    </div>
+                    <div class="input-box">
+                        <label for="email" class="date-label">Email:</label>
+                        <input type="email" placeholder="e.g., juanluna@gmail.com" id="email" required>
+                        <i class='bx bxs-envelope'></i>
+                    </div>
+                    <div class="input-box">
+                        <label for="password" class="date-label">Password:</label>
+                        <input type="password" placeholder="e.g., 12xxxxxx(min 8 characters)" id="password" required minlength="8">
+                        <i class='bx bxs-lock-alt'></i>
+                    </div>
+                    
+                </div>
+
+                <div class="form-column right">
+                    <h2>Gym Information</h2>
+                    <div class="input-box">
+                        <label for="gymName" class="date-label">Gym Name:</label>
+                        <input type="text" placeholder="e.g., OptiLife Fitness Center" id="gymName" required>
+                        <i class='bx bx-dumbbell'></i>
+                    </div>
+                    <div class="input-box">
+                        <label for="gymStreetAddress" class="date-label">Street Address:</label>
+                        <input type="text" placeholder="e.g., 123 Fitness Ave" id="gymStreetAddress" required>
+                        <i class='bx bx-map'></i>
+                    </div>
+                     <div class="input-box">
+                        <label for="gymCity" class="date-label">City:</label>
+                        <input type="text" placeholder="e.g., Metro Manila" id="gymCity" required>
+                         <i class='bx bxs-city'></i>
+                    </div>
+                     <div class="input-box">
+                        <label for="gymState" class="date-label">State/Province:</label>
+                        <input type="text" placeholder="e.g., NCR" id="gymState" required>
+                         <i class='bx bx-buildings'></i>
+                    </div>
+                     <div class="input-box">
+                        <label for="gymZip" class="date-label">Zip/Postal Code:</label>
+                        <input type="text" placeholder="e.g., 1000" id="gymZip" required>
+                         <i class='bx bx-barcode'></i>
+                    </div>
+                     <div class="input-box">
+                        <label for="gymPhoneNumber" class="date-label">Gym Phone Number:</label>
+                        <input type="tel" placeholder="e.g., 02-8xxx-xxxx" id="gymPhoneNumber" required>
+                        <i class='bx bxs-phone-call'></i>
+                    </div>
+                     <div class="input-box">
+                        <label for="gymWebsite" class="date-label">Website URL (Optional):</label>
+                        <input type="url" placeholder="e.g., https://optilife.com" id="gymWebsite">
+                        <i class='bx bx-world'></i>
+                    </div>
+                     <div class="input-box">
+                        <label for="gymType" class="date-label">Type of Gym:</label>
+                        <select id="gymType" required>
+                            <option value="" disabled selected>--Select Type--</option>
+                            <option value="Fitness Center">Fitness Center</option>
+                            <option value="Yoga Studio">Yoga Studio</option>
+                            <option value="CrossFit Box">CrossFit Box</option>
+                            <option value="Martial Arts">Martial Arts Studio</option>
+                            <option value="Boxing Gym">Boxing Gym</option>
+                            <option value="Climbing Gym">Climbing Gym</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <div class="form-button-container">
+                    <button type="submit" class="btn" id="complete-signup-btn">Sign up</button>
+                </div>
+
+            </form>
+            <p class="separator-text">or Sign up with</p>
+            <div class="social-icons">
+                <a href="google_signup.html"><img src="../images/google.jpg" alt="Sign up with Google" class="social-icon-img"></a>
+            </div>
+            <div class="navigation-link">
+                <p>Already have an account? <a href="signin.html">Sign in</a></p>
+            </div>
+        </div>
+    </div>
+
+    <div id="Modal" class="modal">
+        <div class="modal-content">
+            <button id="closeModalButton" class="close-button">×</button>
+            <p id="modalMessage">Sign up successful! Welcome!</p>
+            <button id="okModalButton" >Ok</button>
+        </div>
+    </div>
+
+    <script src="../assets/jquery-3.7.1.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            const $modal = $("#Modal");
+            const $closeButton = $("#closeModalButton");
+            const $okButton = $("#okModalButton");
+            const $modalMessage = $("#modalMessage");
+            let currentOkAction = null;
+
+            const openSuccessModal = (message, onOkAction = null) => {
+                $modalMessage.text(message);
+                $modalMessage.css("color", "black");
+                currentOkAction = onOkAction;
+                $okButton.text("OK").show();
+                $modal.addClass('show');
+            };
+
+            const closeModal = () => {
+                $modal.removeClass('show');
+                currentOkAction = null;
+            };
+
+            $closeButton.on('click', closeModal);
+            $okButton.on('click', function() {
+                if (typeof currentOkAction === 'function') {
+                    currentOkAction();
+                }
+                closeModal();
+            });
+            $modal.on('click', function(event) {
+                if ($(event.target).is($modal)) {
+                    closeModal();
+                }
+            });
+            $(document).on('keydown', function(event) {
+                if (event.key === 'Escape' && $modal.hasClass('show')) {
+                    closeModal();
+                }
+            });
+
+            $("#signup-form").on("submit", function(event) {
+                event.preventDefault();
+                 if (!this.checkValidity()) {
+                     const firstInvalid = $(this).find(':invalid').first();
+                     if(firstInvalid.length){
+                         firstInvalid[0].reportValidity();
+                     }
+                     return; 
+                 }
+                const username = $("#username").val().trim();
+                const email = $("#email").val().trim();
+                const password = $("#password").val();
+                const firstName = $("#firstname").val().trim();
+                const middleName = $("#middle-name").val().trim();
+                const lastName = $("#lastname").val().trim();
+                const suffix = $("#suffix").val().trim();
+                const birthDate = $("#date").val();
+                const phoneNumber = $("#phoneNumber").val().trim();
+
+                const gymName = $("#gymName").val().trim();
+                const gymStreetAddress = $("#gymStreetAddress").val().trim();
+                const gymCity = $("#gymCity").val().trim();
+                const gymState = $("#gymState").val().trim();
+                const gymZip = $("#gymZip").val().trim();
+                const gymPhoneNumber = $("#gymPhoneNumber").val().trim();
+                const gymWebsite = $("#gymWebsite").val().trim();
+                const gymType = $("#gymType").val();
+
+                console.log("Browser validation passed. Preparing redirect.");
+                console.log("Gym Name:", gymName); 
+                console.log("Gym Type:", gymType);  
+
+
+               
+                const ownerEmail = "gymOwner@gmail.com";
+                const ownerPassword = "gymOwner123";
+
+                let redirectUrl;
+                const currentFormEmail = email;
+                const currentFormPassword = password;
+
+              
+               if (currentFormEmail === ownerEmail && currentFormPassword === ownerPassword) {
+                    redirectUrl = "../GymOwner/gymOwner.html";
+                } else {
+                     console.log("New gym owner or non-matching credentials. Redirecting to gym owner homepage.");
+                     redirectUrl = "../GymOwner/gymOwner.html";
+                }
+
+                const completeSignupAndRedirect = () => {
+                     console.log("Redirecting to:", redirectUrl);
+                     window.location.href = redirectUrl;
+                };
+
+                openSuccessModal("Sign up complete! Welcome!", completeSignupAndRedirect);
+            });
+        });
+    </script>
+
+</body>
+</html>

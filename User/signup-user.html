@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up (User) - OptiLife</title>
+    <link rel="stylesheet" href="usercss/signin_signup.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+
+    <div class="container">
+        <div class="form-box signup">
+            <h1>Sign up</h1>
+            <form id="signup-form">
+                <div class="input-box">
+                    <label for="firstname" class="date-label">First Name:</label>
+                    <input type="text" placeholder="e.g., Juan" id="firstname" required>
+                    <i class='bx bxs-user'></i>
+                </div>
+
+                <div class="input-box">
+                    <label for="middle-name" class="date-label">Middle Name (Optional):</label>
+                    <input type="text" placeholder="e.g., Jam" id="middle-name">
+                    <i class='bx bxs-user'></i>
+                </div>
+
+                <div class="input-box">
+                    <label for="lastname" class="date-label">Last Name:</label>
+                    <input type="text" placeholder="e.g., Luna" id="lastname" required>
+                    <i class='bx bxs-user'></i>
+                 
+                </div>
+
+                <div class="input-box">
+                    <label for="suffix" class="date-label">Suffix (Optional):</label>
+                    <input type="text" placeholder="e.g, Jr." id="suffix">
+                    <i class='bx bxs-user'></i>
+                </div>
+
+                <div class="input-box">
+                    <label for="username" class="date-label">Username:</label>
+                    <input type="text" placeholder="User123" id="username" required>
+                    <i class='bx bxs-user'></i>
+                </div>
+
+                <div class="input-box">
+                    <label for="date" class="date-label">Birth Date:</label>
+                    <input type="date" id="date" min="1900-01-01" max="2025-01-01" required>
+                </div>
+
+                <div class="input-box">
+                    <label for="StreetAddress" class="date-label">Street Address:</label>
+                    <input type="text" placeholder="e.g., 123 Fitness Ave" id="StreetAddress" required>
+                    <i class='bx bx-map'></i>
+                </div>
+                 <div class="input-box">
+                    <label for="City" class="date-label">City:</label>
+                    <input type="text" placeholder="e.g., Metro Manila" id="City" required>
+                     <i class='bx bxs-city'></i>
+                </div>
+                 <div class="input-box">
+                    <label for="State" class="date-label">State/Province:</label>
+                    <input type="text" placeholder="e.g., NCR" id="State" required>
+                     <i class='bx bx-buildings'></i>
+                </div>
+                 <div class="input-box">
+                    <label for="Zip" class="date-label">Zip/Postal Code:</label>
+                    <input type="text" placeholder="e.g., 1000" id="Zip" required>
+                     <i class='bx bx-barcode'></i>
+                </div>
+
+                 <div class="input-box">
+                    <label for="phoneNumber" class="date-label">Phone Number:</label>
+                    <input type="tel" placeholder="e.g., 09xxxxxxxxx" id="phoneNumber" required pattern="09[0-9]{9}">
+                    <i class='bx bx-phone'></i>
+                </div>
+
+                <div class="input-box">
+                    <label for="email" class="date-label">Email:</label>
+                    <input type="email" placeholder="e.g., juanluna@gmail.com" id="email" required>
+                    <i class='bx bxs-envelope'></i>
+                </div>
+
+                <div class="input-box">
+                    <label for="password" class="date-label">Password:</label>
+                    <input type="password" placeholder="e.g., 12xxxxxx(min 8 characters)" id="password" required minlength="8">
+                    <i class='bx bxs-lock-alt'></i>
+                </div>
+
+                <div class="form-button-container">
+                    <button type="submit" class="btn" id="complete-signup-btn">Sign up</button>
+                </div>
+            </form>
+                <p class="separator-text">or Sign up with</p>
+                <div class="social-icons">
+                    <a href="google_signup.html"><img src="../images/google.jpg" alt="Sign up with Google" class="social-icon-img"></a>
+                 </div>
+                <div class="navigation-link">
+                     <p>Already have an account? <a href="signin.html">Sign in</a></p>
+                </div>
+        </div>
+    </div>
+
+    <div id="Modal" class="modal">
+        <div class="modal-content">
+            <button id="closeModalButton" class="close-button">×</button>
+            <p id="modalMessage">Sign up successful! Welcome!</p>
+            <button id="okModalButton" >Ok</button>
+        </div>
+    </div>
+
+    <script src="../assets/jquery-3.7.1.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            const $modal = $("#Modal");
+            const $closeButton = $("#closeModalButton");
+            const $okButton = $("#okModalButton");
+            const $modalMessage = $("#modalMessage");
+            let currentOkAction = null;
+
+            const openSuccessModal = (message, onOkAction = null) => {
+                $modalMessage.text(message);
+                $modalMessage.css("color", "black");
+                currentOkAction = onOkAction;
+                $okButton.text("OK").show();
+                $modal.addClass('show');
+            };
+
+            const closeModal = () => {
+                $modal.removeClass('show');
+                currentOkAction = null;
+            };
+
+            $closeButton.on('click', closeModal);
+            $okButton.on('click', function() {
+                if (typeof currentOkAction === 'function') {
+                    currentOkAction();
+                }
+                closeModal();
+            });
+            $modal.on('click', function(event) {
+                if ($(event.target).is($modal)) {
+                    closeModal();
+                }
+            });
+            $(document).on('keydown', function(event) {
+                if (event.key === 'Escape' && $modal.hasClass('show')) {
+                    closeModal();
+                }
+            });
+
+            $("#signup-form").on("submit", function(event) {
+                event.preventDefault();
+
+
+                const username = $("#username").val().trim();
+                const email = $("#email").val().trim();
+                const password = $("#password").val();
+                const firstName = $("#firstname").val().trim();
+                const lastName = $("#lastname").val().trim();
+                const birthDate = $("#date").val();
+                const address = $("#address").val().trim();
+                const phoneNumber = $("#phoneNumber").val().trim();
+
+
+                console.log("Browser validation likely passed, or JS proceeding. Preparing redirect.");
+
+                const adminEmail = "admin@gmail.com";
+                const adminPassword = "admin123";
+                const ownerEmail = "gymOwner@gmail.com";
+                const ownerPassword = "gymOwner123";
+                const clientEmail = "user@gmail.com";
+                const clientPassword = "user0123";
+
+                let redirectUrl;
+                const currentFormEmail = email;
+                const currentFormPassword = password;
+
+                if (currentFormEmail === adminEmail && currentFormPassword === adminPassword) {
+                    redirectUrl = "../Admin/admindb.html";
+                } else if (currentFormEmail === ownerEmail && currentFormPassword === ownerPassword) {
+                    redirectUrl = "../GymOwner/gymOwner.html";
+                } else if (currentFormEmail === clientEmail && currentFormPassword === clientPassword) {
+                    redirectUrl = "home.html";
+                } else {
+                     redirectUrl = "home.html";
+                }
+
+                const completeSignupAndRedirect = () => {
+                     window.location.href = redirectUrl;
+                };
+
+                openSuccessModal("Sign up complete! Welcome!", completeSignupAndRedirect);
+            });
+        });
+    </script>
+
+</body>
+</html>

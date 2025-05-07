@@ -1,3 +1,16 @@
+:root {
+    --bg-color: #000000; 
+    --text-color: #e0e0e0; 
+    --text-dim-color: #a0a0a0;
+    --accent-color: #daa520;
+    --separator-color: #444444; 
+    --hover-bg: #1a1a1a;
+    --logo-bg: #ffffff; 
+    --main-color: #FFD700; /* Gold */
+    --color-black: #0a0a0a;
+}
+
+
 .account-chooser-wrapper *,
 .account-chooser-wrapper *::before,
 .account-chooser-wrapper *::after {
@@ -13,18 +26,6 @@
     justify-content: center;
     align-items: center;
     min-height: 90vh;
-}
-
-:root {
-    --bg-color: #000000; 
-    --text-color: #e0e0e0; 
-    --text-dim-color: #a0a0a0;
-    --accent-color: #daa520;
-    --separator-color: #444444; 
-    --hover-bg: #1a1a1a;
-    --logo-bg: #ffffff; 
-    --main-color: #FFD700; /* Gold */
-    --color-black: #0a0a0a;
 }
 
 .account-chooser-container {
