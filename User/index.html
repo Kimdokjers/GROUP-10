@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OPTILIFE</title>
+    <!-- IMPORTANT: Ensure this path to your CSS file is correct -->
     <link rel="stylesheet" href="usercss/landingPage.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,27 +13,24 @@
 </head>
 <body>
 
-
-
+    <!-- Main Header Start -->
     <header id="main-header">
         <div class="container">
-    
             <a href="#" class="logo">
                 <img src="../images/logo.png" alt="Optilife Logo">
             </a>
-    
-  
+            <!-- Burger button for mobile navigation -->
             <button id="burger-btn" class="burger-button" aria-label="Toggle navigation" aria-expanded="false">
                 <i class="bi bi-list"></i>
-
             </button>
-      
-    
-
+            <!-- Navigation links and auth buttons container -->
             <div class="navigation-screensize">
                 <nav class="main-nav">
                     <ul>
                         <li><a href="#benefit">Benefits</a></li>
+                        <li><a href="#gym-owner-benefits">For Gyms</a></li> <!-- Added link for new section -->
+                        <li><a href="#hook-up">Join Us</a></li>
+                        <li><a href="#membership-plans">Plans</a></li>
                         <li><a href="#about">About Us</a></li>
                         <li><a href="#coaches">Coaches</a></li>
                     </ul>
@@ -40,33 +38,25 @@
                  <a href="signup.html" class="btn btn-primary header-signup">Sign Up</a>
                 <a href="signin.html" class="btn btn-primary header-singin">Sign In</a>
             </div>
-    
         </div>
     </header>
+    <!-- Main Header End -->
 
+    <!-- Hero/Intro Section Start -->
+    <section class="intro">
+        <div class="container">
+            <h1><span>TRAIN</span> YOUR <br>PERFECT <span>BODY</span></h1>
+            <p>Unlock your true potential and sculpt the body you've always dreamed of. Our expert-led programs are tailored to help you train smarter, get stronger, and feel unstoppable.</p>
+            <a href="#benefit" class="btn btn-primary">Lets Find Out</a>
+        </div>
+    </section>
+    <!-- Hero/Intro Section End -->
 
-
-
-
-<section class="intro">  
-    <div class="container">
-        
-        <h1><span>TRAIN</span> YOUR <br>PERFECT <span>BODY</span></h1>
-        <p>Unlock your true potential and sculpt the body you've always dreamed of. Our expert-led programs are tailored to help you train smarter, get stronger, and feel unstoppable.</p>
-        <a href="#benefit" class="btn btn-primary">Lets Find Out</a>
-    
-    </div>
-    
-</section>
-
-
-
-    
+    <!-- User Benefits Section Start -->
     <section id="benefit" class="benefit-section">
         <div class="container">
             <h2>BENEFITS</h2>
             <div class="benefit-grid">
-                
                 <div class="benefit-card">
                     <img src="../images/SetGoals.jpg"alt="Strength Training">
                     <div class="card-overlay">
@@ -75,7 +65,6 @@
                         <a href="#" class="btn btn-secondary">More</a>
                     </div>
                 </div>
-             
                 <div class="benefit-card">
                     <img src="../images/fatBurn.jpg" alt="Fat Burn Program">
                      <div class="card-overlay">
@@ -84,7 +73,6 @@
                         <a href="#" class="btn btn-secondary">More</a>
                     </div>
                 </div>
-             
                 <div class="benefit-card">
                     <img src="../images/AchieveResult.jpg" alt="Achieve Result Program">
                      <div class="card-overlay">
@@ -93,7 +81,6 @@
                         <a href="#" class="btn btn-secondary">More</a>
                     </div>
                 </div>
-         
                 <div class="benefit-card">
                     <img src="../images/betterLife.jpg" alt="Better Life Program">
                      <div class="card-overlay">
@@ -105,8 +92,100 @@
             </div>
         </div>
     </section>
+    <!-- User Benefits Section End -->
+     <!-- Join Us/Hook Up Section Start -->
+     <section id="hook-up" class="hook-up-section">
+        <div class="container">
+            <h2>JOIN THE OPTILIFE MOVEMENT</h2>
+            <div class="hook-up-content-wrapper">
+                <div class="hook-up-image">
+                    <img src="../images/Gymshark-hero-crop.jpg" alt="Modern gym facility or diverse group of people working out">
+                </div>
+                <div class="hook-up-text-content">
+                    <h3>Ready to Elevate Your Fitness Experience?</h3>
+                    <p>Whether you're an individual looking to achieve your peak fitness or a gym owner seeking to expand your reach and impact, Optilife is your partner in success. Discover the opportunities waiting for you.</p>
+                    <div class="hook-up-actions">
+                        <a href="signup.html" class="btn btn-primary">Become a Member</a>
+                        <a href="gym_owner_apply.html" class="btn btn-secondary">Partner as a Gym Owner</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Join Us/Hook Up Section End -->
+    <!-- Gym Owner Benefits Section Start -->
+    <section id="gym-owner-benefits" class="gym-owner-benefits-section">
+        <div class="container">
+            <h2>BENEFITS FOR GYM OWNERS</h2>
+            <p class="section-subtitle">Discover how partnering with Optilife can elevate your gym business, expand your clientele, and streamline your operations.</p>
+            <div class="gym-owner-benefit-grid">
+                <div class="gym-owner-benefit-card">
+                    <i class="bi bi-people-fill benefit-icon"></i>
+                    <h3>Expand Your Reach</h3>
+                    <p>Tap into Optilife's growing user base and attract new members actively seeking quality fitness facilities.</p>
+                </div>
+                <div class="gym-owner-benefit-card">
+                    <i class="bi bi-graph-up-arrow benefit-icon"></i>
+                    <h3>Boost Bookings & Revenue</h3>
+                    <p>Increase class attendance and facility usage. Unlock potential for additional revenue streams through our platform.</p>
+                </div>
+                <div class="gym-owner-benefit-card">
+                    <i class="bi bi-tools benefit-icon"></i>
+                    <h3>Streamlined Management</h3>
+                    <p>Leverage our intuitive platform tools for easier class scheduling, member communication, and analytics (features vary).</p>
+                </div>
+                <div class="gym-owner-benefit-card">
+                    <i class="bi bi-megaphone-fill benefit-icon"></i>
+                    <h3>Enhanced Marketing</h3>
+                    <p>Gain increased visibility through Optilife's marketing campaigns, promotions, and dedicated gym profiles.</p>
+                </div>
+            </div>
+            <div class="gym-owner-cta">
+                 <a href="gym_owner_apply.html" class="btn btn-primary">Partner With Us Today</a>
+            </div>
+        </div>
+    </section>
+    <!-- Gym Owner Benefits Section End -->
 
-  
+   
+
+    <!-- Membership Plans Section Start -->
+    <section id="membership-plans" class="membership-plans-section">
+        <div class="container">
+            <h2>CHOOSE YOUR OPTILIFE PLAN</h2>
+            <p class="section-subtitle">Select the perfect membership to kickstart your fitness transformation. All plans grant access to our supportive community and expert resources.</p>
+            <div class="plans-grid">
+                <div class="plan-card">
+                    <h3>Basic Membership</h3>
+                    <p class="plan-price"><span>P550</span>1 month</p>
+                    <ul class="plan-features">
+                        <li><i class="bi bi-check-circle-fill"></i> Access to all gym equipment</li>
+                        <li><i class="bi bi-check-circle-fill"></i> Standard workout programs</li>
+                        <li><i class="bi bi-check-circle-fill"></i> Community forum access</li>
+                        <li><i class="bi bi-x-circle-fill"></i> Personalized coaching</li>
+                        <li><i class="bi bi-x-circle-fill"></i> Premium content & workshops</li>
+                    </ul>
+                    <a href="signup.html?plan=basic" class="btn btn-secondary plan-cta">Get Started</a>
+                </div>
+                <div class="plan-card premium-plan">
+                    <div class="popular-badge">Most Popular</div>
+                    <h3>Premium Access</h3>
+                    <p class="plan-price"><span>P2000</span> 2 months</p>
+                    <ul class="plan-features">
+                        <li><i class="bi bi-check-circle-fill"></i> All Basic features, plus:</li>
+                        <li><i class="bi bi-check-circle-fill"></i> Personalized coaching (2/month)</li>
+                        <li><i class="bi bi-check-circle-fill"></i> Access to all premium content</li>
+                        <li><i class="bi bi-check-circle-fill"></i> Advanced progress tracking</li>
+                        <li><i class="bi bi-check-circle-fill"></i> Priority booking for classes</li>
+                    </ul>
+                    <a href="signup.html?plan=premium" class="btn btn-primary plan-cta">Go Premium</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Membership Plans Section End -->
+
+    <!-- About Us Section Start -->
     <section id="about" class="about-section">
          <div class="container">
             <h2>Story of Us</h2>
@@ -131,8 +210,9 @@
             </div>
         </div>
     </section>
+    <!-- About Us Section End -->
 
- 
+    <!-- Testimonials Section Start -->
     <section id="testimonials" class="testimonials-section">
         <div class="container">
              <h2>Client's Said</h2>
@@ -161,14 +241,15 @@
              </div>
         </div>
     </section>
+    <!-- Testimonials Section End -->
 
-    
+    <!-- Coaches Section Start -->
     <section id="coaches" class="coaches-section">
         <div class="container">
             <h2>Coaches</h2>
             <div class="coaches-grid">
                 <div class="coach-card">
-                    <img src="../images/joel.jpg" alt="Coach Austin">
+                    <img src="../images/joel.jpg" alt="Coach Joel">
                     <div class="coach-info">
                         <h4>JOEL</h4>
                         <a href="#" class="coach-cert">Coach Certificates</a>
@@ -184,7 +265,7 @@
                     </div>
                 </div>
                  <div class="coach-card">
-                    <img src="../images/mundy.jpg" alt="Coach Thomas">
+                    <img src="../images/mundy.jpg" alt="Coach Mundy">
                     <div class="coach-info">
                         <h4>MUNDY</h4>
                         <a href="#" class="coach-cert">Coach Certificates</a>
@@ -202,8 +283,9 @@
             </div>
         </div>
     </section>
+    <!-- Coaches Section End -->
 
-   
+    <!-- Subscribe and Footer Links Section Start -->
     <section id="subscribe" class="subscribe-section">
         <div class="container subscribe-content">
             <div class="subscribe-text">
@@ -214,9 +296,9 @@
                     <button type="submit" class="btn btn-primary">Send</button>
                 </form>
                 <div class="social-icons">
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                    <a href="#"><i class="fab fa-tiktok"></i></a>
-                    <a href="#"><i class="fab fa-youtube"></i></a>
+                   <a href="#"><i class="bi bi-instagram"></i></a>
+                    <a href="#"><i class="bi bi-tiktok"></i></a>
+                    <a href="#"><i class="bi bi-youtube"></i></a>
                 </div>
             </div>
             <div class="footer-links">
@@ -263,59 +345,68 @@
             </div>
         </div>
     </section>
+    <!-- Subscribe and Footer Links Section End -->
 
+    <!-- Main Footer Start -->
+    <footer>
+        <div class="container">
+            <p>© 2023 OPTILIFE. All Rights Reserved.</p>
+        </div>
+    </footer>
+    <!-- Main Footer End -->
 
-<footer>
-    <div class="container">
-        <p>© 2023 OPTILIFE. All Rights Reserved.</p>
-    </div>
-</footer>
-
-
-<script src="../assets/jquery-3.7.1.min.js"></script>
-
-
-<script>
+    <!-- Scripts -->
+    <!-- IMPORTANT: Ensure jQuery path is correct -->
+    <script src="../assets/jquery-3.7.1.min.js"></script>
+    <!-- Burger menu and smooth scroll jQuery -->
+    <script>
       $(document).ready(function() {
         const $burgerBtn = $('#burger-btn');
         const $header = $('#main-header');
-        const $navContainer = $('.navigation-screensize'); 
-        const $icon = $burgerBtn.find('i'); 
+        const $icon = $burgerBtn.find('i');
 
         $burgerBtn.on('click', function() {
-            
             $header.toggleClass('mobile-menu-active');
-
-           
-
             const isExpanded = $burgerBtn.attr('aria-expanded') === 'true';
             $burgerBtn.attr('aria-expanded', !isExpanded);
 
-            $icon.toggleClass('fa-bars fa-times');
-        });
-
-        
-        $('.navigation-screensize a').on('click', function() {
-            if ($header.hasClass('mobile-menu-active')) {
-                $burgerBtn.trigger('click'); 
+            if ($icon.hasClass('bi-list')) {
+                $icon.removeClass('bi-list').addClass('bi-x');
+            } else {
+                $icon.removeClass('bi-x').addClass('bi-list');
             }
         });
 
-
-     
-        $('header a.btn.btn-primary.header-signin').on('click', function(event) {
-            event.preventDefault(); 
-            
-            window.location.href = 'signin.html'; 
+        $('.navigation-screensize nav a, .navigation-screensize > a.btn').on('click', function() {
+            if ($header.hasClass('mobile-menu-active')) {
+                if (this.hash !== "") {
+                } else {
+                    $burgerBtn.trigger('click');
+                }
+            }
         });
 
-
-
-    })
-</script>
-
-</body>
-</html>
-
+        $('a[href*="#"]').not('[href="#"]').not('[href="#0"]').click(function(event) {
+            if (
+                location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '')
+                &&
+                location.hostname == this.hostname
+            ) {
+                var target = $(this.hash);
+                target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
+                if (target.length) {
+                    event.preventDefault();
+                    if ($header.hasClass('mobile-menu-active') && this.hash !== "") {
+                        $burgerBtn.trigger('click');
+                    }
+                    $('html, body').animate({
+                        scrollTop: target.offset().top - $('#main-header').outerHeight()
+                    }, 800, function() {
+                    });
+                }
+            }
+        });
+    });
+    </script>
 </body>
 </html>
