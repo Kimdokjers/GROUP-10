@@ -1,184 +1,249 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
-
-:root {
-    --color-black: #0a0a0a;
-    --color-black-rgb: 10, 10, 10;
-    --color-dark-gray: #1a1a1a; 
-    --color-darker-gray: #1f1f1f;
-    --color-gold: #daa520;
-    --color-gold-light: #f0c44c;
-    --color-text: #ffffff;
-    --color-text-muted: #aaaaaa;
-    --color-input-bg: #252525; 
-    --color-border: #383838; 
-    --font-primary: 'Poppins', sans-serif;
-}
-
+/* Base styles copied from membership.html */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    text-decoration: none; /* Add text-decoration none */
+    list-style: none;
+    border: none;
+    outline: none;
 }
 
-html {
-    height: 100%;
+:root { /* Copied from membership.html */
+    --bg-color: #000;
+    --snd-bf-color: #111;
+    --text-color: #fff;
+    --main-color: #FFD700;
+    --color-black: #0a0a0a;
+    --color-dark-gray: #1a1a1a;
+    --color-gold: #daa520;
+    --color-gold-light: #f0c44c;
+    --color-text-muted: #aaaaaa;
+    --border-color-light: #333;
+    --header-height-desktop: 100px;
+    --header-height-mobile: 80px;
+    --font-primary: 'Poppins', sans-serif;
+    --modal-overlay-bg: rgba(0, 0, 0, 0.5);
+    --button-primary-bg: #FFD700;
+    --button-primary-text: #0a0a0a;
+    --button-primary-hover-bg: transparent;
+    --button-secondary-bg: #aaa;
+    --button-secondary-text: #fff;
+    --button-secondary-hover-bg: #888;
+}
+
+html { /* Copied from membership.html */
+    font-size: 62.5%;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    height: 100%; /* Ensure html takes full height */
 }
 
 body {
     font-family: var(--font-primary);
-    background-color: var(--color-black);
-    color: var(--color-text);
+    background-color: var(--bg-color); /* Use var */
+    color: var(--text-color); /* Use var */
     min-height: 100%;
     display: flex;
     flex-direction: column;
     line-height: 1.6;
-    background-image: linear-gradient(rgba(var(--color-black-rgb), 0.92), rgba(var(--color-black-rgb), 0.95)), url('../../images/paymentbg.jpg'); 
+    /* Keep existing background image styles */
+    background-image: linear-gradient(rgba(10, 10, 10, 0.92), rgba(10, 10, 10, 0.95)), url('../../images/paymentbg.jpg');
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
     background-attachment: fixed;
 }
 
-.container {
+.container { /* Standard container */
     width: 90%;
     max-width: 1140px;
     margin-left: auto;
     margin-right: auto;
-    padding-left: 20px; 
-    padding-right: 20px; 
+    padding-left: 20px;
+    padding-right: 20px;
 }
 
-.site-header {
-    padding: 15px 0; 
-    border-bottom: 1px solid var(--color-border); 
-}
-
-.header-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center; 
-}
-
-.logo {
-    height: 100px; 
-    width: auto;
+img { /* Basic image reset */
+    max-width: 100%;
+    height: auto;
     display: block;
 }
 
+/* === HEADER STYLES - ADOPTED FROM MEMBERSHIP.HTML === */
+header {
+    /* position: fixed; Remove fixed position if not needed */
+    width: 100%;
+    height: var(--header-height-desktop);
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 9%; /* From membership.html */
+    background: rgba(0, 0, 0, 0.7); /* From membership.html */
+    backdrop-filter: blur(10px); /* From membership.html */
+    transition: background 0.5s ease, backdrop-filter 0.5s ease, height 0.3s ease;
+    box-sizing: border-box;
+    border-bottom: 1px solid var(--border-color-light); /* From membership.html */
+}
+
+.logo { /* Selector now targets the <a> tag */
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+    flex-shrink: 0;
+    display: flex; /* Ensure logo link behaves like a block */
+    align-items: center;
+}
+
+.logo img { /* Styles apply to the image inside the logo link */
+    max-width: 100px; /* From membership.html desktop */
+    height: auto;
+}
+
+.logo:hover {
+    transform: scale(1.05);
+}
+/* === END HEADER STYLES === */
+
+
+/* === BUTTON STYLES - ADOPTED/ALIGNED WITH MEMBERSHIP.HTML === */
 .btn {
     display: inline-block;
-    padding: 10px 25px; 
-    border-radius: 5px;
+    padding: 1.2rem 3rem; /* Adjusted to match primary/secondary */
+    border-radius: 0.8rem; /* Adjusted to match primary/secondary */
     font-weight: 600;
     text-align: center;
     cursor: pointer;
-    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease, border-color 0.3s ease;
-    border: 1px solid transparent;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    font-size: 0.9rem; 
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease, border-color 0.3s ease, box-shadow 0.5s ease; /* Added border-color, box-shadow */
+    border: 2px solid transparent; /* Changed to 2px */
+    text-transform: uppercase; /* Consistent */
+    letter-spacing: 0.1rem; /* Added for consistency */
+    font-size: 1.7rem; /* Adjusted to match primary/secondary */
 }
 
 .btn-primary {
-    background-color: var(--color-gold);
-    color: var(--color-black);
-    border-color: var(--color-gold);
+    color: var(--button-primary-text);
+    background: var(--button-primary-bg);
+    border-color: var(--main-color); /* Use main-color for border */
+    box-shadow: none; /* From membership.html */
 }
-
 .btn-primary:hover {
-    background-color: var(--color-gold-light);
-    border-color: var(--color-gold-light);
-    color: var(--color-black);
-    transform: translateY(-2px);
+    background-color: var(--button-primary-hover-bg);
+    color: var(--main-color);
+    box-shadow: 0 0 1.6rem var(--main-color); /* From membership.html */
+    transform: translateY(-2px); /* From membership.html */
 }
 
-.btn-secondary { 
-    background-color: transparent;
-    color: var(--color-gold);
-    border: 1px solid var(--color-gold);
+.btn-secondary {
+    background-color: transparent; /* From membership.html */
+    color: var(--main-color); /* From membership.html */
+    border: 2px solid #aaa; /* From membership.html */
 }
-
 .btn-secondary:hover {
-    background-color: var(--color-gold);
-    color: var(--color-black);
-    border-color: var(--color-gold);
-    transform: translateY(-2px);
+    background: var(--button-secondary-hover-bg); /* From membership.html */
+    border-color: var(--button-secondary-hover-bg); /* From membership.html */
+    color: var(--button-secondary-text); /* Added for consistency */
+    transform: translateY(-1px); /* From membership.html */
 }
 
-.btn-back i, .btn-back-success i {
+/* Specific style for the Back Button in header */
+.btn-back {
+    font-size: 1.6rem; /* Slightly smaller font for header button */
+    padding: 0.8rem 2rem; /* Adjusted padding */
+    border-width: 1px; /* Use 1px border for header button? membership used 2px, let's stick to 2px */
+    border-color: #aaa; /* Use secondary border */
+}
+.btn-back:hover {
+     background: var(--button-secondary-hover-bg);
+    border-color: var(--button-secondary-hover-bg);
+    color: var(--button-secondary-text);
+    transform: translateY(-1px);
+    box-shadow: none; /* No glow for secondary hover generally */
+}
+
+.btn-back i { /* Keep icon style */
     margin-right: 8px;
 }
+/* === END BUTTON STYLES === */
 
+
+/* === MAIN CONTENT & FORM STYLES - Keep original paymentMethods.css styles === */
 .site-main {
     flex-grow: 1;
-    padding-top: 40px; 
-    padding-bottom: 60px; 
+    padding-top: 40px;
+    padding-bottom: 60px;
+    display: flex; /* Added flex to help center */
+    align-items: center; /* Vertically center if needed */
+    justify-content: center; /* Horizontally center */
 }
 
 .payment-form-container {
-    background-color: var(--color-dark-gray); 
-    padding: 30px 40px; 
+    background-color: var(--color-dark-gray);
+    padding: 30px 40px;
     border-radius: 8px;
-    max-width: 550px; 
-    margin: 0 auto; 
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3); 
-    border: 1px solid var(--color-border);
+    max-width: 550px;
+    width: 100%; /* Ensure it takes width within container */
+    margin: 0 auto; /* Centering fallback */
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--border-color-light);
 }
 
 .form-title {
-    color: var(--color-text); 
+    color: var(--text-color);
     font-weight: 600;
-    font-size: 1.8rem; 
+    font-size: 2.4rem; /* Increase size slightly */
     text-align: center;
-    margin-bottom: 2rem;
-    border-bottom: 1px solid var(--color-gold);
-    padding-bottom: 0.75rem;
+    margin-bottom: 2.5rem; /* Increase spacing */
+    border-bottom: 1px solid var(--main-color); /* Use main color */
+    padding-bottom: 1rem; /* Increase padding */
 }
 
 .form-subtitle {
-    color: var(--color-gold); 
+    color: var(--color-gold-light); /* Use lighter gold */
     font-weight: 500;
-    font-size: 1.1rem;
-    margin-top: 1.5rem;
-    margin-bottom: 1rem;
-}
-
-.payment-option-group {
+    font-size: 1.8rem; /* Increase size */
+    margin-top: 2rem;
     margin-bottom: 1.5rem;
 }
 
+.payment-option-group {
+    margin-bottom: 2rem;
+}
+
 .form-check {
-    margin-bottom: 1rem;
-    display: flex; 
+    margin-bottom: 1.5rem; /* Increase spacing */
+    display: flex;
     align-items: center;
 }
 
 .form-check-input {
     appearance: none;
     -webkit-appearance: none;
-    width: 18px;
-    height: 18px;
+    width: 20px; /* Slightly larger */
+    height: 20px; /* Slightly larger */
     border: 2px solid var(--color-text-muted);
     border-radius: 50%;
     outline: none;
     cursor: pointer;
-    margin-right: 10px;
+    margin-right: 12px; /* Increase spacing */
     position: relative;
-    top: -1px; 
+    top: -1px;
     transition: border-color 0.2s ease, background-color 0.2s ease;
 }
 
 .form-check-input:checked {
-    border-color: var(--color-gold);
-    background-color: var(--color-gold);
+    border-color: var(--main-color); /* Use main color */
+    background-color: var(--main-color);
 }
 
 .form-check-input:checked::before {
     content: '';
     display: block;
-    width: 8px;
-    height: 8px;
-    background-color: var(--color-black); 
+    width: 10px; /* Adjust inner dot size */
+    height: 10px; /* Adjust inner dot size */
+    background-color: var(--color-black);
     border-radius: 50%;
     position: absolute;
     top: 50%;
@@ -186,94 +251,111 @@ body {
     transform: translate(-50%, -50%);
 }
 
-.form-check-input:focus-visible { 
-    box-shadow: 0 0 0 2px var(--color-black), 0 0 0 4px var(--color-gold-light);
+.form-check-input:focus-visible {
+    box-shadow: 0 0 0 2px var(--bg-color), 0 0 0 4px var(--color-gold-light); /* Use bg color */
 }
 
 .form-check-label {
-    color: var(--color-text); 
+    color: var(--text-color);
     cursor: pointer;
-    font-size: 1rem;
+    font-size: 1.6rem; /* Increase label size */
+    display: flex; /* Align icon and text */
+    align-items: center; /* Vertically align */
 }
 
 .form-check-label i {
-    color: var(--color-gold-light); 
-    margin-right: 8px;
-    font-size: 1.2rem;
-    vertical-align: middle;
+    color: var(--color-gold-light);
+    margin-right: 10px; /* Space after icon */
+    font-size: 1.8rem; /* Increase icon size */
+    /* vertical-align: middle; -> Handled by flex alignment now */
 }
 
 .online-options {
-    margin-top: 1.5rem;
-    padding-top: 1.5rem;
-    border-top: 1px solid var(--color-border);
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border-color-light);
 }
 
 .note {
     display: block;
     color: var(--color-text-muted);
-    font-size: 0.85em;
-    margin-top: 1rem;
-    margin-bottom: 1.5rem;
+    font-size: 1.3rem; /* Increase note size */
+    margin-top: 1.5rem;
+    margin-bottom: 2rem;
     transition: color 0.3s ease;
 }
 .note-error {
-    color: #ff6b6b; 
+    color: #ff6b6b;
     font-weight: 500;
 }
 
 .btn-proceed {
     width: 100%;
-    padding-top: 12px;
-    padding-bottom: 12px;
-    margin-top: 1.5rem;
-    font-size: 1rem;
+    padding-top: 1.5rem; /* Increase padding */
+    padding-bottom: 1.5rem;
+    margin-top: 2rem;
+    font-size: 1.8rem; /* Increase font size */
 }
 
+/* Success Message Styles - Kept original */
 .success-box {
     padding: 30px 40px;
     border-radius: 8px;
     text-align: center;
-    display: none; 
+    display: none;
 }
 
 .success-icon {
     font-size: 3.5rem;
-    color: var(--color-gold);
+    color: var(--main-color); /* Use main color */
     display: block;
     margin-bottom: 1rem;
 }
 
 .success-title {
-    color: var(--color-text);
+    color: var(--text-color);
     margin-bottom: 0.75rem;
     font-weight: 600;
-    font-size: 1.5rem;
+    font-size: 1.8rem; /* Increase size */
 }
 
 .success-text {
     color: var(--color-text-muted);
-    margin-bottom: 2rem;
-    font-size: 1rem;
+    margin-bottom: 2.5rem; /* Increase spacing */
+    font-size: 1.6rem; /* Increase size */
 }
 
 .btn-back-success {
-    margin-top: 1rem;
+    margin-top: 1.5rem;
+    /* Uses .btn-primary styles */
 }
+/* === END MAIN CONTENT STYLES === */
 
-.site-footer {
-    background-color: var(--color-black); 
+
+/* === FOOTER STYLES - ADOPTED FROM MEMBERSHIP.HTML === */
+footer {
+    background-color: var(--bg-color);
     color: var(--color-text-muted);
-    font-size: 0.9rem;
-    border-top: 1px solid var(--color-border);
-    padding: 20px 0;
-    margin-top: auto; 
-}
-
-.footer-content {
     text-align: center;
+    padding: 2rem 0; /* From membership.html */
+    font-size: 1.3rem; /* From membership.html */
+    border-top: 1px solid var(--border-color-light);
+    margin-top: auto; /* Keep push to bottom */
 }
 
+footer .container { /* Selects the container inside footer */
+    max-width: 1200px; /* Consistent */
+    margin: 0 auto;
+    padding: 0 2rem; /* Consistent */
+}
+
+/* Remove old footer selectors if they existed */
+/* .site-footer { ... } */
+/* .footer-content { ... } */
+/* === END FOOTER STYLES === */
+
+
+/* === ANIMATION STYLES - Keep original === */
 .shake-animation {
     animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
     transform: translate3d(0, 0, 0);
@@ -285,48 +367,102 @@ body {
   40%, 60% { transform: translate3d(4px, 0, 0); }
 }
 
-@media (max-width: 768px) {
-    .container {
-        width: 95%;
-    }
-    .payment-form-container {
-        padding: 25px 30px;
-    }
-    .logo {
-        height: 50px; 
-    }
-    .btn {
-        font-size: 0.85rem;
-        padding: 8px 20px;
-    }
-    .form-title {
-        font-size: 1.5rem;
-    }
+
+/* === RESPONSIVE STYLES - ADAPTED FROM MEMBERSHIP.HTML FOR HEADER/FOOTER === */
+@media (max-width: 1024px) { /* membership.html had this block, but it targeted .navbar-right which isn't here */
+     /* Keep any non-header/footer responsive rules for payment form if needed */
+     .payment-form-container {
+         max-width: 500px; /* Example adjustment */
+     }
 }
 
-@media (max-width: 576px) {
+@media (max-width: 991px) {
+    html { font-size: 55%; } /* From membership.html */
+    header {
+        height: var(--header-height-mobile);
+        padding: 1rem 5%; /* From membership.html */
+    }
+    main.site-main { /* Adjust padding top for mobile header */
+         padding-top: calc(var(--header-height-mobile) + 30px); /* 30px extra space */
+    }
+    /* Logo size inherits desktop 100px until 767px in membership.html */
+    .logo img {
+        max-width: 100px;
+        height: auto;
+    }
+     /* Keep payment form responsive styles */
+     .payment-form-container {
+        padding: 25px 30px;
+     }
+     .form-title { font-size: 2rem; }
+     .form-subtitle { font-size: 1.6rem; }
+     .form-check-label { font-size: 1.5rem; }
+     .btn-proceed { font-size: 1.6rem; }
+}
+
+@media (max-width: 767px) { /* Changed from 768px for consistency */
+    html { font-size: 50%; } /* From membership.html */
+    header {
+         padding: 1rem 4%; /* From membership.html */
+         height: calc(var(--header-height-mobile) - 10px); /* From membership.html */
+    }
+    main.site-main {
+         padding-top: calc(var(--header-height-mobile) - 10px + 25px);
+    }
+    .logo img {
+        max-width: 150px; /* From membership.html specific rule */
+        height: auto;
+    }
+    /* Keep payment form responsive styles */
+    .container { width: 95%; }
+    .payment-form-container { padding: 25px 20px; }
+    .btn-back { font-size: 1.4rem; padding: 0.7rem 1.5rem; }
+}
+
+@media (max-width: 480px) {
+    header {
+        padding: 0.8rem 3%; /* From membership.html */
+        height: calc(var(--header-height-mobile) - 20px); /* From membership.html */
+        flex-direction: column; /* Stack logo and button */
+        gap: 10px; /* Space between logo and button */
+        padding-top: 10px; /* Add some top padding */
+        padding-bottom: 10px; /* Add some bottom padding */
+        height: auto; /* Let height adjust */
+    }
+    main.site-main {
+         padding-top: 30px; /* Adjust space below auto-height header */
+    }
+    .logo {
+        order: 1; /* Logo first */
+    }
+    .logo img {
+        max-width: 130px; /* From membership.html specific rule */
+        height: auto;
+    }
+    .btn-back {
+        order: 2; /* Button second */
+        align-self: center; /* Center button */
+        font-size: 1.3rem; /* Adjust button size */
+        padding: 0.6rem 1.2rem;
+    }
+
+    /* Keep payment form responsive styles */
     .payment-form-container {
-        padding: 20px;
+        padding: 20px 15px;
         margin-top: 20px;
         margin-bottom: 20px;
     }
-    .header-content {
-        flex-direction: column; 
-        gap: 15px;
-    }
-    .logo {
-        order: 1;
-        height: 55px; 
-    }
-    .btn-back {
-        order: 2;
-        align-self: center;
-    }
-    .site-footer {
-        font-size: 0.8rem;
+    .form-title { font-size: 1.8rem; }
+    .form-subtitle { font-size: 1.5rem; }
+    .form-check-label { font-size: 1.4rem; }
+    .note { font-size: 1.2rem; }
+    .btn-proceed { font-size: 1.6rem; padding: 1.2rem; }
+    .success-title { font-size: 1.6rem; }
+    .success-text { font-size: 1.4rem; }
+
+    /* Footer responsive from membership.html */
+    footer {
+        font-size: 1.2rem; /* Match membership.html */
         padding: 15px 0;
-    }
-    .form-check-label {
-        font-size: 0.95rem;
     }
 }

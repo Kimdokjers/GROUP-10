@@ -8,28 +8,19 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-    <!-- Ensure this path is correct -->
     <link rel="stylesheet" href="usercss/paymentMethods.css">
 </head>
 <body>
 
-    <!-- Site Header -->
-    <header class="site-header">
-        <div class="container header-content">
-            <!-- Logo on the left -->
-            <div class="logo-container">
-                <a href="index.html" class="logo-link"> <!-- Link logo to homepage or relevant page -->
-                    <img src="../images/logo.png" alt="OptiLife Logo" class="logo">
-                </a>
-            </div>
-            <!-- Back button on the right -->
-            <a href="membership.html" class="btn btn-secondary btn-back">
-                <i class="bi bi-arrow-left-circle"></i> Back
-            </a>
-        </div>
+    <header>
+        <a href="home.html" class="logo">
+            <img src="../images/logo.png" alt="OptiLife Logo">
+        </a>
+        <a href="membership.html" class="btn btn-secondary btn-back">
+            <i class="bi bi-arrow-left-circle"></i> Back
+        </a>
     </header>
 
-    <!-- Main Content Area -->
     <main class="site-main">
         <div class="container">
             <div class="payment-form-container">
@@ -51,7 +42,6 @@
                         </div>
                     </div>
 
-                    <!-- Online Payment Options (hidden by default) -->
                     <div id="online-payment-options" class="online-options" style="display: none;">
                         <h3 class="form-subtitle">Select Online Payment</h3>
                         <div class="form-check">
@@ -84,7 +74,6 @@
                     <button type="submit" class="btn btn-primary btn-proceed">Proceed</button>
                 </form>
 
-                <!-- Success Message (hidden by default) -->
                 <div id="success-message" class="success-box" style="display: none;">
                     <i class="bi bi-check-circle-fill success-icon"></i>
                     <h3 class="success-title">Payment Selection Confirmed!</h3>
@@ -95,70 +84,69 @@
         </div>
     </main>
 
-    <!-- Site Footer -->
-    <footer class="site-footer">
-        <div class="container footer-content">
-            <span>© 2023 OPTILIFE. All Rights Reserved.</span>
+    <footer>
+        <div class="container">
+            <p>© 2023 OPTILIFE. All Rights Reserved.</p>
         </div>
     </footer>
 
-  <script src="../assets/jquery-3.7.1.min.js"></script>
-<script>
-$(document).ready(function() {
-    const paymentTypeRadios = $('input[name="paymentType"]');
-    const onlineOptionsDiv = $('#online-payment-options');
-    const onlineMethodRadios = $('input[name="onlineMethod"]');
+    <script src="../assets/jquery-3.7.1.min.js"></script>
+    <script>
+    $(document).ready(function() {
+        const paymentTypeRadios = $('input[name="paymentType"]');
+        const onlineOptionsDiv = $('#online-payment-options');
+        const onlineMethodRadios = $('input[name="onlineMethod"]');
 
-    if ($('#online').is(':checked')) {
-        onlineOptionsDiv.show();
-    } else {
-        onlineOptionsDiv.hide();
-    }
-
-    paymentTypeRadios.on('change', function() {
-        if ($(this).val() === 'online') {
-            onlineOptionsDiv.slideDown();
+        if ($('#online').is(':checked')) {
+            onlineOptionsDiv.show();
         } else {
-            onlineOptionsDiv.slideUp();
-            onlineMethodRadios.prop('checked', false);
-        }
-    });
-
-    const paymentForm = $('#payment-form');
-    const successMessageDiv = $('#success-message');
-
-    paymentForm.on('submit', function(event) {
-        event.preventDefault();
-
-        const isOnlinePayment = $('#online').is(':checked');
-        const onlineMethodSelected = $('input[name="onlineMethod"]:checked').length > 0;
-        const noteElement = onlineOptionsDiv.find('.note');
-
-        if (isOnlinePayment && !onlineMethodSelected) {
-            noteElement.addClass('note-error');
-            onlineOptionsDiv.addClass('shake-animation');
-            setTimeout(function() {
-                onlineOptionsDiv.removeClass('shake-animation');
-            }, 500);
-            return;
-        } else {
-            noteElement.removeClass('note-error');
+            onlineOptionsDiv.hide();
         }
 
-        console.log("Form submitted (placeholder). Validation passed.");
-        paymentForm.fadeOut(function() {
-             successMessageDiv.fadeIn();
+        paymentTypeRadios.on('change', function() {
+            if ($(this).val() === 'online') {
+                onlineOptionsDiv.slideDown();
+            } else {
+                onlineOptionsDiv.slideUp();
+                onlineMethodRadios.prop('checked', false);
+            }
+        });
+
+        const paymentForm = $('#payment-form');
+        const successMessageDiv = $('#success-message');
+
+        paymentForm.on('submit', function(event) {
+            event.preventDefault();
+
+            const isOnlinePayment = $('#online').is(':checked');
+            const onlineMethodSelected = $('input[name="onlineMethod"]:checked').length > 0;
+            const noteElement = onlineOptionsDiv.find('.note');
+
+            if (isOnlinePayment && !onlineMethodSelected) {
+                noteElement.addClass('note-error');
+                onlineOptionsDiv.addClass('shake-animation');
+                setTimeout(function() {
+                    onlineOptionsDiv.removeClass('shake-animation');
+                }, 500);
+                return;
+            } else {
+                noteElement.removeClass('note-error');
+            }
+
+            console.log("Form submitted (placeholder). Validation passed.");
+
+            paymentForm.fadeOut(function() {
+                 successMessageDiv.fadeIn();
+            });
+        });
+
+        onlineMethodRadios.on('change', function() {
+            if ($(this).is(':checked')) {
+                const noteElement = onlineOptionsDiv.find('.note');
+                noteElement.removeClass('note-error');
+            }
         });
     });
-
-
-    onlineMethodRadios.on('change', function() {
-        if ($(this).is(':checked')) {
-            const noteElement = onlineOptionsDiv.find('.note');
-            noteElement.removeClass('note-error');
-        }
-    });
-});
-</script>
+    </script>
 </body>
 </html>
