@@ -3,35 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Up (Step 1) - OptiLife</title>
+    <title>Sign Up - OptiLife</title>
     <link rel="stylesheet" href="usercss/signin_signup.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-   
 </head>
 <body>
 
     <div class="container">
         <div class="form-box signup">
-            <form id="signup-step1-form">
-                <h1>Sign up</h1>
+            <h1>Sign up</h1>
+            <form id="signup-form" novalidate>
+                <div class="input-box">
+                    <label for="date" class="date-label">First Name:</label>
+                    <input type="text" placeholder="e.g., Juan" id="firstname" required>
+                    <i class='bx bxs-user-detail'></i>
+                </div>
 
                 <div class="input-box">
-                    <input type="text" placeholder="Username" id="username" required>
+                    <label for="date" class="date-label">Middle Name(Optional):</label>
+                    <input type="text" placeholder="e.g., Jam" id="middle-name">
+                    <i class='bx bx-user-pin'></i>
+                </div>
+
+                <div class="input-box">
+                    <label for="date" class="date-label">Last Name:</label>
+                    <input type="text" placeholder="e.g., Luna" id="lastname" required>
+                     <i class='bx bxs-user-detail'></i>
+                </div>
+
+                <div class="input-box">
+                    <label for="date" class="date-label">Suffix (Optional):</label>
+                    <input type="text" placeholder="e.g, Jr." id="suffix">
+                    <i class='bx bx-user-pin'></i>
+                </div>
+
+                <div class="input-box">
+                    <label for="date" class="date-label">Birth Date:</label>
+                    <input type="date" id="date" min="1900-01-01" max="2025-01-01" required>
+                </div>
+
+                <div class="input-box">
+                    
+                    <label for="date" class="date-label">Current Address:</label>
+                    <input type="text" placeholder="e.g., 456 Elm Street, Suite 3, Los Angeles, CA 90001, USA" id="address" required>
+                    <i class='bx bxs-map'></i>
+                </div>
+
+                 <div class="input-box">
+                    <label for="date" class="date-label">Phone Number:</label>
+                    <input type="tel" placeholder="e.g., 09xxxxxxxxx" id="phoneNumber" required pattern="[0-9]{11}">
+                    <i class='bx bx-phone'></i>
+                </div>
+                
+                <div class="input-box">
+                    <label for="date" class="date-label">Username:</label>
+                    <input type="text" placeholder="User123" id="username" required>
                     <i class='bx bxs-user'></i>
                 </div>
 
                 <div class="input-box">
-                    <input type="email" placeholder="Email" id="email" required>
+                    <label for="date" class="date-label">Email:</label>
+                    <input type="email" placeholder="e.g., juanluna@gmail.com" id="email" required>
                     <i class='bx bxs-envelope'></i>
                 </div>
 
                 <div class="input-box">
-                    <input type="password" placeholder="Password (min 8 characters)" id="password" required>
+                    <label for="date" class="date-label">Password:</label>
+                    <input type="password" placeholder="e.g., 12xxxxxx(min 8 characters)" id="password" required>
                     <i class='bx bxs-lock-alt'></i>
                 </div>
-
-                <button type="submit" class="btn" id="next-step-btn">Continue</button>
-
+            </form>
+                <button type="submit" class="btn" id="complete-signup-btn">Sign up</button>
                 <p class="separator-text">or Sign up with</p>
 
                 <div class="social-icons">
@@ -41,11 +83,10 @@
                 <div class="navigation-link">
                      <p>Already have an account? <a href="signin.html">Sign in</a></p>
                 </div>
-            </form>
         </div>
     </div>
 
-    <!-- The Modal -->
+    <!-- The Modal (remains the same) -->
     <div id="Modal" class="modal">
         <div class="modal-content">
             <button id="closeModalButton" class="close-button">×</button>
@@ -60,36 +101,43 @@
             // --- Modal Elements ---
             const $modal = $("#Modal");
             const $closeButton = $("#closeModalButton");
-            const $okButton = $("#okModalButton"); 
-            const $modalMessage = $("#modalMessage");      
+            const $okButton = $("#okModalButton");
+            const $modalMessage = $("#modalMessage");
+            let currentOkAction = null; // To store function for OK button
 
             // --- Modal Functions ---
-            const openModal = () => {
+            const openModal = (message, isError = true, onOkAction = null) => {
+                $modalMessage.text(message);
+                $modalMessage.css("color", isError ? "red" : "black"); // Red for errors, black otherwise
+                currentOkAction = onOkAction; // Store the action for the OK button
+
+                // Configure OK button text and visibility based on action
+                if (onOkAction) {
+                    $okButton.text("OK").show(); // Or specific text like "Proceed"
+                } else {
+                    // For simple validation errors where OK just closes
+                    $okButton.text("OK").show();
+                }
                 $modal.addClass('show');
-                $modalMessage.text("Sign up successful! Proceed to next step.");
-                $modalMessage.css("color", "black"); 
             };
 
             const closeModal = () => {
                 $modal.removeClass('show');
+                currentOkAction = null; // Clear the action when closing
             };
 
+            // --- Modal Event Handlers ---
             $closeButton.on('click', closeModal);
 
             $okButton.on('click', function() {
-                closeModal();
-                const email = sessionStorage.getItem('signupEmail');
-                const password = sessionStorage.getItem('signupPassword');
-                if (email && password) {
-                    window.location.href = 'signup-form.html'; 
-                } else {
-                    alert("Something went wrong. Please try signing up again.");
-                    console.error("Session storage data missing on modal OK click.");
+                if (typeof currentOkAction === 'function') {
+                    currentOkAction();
                 }
+                closeModal(); // Always close after action or if no action
             });
 
             $modal.on('click', function(event) {
-                if ($(event.target).is($modal)) { 
+                if ($(event.target).is($modal)) {
                     closeModal();
                 }
             });
@@ -100,53 +148,127 @@
                 }
             });
 
+            // --- Combined Form Submission Logic ---
+            $("#signup-form").on("submit", function(event) {
+                event.preventDefault();
 
-            $("#next-step-btn").on("click", function(event) {
-                event.preventDefault(); 
-
+                // Get all form values
                 const username = $("#username").val().trim();
                 const email = $("#email").val().trim();
                 const password = $("#password").val();
+                const firstName = $("#firstname").val().trim();
+                const lastName = $("#lastname").val().trim();
+                const suffix = $("#suffix").val().trim(); // Optional
+                const birthDate = $("#date").val();
+                const address = $("#address").val().trim();
+                const phoneNumber = $("#phoneNumber").val().trim();
 
-                let isValid = true;
-                $("#username, #email, #password").css("border", "");
+                // Reset previous error styles
+                $("#username, #email, #password, #firstname, #lastname, #date, #address, #phoneNumber").css("border", "");
 
+                // --- Validation Checks ---
+                // Step 1 validations
                 if (!username) {
-                    alert("Please enter a username.");
+                    openModal("Please enter a username.");
                     $("#username").css("border", "1px solid red");
-                    isValid = false;
+                    return;
                 }
                 if (!email) {
-                    alert("Please enter an email address.");
+                    openModal("Please enter an email address.");
                     $("#email").css("border", "1px solid red");
-                    isValid = false;
+                    return;
                 } else {
                      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
                      if (!emailRegex.test(email)) {
-                         alert("Please enter a valid email address.");
+                         openModal("Please enter a valid email address.");
                          $("#email").css("border", "1px solid red");
-                         isValid = false;
+                         return;
                      }
                  }
                  if (!password) {
-                     alert("Please enter a password.");
+                     openModal("Please enter a password.");
                      $("#password").css("border", "1px solid red");
-                     isValid = false;
+                     return;
                  } else if (password.length < 8) {
-                     alert("Password must be 8 or more characters long.");
+                     openModal("Password must be 8 or more characters long.");
                      $("#password").css("border", "1px solid red");
-                     isValid = false;
+                     return;
                  }
 
-
-                if (isValid) {
-                    sessionStorage.setItem('signupEmail', email);
-                    sessionStorage.setItem('signupPassword', password);
-                    openModal(); 
+                // Step 2 validations
+                if (!firstName) {
+                    openModal("Please enter your First Name.");
+                    $("#firstname").css("border", "1px solid red");
+                    return;
                 }
+                if (!lastName) {
+                    openModal("Please enter your Last Name.");
+                    $("#lastname").css("border", "1px solid red");
+                    return;
+                }
+                if (!birthDate) {
+                    openModal("Please select your Birth Date.");
+                    $("#date").css("border", "1px solid red");
+                    return;
+                }
+                const phoneRegex = /^[0-9]{11}$/;
+                 if (!phoneNumber) {
+                    openModal("Please enter your Phone Number.");
+                    $("#phoneNumber").css("border", "1px solid red");
+                    return;
+                } else if (!phoneRegex.test(phoneNumber)) {
+                     openModal("Please enter a valid 11-digit Phone Number.");
+                     $("#phoneNumber").css("border", "1px solid red");
+                     return;
+                 }
+                if (!address) {
+                    openModal("Please enter your Current Address.");
+                    $("#address").css("border", "1px solid red");
+                    return;
+                }
+
+                // --- If all validations pass ---
+                console.log("All validations passed. Preparing redirect.");
+
+                // Hardcoded credentials for role check
+                const adminEmail = "admin@gmail.com";
+                const adminPassword = "admin123";
+
+                const ownerEmail = "gymOwner@gmail.com";
+                const ownerPassword = "gymOwner123";
+
+                const clientEmail = "user@gmail.com";
+                const clientPassword = "user0123";
+
+                let redirectUrl = "signin.html"; // Default redirect for new users
+
+                // Use the email and password entered in *this current form*
+                const currentFormEmail = email; // from $("#email").val()
+                const currentFormPassword = password; // from $("#password").val()
+
+
+                if (currentFormEmail === clientEmail && currentFormPassword === clientPassword) {
+                    redirectUrl = "home.html";
+                } else if (currentFormEmail === ownerEmail && currentFormPassword === ownerPassword) {
+                    redirectUrl = "../GymOwner/gymOwner.html";
+                } else if (currentFormEmail === adminEmail && currentFormPassword === adminPassword) {
+                    redirectUrl = "../Admin/admindb.html";
+                } else {
+                     console.log("New user registration (not a predefined role), will redirect to signin after signup process.");
+                     // For a real app, you'd typically save the new user here and then redirect.
+                     // For this example, we just follow the pattern.
+                }
+
+                const completeSignupAndRedirect = () => {
+                     console.log("Redirecting to:", redirectUrl);
+                     window.location.href = redirectUrl;
+                };
+
+                openModal("Sign up complete! Welcome!", false, completeSignupAndRedirect);
+
+                // Optional: automatically redirect after a delay
+                // setTimeout(completeSignupAndRedirect, 2000); // Redirect after 2 seconds
             });
-
-
         });
     </script>
 

@@ -7,7 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <link rel="stylesheet" href="usercss/home.css">
+    <!-- <link rel="stylesheet" href="usercss/home.css"> --><!-- Assuming base styles are covered or merged below -->
 
     <style>
         :root {
@@ -18,6 +18,7 @@
             --main-color: #FFD700;
             --color-black: #0a0a0a;
             --color-dark-gray: #1a1a1a;
+            --color-gold: #daa520; /* Added from second file */
             --color-gold-light: #f0c44c;
             --color-text-muted: #aaaaaa;
             --border-color-light: #333;
@@ -25,7 +26,7 @@
             --header-height-mobile: 80px;
             --font-primary: 'Poppins', sans-serif;
 
-            /* Theme Variables (Consistent with Progress.html) */
+            /* Theme Variables (Consistent with Progress.html & SetGoals) */
             --card-bg: var(--color-dark-gray);
             --card-text-color: var(--text-color);
             --card-muted-text-color: var(--color-text-muted);
@@ -43,8 +44,8 @@
             --button-secondary-hover-bg: #666;
 
             --modal-overlay-bg: rgba(0, 0, 0, 0.7);
-            --modal-bg: var(--color-dark-gray);
-            --modal-text-color: var(--text-color);
+            --modal-bg: var(--color-dark-gray); /* Default modal bg */
+            --modal-text-color: var(--text-color); /* Default modal text */
 
             --input-bg: #252525;
             --input-border-color: var(--border-color-light);
@@ -91,6 +92,210 @@
             height: auto;
             display: block;
         }
+
+        /* === HEADER STYLES (FROM SECOND FILE) === */
+        header {
+            position: fixed;
+            width: 100%;
+            height: var(--header-height-desktop);
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 9%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            transition: background 0.5s ease, backdrop-filter 0.5s ease, height 0.3s ease;
+            box-sizing: border-box;
+            border-bottom: 1px solid var(--border-color-light);
+        }
+
+        .logo {
+            cursor: pointer;
+            transition: 0.3s ease-in-out;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            max-width: 100px; /* From second file */
+            height: auto;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            flex-grow: 1; /* From second file */
+            margin-left: 4rem; /* From second file */
+        }
+
+        .navbar-left,
+        .navbar-right {
+            display: flex;
+            align-items: center;
+            padding: 0;
+            margin: 0;
+        }
+        .navbar-right {
+            gap: 2rem; /* From second file */
+        }
+
+        .navbar li { /* From second file */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar a { /* From second file */
+            font-size: 1.8rem;
+            font-weight: 500;
+            color: var(--text-color);
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+            white-space: nowrap;
+            padding: 0.5rem 0;
+        }
+
+        .navbar-left li a { /* From second file */
+            margin-left: 4rem;
+        }
+        .navbar-left li:first-child a { /* From second file */
+            margin-left: 0;
+        }
+
+        .navbar-right .profile-menu-container { /* From second file */
+            position: relative;
+        }
+
+        .welcome-text { /* From second file */
+            font-size: 1.6rem;
+            color: var(--color-text-muted);
+            white-space: nowrap;
+        }
+        .welcome-text span#header-user-name { /* From second file */
+            font-weight: 500;
+            color: var(--text-color);
+        }
+
+        .navbar-right li a#logout-link { /* From second file */
+            margin-left: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            border-bottom: none;
+            padding: 0.5rem 0.8rem;
+            border-radius: 4px;
+        }
+        .navbar-right li a#logout-link i { /* From second file */
+            font-size: 2rem;
+            line-height: 1;
+            transition: color 0.3s ease;
+        }
+
+        .navbar a:hover,
+        .navbar a.active { /* From second file */
+            color: var(--main-color);
+            border-bottom-color: var(--main-color);
+        }
+
+        .navbar-right li a#logout-link:hover { /* From second file */
+            color: var(--main-color);
+            border-bottom-color: transparent;
+            background-color: rgba(255, 215, 0, 0.1);
+        }
+        .navbar-right li a#logout-link:hover i { /* From second file */
+            color: var(--main-color);
+        }
+
+        .navbar .profile-pic { /* From second file */
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            display: block;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            border: 2px solid transparent;
+        }
+        .navbar .profile-pic:hover { /* From second file */
+            transform: scale(1.05);
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.5); /* Adjusted to use RGB for var(--main-color) */
+        }
+         .navbar .profile-pic.active { /* From second file */
+             border-color: var(--main-color);
+             box-shadow: 0 0 10px rgba(255, 215, 0, 0.5); /* Adjusted */
+         }
+
+        #menu-icon { /* From second file */
+            font-size: 4.5rem;
+            color: var(--main-color);
+            cursor: pointer;
+            display: none;
+            margin-left: 2rem;
+            z-index: 1001;
+        }
+
+        .profile-dropdown { /* From second file */
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            margin-top: 10px;
+            background-color: var(--snd-bf-color);
+            border: 1px solid var(--border-color-light);
+            border-radius: 6px;
+            min-width: 180px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            z-index: 1100;
+            padding: 0.5rem 0;
+            list-style: none;
+            animation: fadeInDropdown 0.2s ease-out;
+        }
+        .profile-dropdown.active { display: block; }
+        @keyframes fadeInDropdown { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
+
+        .profile-dropdown li a.dropdown-item { /* From second file */
+            display: flex;
+            align-items: center;
+            padding: 0.8rem 1.5rem;
+            font-size: 1.4rem;
+            color: var(--text-color);
+            font-weight: 400;
+            white-space: nowrap;
+            transition: background-color 0.2s ease, color 0.2s ease;
+            border-bottom: none; /* Ensures no double border from .navbar a */
+        }
+        .profile-dropdown li a.dropdown-item:hover { /* From second file */
+            background-color: var(--color-dark-gray);
+            color: var(--main-color);
+             border-bottom-color: transparent; /* Overrides .navbar a:hover */
+        }
+        .profile-dropdown li a.dropdown-item i { /* From second file */
+            margin-right: 0.8rem;
+            font-size: 1.6rem;
+            vertical-align: middle;
+            position: relative;
+            top: -1px;
+            color: var(--color-text-muted);
+            transition: color 0.2s ease;
+        }
+        .profile-dropdown li a.dropdown-item:hover i { /* From second file */
+            color: var(--main-color);
+        }
+        /* === END OF HEADER STYLES === */
+
 
         main.content-grid {
             padding-top: calc(var(--header-height-desktop, 100px) + 2rem);
@@ -435,8 +640,6 @@
             display: block; font-size: 1.3rem; font-weight: 500;
             color: var(--card-muted-text-color); margin-bottom: 0.5rem;
         }
-        /* .log-input-field used for food items, ensure it's defined (it is in Progress.html CSS snippet) */
-        /* If not, copy its definition or use a common class like .form-input-small */
         .food-item-entry-form .log-input-field { /* Text input for food items */
             width: 100%; padding: 0.8rem 1rem; font-size: 1.25rem;
             font-family: var(--font-primary);
@@ -451,7 +654,6 @@
         .add-food-item-btn { /* Action button */
             padding: 0.9rem 1.5rem; font-size: 1.3rem; /* Consistent with other smaller action buttons */
             grid-column: 1 / -1; margin-top: 1rem;
-            /* Uses .action-button class from Progress.html for full styling */
         }
         .logged-food-list {
             list-style: none; padding-left: 0; margin-top: 1rem;
@@ -468,20 +670,22 @@
         }
         .logged-food-list li .remove-food-item:hover { color: red; }
         #updateNutritionSummaryBtn { margin-top: 1.5rem; } /* This is an .action-button */
-        /* Action button styling */
-        .action-button { /* Ensure this is defined if used standalone from Progress.html copy */
+        
+        .action-button { 
             padding: 0.9rem 1.8rem; font-size: 1.4rem; font-weight: 500;
             color: var(--button-primary-text); background-color: var(--button-primary-bg);
             border: 1px solid var(--main-color); border-radius: 6px; cursor: pointer;
             transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 0.8rem;
         }
         .action-button:hover {
-            background-color: var(--button-primary-hover-bg); border-color: var(--color-gold-light);
+            background-color: var(--button-primary-hover-bg); 
+            color: var(--button-primary-text); /* Primary buttons usually keep same text color on hover */
+            border-color: var(--color-gold-light);
             transform: translateY(-1px);
         }
         .action-button i { font-size: 1.6rem; }
 
-        /* Modal Dark Theme Styles - Consistent with Progress.html */
+        /* MODAL STYLES (Generic Dark Theme from SetGoals, with specific override for Logout) */
         .modal {
             position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%;
             overflow: auto; background-color: var(--modal-overlay-bg);
@@ -489,7 +693,7 @@
             opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0s linear 0.3s;
             display: flex;
         }
-        .modal.active { /* Use .active for SetGoals modals */
+        .modal.active, .modal.show { /* .show from second file, .active from first */
             opacity: 1; visibility: visible; transition: opacity 0.3s ease;
         }
         .modal-content { /* Universal modal content styling */
@@ -497,21 +701,68 @@
             color: var(--modal-text-color);
             margin: auto; padding: 2rem 2.5rem;
             border: 1px solid var(--card-border-color); border-radius: 8px;
-            width: 90%; max-width: 500px; /* Increased from 450px for log-meal-modal */
+            width: 90%; max-width: 500px; 
             box-shadow: 0 5px 15px rgba(0,0,0,0.5);
             position: relative; animation: slideInModal 0.3s ease-out; max-height: 90vh; overflow-y: auto;
             font-size: 1.4rem; /* Base font for modal content */
         }
         @keyframes slideInModal { from { transform: translateY(-30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
-        .modal-close-btn { /* General modal close button */
+        .modal-close-btn, .modal-content .close-button { /* General modal close button, .close-button from second file's logout */
             color: var(--card-muted-text-color); position: absolute; top: 1rem; right: 1.5rem;
             font-size: 2.4rem; font-weight: bold; cursor: pointer; line-height: 1;
-            margin-bottom: 1.5rem;
         }
-        .modal-close-btn:hover { color: var(--card-text-color); }
+        .modal-close-btn:hover, .modal-content .close-button:hover { 
+            color: var(--card-text-color);
+        }
+        
+        .modal-content p, .modal-content #logoutModalMessage, .modal-content #alertModalMessage { /* From second file, merged */
+            font-size: 1.5rem; margin-top: 1rem; margin-bottom: 2rem; line-height: 1.5; text-align: center;
+        }
+        .modal-content .modal-actions { /* From second file, merged */
+            text-align: center; margin-top: 1.5rem;
+        }
+        .modal-content .modal-actions button, /* Base for modal buttons */
+        .modal-content .btn-secondary, /* For cancel buttons */
+        .modal-content .btn-primary { /* For OK/confirm buttons */
+            font-weight: 600; font-size: 1.4rem; margin: 0 0.8rem; min-width: 100px;
+            padding: 0.9rem 1.8rem; border-radius: 6px; cursor: pointer;
+            transition: all 0.3s ease;
+        }
 
-        /* Log Meal Modal Specifics */
+        /* Specific Logout Modal Styling (Light theme from second file) */
+        #logoutConfirmationModal .modal-content {
+            background-color: #fefefe; /* Light background */
+            color: var(--color-black); /* Dark text */
+            border-color: #888;
+            max-width: 400px; /* From original SetGoals styling for this modal */
+        }
+        #logoutConfirmationModal #logoutModalMessage { color: var(--color-black); }
+        #logoutConfirmationModal .modal-close-btn:hover, /* Target existing close button class */
+        #logoutConfirmationModal .close-button:hover { color: black; } /* If .close-button class is used */
+        
+        /* Button styling consistency for modals */
+        .btn-secondary, #cancelLogoutButton { /* Ensure #cancelLogoutButton gets styled if it's just an ID */
+            background-color: var(--button-secondary-bg); color: var(--button-secondary-text);
+            border: 1px solid #444;
+        }
+        .btn-secondary:hover, #cancelLogoutButton:hover {
+            background-color: var(--button-secondary-hover-bg);
+        }
+        .btn-primary, #okLogoutButton, #alertModalOkButton, /* Ensure these IDs get styled */
+        #log-meal-modal #log-meal-save-button /* For log meal modal save button */ {
+            background-color: var(--button-primary-bg); color: var(--button-primary-text);
+            border: 1px solid var(--main-color);
+        }
+        .btn-primary:hover, #okLogoutButton:hover, #alertModalOkButton:hover,
+        #log-meal-modal #log-meal-save-button:hover {
+            background-color: var(--button-primary-hover-bg);
+            color: var(--button-primary-text); /* Text color usually remains for primary buttons on hover */
+            border-color: var(--color-gold-light);
+        }
+
+
+        /* Log Meal Modal Specifics (from SetGoals) */
         #log-meal-modal h3 {
             margin-top: 3.5rem; margin-bottom: 1.5rem; text-align: center;
             border-bottom: 1px solid var(--card-border-color); padding-bottom: 1rem;
@@ -547,20 +798,10 @@
         .validation-error { color: #f44336; font-size: 1.2rem; margin-top: 0.5rem; text-align: center; }
 
         #log-meal-modal .modal-actions { text-align: center; margin-top: 2rem; }
-        #log-meal-modal .modal-actions button { /* General modal buttons */
-            font-weight: 600; font-size: 1.4rem; margin: 0 0.8rem; min-width: 120px; /* Increased min-width */
-            padding: 1rem 2rem; border-radius: 6px; cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        #log-meal-modal #log-meal-save-button {
-            background-color: var(--button-primary-bg); color: var(--button-primary-text); border: 1px solid var(--main-color);
-        }
-        #log-meal-modal #log-meal-save-button:hover { background-color: var(--button-primary-hover-bg); border-color: var(--color-gold-light); }
-        #log-meal-modal #log-meal-cancel-button {
-            background-color: var(--button-secondary-bg); color: var(--button-secondary-text); border: 1px solid #444;
+        /* #log-meal-modal #log-meal-save-button already covered by .btn-primary */
+        #log-meal-modal #log-meal-cancel-button { /* Specific if needed, but .btn-secondary should cover */
             margin-bottom: 20px; width: auto !important; height: auto !important; font-size: 1.4rem !important;
         }
-        #log-meal-modal #log-meal-cancel-button:hover { background-color: var(--button-secondary-hover-bg); }
 
         #log-meal-modal .logged-items-display { margin-top: 2.5rem; }
         #log-meal-modal .logged-items-display h4 {
@@ -584,30 +825,107 @@
         }
         #log-meal-modal .logged-items-display li .no-items-logged { text-align: center; width: 100%; color: var(--card-muted-text-color); }
 
-        /* Logout & Alert Modal (already covered by generic .modal styles) */
-        #logoutConfirmationModal .modal-content, #alertModal .modal-content { max-width: 400px; } /* Slightly smaller for simple messages */
-        #logoutConfirmationModal #logoutModalMessage, #alertModal #alertModalMessage { font-size: 1.5rem; margin-top: 1rem; margin-bottom: 2rem; }
+        /* Alert Modal Specifics (from SetGoals, to ensure it uses dark theme if not logout) */
+        #alertModal .modal-content { max-width: 400px; }
+        /* #alertModalOkButton covered by .btn-primary */
+
+
+        /* === FOOTER STYLES (FROM SECOND FILE) === */
+        .subscribe-section { background-color: var(--snd-bf-color); padding: 4rem 0; border-top: 1px solid var(--border-color-light); }
+        .subscribe-content { max-width: 1200px; margin: 0 auto; padding: 0 2rem; display: grid; grid-template-columns: 1fr 1.5fr; gap: 3rem; align-items: start; }
+        .subscribe-text h2 { font-size: 2.4rem; color: var(--main-color); margin-bottom: 1rem; text-align: left; }
+        .subscribe-text p { font-size: 1.5rem; color: var(--color-text-muted); margin-bottom: 2rem; line-height: 1.7; }
+        .subscribe-form { display: flex; gap: 1rem; margin-bottom: 2rem; }
+        .subscribe-form input[type="email"] { flex-grow: 1; padding: 1.2rem 1.5rem; font-size: 1.5rem; border-radius: 6px; border: 1px solid var(--border-color-light); background-color: var(--color-dark-gray); color: var(--text-color); outline: none; }
+        .subscribe-form input[type="email"]::placeholder { color: var(--color-text-muted); }
+        .subscribe-form input[type="email"]:focus { border-color: var(--main-color); box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.2); }
+        .subscribe-form button.btn.btn-primary { /* Adjusted selector for specificity */
+            padding: 1.2rem 2.5rem; font-size: 1.5rem; min-width: auto; border-radius: 6px;
+            background-color: var(--button-primary-bg); color: var(--button-primary-text);
+            border: 1px solid var(--main-color); cursor: pointer;
+        }
+        .subscribe-form button.btn.btn-primary:hover {
+            background-color: var(--button-primary-hover-bg);
+            border-color: var(--color-gold-light);
+        }
+        .social-icons { display: flex; gap: 1.5rem; }
+        .social-icons a { color: var(--color-text-muted); font-size: 2.2rem; transition: color 0.3s ease, transform 0.3s ease; }
+        .social-icons a:hover { color: var(--main-color); transform: translateY(-3px); }
+        .footer-links { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 2rem; }
+        .footer-links h4 { font-size: 1.6rem; color: var(--main-color); margin-bottom: 1rem; font-weight: 600; }
+        .footer-links ul { list-style: none; padding: 0; margin: 0; }
+        .footer-links li { margin-bottom: 0.8rem; }
+        .footer-links a { font-size: 1.4rem; color: var(--color-text-muted); transition: color 0.3s ease; }
+        .footer-links a:hover { color: var(--text-color); text-decoration: underline; }
+
+        footer { background-color: var(--bg-color); color: var(--color-text-muted); text-align: center; padding: 2rem 0; font-size: 1.3rem; border-top: 1px solid var(--border-color-light); margin-top: auto; }
+        footer .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+        /* === END OF FOOTER STYLES === */
 
 
         /* Responsive Adjustments */
+        @media (max-width: 1024px) { /* Copied from second file for header/footer */
+            .navbar-right img.profile-pic { width: 50px; height: 50px; margin-left: 0; margin-right: 0; }
+            .navbar-right { gap: 1.5rem; }
+        }
+
         @media (max-width: 992px) {
+             /* From SetGoals */
              main.content-grid {
                  grid-template-columns: 1fr;
                  padding-top: calc(var(--header-height-mobile, 80px) + 1rem);
             }
              .calendar-widget { order: -1; margin-bottom: var(--grid-gap); }
+             /* From second file for footer */
+             .subscribe-content { grid-template-columns: 1fr; gap: 2rem; }
+             .subscribe-text{ text-align: center; }
+             .subscribe-form { justify-content: center; }
+             .social-icons { justify-content: center; }
+             .footer-links { grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); text-align: center;}
         }
          @media (max-width: 767px) {
+             /* Header related from second file, adapted */
+             header { height: var(--header-height-mobile); padding: 1rem 5%; }
+             #menu-icon { display: block; }
+             .navbar {
+                position: absolute; top: var(--header-height-mobile); left: -100%; /* Start off-screen */
+                width: 100%; height: calc(100vh - var(--header-height-mobile));
+                background-color: rgba(0,0,0,0.95); backdrop-filter: blur(5px);
+                flex-direction: column; justify-content: flex-start; align-items: center;
+                padding-top: 3rem; transition: left 0.3s ease-out;
+                margin-left: 0; /* Reset margin */
+                gap: 1.5rem; /* Add gap for column layout */
+             }
+             .navbar.active { left: 0; } /* Slide in */
+             .navbar-left, .navbar-right {
+                flex-direction: column; width: 100%; align-items: center; gap: 1.5rem;
+             }
+             .navbar-left li, .navbar-right li { width: 100%; text-align: center; }
+             .navbar-left li a, .navbar-right li a#logout-link, .navbar-right .welcome-text {
+                margin-left: 0; display: block; padding: 1rem; width: 80%; margin: 0 auto;
+             }
+             .navbar a { font-size: 2rem; }
+             .profile-dropdown { position: static; background: transparent; border: none; box-shadow: none; min-width: auto; padding: 0; animation: none; margin-top: 0; }
+             .profile-dropdown li a.dropdown-item { justify-content: center; padding: 1rem; background-color: rgba(255,255,255,0.05); border-radius: 4px; width: 80%; margin: 0.5rem auto; }
+             .navbar-right .profile-menu-container { order: -1; /* Moves profile pic and welcome above logout on mobile */ }
+             .navbar-right .welcome-text { order: -2; font-size: 1.8rem; padding-bottom: 0;}
+
+
+             /* From SetGoals */
              main.content-grid {
-                 padding-top: calc(var(--header-height-mobile, 80px) + 1rem);
+                 padding-top: calc(var(--header-height-mobile, 80px) + 1rem); /* Keep consistent with header height */
              }
              .main-tab-button { font-size: 1.3rem; padding: 0.7rem 1.2rem; }
              .day-schedule li { background-color: var(--snd-bf-color); }
              .food-item-entry-form { grid-template-columns: 1fr; }
              .food-item-entry-form .log-input-field { margin-bottom: 0.5rem; }
              .food-item-entry-form .add-food-item-btn { grid-column: 1 / -1; width: 100%; margin-top: 0.5rem; }
+             /* From second file for footer */
+             .subscribe-form { flex-direction: column; align-items: stretch; }
+             .subscribe-form button.btn.btn-primary { width: 100%; }
          }
          @media (max-width: 480px) {
+              /* From SetGoals */
               .activity-planner .activity-form { grid-template-columns: 1fr; }
               #weekly-plan-display { grid-template-columns: 1fr; }
               .main-tab-button { font-size: 1.2rem; padding: 0.6rem 1rem; gap: 0.5rem;}
@@ -632,6 +950,13 @@
               .day-schedule li { font-size: 1.2rem; }
               .tabs .tab-button { font-size: 1.2rem; }
               .nutrition-tab-content h2 { font-size: 1.4rem; }
+              /* From second file for footer */
+              .footer-links { grid-template-columns: repeat(2, 1fr); }
+              .modal-content .modal-actions button, /* From second file for modal buttons */
+              .modal-content .btn-primary, .modal-content .btn-secondary {
+                 font-size: 1.3rem; padding: 0.9rem 1.5rem; min-width: 90px;
+              }
+              #logoutConfirmationModal #logoutModalMessage, #alertModal #alertModalMessage { font-size: 1.4rem; }
          }
     </style>
 </head>
@@ -648,11 +973,20 @@
                  <li><a href="membership.html">Membership</a></li>
              </div>
              <div class="navbar-right">
-                 <li>
-                     <img src="../images/user_pic.jpg" alt="User Profile" class="profile-pic">
+                <li class="profile-menu-container">
+                     <img src="../images/user_pic.jpg" alt="User Profile" class="profile-pic" id="profilePicTrigger">
+                     <ul class="profile-dropdown" id="profileDropdown">
+                         <li><a href="membership.html#membership-status-section" class="dropdown-item view-membership-link"><i class='bx bx-id-card'></i> View Membership</a></li>
+                     </ul>
                  </li>
                  <li>
-                     <a href="signin.html" id="logout-link">Logout</a>
+                     <span class="welcome-text">Welcome, <span id="header-user-name">Han Soyoung</span>!</span>
+                 </li>
+                 <li>
+                     <a href="signin.html" id="logout-link">
+                         <i class='bx bx-log-out'></i>
+                         Logout
+                     </a>
                  </li>
              </div>
         </ul>
@@ -692,11 +1026,11 @@
                             <form id="activity-form" class="activity-form">
                                 <div class="input-group"> <label for="activity-day">Day:</label> <select id="activity-day" name="activity-day"> <option value="Monday">Monday</option> <option value="Tuesday">Tuesday</option> <option value="Wednesday">Wednesday</option> <option value="Thursday">Thursday</option> <option value="Friday">Friday</option> <option value="Saturday">Saturday</option> <option value="Sunday">Sunday</option> </select> </div>
                                 <div class="input-group"> <label for="activity-type">Workout Type:</label> <select id="activity-type" name="activity-type"> <option>Upper Body and Lower Body Split</option> <option>Full Body</option> <option>Core</option> <option>Push/Pull/Legs</option> <option>Circuit Training</option> <option>Cardio</option> <option>Weightlifting</option> <option>HIIT</option> <option>CrossFit</option> <option>Yoga</option> <option>Pilates</option> <option>Stretching</option> <option>Rest Day</option> </select> </div>
-                                <div class="input-group"> <label for="activity-name">Activity:</label> <input type="text" id="activity-name" name="activityName" placeholder="e.g., Running, Bench Press" required> </div> <!-- removed required for flexibility -->
-                                <div class="input-group"> <label for="activity-reps">Reps:</label> <input type="number" id="activity-reps" name="activityReps" placeholder="e.g., 3-5, 8-12" required> </div> <!-- Changed to text -->
-                                <div class="input-group"> <label for="activity-sets">Sets:</label> <input type="number" id="activity-sets" name="activitySets" placeholder="e.g., 3" required> </div>
-                                <div class="input-group"> <label for="activity-weight">Weight(lb):</label> <input type="number" step="0.5" id="activity-weight" name="activityWeight" placeholder="e.g., 50, Bodyweight" required> </div> <!-- Changed to text -->
-                                <div class="input-group"> <label for="activity-duration">Duration:</label> <input type="text" id="activity-duration" name="activityDuration" placeholder="e.g., 30 min, 1 hr" required> </div> <!-- Changed to text from time for flexibility -->
+                                <div class="input-group"> <label for="activity-name">Activity:</label> <input type="text" id="activity-name" name="activityName" placeholder="e.g., Running, Bench Press" > </div> <!-- removed required for flexibility -->
+                                <div class="input-group"> <label for="activity-reps">Reps:</label> <input type="number" id="activity-reps" name="activityReps" placeholder="e.g., 3-5, 8-12" > </div> <!-- Changed to text -->
+                                <div class="input-group"> <label for="activity-sets">Sets:</label> <input type="number" id="activity-sets" name="activitySets" placeholder="e.g., 3" > </div>
+                                <div class="input-group"> <label for="activity-weight">Weight(lb):</label> <input type="number" step="0.5" id="activity-weight" name="activityWeight" placeholder="e.g., 50, Bodyweight" > </div> <!-- Changed to text -->
+                                <div class="input-group"> <label for="activity-duration">Duration:</label> <input type="text" id="activity-duration" name="activityDuration" placeholder="e.g., 30 min, 1 hr" > </div> <!-- Changed to text from time for flexibility -->
                                 <button type="submit" id="add-activity-btn">Add Activity to Plan</button>
                             </form>
                             <h3>Weekly Schedule:</h3>
@@ -740,9 +1074,7 @@
                             <div class="summary-item"><span>Calories Remaining</span><span data-value="calories-remaining">1520</span></div>
                         </div>
 
-                        <!-- This section was for logging on Progress, might be redundant or repurposed for "Quick Add Example Food" on SetGoals -->
-                        <!-- For now, keeping structure for consistency if JS expects it, but primary goal setting is via .editable -->
-                        <section class="meal-logging-section" style="display:none;"> <!-- Hidden by default on SetGoals, can be shown by JS if specific functionality is added -->
+                        <section class="meal-logging-section" style="display:none;">
                             <h3>Log Your Meals for <span id="selectedDateForMealLog">Today</span> (Example Logging)</h3>
                             <div class="meal-log-group" id="breakfastLogGroup">
                                 <h4><i class='bx bx-sun'></i> Breakfast</h4>
@@ -756,7 +1088,6 @@
                                 </form>
                                 <ul class="logged-food-list breakfast-list"></ul>
                             </div>
-                            <!-- Other meal groups (Lunch, Dinner, Snacks) would follow the same pattern if this section is used -->
                             <button type="button" id="updateNutritionSummaryBtn" class="action-button">
                                 <i class='bx bx-calculator'></i> Calculate Nutrition
                             </button>
@@ -764,12 +1095,12 @@
                     </div>
 
                     <div id="nutrients-content" class="nutrition-tab-content">
-                         <h2>Set Nutrient Goals</h2> <!-- Changed heading -->
+                         <h2>Set Nutrient Goals</h2>
                         <div class="nutrient-header">
                             <span>Nutrient</span>
-                            <span>Total</span> <!-- This column might be less relevant for "Set Goals" page, or show 0 -->
+                            <span>Total</span> 
                             <span>Goal</span>
-                            <span>Left</span> <!-- Also less relevant here, or show Goal value -->
+                            <span>Left</span> 
                         </div>
                            <ul class="nutrient-list">
                                <li data-nutrient="protein">
@@ -872,7 +1203,7 @@
                     </div>
 
                     <div id="macros-content" class="nutrition-tab-content">
-                         <h2>Set Macronutrient Ratio Goals</h2> <!-- Changed heading -->
+                         <h2>Set Macronutrient Ratio Goals</h2>
                          <p style="text-align: center; color: var(--card-muted-text-color); font-size: 1.2rem;" ><em>Goals should total 100%</em></p>
                          <div class="nutrition-details-full">
                             <div class="macros-legend">
@@ -904,7 +1235,7 @@
     </main>
 
      <div class="modal" id="log-meal-modal" role="dialog" aria-labelledby="log-meal-title" aria-modal="true">
-        <div class="modal-content card"> <!-- Added .card for consistency if needed -->
+        <div class="modal-content card">
             <button class="modal-close-btn" aria-label="Close modal">×</button>
             <h3 id="log-meal-title">Log Food Item for <span id="log-meal-modal-date">Date</span></h3>
             <form id="log-meal-form">
@@ -955,8 +1286,8 @@
              <div class="subscribe-text">
                 <h2>Subscribe</h2>
                 <p>Join our fitness family and get tips, exclusive updates, and special offers. Start your journey today!</p>
-                <form class="subscribe-form" id="subscribeForm_footer"> <!-- Changed ID to avoid conflict if another form exists -->
-                    <input type="email" id="subscribeEmail_footer" placeholder="Email" required>
+                <form class="subscribe-form" id="subscribeForm">
+                    <input type="email" id="subscribeEmail" placeholder="Email" required>
                     <button type="submit" class="btn btn-primary">Send</button>
                 </form>
                 <div class="social-icons">
@@ -967,6 +1298,14 @@
             </div>
             <div class="footer-links">
                  <div><h4>Company</h4><ul><li><a href="#">Press</a></li><li><a href="#">Blog</a></li><li><a href="#">About</a></li><li><a href="#">Careers</a></li></ul></div> <div><h4>Services</h4><ul><li><a href="#">Training</a></li><li><a href="#">Nutrition</a></li><li><a href="#">Lifestyles</a></li></ul></div> <div><h4>Legal</h4><ul><li><a href="#">Policy</a></li><li><a href="#">Privacy & Cookies</a></li><li><a href="#">Terms & Conditions</a></li></ul></div> <div><h4>Community</h4><ul><li><a href="#">Contact</a></li><li><a href="#">Find a club</a></li><li><a href="#">Membership</a></li></ul></div> <div><h4>Gym</h4><ul><li><a href="#">Book a Gym</a></li><li><a href="#">Find a Gym</a></li></ul></div>
+                 <div>
+                    <h4>System Developed By</h4>
+                    <ul>
+                        <li><a href="#">Sintoy, Joebert</a></li>
+                        <li><a href="#">Paliqueron, Khem</a></li>
+                        <li><a href="#">Iglesia, Jose</a></li>
+                    </ul>
+                </div>
             </div>
         </div>
     </section>
@@ -981,13 +1320,130 @@
 
     <script>
       $(document).ready(function() {
-          const $menuIcon = $('#menu-icon');
-          const $navbar = $('.navbar');
-          const $logoutLink = $('#logout-link');
-          const $logoutModal = $('#logoutConfirmationModal');
+          // Header, Profile Dropdown, Logout Modal JS (from second file, adapted)
+          var menuIcon = $('#menu-icon');
+          var navbar = $('.navbar');
+          var logoutLink = $('#logout-link');
+          var logoutModal = $('#logoutConfirmationModal');
+          const $profilePicTrigger = $('#profilePicTrigger');
+          const $profileDropdown = $('#profileDropdown');
+          const $viewMembershipLink = $('.view-membership-link'); // Retained from second file's header
+
+          if (menuIcon.length && navbar.length) {
+              menuIcon.on('click', function() {
+                  $(this).toggleClass('bx-x');
+                  navbar.toggleClass('active');
+                  // Close profile dropdown if open when menu is toggled
+                  if ($profileDropdown.hasClass('active')) {
+                      $profileDropdown.removeClass('active');
+                      $profilePicTrigger.removeClass('active');
+                  }
+              });
+              // Close mobile menu if a link is clicked (excluding dropdown trigger itself on desktop)
+              $('.navbar a').not('#profilePicTrigger').not('.dropdown-item').on('click', function(event) {
+                  if (navbar.hasClass('active')) {
+                      navbar.removeClass('active');
+                      menuIcon.removeClass('bx-x');
+                  }
+              });
+              // Close mobile menu and profile dropdown on scroll
+              $(window).on('scroll', function() {
+                  if (navbar.hasClass('active')) {
+                      navbar.removeClass('active');
+                      menuIcon.removeClass('bx-x');
+                  }
+                  if ($profileDropdown.hasClass('active')) {
+                      $profileDropdown.removeClass('active');
+                      $profilePicTrigger.removeClass('active');
+                  }
+              });
+          }
+
+          if ($profilePicTrigger.length && $profileDropdown.length) {
+              $profilePicTrigger.on('click', function(event) {
+                  event.stopPropagation(); // Prevent document click from closing it immediately
+                  $profileDropdown.toggleClass('active');
+                  $profilePicTrigger.toggleClass('active');
+                  // If navbar is active (mobile view) and profile is clicked, don't close navbar
+                  // This logic is mainly for desktop; mobile menu handled by menuIcon
+                  if (navbar.hasClass('active') && $(window).width() > 767) { // Check for desktop
+                     // Potentially close navbar if it's a different kind of overlay on desktop
+                  }
+              });
+              // Close profile dropdown if clicking outside of it
+              $(document).on('click', function(event) {
+                  if (!$profileDropdown.is(event.target) && $profileDropdown.has(event.target).length === 0 && !$profilePicTrigger.is(event.target)) {
+                      if ($profileDropdown.hasClass('active')) {
+                          $profileDropdown.removeClass('active');
+                          $profilePicTrigger.removeClass('active');
+                      }
+                  }
+              });
+              // Close dropdown and mobile menu if a dropdown item is clicked
+              $profileDropdown.on('click', 'a.dropdown-item', function() {
+                  $profileDropdown.removeClass('active');
+                  $profilePicTrigger.removeClass('active');
+                  if (navbar.hasClass('active')) { // If mobile menu is open
+                      navbar.removeClass('active');
+                      menuIcon.removeClass('bx-x');
+                  }
+              });
+          }
+          if ($viewMembershipLink.length) { // For the link in profile dropdown
+                $viewMembershipLink.on('click', function(event) {
+                     // The href already points to the correct location.
+                     // If any JS specific action was needed, it would go here.
+                });
+            }
+
+          if (logoutLink.length && logoutModal.length) {
+              logoutLink.on('click', function(event) {
+                  event.preventDefault();
+                  // Close mobile menu or profile dropdown if open
+                  if (navbar.hasClass('active')) { navbar.removeClass('active'); menuIcon.removeClass('bx-x'); }
+                  if ($profileDropdown.hasClass('active')) { $profileDropdown.removeClass('active'); $profilePicTrigger.removeClass('active'); }
+                  logoutModal.addClass('active'); // Use 'active' as per SetGoals modal styling
+              });
+              logoutModal.on('click', '.modal-close-btn, #cancelLogoutButton', function() {
+                  logoutModal.removeClass('active');
+              });
+              $('#okLogoutButton').on('click', function() {
+                  logoutModal.removeClass('active');
+                  window.location.href = logoutLink.attr('href');
+              });
+              // Close logout modal if clicking on overlay
+              $(window).on('click', function(event) {
+                  if ($(event.target).is(logoutModal) && logoutModal.hasClass('active')) {
+                      logoutModal.removeClass('active');
+                  }
+              });
+          } else {
+              // Fallback if modal elements aren't found (from original SetGoals script)
+              logoutLink.on('click', function(e) { e.preventDefault(); if(confirm("Modal not found. Logout anyway?")) window.location.href = this.href; });
+          }
+
+          function loadUserName() { // From second file
+            // In a real app, fetch this from backend/localStorage
+            let userName = "Han Soyoung"; // Default or fetched
+            $('#header-user-name').text(userName);
+          }
+          loadUserName(); // Call it to set the name
+
+
+          // Alert Modal JS (from SetGoals.html)
           const $alertModal = $('#alertModal');
           const $alertModalMessage = $('#alertModalMessage');
+          function showAlertModal(message) { $alertModalMessage.text(message); $alertModal.addClass('active'); }
+          $alertModal.on('click', '.modal-close-btn, #alertModalOkButton', function() { $alertModal.removeClass('active'); });
+          // General window click for closing alert & log meal modals (adapted from SetGoals)
+          $(window).on('click', function(e) {
+              if ($(e.target).is($alertModal) && $alertModal.hasClass('active')) $alertModal.removeClass('active');
+              if ($(e.target).is($logMealModal) && $logMealModal.hasClass('active')) closeLogMealModal();
+              // Logout modal click outside handled by its own specific $(window).on('click')
+          });
 
+
+          // Log Meal Modal JS (from SetGoals.html)
           const $logMealModal = $('#log-meal-modal');
           const $logMealForm = $('#log-meal-form');
           const $logMealModalDate = $('#log-meal-modal-date');
@@ -996,62 +1452,32 @@
           const $loggedItemsList = $('#logged-items-list');
           const $loggedItemsDateDisplay = $('#logged-items-date-display');
           const $logMealValidationError = $('#log-meal-validation-error');
-          const $activityForm = $('#activity-form');
-          const $weeklyPlanDisplay = $('#weekly-plan-display');
 
-          let selectedDate = moment().format('YYYY-MM-DD');
-          let currentMonthMoment = moment(selectedDate); // Used for calendar navigation if it were present
-          const foodLog = {};
-          const activityLog = {}; // { 'DayName': [{activity details}, ...] }
-
-          if ($menuIcon.length && $navbar.length) {
-              $menuIcon.on('click', function() { $(this).toggleClass('bx-x'); $navbar.toggleClass('active'); });
-              $navbar.on('click', 'a, .profile-pic', function() { if ($navbar.hasClass('active') && !$(this).is('#logout-link')) { $navbar.removeClass('active'); $menuIcon.removeClass('bx-x'); } });
-              $(window).on('scroll', function() { if ($navbar.hasClass('active')) { $navbar.removeClass('active'); $menuIcon.removeClass('bx-x'); } });
-          }
-
-          function showAlertModal(message) { $alertModalMessage.text(message); $alertModal.addClass('active'); }
-          $alertModal.on('click', '.modal-close-btn, #alertModalOkButton', function() { $alertModal.removeClass('active'); });
-          $(window).on('click', function(e) {
-              if ($(e.target).is($alertModal) && $alertModal.hasClass('active')) $alertModal.removeClass('active');
-              if ($(e.target).is($logoutModal) && $logoutModal.hasClass('active')) $logoutModal.removeClass('active');
-              if ($(e.target).is($logMealModal) && $logMealModal.hasClass('active')) closeLogMealModal();
-          });
-
-
-          if ($logoutLink.length && $logoutModal.length) {
-              $logoutLink.on('click', function(e) { e.preventDefault(); $logoutModal.addClass('active'); });
-              $logoutModal.on('click', '.modal-close-btn, #cancelLogoutButton', function() { $logoutModal.removeClass('active'); });
-              $logoutModal.find('#okLogoutButton').on('click', function() { $logoutModal.removeClass('active'); window.location.href = $logoutLink.attr('href'); });
-          } else {
-              $logoutLink.on('click', function(e) { e.preventDefault(); if(confirm("Modal not found. Logout anyway?")) window.location.href = this.href; });
-          }
-
+          let selectedDate = moment().format('YYYY-MM-DD'); // Default selected date for SetGoals logic
+          const foodLog = {}; // For SetGoals nutrition logging
 
           function openLogMealModal(event) {
               const mealType = $(event.currentTarget).data('meal-type');
               $logMealTypeSelect.val(mealType);
-              // Use a fixed "today" or selected date if calendar was present
-              const displayDate = moment(selectedDate); // Or just moment() if no calendar interaction
+              const displayDate = moment(selectedDate);
               $logMealModalDate.text(displayDate.format('MMMM D, YYYY'));
               $logMealDateHidden.val(displayDate.format('YYYY-MM-DD'));
               $loggedItemsDateDisplay.text(displayDate.format('MMMM D'));
-
               $logMealValidationError.hide().text('');
               displayLoggedItemsForDate(displayDate.format('YYYY-MM-DD'));
               $logMealModal.addClass('active');
               $logMealForm[0].reset();
-              $('#log-meal-type').val(mealType); // Pre-select based on button
+              $('#log-meal-type').val(mealType);
               $('#log-food-name').focus();
           }
           function closeLogMealModal() { $logMealModal.removeClass('active'); $logMealForm[0].reset(); $logMealValidationError.hide().text(''); }
-
-          $('.add-food-btn').on('click', openLogMealModal); // For the + buttons on meal items
+          $('.add-food-btn').on('click', openLogMealModal);
           $logMealModal.on('click', '.modal-close-btn, #log-meal-cancel-button', closeLogMealModal);
           $logMealForm.on('submit', handleLogMealSubmit);
           $loggedItemsList.on('click', '.remove-logged-item-btn', removeLoggedItem);
 
 
+          // Tab Switching JS (from SetGoals.html)
           $('.main-tab-button').on('click', function() {
               const targetSelector = $(this).data('target');
               $('.main-tab-button').removeClass('active'); $(this).addClass('active');
@@ -1064,14 +1490,16 @@
               if (tabId === 'calories' || tabId === 'macros' || tabId === 'nutrients') { updateNutritionDisplay(); }
           });
 
-          // Since calendar grid is removed, direct date selection is not present.
-          // We'll use current 'selectedDate' which defaults to today or can be set by other means if needed.
+          // SetGoals Page Specific JS
           $('#startDate').on('change', function() {
-             selectedDate = $(this).val(); // Update selectedDate if start date changes
-             // Potentially re-render things that depend on selectedDate
-             updateNutritionDisplay(); // For example
+             selectedDate = $(this).val();
+             updateNutritionDisplay();
+             $('#selectedDateForMealLog').text(moment(selectedDate).format('MMMM D, YYYY'));
           });
 
+          const activityLog = {};
+          const $activityForm = $('#activity-form');
+          const $weeklyPlanDisplay = $('#weekly-plan-display');
 
           function addActivityToPlan(event) {
               event.preventDefault();
@@ -1083,7 +1511,7 @@
               const weight = $('#activity-weight').val().trim();
               const duration = $('#activity-duration').val().trim();
 
-              if (!day || (!name && type !== 'Rest Day')) { showAlertModal('Please select a day and enter an activity name (unless selecting Rest Day).'); return; }
+              if (!day || (!name && type !== 'Rest Day' && !reps && !sets && !weight && !duration )) { showAlertModal('Please select a day and fill at least one activity detail (or select Rest Day).'); return; }
 
               let displayText = `<strong>${type}</strong>${name ? ': ' + name : ''}`;
               const details = [];
@@ -1092,6 +1520,8 @@
               if (weight) details.push(`Weight: ${weight}lb`);
               if (duration) details.push(`Duration: ${duration}`);
               if (details.length > 0) displayText += ` <small><em>(${details.join(', ')})</em></small>`;
+              else if (type === 'Rest Day' && !name && details.length === 0) displayText = `<strong>Rest Day</strong>`;
+
 
               const $dayList = $weeklyPlanDisplay.find(`ul[data-day="${day}"]`);
               const $listItem = $(`<li>${displayText}<button class="remove-activity-btn" title="Remove Activity"><i class="fas fa-times"></i></button></li>`);
@@ -1099,10 +1529,10 @@
 
               if (!activityLog[day]) activityLog[day] = [];
               activityLog[day].push({ type, name, reps, sets, weight, duration });
-              $('#activity-form')[0].reset(); // Reset the form
+              $('#activity-form')[0].reset();
           }
           function removeActivityFromPlan(event) {
-              const $listItem = $(event.currentTarget).closest('li'); // Corrected to currentTarget
+              const $listItem = $(event.currentTarget).closest('li');
               const $dayList = $listItem.closest('ul');
               const day = $dayList.data('day');
               const itemIndex = $listItem.index();
@@ -1128,8 +1558,8 @@
               }
           }
           function removeLoggedItem(event) {
-             const $button = $(event.currentTarget).closest('.remove-logged-item-btn'); // Corrected
-             const indexToRemove = $button.data('index'); const dateStr = $logMealDateHidden.val(); // Use date from modal
+             const $button = $(event.currentTarget).closest('.remove-logged-item-btn');
+             const indexToRemove = $button.data('index'); const dateStr = $logMealDateHidden.val();
              if (foodLog[dateStr] && foodLog[dateStr][indexToRemove] !== undefined) {
                  foodLog[dateStr].splice(indexToRemove, 1);
                  displayLoggedItemsForDate(dateStr); updateNutritionDisplay();
@@ -1175,21 +1605,19 @@
               const netCalories = Math.round(totalCaloriesConsumed - exerciseCalories);
               $('[data-value="net-calories"]').text(netCalories.toLocaleString());
               $('[data-value="calories-remaining"]').text(Math.round(goalCalories - netCalories).toLocaleString());
-              // Update displayed goal values (might have been edited)
               $('[data-value="exercise-calories"]').text(`${parseFloat($('[data-value="exercise-calories"]').attr('data-goal-value')).toLocaleString()} cal`);
               $('[data-value="goal-calories"]').text(`${parseFloat($('[data-value="goal-calories"]').attr('data-goal-value')).toLocaleString()}`);
 
                $('.nutrient-list li').each(function() {
                   const $li = $(this); const nutrientKey = $li.data('nutrient');
-                  const totalKey = nutrientKey.replace(/_(\w)/g, (_, p1) => p1.toUpperCase()); // Simplified camelCase
-                  const totalValue = totals[nutrientKey] || totals[totalKey] || 0; // Try both snake and camel
+                  const totalKey = nutrientKey.replace(/_(\w)/g, (_, p1) => p1.toUpperCase());
+                  const totalValue = totals[nutrientKey] || totals[totalKey] || 0;
                   const $goalSpan = $li.find('.editable[data-id$="-goal"]');
                   const unit = $goalSpan.data('unit') || 'g';
                   const goalValue = parseFloat($goalSpan.attr('data-goal-value')) || 0;
                   const leftValue = Math.max(0, goalValue - totalValue);
                   const decimals = (unit ==='g' && totalValue < 10 && totalValue !== 0 && !Number.isInteger(totalValue)) ? 1:0;
                   $li.find(`[data-value$="-total"]`).text(`${totalValue.toFixed(decimals)}${unit ? ' ' + unit : ''}`);
-                  // Goal span text updated by editable handler
                   $li.find(`[data-value$="-left"]`).text(`${leftValue.toFixed(decimals)}${unit ? ' ' + unit : ''}`);
                });
 
@@ -1214,11 +1642,11 @@
               if (newValue !== null) {
                   const parsedValue = parseFloat(newValue);
                   if (!isNaN(parsedValue) && parsedValue >= 0) {
-                       $target.attr('data-goal-value', parsedValue); // Store unformatted numeric value
+                       $target.attr('data-goal-value', parsedValue);
                        let displayText = parsedValue.toLocaleString(undefined, {maximumFractionDigits: (unit==='%' || unit==='cal' || unit==='mg' ? 0 : 1)});
-                       if(unit) displayText += (unit === '%' ? '%' : ` ${unit}`); // Add unit correctly
+                       if(unit) displayText += (unit === '%' ? '%' : ` ${unit}`);
                        $target.text(displayText);
-                       updateNutritionDisplay(); // This will re-read data-goal-value and update dependent fields
+                       updateNutritionDisplay();
                   } else { showAlertModal('Invalid input. Please enter a non-negative number.'); $target.text(originalValueText); }
               }
            }
@@ -1230,27 +1658,27 @@
                   if (Math.round(totalPerc) !== 100) { $macroWarning.text(`Warning: Macro goals sum to ${totalPerc.toFixed(0)}%, should be 100%.`).show(); }
                   else { $macroWarning.hide(); }
               }
-              // Update display of goal percentages based on data-goal-value
               $('.macros-legend .editable[data-id$="-goal-perc"]').each(function() {
                  const $el = $(this); const goalVal = parseFloat($el.attr('data-goal-value')) || 0;
                  $el.text(`${goalVal.toFixed(0)}%`);
               });
           }
           $('.main-tab-content').on('click', '.editable[data-editable="true"]', handleEditableClick);
-          $('#updateNutritionSummaryBtn').on('click', updateNutritionDisplay); // For the button in the hidden meal log section
+          $('#updateNutritionSummaryBtn').on('click', updateNutritionDisplay);
 
-          // Initial Setup
-          updateNutritionDisplay(); // Calculate based on default 0s and preset goals
-          checkMacroGoalTotal(); // Check initial macro goals
-          // No calendar rendering, selectedDate defaults to today or Start Date input
-          $('#selectedDateForMealLog').text(moment(selectedDate).format('MMMM D, YYYY')); // Set date for example log section
+          updateNutritionDisplay();
+          checkMacroGoalTotal();
+          $('#selectedDateForMealLog').text(moment(selectedDate).format('MMMM D, YYYY'));
 
 
-          $('#subscribeForm_footer').on('submit', function(e){ // Ensure footer subscribe form has unique ID if others exist
+          // Footer Subscribe Form JS (from second file, ID updated)
+          $('#subscribeForm').on('submit', function(e){
             e.preventDefault();
-            const email = $('#subscribeEmail_footer').val();
-            alert(`Subscribed with ${email}! (Footer Demo)`);
-            $('#subscribeEmail_footer').val('');
+            const email = $('#subscribeEmail').val();
+            // Using the SetGoals showAlertModal for consistency, or use alert()
+            showAlertModal(`Subscribed with ${email}! (Demo)`);
+            // alert(`Subscribed with ${email}! (Demo)`); // Alternative
+            $('#subscribeEmail').val('');
           });
 
       });

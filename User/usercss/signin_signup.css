@@ -34,7 +34,7 @@ body {
 
 .container {
     width: 100%; 
-    max-width: 450px; 
+    max-width: 40%; 
     background: linear-gradient(var(--primary-bg-start), var(--primary-bg-end));
     border-radius: 20px; 
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); 
@@ -136,7 +136,11 @@ p {
     transform: translateY(-2px);
 }
 
-
+#signup-form{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap:2rem;
+}
 .input-box {
     position: relative;
     margin-bottom: 15px; 
