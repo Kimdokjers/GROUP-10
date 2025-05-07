@@ -1,18 +1,18 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
 
-
 :root {
-    --dark-bg: #1a1a1a;
-    --dark-card: #2c2c2c;
-    --gold-primary: #daa520;
-    --gold-hover: #b89b30;
-    --text-muted: #aaa;
-    --input-bg: #3f3f3f;
-    --border-color: #555;
-    --footer-bg: #111;
+    --color-black: #0a0a0a;
+    --color-black-rgb: 10, 10, 10;
+    --color-dark-gray: #1a1a1a; 
+    --color-darker-gray: #1f1f1f;
+    --color-gold: #daa520;
+    --color-gold-light: #f0c44c;
+    --color-text: #ffffff;
+    --color-text-muted: #aaaaaa;
+    --color-input-bg: #252525; 
+    --color-border: #383838; 
+    --font-primary: 'Poppins', sans-serif;
 }
-
 
 * {
     margin: 0;
@@ -21,315 +21,252 @@
 }
 
 html {
-    height: 100%; 
+    height: 100%;
 }
 
 body {
-    font-family: 'Poppins', sans-serif;
-    background-color: var(--dark-bg);
-    background-image: linear-gradient(rgba(26, 26, 26, 0.85), rgba(26, 26, 26, 0.85)), url('images/paymentbg.jpg');
+    font-family: var(--font-primary);
+    background-color: var(--color-black);
+    color: var(--color-text);
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    line-height: 1.6;
+    background-image: linear-gradient(rgba(var(--color-black-rgb), 0.92), rgba(var(--color-black-rgb), 0.95)), url('../../images/paymentbg.jpg'); 
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
     background-attachment: fixed;
-    color: var(--text-light);
-    min-height: 100%; 
-    display: flex;
-    flex-direction: column;
-    line-height: 1.6;
 }
-
 
 .container {
-    width: 90%; 
-    max-width: 1140px; 
+    width: 90%;
+    max-width: 1140px;
     margin-left: auto;
     margin-right: auto;
-    padding-left: 15px;
-    padding-right: 15px;
+    padding-left: 20px; 
+    padding-right: 20px; 
 }
 
-
 .site-header {
-    padding-top: 1rem; 
-    padding-bottom: 1rem;
-    margin-bottom: 2rem;
+    padding: 15px 0; 
+    border-bottom: 1px solid var(--color-border); 
 }
 
 .header-content {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-   
-    
+    align-items: center; 
 }
 
 .logo {
-    height: 100px;
+    height: 100px; 
     width: auto;
-    display: block; 
+    display: block;
 }
-
 
 .btn {
     display: inline-block;
-    padding: 8px 18px;
-    border: 1px solid transparent;
-    border-radius: 4px;
-    text-decoration: none;
-    font-weight: 400;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-size: 1rem;
-    line-height: 1.5; 
-}
-
-
-.btn-back {
-    color: var(--gold-primary);
-    border-color: var(--gold-primary);
-    background-color: transparent;
-}
-
-.btn-back:hover {
-    background-color: var(--gold-primary);
-    color: var(--dark-bg);
-}
-
-.btn-back i {
-    margin-right: 5px;
-    vertical-align: middle; 
-}
-
-
-.site-main {
-    flex-grow: 1; 
-    padding-bottom: 4rem; 
-}
-
-
-.payment-form-container {
-    background-color: var(--dark-card);
-    padding: 30px;
-    border-radius: 8px;
-    max-width: 600px;
-    margin: 20px auto;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
-}
-
-
-.form-title {
-    color: var(--gold-primary);
+    padding: 10px 25px; 
+    border-radius: 5px;
     font-weight: 600;
     text-align: center;
-    margin-bottom: 1.5rem; 
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease, border-color 0.3s ease;
+    border: 1px solid transparent;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: 0.9rem; 
+}
+
+.btn-primary {
+    background-color: var(--color-gold);
+    color: var(--color-black);
+    border-color: var(--color-gold);
+}
+
+.btn-primary:hover {
+    background-color: var(--color-gold-light);
+    border-color: var(--color-gold-light);
+    color: var(--color-black);
+    transform: translateY(-2px);
+}
+
+.btn-secondary { 
+    background-color: transparent;
+    color: var(--color-gold);
+    border: 1px solid var(--color-gold);
+}
+
+.btn-secondary:hover {
+    background-color: var(--color-gold);
+    color: var(--color-black);
+    border-color: var(--color-gold);
+    transform: translateY(-2px);
+}
+
+.btn-back i, .btn-back-success i {
+    margin-right: 8px;
+}
+
+.site-main {
+    flex-grow: 1;
+    padding-top: 40px; 
+    padding-bottom: 60px; 
+}
+
+.payment-form-container {
+    background-color: var(--color-dark-gray); 
+    padding: 30px 40px; 
+    border-radius: 8px;
+    max-width: 550px; 
+    margin: 0 auto; 
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3); 
+    border: 1px solid var(--color-border);
+}
+
+.form-title {
+    color: var(--color-text); 
+    font-weight: 600;
+    font-size: 1.8rem; 
+    text-align: center;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid var(--color-gold);
+    padding-bottom: 0.75rem;
 }
 
 .form-subtitle {
-    color: var(--text-muted);
-    font-weight: 400;
-    font-size: 1.2rem;
-    border-bottom: 1px solid var(--gold-primary);
-    padding-bottom: 5px;
-    margin-top: 1.5rem; 
+    color: var(--color-gold); 
+    font-weight: 500;
+    font-size: 1.1rem;
+    margin-top: 1.5rem;
     margin-bottom: 1rem;
 }
 
-.form-subtitle-small {
-    color: var(--text-muted);
-    font-weight: 400;
-    font-size: 1rem;
-    margin-bottom: 1rem;
+.payment-option-group {
+    margin-bottom: 1.5rem;
 }
-
-
-.form-group {
-    margin-bottom: 1rem; 
-}
-
-.form-label {
-    display: block;
-    color: var(--text-muted);
-    font-weight: 400;
-    margin-bottom: 0.4rem;
-}
-
-.form-control {
-    display: block; 
-    width: 100%;
-    padding: 0.5rem 0.75rem; 
-    font-size: 1rem;
-    font-weight: 400;
-    line-height: 1.5;
-    color: var(--text-muted);
-    background-color: var(--input-bg);
-    background-clip: padding-box;
-    border: 1px solid var(--border-color);
-    border-radius: 4px;
-    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-}
-
-.form-control:focus {
-    color: var(--text-muted);
-    background-color: #4a4a4a; 
-    border-color: var(--gold-primary);
-    outline: 0;
-    box-shadow: 0 0 0 0.25rem rgba(212, 175, 55, 0.25);
-}
-
-
-.form-control::placeholder {
-    color: var(--text-muted);
-    opacity: 0.7;
-}
-
 
 .form-check {
-    margin-bottom: 0.75rem; 
-    display: block; 
+    margin-bottom: 1rem;
+    display: flex; 
+    align-items: center;
 }
 
 .form-check-input {
-    width: 1em; 
-    height: 1em;
-    margin-top: 0.25em;
-    vertical-align: top;
-    background-color: #444;
-    border: 1px solid #666;
-    border-radius: 50%; 
-    appearance: none; 
+    appearance: none;
     -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    border: 2px solid var(--color-text-muted);
+    border-radius: 50%;
+    outline: none;
     cursor: pointer;
-    position: relative; 
-    margin-right: 0.5em; 
+    margin-right: 10px;
+    position: relative;
+    top: -1px; 
+    transition: border-color 0.2s ease, background-color 0.2s ease;
 }
 
 .form-check-input:checked {
-    background-color: var(--gold-primary);
-    border-color: var(--gold-primary);
+    border-color: var(--color-gold);
+    background-color: var(--color-gold);
 }
-
 
 .form-check-input:checked::before {
     content: '';
     display: block;
-    width: 0.5em;
-    height: 0.5em;
+    width: 8px;
+    height: 8px;
+    background-color: var(--color-black); 
     border-radius: 50%;
-    background-color: var(--dark-bg); 
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
 }
 
-
-.form-check-input:focus {
-     
-    box-shadow: 0 0 0 0.25rem rgba(212, 175, 55, 0.25);
-    border-color: var(--gold-primary); 
-    outline: none;
+.form-check-input:focus-visible { 
+    box-shadow: 0 0 0 2px var(--color-black), 0 0 0 4px var(--color-gold-light);
 }
 
 .form-check-label {
-    color: var(--text-muted);
-    cursor: pointer; 
-    display: inline-block;
-    vertical-align: top; 
+    color: var(--color-text); 
+    cursor: pointer;
+    font-size: 1rem;
 }
 
 .form-check-label i {
-    color: var(--gold-primary);
+    color: var(--color-gold-light); 
     margin-right: 8px;
-    font-size: 1.1rem;
-    vertical-align: middle; 
-    line-height: 1; 
+    font-size: 1.2rem;
+    vertical-align: middle;
 }
 
-
 .online-options {
-    margin-top: 1rem;
-    padding-top: 1rem;
-    border-top: 1px solid var(--border-color); 
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--color-border);
 }
 
 .note {
     display: block;
-    color: var(--text-muted);
-    font-size: 0.9em;
-    margin-top: 0.5rem; 
-    margin-bottom: 1rem;
-}
-
-
-
-.separator {
-    border: 0;
-    height: 1px;
-    background-color: var(--text-muted);
-    opacity: 0.5;
-    margin-top: 1.5rem; 
+    color: var(--color-text-muted);
+    font-size: 0.85em;
+    margin-top: 1rem;
     margin-bottom: 1.5rem;
+    transition: color 0.3s ease;
 }
-
+.note-error {
+    color: #ff6b6b; 
+    font-weight: 500;
+}
 
 .btn-proceed {
-    background-color: var(--gold-primary);
-    color: var(--dark-bg);
-    font-weight: 600;
-    border: none;
-    width: 100%; 
+    width: 100%;
     padding-top: 12px;
     padding-bottom: 12px;
-    margin-top: 1rem; 
+    margin-top: 1.5rem;
+    font-size: 1rem;
 }
-
-.btn-proceed:hover {
-    background-color: var(--gold-hover);
-    color: var(--dark-bg);
-}
-
 
 .success-box {
-    background-color: var(--dark-card);
-    padding: 40px 20px;
+    padding: 30px 40px;
     border-radius: 8px;
-    border: 1px solid var(--gold-primary);
     text-align: center;
-   display: none;
+    display: none; 
 }
 
 .success-icon {
-    font-size: 4rem;
-    color: var(--gold-primary);
-    display: block; 
+    font-size: 3.5rem;
+    color: var(--color-gold);
+    display: block;
     margin-bottom: 1rem;
 }
 
 .success-title {
-    color: var(--gold-hover);
-    margin-bottom: 10px;
+    color: var(--color-text);
+    margin-bottom: 0.75rem;
     font-weight: 600;
+    font-size: 1.5rem;
 }
 
 .success-text {
-    color: var(--text-muted);
-    margin-bottom: 1.5rem;
+    color: var(--color-text-muted);
+    margin-bottom: 2rem;
+    font-size: 1rem;
 }
 
-.success-box .btn-back {
-     margin-top: 1rem; 
+.btn-back-success {
+    margin-top: 1rem;
 }
-
 
 .site-footer {
-    background-color: var(--footer-bg);
-    color: var(--text-muted);
+    background-color: var(--color-black); 
+    color: var(--color-text-muted);
     font-size: 0.9rem;
-    border-top: 1px solid #333;
-    padding-top: 1rem;
-    padding-bottom: 1rem;
+    border-top: 1px solid var(--color-border);
+    padding: 20px 0;
     margin-top: auto; 
 }
 
@@ -337,43 +274,59 @@ body {
     text-align: center;
 }
 
+.shake-animation {
+    animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+    transform: translate3d(0, 0, 0);
+}
+@keyframes shake {
+  10%, 90% { transform: translate3d(-1px, 0, 0); }
+  20%, 80% { transform: translate3d(2px, 0, 0); }
+  30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+  40%, 60% { transform: translate3d(4px, 0, 0); }
+}
 
 @media (max-width: 768px) {
     .container {
-        width: 95%; 
+        width: 95%;
     }
     .payment-form-container {
-        padding: 20px;
+        padding: 25px 30px;
     }
-
     .logo {
-        height: 35px;
+        height: 50px; 
     }
-
     .btn {
-        font-size: 0.9rem;
-        padding: 6px 12px;
+        font-size: 0.85rem;
+        padding: 8px 20px;
     }
-
     .form-title {
         font-size: 1.5rem;
-    }
-
-    .form-control {
-        padding: 0.4rem 0.6rem;
-        font-size: 0.95rem;
     }
 }
 
 @media (max-width: 576px) {
     .payment-form-container {
-        margin: 10px auto; 
-        padding: 15px;
+        padding: 20px;
+        margin-top: 20px;
+        margin-bottom: 20px;
     }
-     .site-footer {
+    .header-content {
+        flex-direction: column; 
+        gap: 15px;
+    }
+    .logo {
+        order: 1;
+        height: 55px; 
+    }
+    .btn-back {
+        order: 2;
+        align-self: center;
+    }
+    .site-footer {
         font-size: 0.8rem;
-     }
-     .btn-back i {
-        margin-right: 3px; 
-     }
+        padding: 15px 0;
+    }
+    .form-check-label {
+        font-size: 0.95rem;
+    }
 }

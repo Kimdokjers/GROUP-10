@@ -8,104 +8,94 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <!-- Ensure this path is correct -->
     <link rel="stylesheet" href="usercss/paymentMethods.css">
-  
 </head>
 <body>
 
-    <!-- header -->
-    <header class="site-header container">
-        <div class="header-content">
-
-            <a href="membership.html" class="btn btn-back">
+    <!-- Site Header -->
+    <header class="site-header">
+        <div class="container header-content">
+            <!-- Logo on the left -->
+            <div class="logo-container">
+                <a href="index.html" class="logo-link"> <!-- Link logo to homepage or relevant page -->
+                    <img src="../images/logo.png" alt="OptiLife Logo" class="logo">
+                </a>
+            </div>
+            <!-- Back button on the right -->
+            <a href="membership.html" class="btn btn-secondary btn-back">
                 <i class="bi bi-arrow-left-circle"></i> Back
             </a>
-
-            <img src="../images/logo.png" alt="OptiLife Logo" class="logo">
         </div>
     </header>
 
-    <!-- Information -->
-    <main class="site-main container">
-        <div class="payment-form-container">
-            <form id="payment-form">
-                <h2 class="form-title">Payment Details</h2>
+    <!-- Main Content Area -->
+    <main class="site-main">
+        <div class="container">
+            <div class="payment-form-container">
+                <form id="payment-form">
+                    <h2 class="form-title">Choose Payment Method</h2>
 
-                <!-- Email Address Field -->
-                <div class="form-group">
-                    <label for="email" class="form-label">Email Address</label>
-                    <input type="email" class="form-control" id="email" value="user@gmail.com"required>
-                </div>
-
-                <!-- Contact Number Field (Moved Below Email) -->
-                <div class="form-group">
-                    <label for="contact" class="form-label">Contact Number</label>
-                    <input type="tel" class="form-control" id="contact" pattern="[0-9]+" title="Please enter digits only" value="09403449746" required>
-                </div>
-
-                <hr class="separator">
-
-                <!-- payments -->
-                <h3 class="form-subtitle">Choose Payment Method</h3>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="paymentType" id="walkin" value="walkin" checked>
-                    <label class="form-check-label" for="walkin">
-                        Pay Walk-in
-                    </label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="paymentType" id="online" value="online">
-                    <label class="form-check-label" for="online">
-                        Pay Online
-                    </label>
-                </div>
-
-                <!-- Online Payment Options-->
-                <div id="online-payment-options" class="online-options" style="display: none;"> 
-                    <h4 class="form-subtitle-small">Select Online Payment</h4>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="onlineMethod" id="visa" value="visa">
-                        <label class="form-check-label" for="visa">
-                            <i class="bi bi-credit-card-2-front"></i> Visa
-                        </label>
+                    <div class="payment-option-group">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="paymentType" id="walkin" value="walkin" checked>
+                            <label class="form-check-label" for="walkin">
+                                Pay Walk-in
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="paymentType" id="online" value="online">
+                            <label class="form-check-label" for="online">
+                                Pay Online
+                            </label>
+                        </div>
                     </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="onlineMethod" id="mastercard" value="mastercard">
-                        <label class="form-check-label" for="mastercard">
-                            <i class="bi bi-credit-card"></i> Mastercard
-                        </label>
+
+                    <!-- Online Payment Options (hidden by default) -->
+                    <div id="online-payment-options" class="online-options" style="display: none;">
+                        <h3 class="form-subtitle">Select Online Payment</h3>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="onlineMethod" id="visa" value="visa">
+                            <label class="form-check-label" for="visa">
+                                <i class="bi bi-credit-card-2-front"></i> Visa
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="onlineMethod" id="mastercard" value="mastercard">
+                            <label class="form-check-label" for="mastercard">
+                                <i class="bi bi-credit-card"></i> Mastercard
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="onlineMethod" id="paypal" value="paypal">
+                            <label class="form-check-label" for="paypal">
+                                <i class="bi bi-paypal"></i> PayPal
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="onlineMethod" id="gcash" value="gcash">
+                            <label class="form-check-label" for="gcash">
+                                <i class="bi bi-wallet2"></i> GCash
+                            </label>
+                        </div>
+                         <small class="note">Note: Online payment requires selecting an option above.</small>
                     </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="onlineMethod" id="paypal" value="paypal">
-                        <label class="form-check-label" for="paypal">
-                            <i class="bi bi-paypal"></i> PayPal
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="onlineMethod" id="gcash" value="gcash">
-                        <label class="form-check-label" for="gcash">
-                            <i class="bi bi-wallet2"></i> GCash
-                        </label>
-                    </div>
-                     <small class="note">Note: Online payment requires selecting an option above.</small>
+
+                    <button type="submit" class="btn btn-primary btn-proceed">Proceed</button>
+                </form>
+
+                <!-- Success Message (hidden by default) -->
+                <div id="success-message" class="success-box" style="display: none;">
+                    <i class="bi bi-check-circle-fill success-icon"></i>
+                    <h3 class="success-title">Payment Selection Confirmed!</h3>
+                    <p class="success-text">Your payment method has been recorded. Please follow any further instructions.</p>
+                    <a href="membership.html" class="btn btn-primary btn-back-success">Back to Membership</a>
                 </div>
-
-                <!-- success info -->
-                <button type="submit" class="btn btn-proceed">Proceed</button>
-            </form>
-
-
-            <div id="success-message" class="success-box" style="display: none;"> 
-                <i class="bi bi-check-circle-fill success-icon"></i>
-                <h3 class="success-title">Payment Completed!</h3>
-                <p class="success-text">Your details have been submitted successfully.</p>
-                <a href="membership.html" class="btn btn-back">Back to Membership</a>
-
             </div>
-
         </div>
     </main>
-    <!-- footer -->
+
+    <!-- Site Footer -->
     <footer class="site-footer">
         <div class="container footer-content">
             <span>© 2023 OPTILIFE. All Rights Reserved.</span>
@@ -114,16 +104,15 @@
 
   <script src="../assets/jquery-3.7.1.min.js"></script>
 <script>
-
 $(document).ready(function() {
     const paymentTypeRadios = $('input[name="paymentType"]');
     const onlineOptionsDiv = $('#online-payment-options');
-    const onlineMethodRadios = $('input[name="onlineMethod"]'); 
+    const onlineMethodRadios = $('input[name="onlineMethod"]');
 
     if ($('#online').is(':checked')) {
         onlineOptionsDiv.show();
     } else {
-        onlineOptionsDiv.hide(); 
+        onlineOptionsDiv.hide();
     }
 
     paymentTypeRadios.on('change', function() {
@@ -131,58 +120,44 @@ $(document).ready(function() {
             onlineOptionsDiv.slideDown();
         } else {
             onlineOptionsDiv.slideUp();
-             
             onlineMethodRadios.prop('checked', false);
         }
     });
 
     const paymentForm = $('#payment-form');
-    const formContainer = $('.payment-form-container'); 
     const successMessageDiv = $('#success-message');
 
     paymentForm.on('submit', function(event) {
-        event.preventDefault(); 
+        event.preventDefault();
 
         const isOnlinePayment = $('#online').is(':checked');
         const onlineMethodSelected = $('input[name="onlineMethod"]:checked').length > 0;
+        const noteElement = onlineOptionsDiv.find('.note');
 
         if (isOnlinePayment && !onlineMethodSelected) {
-            
-            const noteElement = onlineOptionsDiv.find('.note');
-            noteElement.css('color', 'red').css('font-weight', 'bold');
-
-            return; 
+            noteElement.addClass('note-error');
+            onlineOptionsDiv.addClass('shake-animation');
+            setTimeout(function() {
+                onlineOptionsDiv.removeClass('shake-animation');
+            }, 500);
+            return;
         } else {
-            
-             const noteElement = onlineOptionsDiv.find('.note');
-             noteElement.css('color', '').css('font-weight', ''); 
+            noteElement.removeClass('note-error');
         }
 
-   
-         console.log("Form submitted (placeholder). Validation passed.");
-         paymentForm.fadeOut(function() {
+        console.log("Form submitted (placeholder). Validation passed.");
+        paymentForm.fadeOut(function() {
              successMessageDiv.fadeIn();
-         });
-        
+        });
     });
 
-    
+
     onlineMethodRadios.on('change', function() {
         if ($(this).is(':checked')) {
             const noteElement = onlineOptionsDiv.find('.note');
-            noteElement.css('color', '').css('font-weight', ''); 
+            noteElement.removeClass('note-error');
         }
     });
-
-    $('#contact').on('input', function() {
-     
-        let currentValue = $(this).val();
-   
-        let newValue = currentValue.replace(/[^0-9]/g, '');
-        
-        $(this).val(newValue);
-    });
-
 });
 </script>
 </body>
