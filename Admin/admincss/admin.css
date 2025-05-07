@@ -1,3 +1,4 @@
+/* admincss/admin.css */
 * {
     margin: 0;
     padding: 0;
@@ -134,8 +135,8 @@ ul {
     flex-direction: column;
     background-color: var(--darker-gray);
     transition: margin-left 0.3s ease;
-    overflow-x: hidden;
-    height: 100vh;
+    overflow-x: hidden; 
+    height: 100vh; 
 }
 
 .main-header {
@@ -152,17 +153,57 @@ ul {
 .main-header h1 {
     font-size: 1.8em;
     color: var(--primary-text);
+    margin-right: auto; /* Push profile area to the right */
 }
 
-.admin-profile span {
+.admin-profile-area { /* New container for profile elements */
+    display: flex;
+    align-items: center;
+    gap: 15px; /* Space between items */
+}
+
+.admin-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover; /* Ensure image covers the area nicely */
+    border: 2px solid var(--main-color); /* Optional border */
+    background-color: var(--medium-gray); /* Fallback bg if image fails */
+}
+
+.admin-profile-area span { /* Specifically target span within profile area */
     font-weight: 500;
     color: var(--secondary-text);
 }
 
+.header-logout-button {
+    display: inline-flex; 
+    align-items: center;
+    padding: 8px 12px;
+    background-color: transparent; 
+    color: var(--secondary-text);
+    text-decoration: none;
+    border-radius: 4px;
+    transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
+    border: 1px solid transparent; 
+}
+
+.header-logout-button i {
+    margin-right: 6px;
+    font-size: 1.1em;
+}
+
+.header-logout-button:hover {
+    color: var(--main-color);
+    background-color: var(--medium-gray); 
+    border-color: var(--main-color); 
+}
+
+
 .content-area {
     padding: 30px;
     flex-grow: 1;
-    overflow-y: auto;
+    overflow-y: auto; 
     overflow-x: hidden;
 }
 
@@ -241,15 +282,11 @@ ul {
     border-bottom: none;
 }
 
-/* ==================================
-   Chart Styles
-   ================================== */
+/* Chart Styles */
 .charts-grid {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid; 
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
     gap: 25px;
-    margin-left: -12.5px;
-    margin-right: -12.5px;
 }
 
 .chart-container {
@@ -259,11 +296,9 @@ ul {
     box-shadow: none;
     position: relative;
     border-left: 5px solid var(--main-color);
-    flex-grow: 1;
-    flex-shrink: 1;
-    flex-basis: calc(100% - 25px);
-    margin-left: 12.5px;
-    margin-right: 12.5px;
+    display: flex; 
+    flex-direction: column; 
+    min-height: 350px; 
 }
 
 .chart-container h3 {
@@ -272,25 +307,24 @@ ul {
     color: var(--primary-text);
     font-size: 1.3em;
     font-weight: 600;
+    flex-shrink: 0; 
 }
 
 .chart-placeholder-container {
-    position: relative;
+    position: relative; 
     width: 100%;
-    aspect-ratio: 16 / 9;
-    max-width: 100%;
+    flex-grow: 1; 
 }
 
 canvas {
     display: block;
     max-width: 100%;
-    height: auto;
+    width: 100% !important; 
+    height: auto !important; 
 }
 
-/* ==================================
-   Tables & Controls
-   ================================== */
 
+/* Tables & Controls */
 .table-container {
     overflow-x: auto;
     width: 100%;
@@ -384,9 +418,7 @@ th {
     gap: 15px;
 }
 
-/* ==================================
-   Search Bar Styles
-   ================================== */
+/* Search Bar Styles */
 .search-container {
     display: flex;
     align-items: center;
@@ -430,10 +462,7 @@ th {
     background-color: #666;
 }
 
-/* ==================================
-   Modal Styles
-   ================================== */
-
+/* Modal Styles */
 .modal {
     display: none;
     position: fixed;
@@ -518,9 +547,11 @@ th {
     font-weight: 500;
     color: var(--secondary-text);
 }
+
 .modal .form-group input[type="text"],
 .modal .form-group input[type="number"],
-.modal .form-group input[type="email"] {
+.modal .form-group input[type="email"],
+.modal .form-group select {
     width: 100%;
     padding: 12px;
     border: 1px solid var(--light-gray);
@@ -530,13 +561,38 @@ th {
     font-size: 1em;
     font-family: inherit;
 }
+
+.modal .form-group select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url('../../images/admin_pic.jpg');
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 12px;
+    padding-right: 35px;
+}
+
+.modal .form-group select:required:invalid {
+    color: #999; 
+}
+.modal .form-group select option {
+    color: var(--primary-text); 
+    background-color: var(--dark-gray); 
+}
+.modal .form-group select option:first-child {
+    color: #999;
+}
+
 .modal input[type="text"]:focus,
 .modal input[type="number"]:focus,
-.modal input[type="email"]:focus {
+.modal input[type="email"]:focus,
+.modal .form-group select:focus {
     outline: none;
     border-color: var(--main-color);
     box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.3);
 }
+
 .modal .modal-add-btn {
     display: block;
     width: 100%;
@@ -545,6 +601,31 @@ th {
     font-size: 1.1em;
     font-weight: 500;
 }
+
+.error-message {
+    display: none; 
+    color: var(--danger);
+    font-size: 0.85em;
+    margin-top: 5px;
+    width: 100%;
+}
+
+.form-group input.is-invalid,
+.form-group select.is-invalid { 
+    border-color: var(--danger) !important;
+    box-shadow: 0 0 0 1px var(--danger);
+}
+
+input[readonly],
+select[readonly] { 
+    background-color: var(--light-gray) !important; 
+    cursor: default;
+    color: var(--secondary-text) !important;
+}
+input[readonly]::placeholder {
+    color: #888 !important;
+}
+
 
 #logoutConfirmationModal .modal-content {
     background-color: var(--white);
@@ -630,7 +711,7 @@ th {
 }
 
 @media (min-width: 1200px) {
-    .chart-container { flex-basis: calc(33.333% - 25px); }
+    /* .chart-container { flex-basis: calc(33.333% - 25px); } Now handled by grid */
 }
 
 @media (max-width: 768px) {
@@ -659,16 +740,45 @@ th {
         margin-left: 70px;
         width: calc(100% - 70px);
         transition: margin-left 0.3s ease;
-        height: 100vh;
-        overflow-y: auto;
     }
 
-    .main-header { padding: 15px; }
-    .main-header h1 { font-size: 1.5em; }
+    .main-header { 
+        padding: 15px; 
+        flex-wrap: wrap; /* Allow wrapping for smaller screens if needed */
+    }
+    .main-header h1 { 
+        font-size: 1.5em; 
+        margin-right: 15px; /* Ensure some space before profile area */
+        flex-grow: 1; /* Allow title to take available space */
+    }
+    .admin-profile-area {
+        gap: 10px; /* Reduce gap on smaller screens */
+        /* flex-basis: 100%; Allow to wrap if not enough space - optional */
+        /* justify-content: flex-end; if wrapping */
+    }
+    .admin-avatar {
+        width: 35px;
+        height: 35px;
+    }
+    .header-logout-button {
+        padding: 6px 10px;
+        font-size: 0.85em;
+    }
+    .header-logout-button i {
+        font-size: 1em;
+    }
+
+
     .stats-cards { grid-template-columns: 1fr; }
     .content-area { padding: 20px; }
 
-    .chart-container { flex-basis: calc(50% - 25px); }
+    .charts-grid {
+        grid-template-columns: 1fr; 
+    }
+    .chart-container {
+        min-height: 300px; 
+    }
+
 
     table, thead, tbody, th, td, tr {
         display: block;
@@ -740,9 +850,36 @@ th {
     .sidebar:hover { width: 200px; }
     .main-content { margin-left: 60px; width: calc(100% - 60px); }
 
-    .main-header { flex-direction: column; align-items: flex-start; padding: 10px 15px; }
-    .main-header h1 { margin-bottom: 5px; font-size: 1.3em; }
-    .admin-profile span { font-size: 0.9em; }
+    .main-header { 
+        flex-direction: column; 
+        align-items: flex-start; 
+        padding: 10px 15px; 
+    }
+    .main-header h1 { 
+        margin-bottom: 10px; /* Space below title when stacked */
+        font-size: 1.3em; 
+        width: 100%; /* Title takes full width */
+        text-align: center; /* Center title */
+        margin-right: 0;
+    }
+    .admin-profile-area {
+        width: 100%; /* Profile area takes full width */
+        justify-content: center; /* Center items in profile area */
+        gap: 8px;
+    }
+    .admin-avatar {
+        width: 30px;
+        height: 30px;
+    }
+    .admin-profile-area span {
+        font-size: 0.9em;
+    }
+    .header-logout-button {
+        padding: 5px 8px;
+        font-size: 0.8em;
+    }
+
+
     .content-area { padding: 15px; }
     .card { padding: 15px; }
     .card h3 { font-size: 1em; }
@@ -754,14 +891,9 @@ th {
     td:before { width: 30%; left: 10px; font-size: 0.85em; }
     td[data-label="Actions"] { padding-left: 10px !important; }
 
-    .charts-grid { margin-left: 0; margin-right: 0; gap: 15px; }
-    .chart-container { flex-basis: 100%; margin-left: 0; margin-right: 0; padding: 15px; border-left-width: 4px; }
-    .chart-container h3 { font-size: 1.1em; }
+    .chart-container {
+        min-height: 250px; 
+    }
 
-    .modal .modal-content { padding: 15px; width: 95%; margin: 5% auto; }
-    .modal h2 { font-size: 1.3em; }
-    .modal input[type="text"], .modal input[type="number"], .modal input[type="email"] { padding: 10px; font-size: 0.95em; }
-    .modal .modal-add-btn { padding: 10px; font-size: 1em; }
-
-    .search-input { min-width: 120px; }
+    .modal .modal-content { padding: 15px; width: 95}
 }
