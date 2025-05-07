@@ -6,7 +6,7 @@
     --color-dark-gray: #1a1a1a;
     --color-darker-gray: #1f1f1f;
     --color-gold: #daa520;
-    --color-gold-rgb: 218, 165, 32; /* Added for gym owner benefit card hover */
+    --color-gold-rgb: 218, 165, 32;
     --color-gold-light: #f0c44c;
     --color-text: #ffffff;
     --color-text-muted: #aaaaaa;
@@ -102,11 +102,11 @@ section {
     position: relative;
     z-index: 3;
 }
-.membership-plans-section .section-subtitle { /* Original specificity for plans */
+.membership-plans-section .section-subtitle {
      margin: 0 auto 4rem auto;
 }
-.gym-owner-benefits-section .section-subtitle { /* Specificity for new section */
-    margin-bottom: 3rem; /* Adjust as needed */
+.gym-owner-benefits-section .section-subtitle {
+    margin-bottom: 3rem;
 }
 
 
@@ -149,12 +149,6 @@ section {
     transform: translateY(-2px);
 }
 
-.header-signup:hover{
-    background-color: var(--color-black);
-    color: var(--color-gold);
-    border-color: var(--color-gold);
-}
-
 header {
     background-color: var(--color-black);
     padding: 10px 0;
@@ -191,7 +185,7 @@ header .logo img {
 .navigation-screensize {
     display: flex;
     align-items: center;
-    gap: 30px;
+    gap: 20px;
 }
 
 #burger-btn {
@@ -248,10 +242,23 @@ header nav ul li a:hover {
     color: var(--color-gold);
 }
 
-header .btn-primary {
+.header-auth-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.header-auth-actions .btn {
+    padding: 8px 16px;
+    font-size: 0.85rem;
+    white-space: nowrap;
     flex-shrink: 0;
-    padding: 10px 22px;
-    font-size: 0.9rem;
+}
+
+.header-auth-actions .btn-primary:hover {
+    background-color: var(--color-black);
+    color: var(--color-gold);
+    border-color: var(--color-gold);
 }
 
 .intro {
@@ -838,6 +845,22 @@ footer p {
     .intro h1 { font-size: 3.2rem; }
     .intro p { max-width: 500px; font-size: 1.1rem; }
     header .logo img { height: 60px; }
+
+    .navigation-screensize {
+        gap: 15px;
+    }
+    header nav ul li {
+        margin-left: 20px;
+    }
+    .header-auth-actions {
+        gap: 10px;
+    }
+    .header-auth-actions .btn {
+        padding: 7px 12px;
+        font-size: 0.8rem;
+    }
+
+
     .hook-up-content-wrapper { gap: 40px; }
     .hook-up-text-content h3 { font-size: 2em; }
     .plans-grid { max-width: 90%; }
@@ -925,13 +948,18 @@ footer p {
     .navigation-screensize nav ul li a:hover { background-color: #222; }
     .navigation-screensize nav ul li a::after { display: none; }
 
-    .navigation-screensize .btn-primary {
-        margin-top: 15px;
+    .navigation-screensize .header-auth-actions {
+        flex-direction: column;
         width: 80%;
-        padding: 12px;
+        margin-top: 15px;
+        gap: 10px;
     }
-    .navigation-screensize .header-singin { margin-top: 10px; }
 
+    .navigation-screensize .header-auth-actions .btn {
+        width: 100%;
+        padding: 12px;
+        font-size: 0.9rem;
+    }
 
     .intro {
         min-height: 75vh;
@@ -976,6 +1004,20 @@ footer p {
     h1 { font-size: 2.2rem; }
     h2 { font-size: 1.8rem; }
     section { padding: 50px 0; }
+
+    .navigation-screensize {
+        gap: 10px;
+    }
+    header nav ul li {
+        margin-left: 15px;
+    }
+    .header-auth-actions {
+        gap: 8px;
+    }
+    .header-auth-actions .btn {
+        padding: 6px 10px;
+        font-size: 0.75rem;
+    }
 
     .intro { min-height: 70vh; }
     .intro h1 { font-size: 2.4rem; }

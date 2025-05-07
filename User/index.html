@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OPTILIFE</title>
-    <!-- IMPORTANT: Ensure this path to your CSS file is correct -->
+    <!-- CSS Path - Make sure this is right or nothing will look good! -->
     <link rel="stylesheet" href="usercss/landingPage.css">
+    <!-- Icons and Fonts -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,76 +14,90 @@
 </head>
 <body>
 
-    <!-- Main Header Start -->
+    <!-- === HEADER SECTION === -->
+    <!-- This is the main navigation bar at the top -->
     <header id="main-header">
         <div class="container">
+            <!-- Site Logo -->
             <a href="#" class="logo">
-                <img src="../images/logo.png" alt="Optilife Logo">
+                <img src="../images/logo.png" alt="Optilife Logo"> <!-- Logo: Not lazy loading this, seems important for immediate display -->
             </a>
-            <!-- Burger button for mobile navigation -->
+            <!-- Mobile Menu Toggle - The "Burger" -->
             <button id="burger-btn" class="burger-button" aria-label="Toggle navigation" aria-expanded="false">
                 <i class="bi bi-list"></i>
             </button>
-            <!-- Navigation links and auth buttons container -->
+            <!-- Wrapper for nav links and login/signup buttons -->
             <div class="navigation-screensize">
+                <!-- Main site navigation links -->
                 <nav class="main-nav">
                     <ul>
                         <li><a href="#benefit">Benefits</a></li>
-                        <li><a href="#gym-owner-benefits">For Gyms</a></li> <!-- Added link for new section -->
+                        <li><a href="#gym-owner-benefits">For Gyms</a></li>
                         <li><a href="#hook-up">Join Us</a></li>
                         <li><a href="#membership-plans">Plans</a></li>
                         <li><a href="#about">About Us</a></li>
                         <li><a href="#coaches">Coaches</a></li>
                     </ul>
                 </nav>
-                 <a href="signup.html" class="btn btn-primary header-signup">Sign Up</a>
-                <a href="signin.html" class="btn btn-primary header-singin">Sign In</a>
+                <!-- User Authentication Buttons (Sign Up/Sign In) -->
+                <div class="header-auth-actions">
+                    <a href="signup.html" class="btn btn-primary header-signup-member">Member Sign Up</a>
+                    <a href="gym_owner_apply.html" class="btn btn-secondary header-signup-gym">Gym Owner Sign Up</a>
+                    <a href="signin.html" class="btn btn-primary header-signin">Sign In</a>
+                </div>
             </div>
         </div>
     </header>
-    <!-- Main Header End -->
+    <!-- === END HEADER SECTION === -->
 
-    <!-- Hero/Intro Section Start -->
+    <!-- === HERO SECTION === -->
+    <!-- Big intro part of the page with the main headline -->
     <section class="intro">
+        <!-- Note: Background image for this hero is set in CSS -->
         <div class="container">
             <h1><span>TRAIN</span> YOUR <br>PERFECT <span>BODY</span></h1>
             <p>Unlock your true potential and sculpt the body you've always dreamed of. Our expert-led programs are tailored to help you train smarter, get stronger, and feel unstoppable.</p>
             <a href="#benefit" class="btn btn-primary">Lets Find Out</a>
         </div>
     </section>
-    <!-- Hero/Intro Section End -->
+    <!-- === END HERO SECTION === -->
 
-    <!-- User Benefits Section Start -->
+    <!-- === USER BENEFITS SECTION === -->
+    <!-- Shows what regular users get out of Optilife -->
     <section id="benefit" class="benefit-section">
         <div class="container">
             <h2>BENEFITS</h2>
             <div class="benefit-grid">
+                <!-- Card 1: Set Goals -->
                 <div class="benefit-card">
-                    <img src="../images/SetGoals.jpg"alt="Strength Training">
+                    <img src="../images/SetGoals.jpg" alt="Strength Training" loading="lazy">
                     <div class="card-overlay">
                         <h3>Set Goals</h3>
                         <p>Define your health objectives, whether it's weight loss, fitness improvement, or overall wellness.</p>
                         <a href="#" class="btn btn-secondary">More</a>
                     </div>
                 </div>
+                <!-- Card 2: Track Progress -->
                 <div class="benefit-card">
-                    <img src="../images/fatBurn.jpg" alt="Fat Burn Program">
+                    <img src="../images/fatBurn.jpg" alt="Fat Burn Program" loading="lazy">
                      <div class="card-overlay">
                         <h3>Track Your Progress</h3>
                         <p>Monitor your achievements and stay motivated with real-time data and insights.</p>
                         <a href="#" class="btn btn-secondary">More</a>
                     </div>
                 </div>
+                <!-- Card 3: Achieve Result -->
                 <div class="benefit-card">
-                    <img src="../images/AchieveResult.jpg" alt="Achieve Result Program">
+                    <img src="../images/AchieveResult.jpg" alt="Achieve Result Program" loading="lazy">
                      <div class="card-overlay">
                         <h3>Achieve Result</h3>
                         <p>Reach your health goals and unlock a healthier, happier you with OptiLife's support and guidance.</p>
                         <a href="#" class="btn btn-secondary">More</a>
                     </div>
                 </div>
+                <!-- Card 4: Better Life -->
                 <div class="benefit-card">
-                    <img src="../images/betterLife.jpg" alt="Better Life Program">
+                    <img src="../images/betterLife.jpg" alt="Better Life Program" loading="lazy">
                      <div class="card-overlay">
                         <h3>Better Life</h3>
                         <p>Experience an improved sense of well-being and positivity as you prioritize your health journey with Optilife.</p>
@@ -92,33 +107,39 @@
             </div>
         </div>
     </section>
-    <!-- User Benefits Section End -->
-     <!-- Join Us/Hook Up Section Start -->
-     <section id="hook-up" class="hook-up-section">
-        <div class="container">
-            <h2>JOIN THE OPTILIFE MOVEMENT</h2>
-            <div class="hook-up-content-wrapper">
-                <div class="hook-up-image">
-                    <img src="../images/Gymshark-hero-crop.jpg" alt="Modern gym facility or diverse group of people working out">
-                </div>
-                <div class="hook-up-text-content">
-                    <h3>Ready to Elevate Your Fitness Experience?</h3>
-                    <p>Whether you're an individual looking to achieve your peak fitness or a gym owner seeking to expand your reach and impact, Optilife is your partner in success. Discover the opportunities waiting for you.</p>
-                    <div class="hook-up-actions">
-                        <a href="signup.html" class="btn btn-primary">Become a Member</a>
-                        <a href="gym_owner_apply.html" class="btn btn-secondary">Partner as a Gym Owner</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- Join Us/Hook Up Section End -->
-    <!-- Gym Owner Benefits Section Start -->
+    <!-- === END USER BENEFITS SECTION === -->
+
+    <!-- === JOIN US / HOOK UP SECTION === -->
+    <!-- Call to action for both users and gym owners to join -->
+    <section id="hook-up" class="hook-up-section">
+       <div class="container">
+           <h2>JOIN THE OPTILIFE MOVEMENT</h2>
+           <div class="hook-up-content-wrapper">
+               <div class="hook-up-image">
+                   <!-- Changed this image path, hope it's correct - NewDev -->
+                   <img src="../images/gymgold.avif" alt="Modern gym facility or diverse group of people working out" loading="lazy">
+               </div>
+               <div class="hook-up-text-content">
+                   <h3>Ready to Elevate Your Fitness Experience?</h3>
+                   <p>Whether you're an individual looking to achieve your peak fitness or a gym owner seeking to expand your reach and impact, Optilife is your partner in success. Discover the opportunities waiting for you.</p>
+                   <div class="hook-up-actions">
+                       <a href="signup.html" class="btn btn-primary">Become a Member</a>
+                       <a href="gym_owner_apply.html" class="btn btn-secondary">Partner as a Gym Owner</a>
+                   </div>
+               </div>
+           </div>
+       </div>
+   </section>
+   <!-- === END JOIN US / HOOK UP SECTION === -->
+
+    <!-- === GYM OWNER BENEFITS SECTION === -->
+    <!-- This section details advantages for gym owners partnering with us -->
     <section id="gym-owner-benefits" class="gym-owner-benefits-section">
         <div class="container">
             <h2>BENEFITS FOR GYM OWNERS</h2>
             <p class="section-subtitle">Discover how partnering with Optilife can elevate your gym business, expand your clientele, and streamline your operations.</p>
             <div class="gym-owner-benefit-grid">
+                <!-- These are Bootstrap Icons, so loading="lazy" isn't for these i tags -->
                 <div class="gym-owner-benefit-card">
                     <i class="bi bi-people-fill benefit-icon"></i>
                     <h3>Expand Your Reach</h3>
@@ -140,21 +161,23 @@
                     <p>Gain increased visibility through Optilife's marketing campaigns, promotions, and dedicated gym profiles.</p>
                 </div>
             </div>
+            <!-- Call to action specific for gym owners -->
             <div class="gym-owner-cta">
                  <a href="gym_owner_apply.html" class="btn btn-primary">Partner With Us Today</a>
             </div>
         </div>
     </section>
-    <!-- Gym Owner Benefits Section End -->
+    <!-- === END GYM OWNER BENEFITS SECTION === -->
 
-   
-
-    <!-- Membership Plans Section Start -->
+    <!-- === MEMBERSHIP PLANS SECTION === -->
+    <!-- Displays the different membership options -->
     <section id="membership-plans" class="membership-plans-section">
+        <!-- Background image for this section is also handled by CSS -->
         <div class="container">
             <h2>CHOOSE YOUR OPTILIFE PLAN</h2>
             <p class="section-subtitle">Select the perfect membership to kickstart your fitness transformation. All plans grant access to our supportive community and expert resources.</p>
             <div class="plans-grid">
+                <!-- Basic Plan Card -->
                 <div class="plan-card">
                     <h3>Basic Membership</h3>
                     <p class="plan-price"><span>P550</span>1 month</p>
@@ -167,6 +190,7 @@
                     </ul>
                     <a href="signup.html?plan=basic" class="btn btn-secondary plan-cta">Get Started</a>
                 </div>
+                <!-- Premium Plan Card - marked as popular -->
                 <div class="plan-card premium-plan">
                     <div class="popular-badge">Most Popular</div>
                     <h3>Premium Access</h3>
@@ -183,13 +207,15 @@
             </div>
         </div>
     </section>
-    <!-- Membership Plans Section End -->
+    <!-- === END MEMBERSHIP PLANS SECTION === -->
 
-    <!-- About Us Section Start -->
+    <!-- === ABOUT US SECTION === -->
+    <!-- Some stats and a bit about the company's story -->
     <section id="about" class="about-section">
          <div class="container">
             <h2>Story of Us</h2>
             <p>From humble beginnings to a nationwide presence, our journey has always been driven by passion, perseverance, and a commitment to transforming lives through fitness and wellness.</p>
+            <!-- Stats Grid: Branches, Coaches, etc. -->
             <div class="stats-grid">
                 <div class="stat-item">
                     <span>100+</span>
@@ -210,29 +236,33 @@
             </div>
         </div>
     </section>
-    <!-- About Us Section End -->
+    <!-- === END ABOUT US SECTION === -->
 
-    <!-- Testimonials Section Start -->
+    <!-- === TESTIMONIALS SECTION === -->
+    <!-- What clients are saying about Optilife -->
     <section id="testimonials" class="testimonials-section">
         <div class="container">
              <h2>Client's Said</h2>
              <div class="testimonial-list">
+                 <!-- Testimonial 1: Albert -->
                  <div class="testimonial-item">
-                     <img src="../images/albert.jpg" alt="Client Albert">
+                     <img src="../images/albert.jpg" alt="Client Albert" loading="lazy">
                      <div class="testimonial-content">
                          <h4>Albert</h4>
                          <p>“Working with this team was an absolute pleasure. They truly care about your goals and push you to be your best.”</p>
                      </div>
                  </div>
+                 <!-- Testimonial 2: Stefany -->
                   <div class="testimonial-item">
-                     <img src="../images/stefanny.jpg" alt="Client Stefany">
+                     <img src="../images/stefanny.jpg" alt="Client Stefany" loading="lazy">
                      <div class="testimonial-content">
                          <h4>Stefany</h4>
                          <p>“I’ve never felt more confident and empowered. The support and dedication from the coaches are unmatched!”</p>
                      </div>
                  </div>
+                 <!-- Testimonial 3: George -->
                   <div class="testimonial-item">
-                     <img src="../images/george.webp" alt="Client George">
+                     <img src="../images/george.webp" alt="Client George" loading="lazy">
                      <div class="testimonial-content">
                          <h4>George</h4>
                          <p>“At my age, I never thought I’d feel this strong again. This has brought energy and joy back into my life.”</p>
@@ -241,39 +271,44 @@
              </div>
         </div>
     </section>
-    <!-- Testimonials Section End -->
+    <!-- === END TESTIMONIALS SECTION === -->
 
-    <!-- Coaches Section Start -->
+    <!-- === COACHES SECTION === -->
+    <!-- Profiles of some of the coaches -->
     <section id="coaches" class="coaches-section">
         <div class="container">
             <h2>Coaches</h2>
             <div class="coaches-grid">
+                <!-- Coach 1: Joel -->
                 <div class="coach-card">
-                    <img src="../images/joel.jpg" alt="Coach Joel">
+                    <img src="../images/joel.jpg" alt="Coach Joel" loading="lazy">
                     <div class="coach-info">
                         <h4>JOEL</h4>
                         <a href="#" class="coach-cert">Coach Certificates</a>
                         <p>Joel is known for his high-intensity training and attention to detail. He’ll challenge you, motivate you, and celebrate every win with you</p>
                     </div>
                 </div>
+                <!-- Coach 2: Lily -->
                  <div class="coach-card">
-                    <img src="../images/lily.jpg" alt="Coach Lily">
+                    <img src="../images/lily.jpg" alt="Coach Lily" loading="lazy">
                     <div class="coach-info">
                         <h4>Lily</h4>
                         <a href="#" class="coach-cert">Coach Certificates</a>
                         <p>With a background in nutrition and strength training, Lily provides a holistic approach to health that helps you thrive inside and out.</p>
                     </div>
                 </div>
+                <!-- Coach 3: Mundy -->
                  <div class="coach-card">
-                    <img src="../images/mundy.jpg" alt="Coach Mundy">
+                    <img src="../images/mundy.jpg" alt="Coach Mundy" loading="lazy">
                     <div class="coach-info">
                         <h4>MUNDY</h4>
                         <a href="#" class="coach-cert">Coach Certificates</a>
                         <p>Mundy brings years of experience and a contagious positive energy. Every session with him leaves you stronger—physically and mentally</p>
                     </div>
                 </div>
+                <!-- Coach 4: Taylor -->
                  <div class="coach-card">
-                    <img src="../images/taylor.jpg" alt="Coach Taylor">
+                    <img src="../images/taylor.jpg" alt="Coach Taylor" loading="lazy">
                     <div class="coach-info">
                         <h4>Taylor</h4>
                         <a href="#" class="coach-cert">Coach Certificates</a>
@@ -283,11 +318,13 @@
             </div>
         </div>
     </section>
-    <!-- Coaches Section End -->
+    <!-- === END COACHES SECTION === -->
 
-    <!-- Subscribe and Footer Links Section Start -->
+    <!-- === SUBSCRIBE & FOOTER LINKS SECTION === -->
+    <!-- Newsletter subscription and main footer links -->
     <section id="subscribe" class="subscribe-section">
         <div class="container subscribe-content">
+            <!-- Left side: Subscription form and social icons -->
             <div class="subscribe-text">
                 <h2>Subscribe</h2>
                 <p>Join our fitness family and get tips, exclusive updates, and special offers. Start your journey today!</p>
@@ -301,6 +338,7 @@
                     <a href="#"><i class="bi bi-youtube"></i></a>
                 </div>
             </div>
+            <!-- Right side: Footer navigation links -->
             <div class="footer-links">
                 <div>
                     <h4>Company</h4>
@@ -345,31 +383,37 @@
             </div>
         </div>
     </section>
-    <!-- Subscribe and Footer Links Section End -->
+    <!-- === END SUBSCRIBE & FOOTER LINKS SECTION === -->
 
-    <!-- Main Footer Start -->
+    <!-- === SITE FOOTER === -->
+    <!-- Copyright and final closing remarks -->
     <footer>
         <div class="container">
             <p>© 2023 OPTILIFE. All Rights Reserved.</p>
         </div>
     </footer>
-    <!-- Main Footer End -->
+    <!-- === END SITE FOOTER === -->
 
-    <!-- Scripts -->
-    <!-- IMPORTANT: Ensure jQuery path is correct -->
+    <!-- === SCRIPTS SECTION === -->
+    <!-- jQuery and custom scripts go here. jQuery path needs to be correct! -->
     <script src="../assets/jquery-3.7.1.min.js"></script>
-    <!-- Burger menu and smooth scroll jQuery -->
+    <!-- Script for mobile menu toggle and smooth scrolling -->
     <script>
+      // Standard jQuery ready function - ensures DOM is loaded before script runs
       $(document).ready(function() {
+        // Cache jQuery selections for performance
         const $burgerBtn = $('#burger-btn');
         const $header = $('#main-header');
-        const $icon = $burgerBtn.find('i');
+        const $icon = $burgerBtn.find('i'); // Icon inside the burger button
 
+        // Click event for the burger button
         $burgerBtn.on('click', function() {
-            $header.toggleClass('mobile-menu-active');
+            $header.toggleClass('mobile-menu-active'); // Toggle the active class on the header
+            // ARIA attributes for accessibility - good practice
             const isExpanded = $burgerBtn.attr('aria-expanded') === 'true';
             $burgerBtn.attr('aria-expanded', !isExpanded);
 
+            // Change burger icon to 'X' and back
             if ($icon.hasClass('bi-list')) {
                 $icon.removeClass('bi-list').addClass('bi-x');
             } else {
@@ -377,36 +421,59 @@
             }
         });
 
-        $('.navigation-screensize nav a, .navigation-screensize > a.btn').on('click', function() {
+        // Close mobile menu when a nav link or a button inside the mobile nav is clicked
+        $('.navigation-screensize nav a, .navigation-screensize .header-auth-actions a.btn').on('click', function() {
             if ($header.hasClass('mobile-menu-active')) {
                 if (this.hash !== "") {
+                    // It's an anchor link on the same page.
+                    // The smooth scroll handler below will also trigger the burger click.
+                    // So, no need to double-trigger here if it's an anchor.
                 } else {
+                    // It's a link to another page, so just close the menu.
                     $burgerBtn.trigger('click');
                 }
             }
         });
 
+        // Smooth scroll functionality for on-page anchor links
         $('a[href*="#"]').not('[href="#"]').not('[href="#0"]').click(function(event) {
+            // Check if the link is actually on this page
             if (
                 location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '')
                 &&
                 location.hostname == this.hostname
             ) {
-                var target = $(this.hash);
-                target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
-                if (target.length) {
-                    event.preventDefault();
+                var target = $(this.hash); // Get the target element using the hash
+                target = target.length ? target : $('[name=' + this.hash.slice(1) + ']'); // Fallback for name attribute
+                
+                if (target.length) { // Does a scroll target exist?
+                    event.preventDefault(); // Prevent default anchor click behavior
+
+                    // If mobile menu is open and it's an anchor link, close it first
                     if ($header.hasClass('mobile-menu-active') && this.hash !== "") {
-                        $burgerBtn.trigger('click');
+                        $burgerBtn.trigger('click'); // Close menu quickly
                     }
+
+                    // Perform the scroll animation
                     $('html, body').animate({
-                        scrollTop: target.offset().top - $('#main-header').outerHeight()
-                    }, 800, function() {
+                        // Scroll to target's top position, offset by the fixed header's height
+                        scrollTop: target.offset().top - $header.outerHeight() 
+                    }, 500, function() { // Scroll duration: 500ms (0.5 seconds)
+                        // Callback after animation completes (optional)
+                        // For accessibility, it might be good to move focus to the target section.
+                        // var $target = $(target);
+                        // $target.focus();
+                        // if (!$target.is(":focus")) { // If not focusable by default
+                        //     $target.attr('tabindex','-1'); // Make it focusable
+                        //     $target.focus();
+                        // }
                     });
                 }
             }
         });
     });
     </script>
+    <!-- === END SCRIPTS SECTION === -->
+
 </body>
 </html>
