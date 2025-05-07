@@ -4,49 +4,38 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OPTILIFE</title>
-    <!-- CSS Path - Make sure this is right or nothing will look good! -->
+    <!-- CSS Path -->
     <link rel="stylesheet" href="usercss/landingPage.css">
     <!-- Icons and Fonts -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'> {/* Added Boxicons */}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <!-- === HEADER SECTION === -->
-    <!-- This is the main navigation bar at the top -->
-    <header id="main-header">
-        <div class="container">
-            <!-- Site Logo -->
-            <a href="#" class="logo">
-                <img src="../images/logo.png" alt="Optilife Logo"> <!-- Logo: Not lazy loading this, seems important for immediate display -->
-            </a>
-            <!-- Mobile Menu Toggle - The "Burger" -->
-            <button id="burger-btn" class="burger-button" aria-label="Toggle navigation" aria-expanded="false">
-                <i class="bi bi-list"></i>
-            </button>
-            <!-- Wrapper for nav links and login/signup buttons -->
-            <div class="navigation-screensize">
-                <!-- Main site navigation links -->
-                <nav class="main-nav">
-                    <ul>
-                        <li><a href="#benefit">Benefits</a></li>
-                        <li><a href="#gym-owner-benefits">For Gyms</a></li>
-                        <li><a href="#hook-up">Join Us</a></li>
-                        <li><a href="#membership-plans">Plans</a></li>
-                        <li><a href="#about">About Us</a></li>
-                        <li><a href="#coaches">Coaches</a></li>
-                    </ul>
-                </nav>
-                <!-- User Authentication Buttons (Sign Up/Sign In) -->
-                <div class="header-auth-actions">
-                    <a href="signup.html" class="btn btn-primary header-signup-member">Member Sign Up</a>
-                    <a href="gym_owner_apply.html" class="btn btn-secondary header-signup-gym">Gym Owner Sign Up</a>
-                    <a href="signin.html" class="btn btn-primary header-signin">Sign In</a>
-                </div>
+    <!-- === HEADER SECTION (NEW STRUCTURE) === -->
+    <header>
+        <a href="#" class="logo">
+            <img src="../images/logo.png" alt="Optilife Logo">
+        </a>
+        <div class='bx bx-menu' id="menu-icon"></div>
+        <ul class="navbar">
+            <div class="navbar-left">
+                <li><a href="#benefit">Benefits</a></li>
+                <li><a href="#gym-owner-benefits">For Gyms</a></li>
+                <li><a href="#hook-up">Join Us</a></li>
+                <li><a href="#membership-plans">Plans</a></li>
+                <li><a href="#about">About Us</a></li>
+                <li><a href="#coaches">Coaches</a></li>
             </div>
-        </div>
+            <div class="navbar-right">
+                <li><a href="signup.html" class="btn btn-primary header-signup-member">Member Sign Up</a></li>
+                <li><a href="gym_owner_apply.html" class="btn btn-secondary header-signup-gym">Gym Owner Sign Up</a></li>
+                <li><a href="signin.html" class="btn btn-primary header-signin">Sign In</a></li>
+            </div>
+        </ul>
     </header>
     <!-- === END HEADER SECTION === -->
 
@@ -116,7 +105,6 @@
            <h2>JOIN THE OPTILIFE MOVEMENT</h2>
            <div class="hook-up-content-wrapper">
                <div class="hook-up-image">
-                   <!-- Changed this image path, hope it's correct - NewDev -->
                    <img src="../images/gymgold.avif" alt="Modern gym facility or diverse group of people working out" loading="lazy">
                </div>
                <div class="hook-up-text-content">
@@ -139,7 +127,6 @@
             <h2>BENEFITS FOR GYM OWNERS</h2>
             <p class="section-subtitle">Discover how partnering with Optilife can elevate your gym business, expand your clientele, and streamline your operations.</p>
             <div class="gym-owner-benefit-grid">
-                <!-- These are Bootstrap Icons, so loading="lazy" isn't for these i tags -->
                 <div class="gym-owner-benefit-card">
                     <i class="bi bi-people-fill benefit-icon"></i>
                     <h3>Expand Your Reach</h3>
@@ -161,7 +148,6 @@
                     <p>Gain increased visibility through Optilife's marketing campaigns, promotions, and dedicated gym profiles.</p>
                 </div>
             </div>
-            <!-- Call to action specific for gym owners -->
             <div class="gym-owner-cta">
                  <a href="gym_owner_apply.html" class="btn btn-primary">Partner With Us Today</a>
             </div>
@@ -170,14 +156,11 @@
     <!-- === END GYM OWNER BENEFITS SECTION === -->
 
     <!-- === MEMBERSHIP PLANS SECTION === -->
-    <!-- Displays the different membership options -->
     <section id="membership-plans" class="membership-plans-section">
-        <!-- Background image for this section is also handled by CSS -->
         <div class="container">
             <h2>CHOOSE YOUR OPTILIFE PLAN</h2>
             <p class="section-subtitle">Select the perfect membership to kickstart your fitness transformation. All plans grant access to our supportive community and expert resources.</p>
             <div class="plans-grid">
-                <!-- Basic Plan Card -->
                 <div class="plan-card">
                     <h3>Basic Membership</h3>
                     <p class="plan-price"><span>P550</span>1 month</p>
@@ -190,7 +173,6 @@
                     </ul>
                     <a href="signup.html?plan=basic" class="btn btn-secondary plan-cta">Get Started</a>
                 </div>
-                <!-- Premium Plan Card - marked as popular -->
                 <div class="plan-card premium-plan">
                     <div class="popular-badge">Most Popular</div>
                     <h3>Premium Access</h3>
@@ -210,12 +192,10 @@
     <!-- === END MEMBERSHIP PLANS SECTION === -->
 
     <!-- === ABOUT US SECTION === -->
-    <!-- Some stats and a bit about the company's story -->
     <section id="about" class="about-section">
          <div class="container">
             <h2>Story of Us</h2>
             <p>From humble beginnings to a nationwide presence, our journey has always been driven by passion, perseverance, and a commitment to transforming lives through fitness and wellness.</p>
-            <!-- Stats Grid: Branches, Coaches, etc. -->
             <div class="stats-grid">
                 <div class="stat-item">
                     <span>100+</span>
@@ -239,12 +219,10 @@
     <!-- === END ABOUT US SECTION === -->
 
     <!-- === TESTIMONIALS SECTION === -->
-    <!-- What clients are saying about Optilife -->
     <section id="testimonials" class="testimonials-section">
         <div class="container">
              <h2>Client's Said</h2>
              <div class="testimonial-list">
-                 <!-- Testimonial 1: Albert -->
                  <div class="testimonial-item">
                      <img src="../images/albert.jpg" alt="Client Albert" loading="lazy">
                      <div class="testimonial-content">
@@ -252,7 +230,6 @@
                          <p>“Working with this team was an absolute pleasure. They truly care about your goals and push you to be your best.”</p>
                      </div>
                  </div>
-                 <!-- Testimonial 2: Stefany -->
                   <div class="testimonial-item">
                      <img src="../images/stefanny.jpg" alt="Client Stefany" loading="lazy">
                      <div class="testimonial-content">
@@ -260,7 +237,6 @@
                          <p>“I’ve never felt more confident and empowered. The support and dedication from the coaches are unmatched!”</p>
                      </div>
                  </div>
-                 <!-- Testimonial 3: George -->
                   <div class="testimonial-item">
                      <img src="../images/george.webp" alt="Client George" loading="lazy">
                      <div class="testimonial-content">
@@ -274,12 +250,10 @@
     <!-- === END TESTIMONIALS SECTION === -->
 
     <!-- === COACHES SECTION === -->
-    <!-- Profiles of some of the coaches -->
     <section id="coaches" class="coaches-section">
         <div class="container">
             <h2>Coaches</h2>
             <div class="coaches-grid">
-                <!-- Coach 1: Joel -->
                 <div class="coach-card">
                     <img src="../images/joel.jpg" alt="Coach Joel" loading="lazy">
                     <div class="coach-info">
@@ -288,7 +262,6 @@
                         <p>Joel is known for his high-intensity training and attention to detail. He’ll challenge you, motivate you, and celebrate every win with you</p>
                     </div>
                 </div>
-                <!-- Coach 2: Lily -->
                  <div class="coach-card">
                     <img src="../images/lily.jpg" alt="Coach Lily" loading="lazy">
                     <div class="coach-info">
@@ -297,7 +270,6 @@
                         <p>With a background in nutrition and strength training, Lily provides a holistic approach to health that helps you thrive inside and out.</p>
                     </div>
                 </div>
-                <!-- Coach 3: Mundy -->
                  <div class="coach-card">
                     <img src="../images/mundy.jpg" alt="Coach Mundy" loading="lazy">
                     <div class="coach-info">
@@ -306,7 +278,6 @@
                         <p>Mundy brings years of experience and a contagious positive energy. Every session with him leaves you stronger—physically and mentally</p>
                     </div>
                 </div>
-                <!-- Coach 4: Taylor -->
                  <div class="coach-card">
                     <img src="../images/taylor.jpg" alt="Coach Taylor" loading="lazy">
                     <div class="coach-info">
@@ -321,10 +292,8 @@
     <!-- === END COACHES SECTION === -->
 
     <!-- === SUBSCRIBE & FOOTER LINKS SECTION === -->
-    <!-- Newsletter subscription and main footer links -->
     <section id="subscribe" class="subscribe-section">
         <div class="container subscribe-content">
-            <!-- Left side: Subscription form and social icons -->
             <div class="subscribe-text">
                 <h2>Subscribe</h2>
                 <p>Join our fitness family and get tips, exclusive updates, and special offers. Start your journey today!</p>
@@ -338,7 +307,6 @@
                     <a href="#"><i class="bi bi-youtube"></i></a>
                 </div>
             </div>
-            <!-- Right side: Footer navigation links -->
             <div class="footer-links">
                 <div>
                     <h4>Company</h4>
@@ -386,7 +354,6 @@
     <!-- === END SUBSCRIBE & FOOTER LINKS SECTION === -->
 
     <!-- === SITE FOOTER === -->
-    <!-- Copyright and final closing remarks -->
     <footer>
         <div class="container">
             <p>© 2023 OPTILIFE. All Rights Reserved.</p>
@@ -395,82 +362,134 @@
     <!-- === END SITE FOOTER === -->
 
     <!-- === SCRIPTS SECTION === -->
-    <!-- jQuery and custom scripts go here. jQuery path needs to be correct! -->
     <script src="../assets/jquery-3.7.1.min.js"></script>
-    <!-- Script for mobile menu toggle and smooth scrolling -->
     <script>
-      // Standard jQuery ready function - ensures DOM is loaded before script runs
-      $(document).ready(function() {
-        // Cache jQuery selections for performance
-        const $burgerBtn = $('#burger-btn');
-        const $header = $('#main-header');
-        const $icon = $burgerBtn.find('i'); // Icon inside the burger button
+    $(document).ready(function() {
+        const $menuIcon = $('#menu-icon');
+        const $navbar = $('.navbar'); // The UL element
+        const $header = $('header'); // The main header element
 
-        // Click event for the burger button
-        $burgerBtn.on('click', function() {
-            $header.toggleClass('mobile-menu-active'); // Toggle the active class on the header
-            // ARIA attributes for accessibility - good practice
-            const isExpanded = $burgerBtn.attr('aria-expanded') === 'true';
-            $burgerBtn.attr('aria-expanded', !isExpanded);
+        if ($menuIcon.length && $navbar.length) {
+            $menuIcon.on('click', () => {
+                $menuIcon.toggleClass('bx-x'); // Toggles between bx-menu and bx-x
+                $navbar.toggleClass('active'); // Toggles visibility of navbar on mobile
+            });
 
-            // Change burger icon to 'X' and back
-            if ($icon.hasClass('bi-list')) {
-                $icon.removeClass('bi-list').addClass('bi-x');
-            } else {
-                $icon.removeClass('bi-x').addClass('bi-list');
-            }
-        });
-
-        // Close mobile menu when a nav link or a button inside the mobile nav is clicked
-        $('.navigation-screensize nav a, .navigation-screensize .header-auth-actions a.btn').on('click', function() {
-            if ($header.hasClass('mobile-menu-active')) {
-                if (this.hash !== "") {
-                    // It's an anchor link on the same page.
-                    // The smooth scroll handler below will also trigger the burger click.
-                    // So, no need to double-trigger here if it's an anchor.
-                } else {
-                    // It's a link to another page, so just close the menu.
-                    $burgerBtn.trigger('click');
+            // Close menu on scroll
+            $(window).on('scroll', () => {
+                if ($navbar.hasClass('active')) {
+                    $menuIcon.removeClass('bx-x');
+                    $navbar.removeClass('active');
                 }
-            }
-        });
+            });
+
+            // Close menu when a nav link or button inside navbar is clicked
+            $navbar.find('a').on('click', function() {
+                // If it's an on-page anchor, smooth scroll will also handle closing.
+                // If it's a link to another page or not a hash link, close here.
+                if ($navbar.hasClass('active')) {
+                    if (this.hash === "" || this.hash === "#" || this.hash === "#0" || !$(this.hash).length) {
+                        // Not a valid on-page scroll link, or link to another page
+                        $menuIcon.removeClass('bx-x');
+                        $navbar.removeClass('active');
+                    }
+                    // For valid on-page anchors, smooth scroll below will also ensure menu closes.
+                }
+            });
+        }
 
         // Smooth scroll functionality for on-page anchor links
         $('a[href*="#"]').not('[href="#"]').not('[href="#0"]').click(function(event) {
-            // Check if the link is actually on this page
             if (
-                location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '')
-                &&
+                location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') &&
                 location.hostname == this.hostname
             ) {
-                var target = $(this.hash); // Get the target element using the hash
-                target = target.length ? target : $('[name=' + this.hash.slice(1) + ']'); // Fallback for name attribute
+                var target = $(this.hash);
+                target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
                 
-                if (target.length) { // Does a scroll target exist?
-                    event.preventDefault(); // Prevent default anchor click behavior
+                if (target.length) {
+                    event.preventDefault(); 
 
-                    // If mobile menu is open and it's an anchor link, close it first
-                    if ($header.hasClass('mobile-menu-active') && this.hash !== "") {
-                        $burgerBtn.trigger('click'); // Close menu quickly
+                    // If mobile menu is open, close it first
+                    if ($navbar.hasClass('active')) {
+                        $menuIcon.removeClass('bx-x');
+                        $navbar.removeClass('active');
+                    }
+                    
+                    var headerHeight = 0;
+                    // Use CSS variables for header height for consistency with home.css styling
+                    // Fallback to direct calculation if CSS vars not fully supported or available
+                    if ($(window).width() <= 991) { // Mobile breakpoint from home.css
+                        headerHeight = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--header-height-mobile').trim()) || ($header.outerHeight() || 80);
+                    } else { // Desktop
+                        headerHeight = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--header-height-desktop').trim()) || ($header.outerHeight() || 100);
                     }
 
-                    // Perform the scroll animation
                     $('html, body').animate({
-                        // Scroll to target's top position, offset by the fixed header's height
-                        scrollTop: target.offset().top - $header.outerHeight() 
-                    }, 500, function() { // Scroll duration: 500ms (0.5 seconds)
-                        // Callback after animation completes (optional)
-                        // For accessibility, it might be good to move focus to the target section.
+                        scrollTop: target.offset().top - headerHeight
+                    }, 500, function() {
+                        // Optional: Update focus to target for accessibility
                         // var $target = $(target);
                         // $target.focus();
-                        // if (!$target.is(":focus")) { // If not focusable by default
-                        //     $target.attr('tabindex','-1'); // Make it focusable
+                        // if (!$target.is(":focus")) { 
+                        //     $target.attr('tabindex','-1'); 
                         //     $target.focus();
                         // }
                     });
                 }
             }
         });
+
+        // Active link highlighting on scroll (adapted from home.html script)
+        let scrollTimeout;
+        $(window).on('scroll', function() {
+            clearTimeout(scrollTimeout);
+            scrollTimeout = setTimeout(function() {
+                var scrollDistance = $(window).scrollTop();
+                var headerHeight = 0;
+                 if ($(window).width() <= 991) {
+                    headerHeight = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--header-height-mobile').trim()) || ($header.outerHeight() || 80);
+                } else {
+                    headerHeight = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--header-height-desktop').trim()) || ($header.outerHeight() || 100);
+                }
+                var threshold = headerHeight + 50; // Adjust threshold as needed
+
+                var activeSection = null;
+
+                $('section[id]').each(function() {
+                    if ($(this).offset() && $(this).is(':visible')) { // Check if element exists and is visible
+                        var sectionTop = $(this).offset().top - threshold;
+                        var sectionBottom = sectionTop + $(this).outerHeight();
+
+                        if (scrollDistance >= sectionTop && scrollDistance < sectionBottom) {
+                            activeSection = $(this).attr('id');
+                            return false; // Break loop
+                        }
+                    }
+                });
+                
+                // Fallback for top of page if no section is active (e.g. highlight "Benefits" if it's first)
+                if (!activeSection && scrollDistance < ($('section[id]').first().offset() ? $('section[id]').first().offset().top - threshold : 500) ) {
+                     activeSection = $('.navbar-left a').first().attr('href')?.substring(1) || null;
+                }
+
+
+                const currentActiveLink = $('.navbar-left a.active');
+                const targetLinkSelector = `.navbar-left a[href="#${activeSection}"]`;
+                const targetLink = $(targetLinkSelector);
+
+                if (activeSection && targetLink.length && !targetLink.hasClass('active')) {
+                    $('.navbar-left a').removeClass('active');
+                    targetLink.addClass('active');
+                } else if (!activeSection && currentActiveLink.length) {
+                    // If scrolled to top and no section matches, or no activeSection determined
+                    // you might want to remove active class or set a default like the first item
+                    // $('.navbar-left a').removeClass('active');
+                    // $('.navbar-left a[href="#benefit"]').addClass('active'); // Example default
+                }
+            }, 100); // Debounce scroll event
+        });
+        $(window).trigger('scroll'); // Initial check
     });
     </script>
     <!-- === END SCRIPTS SECTION === -->

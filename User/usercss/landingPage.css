@@ -1,16 +1,24 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap'); */
+/* Font import is already in HTML */
 
 :root {
+    /* Original landingPage.css variables */
     --color-black: #0a0a0a;
     --color-black-rgb: 10, 10, 10;
     --color-dark-gray: #1a1a1a;
     --color-darker-gray: #1f1f1f;
-    --color-gold: #daa520;
+    --color-gold: #daa520; /* Primary gold for this page */
     --color-gold-rgb: 218, 165, 32;
     --color-gold-light: #f0c44c;
     --color-text: #ffffff;
     --color-text-muted: #aaaaaa;
     --font-primary: 'Poppins', sans-serif;
+
+    /* Added from home.css for header compatibility */
+    --bg-color-header: #000; /* Or var(--color-black) if preferred */
+    --border-color-light: #333; /* Used for header border */
+    --header-height-desktop: 100px;
+    --header-height-mobile: 80px;
 }
 
 * {
@@ -65,12 +73,12 @@ h1, h2, h3, h4 {
 }
 
 h1 {
-    font-size: 3.5rem;
+    font-size: 3.5rem; 
     line-height: 1.2;
 }
 
 h2 {
-    font-size: 2.5rem;
+    font-size: 2.5rem; 
     text-align: center;
     margin-bottom: 3rem;
     color: var(--color-gold);
@@ -79,12 +87,12 @@ h2 {
 }
 
 h3 {
-    font-size: 1.5rem;
+    font-size: 1.5rem; 
     color: var(--color-gold);
 }
 
 h4 {
-    font-size: 1.2rem;
+    font-size: 1.2rem; 
 }
 
 section {
@@ -117,7 +125,7 @@ section {
     font-weight: 600;
     text-align: center;
     cursor: pointer;
-    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease, border-color 0.3s ease;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease, border-color 0.3s ease, box-shadow 0.3s ease;
     border: 1px solid transparent;
     text-transform: uppercase;
     letter-spacing: 0.5px;
@@ -134,6 +142,7 @@ section {
     border-color: var(--color-gold-light);
     color: var(--color-black);
     transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(var(--color-gold-rgb), 0.2);
 }
 
 .btn-secondary {
@@ -147,119 +156,141 @@ section {
     color: var(--color-black);
     border-color: var(--color-gold);
     transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(var(--color-gold-rgb), 0.1);
 }
 
+/* === HEADER STYLES === */
 header {
-    background-color: var(--color-black);
-    padding: 10px 0;
-    position: sticky;
+    position: fixed;
+    width: 100%;
+    height: var(--header-height-desktop);
     top: 0;
+    left: 0;
     z-index: 1000;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-}
-
-header .container {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    max-width: 100%;
-    margin: 0 auto;
-    padding: 0 30px;
+    padding: 1rem 9%; 
+    background: rgba(0, 0, 0, 0.85); 
+    backdrop-filter: blur(8px); 
+    transition: background 0.5s ease, backdrop-filter 0.5s ease, height 0.3s ease;
+    box-sizing: border-box;
+    border-bottom: 1px solid var(--border-color-light);
 }
 
-header .logo {
-    display: block;
-    margin: 0;
-    padding: 0;
-    flex-shrink: 0;
-    line-height: 0;
-}
-
-header .logo img {
-    height: 70px;
-    width: auto;
-    display: block;
-    transition: height 0.3s ease;
-}
-
-.navigation-screensize {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-}
-
-#burger-btn {
-    display: none;
-    background: none;
-    border: none;
-    color: var(--color-gold);
-    font-size: 2rem;
+.logo { 
     cursor: pointer;
-    padding: 5px 10px;
-}
-
-header nav {
-    display: block;
-}
-
-header nav ul {
+    transition: 0.3s ease-in-out;
+    flex-shrink: 0;
     display: flex;
+    align-items: center;
+}
+
+.logo img { 
+    max-width: 100px; /* MODIFIED: Matches home.css desktop */
+    height: auto;     /* MODIFIED: Ensures aspect ratio is maintained */
+    width: auto;      /* Ensures width doesn't conflict if image is smaller than max-width */
+}
+.logo:hover { 
+    transform: scale(1.05);
+}
+
+.navbar { 
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex-grow: 1;
+    margin-left: 40px; 
+    gap: 40px; 
+}
+
+.navbar-left,
+.navbar-right { 
+    display: flex;
+    align-items: center;
     padding: 0;
     margin: 0;
 }
 
-header nav ul li {
-    margin-left: 30px;
+.navbar-left {
+    gap: 30px; 
 }
 
-header nav ul li a {
-    color: var(--color-text);
-    font-weight: 500;
-    font-size: 0.95rem;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    padding: 5px 0;
-    position: relative;
-}
-header nav ul li a::after {
-    content: '';
-    position: absolute;
-    width: 0;
-    height: 2px;
-    display: block;
-    margin-top: 3px;
-    right: 0;
-    background: var(--color-gold);
-    transition: width 0.3s ease;
-    -webkit-transition: width 0.3s ease;
-}
-header nav ul li a:hover::after {
-    width: 100%;
-    left: 0;
-    background: var(--color-gold);
-}
-header nav ul li a:hover {
-    color: var(--color-gold);
+.navbar-right {
+    gap: 15px; 
 }
 
-.header-auth-actions {
+
+.navbar li { 
+    margin: 0;
+    padding: 0;
     display: flex;
     align-items: center;
-    gap: 12px;
 }
 
-.header-auth-actions .btn {
-    padding: 8px 16px;
-    font-size: 0.85rem;
+.navbar a { 
+    font-size: 15px; 
+    font-weight: 500;
+    color: var(--color-text);
+    transition: all 0.3s ease;
+    border-bottom: 3px solid transparent;
+    text-decoration: none;
     white-space: nowrap;
-    flex-shrink: 0;
+    padding: 5px 0; 
+    text-transform: uppercase; 
+    letter-spacing: 0.5px; 
 }
 
-.header-auth-actions .btn-primary:hover {
-    background-color: var(--color-black);
+.navbar a:hover,
+.navbar a.active { 
     color: var(--color-gold);
-    border-color: var(--color-gold);
+    border-bottom-color: var(--color-gold);
 }
+
+.navbar-right li a.btn {
+    padding: 8px 16px; 
+    font-size: 13px; 
+    border-bottom: none !important; 
+    line-height: 1.5; 
+}
+.navbar-right li a.btn.btn-primary {
+    background-color: var(--color-gold);
+    color: var(--color-black);
+    border: 1px solid var(--color-gold); 
+}
+.navbar-right li a.btn.btn-primary:hover {
+    background-color: var(--color-gold-light);
+    color: var(--color-black);
+    border-color: var(--color-gold-light);
+    box-shadow: 0 2px 4px rgba(var(--color-gold-rgb),0.2); 
+    transform: translateY(-1px);
+}
+.navbar-right li a.btn.btn-secondary {
+    background-color: transparent;
+    color: var(--color-gold);
+    border: 1px solid var(--color-gold);
+}
+.navbar-right li a.btn.btn-secondary:hover {
+    background-color: var(--color-gold);
+    color: var(--color-black);
+    border-color: var(--color-gold);
+    box-shadow: 0 2px 4px rgba(var(--color-gold-rgb),0.1);
+    transform: translateY(-1px);
+}
+
+
+#menu-icon { 
+    font-size: 36px; 
+    color: var(--color-gold);
+    cursor: pointer;
+    display: none;
+    margin-left: 20px; 
+}
+
+/* === END HEADER STYLES === */
 
 .intro {
     background-image: linear-gradient(rgba(var(--color-black-rgb), 0.65), rgba(var(--color-black-rgb), 0.75)), url(../../images/intro-bg.webp);
@@ -270,8 +301,12 @@ header nav ul li a:hover {
     display: flex;
     align-items: center;
     text-align: left;
+    padding-top: var(--header-height-desktop); 
+}
+.intro .container { 
     padding-left: 5%;
 }
+
 
 .intro h1 {
     color: var(--color-text);
@@ -841,39 +876,118 @@ footer p {
     margin: 0;
 }
 
+/* === RESPONSIVE STYLES FOR NEW HEADER (Adapted from home.css) === */
+@media (max-width: 991px) { 
+    header {
+        height: var(--header-height-mobile);
+        padding: 1rem 5%; 
+        gap: 15px; 
+    }
+    .navbar {
+        margin-left: 0; 
+        gap: 20px; 
+    }
+    .intro {
+        padding-top: var(--header-height-mobile);
+    }
+    #menu-icon { display: block; }
+    .logo img {
+        max-width: 140px; /* MODIFIED: Matches home.css mobile */
+        height: auto;     /* MODIFIED: Ensures aspect ratio */
+    }
+
+    .navbar {
+        position: absolute;
+        top: 100%; 
+        right: -100%; 
+        width: 280px; 
+        min-height: calc(100vh - var(--header-height-mobile));
+        background: var(--color-dark-gray); 
+        flex-direction: column;
+        align-items: stretch; 
+        padding: 20px; 
+        transition: right .50s ease;
+        box-shadow: -5px 5px 20px rgba(0, 0, 0, 0.3);
+        justify-content: flex-start;
+        flex-grow: 0;
+        gap: 0; 
+    }
+    .navbar.active {
+        right: 0; 
+    }
+
+    .navbar-left,
+    .navbar-right {
+        flex-direction: column;
+        width: 100%;
+        align-items: stretch; 
+        gap: 0; 
+    }
+    .navbar-left {
+        gap: 0; 
+    }
+    .navbar-right { 
+        margin-top: 20px; 
+        gap: 10px; 
+    }
+
+
+    .navbar li {
+        width: 100%;
+        text-align: left; 
+        margin-bottom: 0; 
+    }
+
+    .navbar a { 
+        display: block;
+        margin: 0 !important; 
+        padding: 12px 15px; 
+        font-size: 16px; 
+        text-align: left;
+        border-bottom: 1px solid var(--border-color-light); 
+    }
+    .navbar-left li:last-child a {
+        border-bottom: 1px solid var(--border-color-light); 
+    }
+    .navbar-right li a.btn { 
+        display: block;
+        width: 100%;
+        text-align: center;
+        padding: 12px 15px; 
+        font-size: 15px; 
+        border-bottom: none !important; 
+    }
+
+     .navbar a:hover,
+     .navbar a.active {
+        color: var(--color-gold);
+        border-bottom-color: var(--border-color-light); 
+        background-color: rgba(var(--color-gold-rgb), 0.05); 
+     }
+     .navbar-left a.active {
+        border-left: 3px solid var(--color-gold); 
+        padding-left: 12px;
+     }
+     .navbar-right li a.btn:hover,
+     .navbar-right li a.btn.active { 
+        background-color: var(--color-gold-light); 
+     }
+}
+
+
 @media (max-width: 1024px) {
     .intro h1 { font-size: 3.2rem; }
     .intro p { max-width: 500px; font-size: 1.1rem; }
-    header .logo img { height: 60px; }
-
-    .navigation-screensize {
-        gap: 15px;
-    }
-    header nav ul li {
-        margin-left: 20px;
-    }
-    .header-auth-actions {
-        gap: 10px;
-    }
-    .header-auth-actions .btn {
-        padding: 7px 12px;
-        font-size: 0.8rem;
-    }
-
-
     .hook-up-content-wrapper { gap: 40px; }
     .hook-up-text-content h3 { font-size: 2em; }
     .plans-grid { max-width: 90%; }
     .gym-owner-benefit-grid { grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; }
 }
 
-@media (max-width: 992px) {
+@media (max-width: 992px) { 
     h1 { font-size: 3rem; }
     h2 { font-size: 2.2rem; }
     section { padding: 60px 0; }
-
-    header .container { padding: 0 20px; }
-    header .logo img { height: 55px; }
 
     .benefit-grid { grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; }
     .benefit-card { height: 400px; }
@@ -914,60 +1028,41 @@ footer p {
     }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 768px) { 
+    header {
+        padding: 1rem 4%; 
+    }
+    .logo img {
+        /* max-width: 140px; already covered by 991px */
+        /* No specific change for 768px in home.css for logo, so it inherits from 991px */
+        height: auto; /* Ensure fixed height isn't reapplied */
+    }
+    #menu-icon {
+        font-size: 32px; 
+    }
+    .navbar {
+        width: 250px; 
+    }
+    .navbar a { 
+        font-size: 15px;
+        padding: 10px 12px;
+    }
+     .navbar-right li a.btn { 
+        font-size: 14px;
+     }
+
+
     h1 { font-size: 2.5rem; }
     h2 { font-size: 2rem; }
-    header .logo img { height: 50px; }
-
-    .navigation-screensize {
-        display: none;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        width: 100%;
-        background-color: var(--color-dark-gray);
-        padding: 20px 0;
-        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.4);
-        flex-direction: column;
-        align-items: center;
-        gap: 0;
-        z-index: 999;
-    }
-    header.mobile-menu-active .navigation-screensize { display: flex; }
-    #burger-btn{ display:block; }
-
-    .navigation-screensize nav { width: 100%; }
-    .navigation-screensize nav ul { flex-direction: column; align-items: center; width: 100%; }
-    .navigation-screensize nav ul li { margin: 0; width: 100%; text-align: center; }
-    .navigation-screensize nav ul li a {
-        padding: 15px 20px;
-        display: block;
-        border-bottom: 1px solid #2a2a2a;
-    }
-    .navigation-screensize nav ul li:last-child a { border-bottom: none; }
-    .navigation-screensize nav ul li a:hover { background-color: #222; }
-    .navigation-screensize nav ul li a::after { display: none; }
-
-    .navigation-screensize .header-auth-actions {
-        flex-direction: column;
-        width: 80%;
-        margin-top: 15px;
-        gap: 10px;
-    }
-
-    .navigation-screensize .header-auth-actions .btn {
-        width: 100%;
-        padding: 12px;
-        font-size: 0.9rem;
-    }
 
     .intro {
         min-height: 75vh;
         text-align: center;
         padding: 40px 20px;
         justify-content: center;
+        padding-top: var(--header-height-mobile); 
     }
-    .intro .container { margin-left: auto; margin-right: auto; }
+    .intro .container { margin-left: auto; margin-right: auto; padding-left: 0; }
     .intro h1 { font-size: 2.8rem; }
     .intro p { margin-left: auto; margin-right: auto; margin-bottom: 2rem; max-width: 90%; }
     .intro .btn-primary { padding: 14px 30px; font-size: 1rem; }
@@ -996,28 +1091,32 @@ footer p {
     .testimonial-item { padding: 25px; }
     .testimonial-item img { margin: 0 auto 15px auto; }
     .testimonial-item h4, .testimonial-item .testimonial-content p { text-align: center; }
-    .testimonial-item .testimonial-content p { border-left: none; padding-left: 0; }
 }
 
-@media (max-width: 576px) {
-    header .logo img { height: 45px; }
+
+@media (max-width: 576px) { /* home.css had 480px for smallest logo, this is 576px */
+    header {
+        padding: 0.8rem 3%; 
+        height: calc(var(--header-height-mobile) - 10px); 
+    }
+    .intro {
+        padding-top: calc(var(--header-height-mobile) - 10px);
+    }
+    .logo img { 
+        max-width: 120px; /* MODIFIED: Matches home.css smallest logo size */
+        height: auto;     /* MODIFIED: Ensure aspect ratio */
+    }
+    #menu-icon {
+        font-size: 30px;
+    }
+    .navbar {
+        width: 220px; 
+    }
+
     h1 { font-size: 2.2rem; }
     h2 { font-size: 1.8rem; }
     section { padding: 50px 0; }
 
-    .navigation-screensize {
-        gap: 10px;
-    }
-    header nav ul li {
-        margin-left: 15px;
-    }
-    .header-auth-actions {
-        gap: 8px;
-    }
-    .header-auth-actions .btn {
-        padding: 6px 10px;
-        font-size: 0.75rem;
-    }
 
     .intro { min-height: 70vh; }
     .intro h1 { font-size: 2.4rem; }
@@ -1065,7 +1164,7 @@ footer p {
         width: 100%;
     }
     .subscribe-form input[type="email"] {
-        border: 1px solid #444;
+        border: 1px solid #444; 
         border-right: 1px solid #444;
     }
     .subscribe-form input[type="email"]:focus {
