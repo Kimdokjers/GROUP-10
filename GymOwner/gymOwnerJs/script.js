@@ -1,384 +1,602 @@
+// adminjs/admin.js
 $(document).ready(function() {
-
-    // --- Element Caching & Initial Checks ---
+    // Cache jQuery Selections
     const $sidebarLinks = $('.sidebar-nav .nav-link');
     const $contentSections = $('.content-section');
     const $pageTitle = $('#page-title');
 
-    // Modals
     const logoutModal = $('#logoutConfirmationModal');
-    const alertModal = $('#alertModal'); // General Alert Modal
-    const addUserModal = $('#add-user-modal');
-    const addCoachModal = $('#add-coach-modal');
+    const alertModal = $('#alertModal');
 
-    // Modal Content Elements
-    const logoutLink = $('#logout-link');
-    const closeLogoutModalButton = $('#closeLogoutModalButton');
-    const cancelLogoutButton = $('#cancelLogoutButton');
-    const okLogoutButton = $('#okLogoutButton');
+    const addUserModal = $('#add-user-modal');
+    const addUserForm = $('#add-user-form');
+    const userTableBody = $('#user-table-body'); // Needed for membership chart
+
+    const addCoachModal = $('#add-coach-modal');
+    const addCoachForm = $('#add-coach-form');
+    const coachTableBody = $('#coach-table-body');
 
     const alertModalTitle = $('#alertModalTitle');
     const alertModalMessage = $('#alertModalMessage');
     const alertModalOkButton = $('#alertModalOkButton');
     const alertModalCloseButton = $('#alertModal .alert-modal-close');
 
-    // Add Forms & Tables
-    const addUserForm = $('#add-user-form');
-    const userTableBody = $('#users-content table tbody');
-    const addCoachForm = $('#add-coach-form');
-    const coachTableBody = $('#staff-content table tbody');
-    const paymentTableBody = $('#payments-content table tbody'); // Added Payment Table Body
+    const headerLogoutLink = $('#header-logout-link');
 
-    // Add Buttons
-    const addUserBtnInSection = $('#users-content').find('.add-btn');
-    const addCoachBtnInSection = $('#staff-content').find('.add-btn');
+    let trendsChartInstance = null, newUserChartInstance = null, membershipDistChartInstance = null; // Renamed for clarity
 
-    // Search/Filter Elements
-    const userSearchInput = $('#user-search-id');
-    const userSearchBtn = $('#user-search-btn');
-    const staffSearchInput = $('#staff-search-id');
-    const staffSearchBtn = $('#staff-search-btn');
-    const paymentSearchPidInput = $('#payment-search-pid'); // New
-    const paymentSearchYearInput = $('#payment-search-year'); // New
-    const paymentFilterBtn = $('#payment-filter-btn'); // New
+    // --- Recent Activity & Stats ---
+    const $recentActivityList = $('#recent-activity-list');
+    function addRecentActivity(message) {
+        const date = new Date();
+        const time = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        const $newActivity = $(`<li>${message} - <small>${time}</small></li>`).hide();
+        $recentActivityList.prepend($newActivity);
+        $newActivity.fadeIn();
+        if ($recentActivityList.children().length > 5) {
+            $recentActivityList.children().last().fadeOut(function() { $(this).remove(); });
+        }
+    }
 
-    // Chart Instances
-    let trendsChartInstance = null, newUserChartInstance = null, membershipTypeChartInstance = null;
+    function calculateTotalRevenue() {
+        let totalRevenue = 0;
+        $('#payment-table-body tr').each(function() {
+            const amountText = $(this).find('td[data-label="Amount"]').text().replace('$', '').replace(',', '');
+            const amount = parseFloat(amountText);
+            if (!isNaN(amount)) {
+                totalRevenue += amount;
+            }
+        });
+        return '$' + totalRevenue.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
 
-    // --- Helper Functions ---
-    function showAlert(message, title = 'Notification') {
+
+    function updateDashboardStats() {
+        $('#total-users-stat').text(userTableBody.find('tr').length);
+        $('#active-members-stat').text(userTableBody.find('tr td[data-label="Status"]:contains("Active")').length);
+        $('#total-revenue-stat').text(calculateTotalRevenue());
+        $('#total-coaches-stat').text(coachTableBody.find('tr').length);
+    }
+
+    // --- Generic ID Generation ---
+    function generateNewId(tableBody, prefix, idDataAttribute = 'id') {
+        let maxIdNum = 0;
+        tableBody.find('tr').each(function() {
+            const id = $(this).data(idDataAttribute);
+            if (id && typeof id === 'string' && id.toUpperCase().startsWith(prefix.toUpperCase())) {
+                const numPart = id.substring(prefix.length);
+                if (/^\d+$/.test(numPart)) {
+                    const num = parseInt(numPart, 10);
+                    if (!isNaN(num) && num > maxIdNum) {
+                        maxIdNum = num;
+                    }
+                }
+            }
+        });
+        const newIdNum = maxIdNum + 1;
+        return prefix.toUpperCase() + String(newIdNum).padStart(3, '0');
+    }
+
+    // --- Form Field Definitions ---
+    const userFormFields = [
+        { input: $('#user-first-name'), errorId: 'user-first-name-error', name: 'First Name', required: true },
+        { input: $('#user-last-name'), errorId: 'user-last-name-error', name: 'Last Name', required: true },
+        { input: $('#user-suffix'), errorId: 'user-suffix-error', name: 'Suffix', required: false },
+        { input: $('#user-email'), errorId: 'user-email-error', name: 'Email', required: true, isEmail: true },
+        { input: $('#user-membership'), errorId: 'user-membership-error', name: 'Membership', required: true },
+        { input: $('#user-status'), errorId: 'user-status-error', name: 'Status', required: true },
+    ];
+    const coachFormFields = [
+        { input: $('#coach-first-name'), errorId: 'coach-first-name-error', name: 'First Name', required: true },
+        { input: $('#coach-last-name'), errorId: 'coach-last-name-error', name: 'Last Name', required: true },
+        { input: $('#coach-suffix'), errorId: 'coach-suffix-error', name: 'Suffix', required: false },
+        { input: $('#coach-email'), errorId: 'coach-email-error', name: 'Email', required: true, isEmail: true },
+        { input: $('#coach-role'), errorId: 'coach-role-error', name: 'Role', required: true },
+    ];
+
+    // --- Generic Form Reset ---
+    function resetForm(formElement, fieldsToValidate) {
+        if (formElement && formElement.length) {
+            formElement[0].reset();
+            fieldsToValidate.forEach(field => {
+                field.input.removeClass('is-invalid').attr('aria-invalid', 'false');
+                $('#' + field.errorId).text('').hide();
+                field.input.attr('aria-describedby', field.errorId);
+            });
+        }
+    }
+
+    // --- Generic Form Validation ---
+    function validateForm(fieldsToValidate) {
+        let isFormValid = true;
+        let firstInvalidField = null;
+
+        fieldsToValidate.forEach(field => {
+            const $input = field.input;
+            const $errorDiv = $('#' + field.errorId);
+            const value = $input.val() ? $input.val().trim() : "";
+            let errorMessage = '';
+
+            if (field.required && value === '') {
+                errorMessage = `${field.name} is required.`;
+            } else if (value !== '' && field.isEmail) {
+                const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailPattern.test(value)) {
+                    errorMessage = `Please enter a valid ${field.name.toLowerCase()} address.`;
+                }
+            } else if (value !== '' && field.isNumber) {
+                 const numValue = parseFloat(value);
+                if (isNaN(numValue)) {
+                    errorMessage = `${field.name} must be a number.`;
+                } else if (field.min !== undefined && numValue < field.min) {
+                    errorMessage = `${field.name} must be at least ${field.min}.`;
+                }
+            }
+
+            if (errorMessage) {
+                $input.addClass('is-invalid').attr('aria-invalid', 'true');
+                $errorDiv.text(errorMessage).show();
+                isFormValid = false;
+                if (!firstInvalidField) firstInvalidField = $input;
+            } else {
+                $input.removeClass('is-invalid').attr('aria-invalid', 'false');
+                $errorDiv.text('').hide();
+            }
+        });
+
+        if (firstInvalidField) firstInvalidField.focus();
+        return isFormValid;
+    }
+
+    // --- Alert Modal Functions ---
+    function showAlert(message, title = 'Notification', isConfirmation = false) {
         if (!alertModal.length || !alertModalMessage.length || !alertModalTitle.length) {
-            console.error("Alert modal elements not found! Fallback to native alert.");
-            alert(message); return;
+            console.error("Alert modal elements not found! Fallback to native alert/confirm.");
+            if (isConfirmation) return confirm(message);
+            else alert(message);
+            return;
         }
         alertModalTitle.text(title);
         alertModalMessage.text(message);
+        alertModalOkButton.off('click').on('click', hideAlert);
         $('.modal.show').not(alertModal).removeClass('show');
         alertModal.addClass('show');
     }
     function hideAlert() { if (alertModal.length) alertModal.removeClass('show'); }
-    function showModal($modal) { /* ... (same as before) ... */
+
+    // --- Modal Show/Hide Functions ---
+     function showModal($modal) {
         if ($modal && $modal.length) {
             $('.modal.show').not($modal).removeClass('show');
             $modal.addClass('show');
-            $modal.find('form input:not([type="hidden"])').first().focus();
+            $modal.find('form input:not([readonly]):not([disabled]):not([type="hidden"]), form select:not([readonly]):not([disabled]), form button:not([disabled])').first().focus();
         } else {
-            console.error("Modal element not found to show.");
+            console.error("Modal element not found to show:", $modal);
             showAlert("Error: Could not open the requested window.", "UI Error");
         }
     }
-    function hideModal($modal) { /* ... (same as before) ... */
-        if ($modal && $modal.length) $modal.removeClass('show');
-    }
-    function hideAndResetFormModal($modal, $form) { /* ... (same as before) ... */
+    function hideModal($modal) { if ($modal && $modal.length) $modal.removeClass('show'); }
+
+    function hideAndResetFormModal($modal, formElement, fieldsToValidate) {
         hideModal($modal);
-        if ($form && $form.length) {
-            try { $form[0].reset(); }
-            catch (e) { console.error("Error resetting form:", $modal.attr('id'), e); }
-        }
-    }
-    function applyDataLabels($rows) { /* ... (same as before) ... */
-        $rows.each(function() {
-            var $row = $(this);
-            var $table = $row.closest('table');
-            var $headerCells = $table.find('thead th');
-            if ($headerCells.length === 0) return;
-
-            $row.find('td').each(function(index) {
-                if ($headerCells.eq(index).length) {
-                    $(this).attr('data-label', $headerCells.eq(index).text());
-                }
-            });
-            if (!$row.attr('data-id') && $row.find('td').first().length) {
-               $row.attr('data-id', $row.find('td').first().text().trim());
-            }
-        });
+        resetForm(formElement, fieldsToValidate);
     }
 
-
-    // --- Event Handlers ---
-
-    // General Alert Modal Closing
+    // --- Event Listeners for Modals, Navigation, etc. ---
     if (alertModalOkButton.length) alertModalOkButton.on('click', hideAlert);
     if (alertModalCloseButton.length) alertModalCloseButton.on('click', hideAlert);
-    if (alertModal.length) alertModal.on('click', (event) => { if ($(event.target).is(alertModal)) hideAlert(); });
+    alertModal.on('click', function(event) { if ($(event.target).is(alertModal)) hideAlert(); });
 
-    // Logout Modal Handling
-    if (logoutLink.length && logoutModal.length) { /* ... (same as before) ... */
-        logoutLink.on('click', function(e) { e.preventDefault(); showModal(logoutModal); });
-        if (cancelLogoutButton.length) cancelLogoutButton.on('click', () => hideModal(logoutModal));
-        if (closeLogoutModalButton.length) closeLogoutModalButton.on('click', () => hideModal(logoutModal));
+    if (headerLogoutLink.length && logoutModal.length) {
+        headerLogoutLink.on('click', function(e) {
+            e.preventDefault();
+            showModal(logoutModal);
+        });
+        $('#cancelLogoutButton').on('click', () => hideModal(logoutModal));
+        $('#closeLogoutModalButton').on('click', () => hideModal(logoutModal));
         logoutModal.on('click', (event) => { if ($(event.target).is(logoutModal)) hideModal(logoutModal); });
-        if (okLogoutButton.length) okLogoutButton.on('click', function() {
-            const originalHref = logoutLink.attr('href'); hideModal(logoutModal);
-            if (originalHref) { window.location.href = originalHref; }
-            else { showAlert("Error: Logout destination missing.", "Logout Error"); }
+        $('#okLogoutButton').on('click', function() {
+            hideModal(logoutModal);
+            addRecentActivity("Admin logged out.");
+             setTimeout(() => {
+                window.location.href = headerLogoutLink.attr('href');
+             }, 100);
         });
-    } else { console.warn("Logout elements missing."); }
-
-    // Sidebar Navigation
-    if ($sidebarLinks.length && $contentSections.length && $pageTitle.length) { /* ... (same as before) ... */
-        $sidebarLinks.on('click', function(e) {
-            const $this = $(this); if ($this.is('#logout-link')) return;
-            e.preventDefault(); const targetId = $this.data('target'); const $targetSection = $('#' + targetId);
-            if (targetId && $targetSection.length) {
-                if (!$this.hasClass('active')) {
-                    $sidebarLinks.removeClass('active'); $this.addClass('active');
-                    $contentSections.removeClass('active'); $targetSection.addClass('active');
-                    const titleText = $this.find('.nav-text').text().trim();
-                    $pageTitle.text(titleText || 'Gym Owner Dashboard');
-                    if (targetId === 'analytics-content') { setTimeout(initializeAnalyticsCharts, 50); }
-                }
-            } else {
-                const linkText = $this.find('.nav-text').text().trim();
-                showAlert(`Content for "${linkText}" could not be found.`, "Navigation Error");
-            }
-        });
-    } else { console.error("Core navigation elements missing!"); }
-
-    // --- "Add" Button Click Handlers ---
-    function setupAddButtonHandler(buttonSelector, modalElement) { /* ... (same as before) ... */
-        if (buttonSelector.length && modalElement.length) {
-             buttonSelector.off('click').on('click', function() { showModal(modalElement); });
-        } else {
-             console.warn(`Add button or modal not found for selector targeting ${modalElement.attr('id') || 'unknown modal'}.`);
-        }
+    } else {
+        console.warn("Header logout link or logout modal not found.");
     }
-    setupAddButtonHandler(addUserBtnInSection, addUserModal);
-    setupAddButtonHandler(addCoachBtnInSection, addCoachModal);
 
-    // Add/Edit Modal Close Buttons
-    $('.modal .close-btn').not('.alert-modal-close, #closeLogoutModalButton').on('click', function() { /* ... (same as before) ... */
-        const $modal = $(this).closest('.modal'); const $form = $modal.find('form');
-        hideAndResetFormModal($modal, $form);
+    $sidebarLinks.on('click', function(e) {
+        e.preventDefault();
+        const $this = $(this);
+        const targetId = $this.data('target');
+        const $targetSection = $('#' + targetId);
+
+        if (targetId && $targetSection.length) {
+            if (!$this.hasClass('active')) {
+                $sidebarLinks.removeClass('active');
+                $this.addClass('active');
+                $contentSections.removeClass('active');
+                $targetSection.addClass('active');
+                $pageTitle.text($this.find('.nav-text').text().trim() || 'Admin Dashboard');
+                if (targetId === 'analytics-content') {
+                    setTimeout(initializeAnalyticsCharts, 250);
+                }
+            }
+        } else {
+            console.error(`Navigation target #${targetId} not found.`);
+            showAlert(`Content for "${$this.find('.nav-text').text().trim()}" could not be found.`, "Navigation Error");
+        }
+    });
+
+    // --- Setup Add Buttons ---
+    $('.add-btn[data-modal-target="add-user-modal"]').on('click', function() {
+        resetForm(addUserForm, userFormFields);
+        $('#user-id').val(generateNewId(userTableBody, 'USR'));
+        showModal(addUserModal);
+    });
+    $('.add-btn[data-modal-target="add-coach-modal"]').on('click', function() {
+        resetForm(addCoachForm, coachFormFields);
+        $('#coach-id').val(generateNewId(coachTableBody, 'STF'));
+        showModal(addCoachModal);
+    });
+
+    // --- Modal Close Buttons ---
+    $('.modal .close-btn').not('.alert-modal-close, #closeLogoutModalButton').on('click', function() {
+        const $modal = $(this).closest('.modal');
+        if ($modal.is(addUserModal)) hideAndResetFormModal($modal, addUserForm, userFormFields);
+        else if ($modal.is(addCoachModal)) hideAndResetFormModal($modal, addCoachForm, coachFormFields);
+        else hideModal($modal);
     });
 
     // --- Form Submissions ---
-    // Add User Form
-    if (addUserForm.length && userTableBody.length) { /* ... (same as before, uses showAlert) ... */
-        addUserForm.on('submit', function(e) {
-            e.preventDefault();
-            if (this.checkValidity() === false) { showAlert('Please fill out all required user fields correctly.', 'Validation Error'); $(this).find(':invalid').first().focus(); return; }
-            var userId = $('#member-id').val().trim(); var userName = $('#member-name').val().trim(); var userEmail = $('#email').val().trim(); var membership = $('#membership').val().trim(); var status = $('#status').val().trim();
-            if (userTableBody.find(`tr[data-id="${userId}"]`).length > 0) { showAlert(`User with ID "${userId}" already exists.`, 'Duplicate Entry'); return; }
-            var newRowHtml = `<tr data-id="${userId}"><td data-label="ID">${userId}</td><td data-label="Name">${userName}</td><td data-label="Email">${userEmail}</td><td data-label="Membership">${membership}</td><td data-label="Status">${status}</td><td data-label="Actions"><button class="btn btn-sm btn-danger">Delete</button></td></tr>`;
-            const $newRow = $(newRowHtml); userTableBody.append($newRow); applyDataLabels($newRow);
-            showAlert(`User "${userName}" added successfully!`, 'Success');
-            hideAndResetFormModal(addUserModal, addUserForm);
-        });
-    }
-    // Add Coach Form
-    if (addCoachForm.length && coachTableBody.length) { /* ... (same as before, uses showAlert) ... */
-        addCoachForm.on('submit', function(e) {
-            e.preventDefault();
-            if (this.checkValidity() === false) { showAlert('Please fill out all required staff fields correctly.', 'Validation Error'); $(this).find(':invalid').first().focus(); return; }
-            var coachId = $('#coach-id').val().trim(); var coachName = $('#coach-name').val().trim(); var coachRole = $('#coach-role').val().trim(); var coachEmail = $('#coach-email').val().trim();
-            if (coachTableBody.find(`tr[data-id="${coachId}"]`).length > 0) { showAlert(`Staff with ID "${coachId}" already exists.`, 'Duplicate Entry'); return; }
-            var newRowHtml = `<tr data-id="${coachId}"><td data-label="ID">${coachId}</td><td data-label="Name">${coachName}</td><td data-label="Role">${coachRole}</td><td data-label="Email">${coachEmail}</td><td data-label="Actions"><button class="btn btn-sm btn-danger">Delete</button></td></tr>`;
-            const $newRow = $(newRowHtml); coachTableBody.append($newRow); applyDataLabels($newRow);
-            showAlert(`Staff "${coachName}" added successfully!`, 'Success');
-            hideAndResetFormModal(addCoachModal, addCoachForm);
-        });
-    }
+    addUserForm.on('submit', function(e) {
+        e.preventDefault();
+        if (!validateForm(userFormFields)) return;
+        const id = $('#user-id').val();
+        const firstName = $('#user-first-name').val().trim();
+        const lastName = $('#user-last-name').val().trim();
+        const suffix = $('#user-suffix').val().trim();
+        const email = $('#user-email').val().trim();
+        const membership = $('#user-membership').val();
+        const status = $('#user-status').val();
 
-    // Window Click for Modal Closing (Background Click)
-    $(window).on('click', function(event) { /* ... (same as before) ... */
+        const newRowHtml = `<tr data-id="${id}">
+            <td data-label="ID">${id}</td>
+            <td data-label="First Name">${firstName}</td>
+            <td data-label="Last Name">${lastName}</td>
+            <td data-label="Suffix">${suffix}</td>
+            <td data-label="Email">${email}</td>
+            <td data-label="Membership">${membership}</td>
+            <td data-label="Status">${status}</td>
+            <td data-label="Actions"><button class="btn btn-sm btn-danger">Delete</button></td>
+        </tr>`;
+        userTableBody.append(newRowHtml);
+        addResponsiveTableHeaders();
+        showAlert(`User "${firstName} ${lastName}" added successfully!`, 'Success');
+        addRecentActivity(`New user added: ${firstName} ${lastName} (${id})`);
+        updateDashboardStats();
+        if ($('#analytics-content').hasClass('active')) { // If analytics is visible, update charts
+            initializeAnalyticsCharts();
+        }
+        hideAndResetFormModal(addUserModal, addUserForm, userFormFields);
+    });
+
+    addCoachForm.on('submit', function(e) {
+        e.preventDefault();
+        if (!validateForm(coachFormFields)) return;
+        const id = $('#coach-id').val();
+        const firstName = $('#coach-first-name').val().trim();
+        const lastName = $('#coach-last-name').val().trim();
+        const suffix = $('#coach-suffix').val().trim();
+        const email = $('#coach-email').val().trim();
+        const role = $('#coach-role').val();
+
+        const newRowHtml = `<tr data-id="${id}">
+            <td data-label="ID">${id}</td>
+            <td data-label="First Name">${firstName}</td>
+            <td data-label="Last Name">${lastName}</td>
+            <td data-label="Suffix">${suffix}</td>
+            <td data-label="Role">${role}</td>
+            <td data-label="Email">${email}</td>
+            <td data-label="Actions"><button class="btn btn-sm btn-danger">Delete</button></td>
+        </tr>`;
+        coachTableBody.append(newRowHtml);
+        addResponsiveTableHeaders();
+        showAlert(`Staff "${firstName} ${lastName}" added successfully!`, 'Success');
+        addRecentActivity(`New staff added: ${firstName} ${lastName} (${id})`);
+        updateDashboardStats();
+        hideAndResetFormModal(addCoachModal, addCoachForm, coachFormFields);
+    });
+
+    // --- Click Outside Modal ---
+    $(window).on('click', function(event) {
         const $target = $(event.target);
-        if ($target.is(addUserModal)) hideAndResetFormModal(addUserModal, addUserForm);
-        else if ($target.is(addCoachModal)) hideAndResetFormModal(addCoachModal, addCoachForm);
+        if ($target.is(addUserModal)) hideAndResetFormModal(addUserModal, addUserForm, userFormFields);
+        else if ($target.is(addCoachModal)) hideAndResetFormModal(addCoachModal, addCoachForm, coachFormFields);
         else if ($target.is(logoutModal)) hideModal(logoutModal);
         else if ($target.is(alertModal)) hideAlert();
     });
 
-    // --- Table & Activity Action Buttons (Using Event Delegation) ---
-    // Delete Button (User or Staff)
-    $('.content-area').on('click', '.btn-danger', function() { /* ... (same as before, uses showAlert) ... */
-        var $row = $(this).closest('tr'); var itemName = $row.find('td[data-label="Name"]').text().trim() || 'this item';
-        showAlert(`Simulating deletion of ${itemName}...`);
-        setTimeout(() => { $row.fadeOut(300, function() { $(this).remove(); }); showAlert(`${itemName} deleted (Simulation)!`, 'Deletion Complete'); }, 800);
-    });
-    // Refund Button (Payments Table)
-    $('.content-area').on('click', '#payments-content .btn-info', function() { /* ... (same as before, uses showAlert) ... */
-        var $row = $(this).closest('tr'); var userName = $row.find('td[data-label="User Name"]').text().trim() || 'selected payment';
-        showAlert(`Refund action triggered for ${userName} (Simulation).`, 'Payment Action');
-    });
-    // Accept Payment Button (Payments Table)
-    $('.content-area').on('click', '#payments-content .accept-payment-btn', function() { /* ... (same as before, uses showAlert) ... */
-        var $button = $(this); var $row = $button.closest('tr'); var paymentId = $row.data('id'); var userName = $button.data('user-name') || 'selected payment';
-        showAlert(`Accepting payment for ${userName} (Simulation)...`, 'Payment Action');
-        $row.find('td[data-label="Status"]').text('Completed').css('color', 'var(--success)'); $button.replaceWith('<span class="text-muted">Accepted</span>');
-        $(`.recent-activity .accept-payment-btn[data-payment-id="${paymentId}"]`).text('Accepted').prop('disabled', true).removeClass('btn-success').addClass('btn-secondary disabled');
-    });
-    // Accept Payment Button (Recent Activity)
-    $('.recent-activity').on('click', '.accept-payment-btn:not(:disabled)', function() { /* ... (same as before, uses showAlert) ... */
-        var $button = $(this); var paymentId = $button.data('payment-id'); var userName = $button.data('user-name') || 'selected payment';
-        showAlert(`Payment ${paymentId} for ${userName} accepted from Recent Activity (Simulation)!`, 'Payment Accepted');
-        $button.text('Accepted').prop('disabled', true).removeClass('btn-success').addClass('btn-secondary disabled');
-        const $paymentRow = $(`#payments-content table tbody tr[data-id="${paymentId}"]`);
-        if ($paymentRow.length && $paymentRow.find('td[data-label="Status"]').text().trim() === 'Pending') {
-            $paymentRow.find('td[data-label="Status"]').text('Completed').css('color', 'var(--success)');
-            $paymentRow.find('.accept-payment-btn').replaceWith('<span class="text-muted">Accepted</span>');
+    // --- Table Action Handlers ---
+    $('.content-area').on('click', '.btn-danger', function() {
+        var $row = $(this).closest('tr');
+        var id = $row.data('id');
+        var nameCell = $row.find('td[data-label="Name"], td[data-label="First Name"]').first();
+        var itemName = nameCell.text().trim() || id || 'this item';
+
+        if (nameCell.data('label') === "First Name") {
+            const lastName = $row.find('td[data-label="Last Name"]').text().trim();
+            const suffix = $row.find('td[data-label="Suffix"]').text().trim();
+            itemName = `${itemName} ${lastName}${suffix ? ' ' + suffix : ''}`;
         }
+
+        showAlert(`Are you sure you want to delete ${itemName.trim()}? This action cannot be undone.`, 'Confirm Deletion', true);
+
+        alertModalOkButton.off('click').on('click', function proceedDelete() {
+            hideAlert();
+            const isUserRow = $row.closest('#user-table-body').length > 0; // Check if it's a user row
+            $row.fadeOut(400, function() {
+                 $(this).remove();
+                 addResponsiveTableHeaders();
+                 updateDashboardStats();
+                 if (isUserRow && $('#analytics-content').hasClass('active')) { // If user deleted and analytics visible
+                     initializeAnalyticsCharts();
+                 }
+                 addRecentActivity(`${itemName.trim()} (ID: ${id}) deleted.`);
+                 showAlert(`${itemName.trim()} deleted!`, 'Deletion Complete');
+            });
+             alertModalOkButton.off('click', proceedDelete).on('click', hideAlert);
+        });
+         alertModalCloseButton.off('click').on('click', function cancelDelete() {
+              hideAlert();
+              alertModalOkButton.off('click').on('click', hideAlert);
+              alertModalCloseButton.off('click', cancelDelete).on('click', hideAlert);
+         });
+         alertModal.off('click').on('click', function(event) {
+             if ($(event.target).is(alertModal)) {
+                  hideAlert();
+                  alertModalOkButton.off('click').on('click', hideAlert);
+                  alertModalCloseButton.off('click').on('click', hideAlert);
+                  alertModal.off('click').on('click', function(e) {if ($(e.target).is(alertModal)) hideAlert();});
+             }
+         });
     });
 
-    // --- Search/Filter Functionality ---
+    $('.content-area').on('click', '.btn-info', function() {
+         var $row = $(this).closest('tr');
+         var paymentId = $row.data('id') || $row.find('td[data-label="Payment ID"]').text();
+         showAlert(`Initiating refund process for Payment ID: ${paymentId}.`, 'Refund Action');
+    });
+    $('.content-area').on('click', '.btn-success', function() {
+         var $button = $(this);
+         var $row = $button.closest('tr');
+         var paymentId = $row.data('id') || $row.find('td[data-label="Payment ID"]').text();
+         showAlert(`Marking payment ${paymentId} as Paid...`, 'Payment Action');
+         $row.find('td[data-label="Status"]').text('Completed').css('color', 'var(--success)');
+         $button.remove();
+         addRecentActivity(`Payment ${paymentId} marked as Paid.`);
+         updateDashboardStats();
+    });
 
-    // Generic Table Filter (ID Column)
-     function filterTableById(inputId, tableBodySelector) {
-        var searchTerm = $(inputId).val().toLowerCase().trim();
-        var $tableBody = $(tableBodySelector);
-        var $rows = $tableBody.find('tr');
-        var $noResultsRow = $tableBody.find('.no-results-row');
-        var matchFound = false;
+    // --- Initialize Analytics Charts ---
+    function initializeAnalyticsCharts() {
+        if (typeof Chart === 'undefined') { console.error("Chart.js is not loaded."); return; }
 
-        if ($noResultsRow.length > 0) $noResultsRow.hide();
+        if (trendsChartInstance) trendsChartInstance.destroy();
+        if (newUserChartInstance) newUserChartInstance.destroy();
+        if (membershipDistChartInstance) membershipDistChartInstance.destroy(); // Use new name
+        trendsChartInstance = null; newUserChartInstance = null; membershipDistChartInstance = null;
 
-        $rows.each(function() {
-            var $row = $(this);
-            if ($row.hasClass('no-results-row')) return;
-            // Assumes first column is ID
-            var cellText = $row.find('td:first-child').text().toLowerCase();
-            if (cellText.includes(searchTerm)) {
-                $row.show();
-                matchFound = true;
-            } else {
-                $row.hide();
-            }
-        });
+        const trendsCtx = document.getElementById('trendsChart')?.getContext('2d');
+        const newUserCtx = document.getElementById('newUserChart')?.getContext('2d');
+        const membershipDistCtx = document.getElementById('gymPopularityChart')?.getContext('2d'); // Canvas ID remains gymPopularityChart
 
-        if (!matchFound && searchTerm !== '') {
-            if ($noResultsRow.length === 0) {
-                var colspan = $tableBody.closest('table').find('thead th').length;
-                 $tableBody.append('<tr class="no-results-row"><td colspan="' + colspan + '" style="text-align:center; padding: 20px; color: #888;">No matching IDs found.</td></tr>');
-            } else {
-                $noResultsRow.show();
-            }
-        } else if ($noResultsRow.length > 0) {
-             $noResultsRow.hide();
+        if (!trendsCtx || !newUserCtx || !membershipDistCtx) {
+             console.warn("One or more chart canvas elements not found. Analytics may be incomplete.");
+             if (!$('#analytics-content').hasClass('active')) {
+                console.warn("Analytics section is not active. Charts might not initialize correctly if canvas elements are hidden.");
+             }
+             return;
         }
-    }
 
-    // User Search
-    if(userSearchBtn.length && userSearchInput.length) {
-        userSearchBtn.on('click', () => filterTableById('#user-search-id', '#users-content table tbody'));
-        userSearchInput.on('keyup', (e) => { // Trigger on Enter or clear
-            if (e.key === 'Enter' || userSearchInput.val().trim() === '') {
-                filterTableById('#user-search-id', '#users-content table tbody');
+        const rootStyles = getComputedStyle(document.documentElement);
+        const goldColor = rootStyles.getPropertyValue('--main-color').trim() || '#FFD700';
+        const goldLightColor = rootStyles.getPropertyValue('--gold-light').trim() || '#FFEC8B';
+        const textColor = rootStyles.getPropertyValue('--primary-text').trim() || '#ecf0f1';
+        const gridBorderColor = rootStyles.getPropertyValue('--border-color').trim() || '#444';
+        const doughnutBorderColor = rootStyles.getPropertyValue('--dark-gray').trim() || '#333333';
+        const fontFamily = 'Poppins, sans-serif';
+
+        const commonChartOptions = (type = 'bar') => ({
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: { beginAtZero: true, grid: { color: gridBorderColor }, ticks: { color: textColor, font: { family: fontFamily } } },
+                x: { grid: { display: type === 'line', color: gridBorderColor }, ticks: { color: textColor, font: { family: fontFamily } } }
+            },
+            plugins: {
+                legend: { labels: { color: textColor, font: { family: fontFamily } } },
+                tooltip: {
+                    backgroundColor: 'rgba(0, 0, 0, 0.8)', titleColor: goldColor, bodyColor: textColor,
+                    displayColors: false, bodyFont: { family: fontFamily }, titleFont: { family: fontFamily }
+                }
+            },
+            animation: { duration: 800, easing: 'easeInOutQuad' }
+        });
+        const doughnutOptions = {
+            responsive: true, maintainAspectRatio: false, cutout: '60%',
+            plugins: {
+                legend: { position: 'bottom', labels: { color: textColor, font: { family: fontFamily } } },
+                tooltip: {
+                     backgroundColor: 'rgba(0,0,0,0.8)', titleColor: goldColor, bodyColor: textColor,
+                     displayColors: true,
+                      callbacks: { // UPDATED CALLBACK FOR COUNTS
+                        label: function(context) {
+                            let label = context.label || '';
+                            if (label) { label += ': '; }
+                            if (context.parsed !== null) {
+                                const total = context.chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
+                                const percentage = total > 0 ? ((context.parsed / total) * 100).toFixed(1) + '%' : '0%';
+                                label += `${context.formattedValue} (${percentage})`; // Shows count and percentage
+                            }
+                            return label;
+                        }
+                    },
+                     bodyFont: { family: fontFamily }, titleFont: { family: fontFamily }
+                }
+            },
+            animation: { animateRotate: true, animateScale: true, duration: 1000 }
+        };
+
+        trendsChartInstance = new Chart(trendsCtx, {
+            type: 'line',
+            data: {
+                labels: ['Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug'],
+                datasets: [{
+                    label: 'Premium Members',
+                    data: [45, 50, 55, 65, 70, 75],
+                    borderColor: goldColor, backgroundColor: 'rgba(255, 215, 0, 0.2)', tension: 0.3, fill: true
+                }, {
+                    label: 'Basic Members',
+                    data: [80, 81, 85, 90, 98, 105],
+                    borderColor: goldLightColor, backgroundColor: 'rgba(255, 236, 139, 0.2)', tension: 0.3, fill: true
+                }]
+            },
+            options: commonChartOptions('line')
+        });
+
+        newUserChartInstance = new Chart(newUserCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug'],
+                datasets: [{
+                    label: 'New Users',
+                    data: [30, 25, 40, 35, 50, 48],
+                    backgroundColor: goldColor, borderColor: goldColor, borderWidth: 1, borderRadius: 4
+                }]
+            },
+            options: commonChartOptions('bar')
+        });
+
+        // Membership Distribution Chart (Doughnut) - NEW DATA SOURCE
+        let premiumMembersCount = 0;
+        let basicMembersCount = 0;
+        userTableBody.find('tr').each(function() {
+            const membershipType = $(this).find('td[data-label="Membership"]').text().trim();
+            if (membershipType === 'Premium') {
+                premiumMembersCount++;
+            } else if (membershipType === 'Basic') {
+                basicMembersCount++;
             }
         });
-    }
 
-    // Staff Search
-    if(staffSearchBtn.length && staffSearchInput.length) {
-        staffSearchBtn.on('click', () => filterTableById('#staff-search-id', '#staff-content table tbody'));
-        staffSearchInput.on('keyup', (e) => { // Trigger on Enter or clear
-             if (e.key === 'Enter' || staffSearchInput.val().trim() === '') {
-                filterTableById('#staff-search-id', '#staff-content table tbody');
-            }
-        });
-    }
+        const membershipTypesLabels = ['Premium Members', 'Basic Members'];
+        const membershipTypesData = [premiumMembersCount, basicMembersCount];
 
-    // --- NEW: Payment Filter Logic ---
-    function filterPaymentTable() {
-        const pidSearchTerm = paymentSearchPidInput.val().toLowerCase().trim();
-        const yearSearchTerm = paymentSearchYearInput.val().trim(); // Get year as string
-        var $rows = paymentTableBody.find('tr');
-        var $noResultsRow = paymentTableBody.find('.no-results-row');
-        var matchFound = false;
-
-        if ($noResultsRow.length > 0) $noResultsRow.hide();
-
-        $rows.each(function() {
-            var $row = $(this);
-            if ($row.hasClass('no-results-row')) return; // Skip no results row
-
-            const paymentId = $row.find('td[data-label="Payment ID"]').text().toLowerCase();
-            const dateText = $row.find('td[data-label="Date"]').text(); // e.g., "2023-10-26"
-            const paymentYear = dateText.substring(0, 4); // Extract year part
-
-            let pidMatch = true; // Assume match initially
-            let yearMatch = true; // Assume match initially
-
-            // Check Payment ID if search term exists
-            if (pidSearchTerm !== '' && !paymentId.includes(pidSearchTerm)) {
-                pidMatch = false;
-            }
-
-            // Check Year if search term exists and is a valid 4-digit year
-            if (yearSearchTerm !== '' && /^\d{4}$/.test(yearSearchTerm) && paymentYear !== yearSearchTerm) {
-                yearMatch = false;
-            } else if (yearSearchTerm !== '' && !/^\d{4}$/.test(yearSearchTerm)) {
-                // If year input is invalid but not empty, treat as no match
-                yearMatch = false;
-            }
-
-
-            // Show row only if *both* conditions (if active) are met
-            if (pidMatch && yearMatch) {
-                $row.show();
-                matchFound = true;
-            } else {
-                $row.hide();
-            }
-        });
-
-        // Handle "No results" message for payments
-        if (!matchFound && (pidSearchTerm !== '' || yearSearchTerm !== '')) {
-             if ($noResultsRow.length === 0) {
-                var colspan = paymentTableBody.closest('table').find('thead th').length;
-                 paymentTableBody.append('<tr class="no-results-row"><td colspan="' + colspan + '" style="text-align:center; padding: 20px; color: #888;">No matching payments found.</td></tr>');
-            } else {
-                $noResultsRow.show();
-            }
-        } else if ($noResultsRow.length > 0) {
-             $noResultsRow.hide();
+        if (premiumMembersCount === 0 && basicMembersCount === 0) { // Handle no members
+             membershipTypesLabels.push("No Member Data");
+             membershipTypesData.push(1); // Placeholder to render chart
         }
-    }
 
-    // Payment Filter Event Listener
-    if(paymentFilterBtn.length) {
-        paymentFilterBtn.on('click', filterPaymentTable);
-        // Optional: Trigger filter on Enter key press in either input
-        paymentSearchPidInput.add(paymentSearchYearInput).on('keyup', function(e) {
-            if (e.key === 'Enter') {
-                filterPaymentTable();
-            }
+        membershipDistChartInstance = new Chart(membershipDistCtx, { // Use new instance name
+            type: 'doughnut',
+            data: {
+                labels: membershipTypesLabels,
+                datasets: [{
+                    label: 'Membership Types', // Updated dataset label
+                    data: membershipTypesData,
+                    backgroundColor: [goldColor, goldLightColor, '#E6BE8A'], // Adjusted colors for potentially 2 types
+                    borderColor: doughnutBorderColor,
+                    borderWidth: 2,
+                    hoverOffset: 8
+                }]
+            },
+            options: doughnutOptions
         });
     }
 
 
-    // --- Analytics Charts ---
-    function initializeAnalyticsCharts() { /* ... (same chart code as before) ... */
-         if (typeof Chart === 'undefined') { console.error("Chart.js is not loaded."); return; }
-         if (trendsChartInstance) trendsChartInstance.destroy(); if (newUserChartInstance) newUserChartInstance.destroy(); if (membershipTypeChartInstance) membershipTypeChartInstance.destroy();
-         trendsChartInstance = null; newUserChartInstance = null; membershipTypeChartInstance = null;
-         const trendsCtx = document.getElementById('trendsChart')?.getContext('2d'); const newUserCtx = document.getElementById('newUserChart')?.getContext('2d'); const membershipTypeCtx = document.getElementById('membershipTypeChart')?.getContext('2d');
-         if (!trendsCtx && !newUserCtx && !membershipTypeCtx) { console.warn("No chart canvas elements found."); return; }
-        try {
-            const goldColor = getComputedStyle(document.documentElement).getPropertyValue('--gold', '#f0c44c').trim(); const goldLightColor = getComputedStyle(document.documentElement).getPropertyValue('--gold-light', '#febd14').trim(); const goldLighterColor = getComputedStyle(document.documentElement).getPropertyValue('--gold-lighter', '#fece43').trim(); const goldLightestColor = getComputedStyle(document.documentElement).getPropertyValue('--gold-lightest', '#feda75').trim(); const borderColor = getComputedStyle(document.documentElement).getPropertyValue('--border-color', '#555').trim(); const textColor = getComputedStyle(document.documentElement).getPropertyValue('--primary-text', '#ecf0f1').trim(); const darkGrayColor = getComputedStyle(document.documentElement).getPropertyValue('--dark-gray', '#333').trim(); const fontFamily = 'Poppins, sans-serif';
-            const commonChartOptions = { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, grid: { color: borderColor }, ticks: { color: textColor, padding: 10, font: { family: fontFamily} } }, x: { grid: { display: false }, ticks: { color: textColor, padding: 10, font: { family: fontFamily} } } }, plugins: { legend: { labels: { color: textColor, padding: 20, font: { family: fontFamily} } }, tooltip: { backgroundColor: 'rgba(0, 0, 0, 0.8)', titleColor: goldColor, bodyColor: textColor, padding: 10, displayColors: false, bodyFont: { family: fontFamily }, titleFont: { family: fontFamily } } }, animation: { duration: 800, easing: 'easeInOutQuad' }};
-            const doughnutOptions = { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { color: textColor, padding: 15, font: { family: fontFamily} } }, tooltip: { backgroundColor: 'rgba(0, 0, 0, 0.8)', titleColor: goldColor, bodyColor: textColor, padding: 10, displayColors: true, bodyFont: { family: fontFamily }, titleFont: { family: fontFamily } } }, animation: { animateRotate: true, animateScale: true, duration: 1000 }};
-            if (trendsCtx) { trendsChartInstance = new Chart(trendsCtx, { type: 'line', data: { labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'], datasets: [{ label: 'Active Members', data: [650, 700, 800, 810, 850, 900, 980], borderColor: goldColor, backgroundColor: goldLightColor, tension: 0.3, pointRadius: 3, pointHoverRadius: 6, pointBackgroundColor: goldColor }] }, options: commonChartOptions }); }
-            if (newUserCtx) { newUserChartInstance = new Chart(newUserCtx, { type: 'bar', data: { labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'], datasets: [{ label: 'New Users', data: [15, 20, 30, 25, 40, 35, 50], backgroundColor: goldLighterColor, borderColor: goldColor, borderWidth: 1, borderRadius: 4 }] }, options: { ...commonChartOptions, plugins: { legend: { display: false }, tooltip: { ...commonChartOptions.plugins.tooltip } } } }); }
-            if (membershipTypeCtx) { membershipTypeChartInstance = new Chart(membershipTypeCtx, { type: 'doughnut', data: { labels: ['Premium', 'Basic', 'Student', 'Corporate'], datasets: [{ label: 'Membership Distribution', data: [450, 300, 150, 80], backgroundColor: [ goldColor, goldLightColor, goldLighterColor, goldLightestColor ], borderColor: darkGrayColor, borderWidth: 2, hoverOffset: 8 }] }, options: doughnutOptions }); }
-        } catch (error) { console.error("Error initializing charts:", error); showAlert("Error displaying charts.", "Chart Error"); }
+    // --- Search Functionality ---
+    function handleContentSearch(inputId, tableBodySelector, searchColumns) {
+        const $searchInput = $(inputId);
+        const $tableBody = $(tableBodySelector);
+        if (!$searchInput.length || !$tableBody.length) {
+             console.warn(`Search setup failed: Input (${inputId}) or Table Body (${tableBodySelector}) not found.`);
+             return;
+        }
+
+        $searchInput.on('keyup', function() {
+            const searchTerm = $(this).val().trim().toLowerCase();
+            $tableBody.find('tr').each(function() {
+                const $row = $(this);
+                let match = false;
+                if (searchTerm === '') {
+                    match = true;
+                } else {
+                    for (const col of searchColumns) {
+                        const cellText = $row.find(`td[data-label="${col}"]`).text().trim().toLowerCase();
+                        if (cellText.includes(searchTerm)) {
+                            match = true;
+                            break;
+                        }
+                    }
+                }
+                if (match) {
+                    $row.show();
+                } else {
+                    $row.hide();
+                }
+            });
+        });
     }
 
-    // --- Initial Setup Calls ---
-    applyDataLabels($('table tbody tr')); // Apply labels on load
+    // --- Responsive Table Headers ---
+    function addResponsiveTableHeaders() {
+        $('table').each(function() {
+            var $table = $(this);
+            var $headerCells = $table.find('thead th');
+            if ($headerCells.length === 0) return;
+            $table.find('tbody tr').each(function() {
+                const $row = $(this);
+                $row.find('td').each(function(index) {
+                    if ($headerCells.eq(index).length) {
+                         const newLabel = $headerCells.eq(index).text();
+                         if ($(this).attr('data-label') !== newLabel) {
+                            $(this).attr('data-label', newLabel);
+                         }
+                    }
+                });
+            });
+        });
+    }
 
-    // Set initial active state
+    // --- Initial Page Load Setup ---
+    addResponsiveTableHeaders();
+    updateDashboardStats();
+    addRecentActivity("Gym Owner dashboard loaded.");
+
+    handleContentSearch('#user-search-input', '#user-table-body', ['First Name', 'Last Name', 'Email', 'ID', 'Membership']);
+    handleContentSearch('#staff-search-input', '#coach-table-body', ['First Name', 'Last Name', 'Email', 'ID', 'Role']);
+    handleContentSearch('#payment-search-input', '#payment-table-body', ['User Name', 'User ID', 'Payment ID', 'Method', 'Status']);
+
     const initialActiveLink = $('.sidebar-nav .nav-link.active').first();
-    let initialTargetId = 'dashboard-content'; if (initialActiveLink.length) initialTargetId = initialActiveLink.data('target') || 'dashboard-content'; const $initialTargetSection = $('#' + initialTargetId);
+    let initialTargetId = (initialActiveLink.length && initialActiveLink.data('target')) ? initialActiveLink.data('target') : 'dashboard-content';
+    const $initialTargetSection = $('#' + initialTargetId);
+
     if ($initialTargetSection.length) {
-         $('.sidebar-nav .nav-link').removeClass('active'); $contentSections.removeClass('active'); $initialTargetSection.addClass('active');
-         $(`.sidebar-nav .nav-link[data-target="${initialTargetId}"]`).addClass('active');
-         const initialTitle = $(`.sidebar-nav .nav-link[data-target="${initialTargetId}"]`).find('.nav-text').text().trim();
-         $pageTitle.text(initialTitle || 'Dashboard');
-         if (initialTargetId === 'analytics-content') { setTimeout(initializeAnalyticsCharts, 150); }
+        $('.sidebar-nav .nav-link').removeClass('active');
+        $contentSections.removeClass('active');
+        $initialTargetSection.addClass('active');
+        $(`.sidebar-nav .nav-link[data-target="${initialTargetId}"]`).addClass('active');
+        $pageTitle.text($(`.sidebar-nav .nav-link[data-target="${initialTargetId}"]`).find('.nav-text').text().trim() || 'Dashboard');
+        if (initialTargetId === 'analytics-content') {
+            setTimeout(initializeAnalyticsCharts, 250);
+        }
     } else {
-         console.warn(`Initial target #${initialTargetId} not found. Defaulting.`);
-         $('.sidebar-nav .nav-link, .content-section').removeClass('active'); $('#dashboard-content').addClass('active'); $('.sidebar-nav .nav-link[data-target="dashboard-content"]').addClass('active'); $pageTitle.text('Dashboard');
+        $('#dashboard-content').addClass('active');
+        $('.sidebar-nav .nav-link[data-target="dashboard-content"]').addClass('active');
+        $pageTitle.text('Dashboard');
     }
 
 });
