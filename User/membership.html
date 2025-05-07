@@ -242,7 +242,8 @@
     @keyframes fadeInDropdown { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
 
     .profile-dropdown li a.dropdown-item {
-        display: block;
+        display: flex; /* Use flex for icon alignment */
+        align-items: center; /* Vertically align icon and text */
         padding: 0.8rem 1.5rem;
         font-size: 1.4rem;
         color: var(--text-color);
@@ -255,6 +256,19 @@
         background-color: var(--color-dark-gray);
         color: var(--main-color);
     }
+    .profile-dropdown li a.dropdown-item i {
+        margin-right: 0.8rem;
+        font-size: 1.6rem;
+        vertical-align: middle;
+        position: relative;
+        top: -1px;
+        color: var(--color-text-muted);
+        transition: color 0.2s ease;
+    }
+    .profile-dropdown li a.dropdown-item:hover i {
+        color: var(--main-color);
+    }
+
 
     main {
       padding-top: var(--header-height-desktop);
@@ -727,11 +741,25 @@
              <li class="profile-menu-container">
                  <img src="../images/user_pic.jpg" alt="User Profile" class="profile-pic" id="profilePicTrigger">
                  <ul class="profile-dropdown" id="profileDropdown">
-                     <li><a href="#membership-status-section" class="dropdown-item view-membership-link">View Membership</a></li>
+                     <li>
+                         <a href="#membership-status-section" class="dropdown-item view-membership-link">
+                             <i class='bx bx-id-card'></i> View Membership
+                         </a>
+                     </li>
+                     <li>
+                         <a href="#" id="request-refund-link" class="dropdown-item">
+                             <i class='bx bx-revision'></i> Request Refund
+                         </a>
+                     </li>
+                     <li>
+                         <a href="#" id="switch-gym-link" class="dropdown-item">
+                             <i class='bx bx-transfer-alt'></i> Switch Gym
+                         </a>
+                     </li>
                  </ul>
              </li>
              <li>
-                 <span class="welcome-text">Welcome, <span id="header-user-name">Han Soyoung</span></span>
+                 <span class="welcome-text">Welcome, <span id="header-user-name">Han Soyoung</span>!</span>
              </li>
              <li>
                  <a href="signin.html" id="logout-link">
@@ -862,6 +890,8 @@
         const $membershipStatusSection = $('#membership-status-section');
         const $stopMembershipBtn = $('#stop-membership-btn');
         const $stopMembershipModal = $('#stopMembershipModal');
+        const $requestRefundLink = $('#request-refund-link');
+        const $switchGymLink = $('#switch-gym-link');
 
         if (menuIcon.length && navbar.length) {
             menuIcon.on('click', function() {
@@ -912,7 +942,7 @@
                 }
             });
 
-            $profileDropdown.on('click', 'a.view-membership-link', function() {
+            $profileDropdown.on('click', 'a.dropdown-item', function() {
                 $profileDropdown.removeClass('active');
                 $profilePicTrigger.removeClass('active');
                  if (navbar.hasClass('active')) {
@@ -981,6 +1011,23 @@
              });
 
         } else { console.warn("Stop membership button or modal not found."); }
+
+        if ($requestRefundLink.length) {
+            $requestRefundLink.on('click', function(event) {
+                event.preventDefault();
+                console.log("Request Refund clicked (placeholder action)");
+                alert("Refund request feature coming soon!");
+            });
+        }
+
+        if ($switchGymLink.length) {
+            $switchGymLink.on('click', function(event) {
+                event.preventDefault();
+                console.log("Switch Gym clicked (placeholder action)");
+                alert("Switch Gym feature coming soon!");
+            });
+        }
+
 
         $('a[href="#profile"]').on('click', function(event) {
             event.preventDefault();
