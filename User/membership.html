@@ -27,19 +27,22 @@
         --color-dark-gray: #1a1a1a;
         --color-gold: #daa520;
         --color-gold-light: #f0c44c;
-        --color-text: #ffffff;
         --color-text-muted: #aaaaaa;
         --border-color-light: #333;
         --header-height-desktop: 100px;
         --header-height-mobile: 80px;
         --font-primary: 'Poppins', sans-serif;
-        --modal-overlay-bg: rgba(0, 0, 0, 0.5); /* Updated for modal */
-        --button-primary-bg: #FFD700;
-        --button-primary-text: #0a0a0a;
-        --button-primary-hover-bg: transparent; /* Updated for hover effect */
-        --button-secondary-bg: #aaa; /* Updated for secondary button */
-        --button-secondary-text: #fff; /* Updated for secondary button */
-        --button-secondary-hover-bg: #888; /* Updated for secondary button hover */
+        --modal-overlay-bg: rgba(0, 0, 0, 0.7);
+        --button-primary-bg: var(--main-color);
+        --button-primary-text: var(--color-black);
+        --button-primary-hover-bg: transparent;
+        --button-secondary-bg: #555;
+        --button-secondary-text: var(--text-color);
+        --button-secondary-hover-bg: #666;
+        --card-bg-dark: var(--color-dark-gray);
+        --input-bg-dark: #252525;
+        --modal-bg-dark: var(--color-dark-gray);
+        --modal-text-dark: var(--text-color);
     }
 
     html {
@@ -117,6 +120,10 @@
         padding: 0;
         margin: 0;
     }
+    .navbar-right {
+        gap: 2rem;
+    }
+
 
     .navbar li {
         margin: 0;
@@ -142,12 +149,33 @@
         margin-left: 0;
     }
 
-    .navbar-right li:has(.profile-pic) {
-        margin-right: 1.5rem;
+    .navbar-right .profile-menu-container {
+        position: relative;
+    }
+
+    .welcome-text {
+        font-size: 1.6rem;
+        color: var(--color-text-muted);
+        white-space: nowrap;
+    }
+    .welcome-text span#header-user-name {
+        font-weight: 500;
+        color: var(--text-color);
     }
 
     .navbar-right li a#logout-link {
         margin-left: 0;
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        border-bottom: none;
+        padding: 0.5rem 0.8rem;
+        border-radius: 4px;
+    }
+    .navbar-right li a#logout-link i {
+        font-size: 2rem;
+        line-height: 1;
+        transition: color 0.3s ease;
     }
 
     .navbar a:hover,
@@ -156,13 +184,34 @@
         border-bottom-color: var(--main-color);
     }
 
+    .navbar-right li a#logout-link:hover {
+        color: var(--main-color);
+        border-bottom-color: transparent;
+        background-color: rgba(255, 215, 0, 0.1);
+    }
+    .navbar-right li a#logout-link:hover i {
+        color: var(--main-color);
+    }
+
+
     .navbar .profile-pic {
         width: 50px;
         height: 50px;
         border-radius: 50%;
         object-fit: cover;
         display: block;
+        cursor: pointer;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        border: 2px solid transparent;
     }
+    .navbar .profile-pic:hover {
+        transform: scale(1.05);
+        box-shadow: 0 0 10px rgba(var(--main-color), 0.5);
+    }
+     .navbar .profile-pic.active {
+         border-color: var(--main-color);
+         box-shadow: 0 0 10px rgba(var(--main-color), 0.5);
+     }
 
     #menu-icon {
         font-size: 4.5rem;
@@ -172,6 +221,54 @@
         margin-left: 2rem;
         z-index: 1001;
     }
+
+     .profile-dropdown {
+        display: none;
+        position: absolute;
+        top: 100%;
+        right: 0;
+        margin-top: 10px;
+        background-color: var(--snd-bf-color);
+        border: 1px solid var(--border-color-light);
+        border-radius: 6px;
+        min-width: 180px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        z-index: 1100;
+        padding: 0.5rem 0;
+        list-style: none;
+        animation: fadeInDropdown 0.2s ease-out;
+    }
+    .profile-dropdown.active { display: block; }
+    @keyframes fadeInDropdown { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
+
+    .profile-dropdown li a.dropdown-item {
+        display: flex; /* Use flex for icon alignment */
+        align-items: center; /* Vertically align icon and text */
+        padding: 0.8rem 1.5rem;
+        font-size: 1.4rem;
+        color: var(--text-color);
+        font-weight: 400;
+        white-space: nowrap;
+        transition: background-color 0.2s ease, color 0.2s ease;
+        border-bottom: none;
+    }
+    .profile-dropdown li a.dropdown-item:hover {
+        background-color: var(--color-dark-gray);
+        color: var(--main-color);
+    }
+    .profile-dropdown li a.dropdown-item i {
+        margin-right: 0.8rem;
+        font-size: 1.6rem;
+        vertical-align: middle;
+        position: relative;
+        top: -1px;
+        color: var(--color-text-muted);
+        transition: color 0.2s ease;
+    }
+    .profile-dropdown li a.dropdown-item:hover i {
+        color: var(--main-color);
+    }
+
 
     main {
       padding-top: var(--header-height-desktop);
@@ -191,12 +288,12 @@
       margin-bottom: 4rem;
       object-fit: cover;
       max-height: 400px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
     }
 
     .profile-section {
       margin-bottom: 4rem;
     }
-
     .profile-section h2 {
         font-size: 2.8rem;
         color: var(--main-color);
@@ -211,7 +308,6 @@
         margin-top: 2rem;
         margin-bottom: 1.5rem;
     }
-
     .profile-card {
       display: flex;
       align-items: center;
@@ -223,7 +319,6 @@
       border-left: 5px solid var(--main-color);
       box-shadow: 0 4px 15px rgba(255, 215, 0, 0.1);
     }
-
     .profile-card img {
       width: 120px;
       height: 120px;
@@ -232,7 +327,6 @@
       flex-shrink: 0;
       border: 3px solid var(--main-color);
     }
-
     .profile-info h3 {
       font-size: 2rem;
       margin-bottom: 0.8rem;
@@ -243,11 +337,79 @@
         font-weight: 400;
         color: var(--color-text-muted);
     }
-
     .profile-info p {
         font-size: 1.6rem;
         color: var(--color-text-muted);
         line-height: 1.7;
+    }
+
+    .membership-status-section {
+      background-color: var(--snd-bf-color);
+      border: 1px solid var(--border-color-light);
+      border-left: 5px solid var(--main-color);
+      padding: 2.5rem;
+      margin-bottom: 4rem;
+      color: var(--text-color);
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(255, 215, 0, 0.1);
+    }
+    .membership-status-section h2 {
+      font-size: 2.4rem;
+      color: var(--main-color);
+      margin-bottom: 1.5rem;
+      text-align: center;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border-color-light);
+    }
+    .status-details {
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+    .status-text {
+      font-size: 1.7rem;
+      margin-bottom: 0.8rem;
+      color: var(--color-text-muted);
+    }
+    .status-text .current-status,
+    .status-text .expiry-date {
+      color: var(--text-color);
+      font-weight: 600;
+    }
+     .status-text .current-status {
+       color: var(--color-gold-light);
+     }
+    .status-note {
+      font-size: 1.3rem;
+      color: var(--color-text-muted);
+      font-style: italic;
+      margin-top: 1rem;
+    }
+    .status-actions {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .status-actions .btn {
+        font-size: 1.5rem;
+        padding: 1.2rem 2.5rem;
+        min-width: 200px;
+        border-radius: 8px;
+    }
+    .btn-stop {
+        background-color: transparent;
+        color: #f44336;
+        border-color: #f44336;
+        border-width: 2px;
+    }
+    .btn-stop:hover {
+        background-color: #f44336;
+        color: var(--text-color);
+        border-color: #f44336;
+        box-shadow: 0 0 1rem rgba(244, 67, 54, 0.4);
     }
 
     .membership-options {
@@ -258,173 +420,135 @@
       align-items: center;
     }
 
-    /* General Button Style (Used by Membership Buttons and Subscribe) */
-    .btn-membership, .btn-primary {
+    .btn, .btn-primary, .btn-secondary, .btn-membership {
       display: inline-block;
-      background-color: var(--main-color);
-      color: var(--color-black);
-      border: 2px solid var(--main-color);
-      padding: 1.5rem 3.5rem;
+      border: 2px solid transparent;
+      padding: 1.2rem 3rem;
       font-size: 1.7rem;
       font-weight: 600;
       border-radius: 8px;
       cursor: pointer;
       transition: all 0.3s ease;
       text-align: center;
-      min-width: 300px;
       letter-spacing: 0.1rem;
       box-shadow: none;
     }
-
-    .btn-membership:hover, .btn-primary:hover {
-      background-color: transparent;
+    .btn-primary, .btn-membership {
+      background-color: var(--button-primary-bg);
+      color: var(--button-primary-text);
+      border-color: var(--main-color);
+    }
+    .btn-primary:hover, .btn-membership:hover {
+      background-color: var(--button-primary-hover-bg);
       color: var(--main-color);
       transform: translateY(-2px);
        box-shadow: 0 0 1.6rem var(--main-color);
     }
-
-    .btn-membership.secondary {
+    .btn-secondary, .btn-membership.secondary {
         background-color: transparent;
         color: var(--main-color);
+        border-color: var(--main-color);
     }
-    .btn-membership.secondary:hover {
+    .btn-secondary:hover, .btn-membership.secondary:hover {
         background-color: var(--main-color);
         color: var(--color-black);
          box-shadow: 0 5px 15px rgba(255, 215, 0, 0.2);
+         transform: translateY(-2px);
+    }
+    .btn-membership {
+         min-width: 300px;
+         padding: 1.5rem 3.5rem;
     }
 
-    /* --- Modal Styles (As Provided) --- */
     .modal {
         display: none;
         position: fixed;
-        z-index: 1050; /* Ensure modal is above header */
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
+        z-index: 1050;
+        left: 0; top: 0; width: 100%; height: 100%;
         overflow: auto;
-        background-color: rgba(0, 0, 0, 0.5); /* Matches provided style */
-        align-items: center;
-        justify-content: center;
+        background-color: var(--modal-overlay-bg);
+        align-items: center; justify-content: center;
     }
-
-    /* Changed .show to .active to match JS */
-    .modal.active {
-        display: flex;
-    }
-
+    .modal.active { display: flex; }
     .modal-content {
-        background-color: #fefefe;
-        padding: 20px;
-        border: 1px solid #888;
-        width: 80%;
+        padding: 25px 30px;
+        border: 1px solid var(--border-color-light);
+        width: 90%;
         max-width: 400px;
         text-align: center;
         position: relative;
         border-radius: 8px;
-        color: var(--color-black); /* Text color for light background */
-         animation: fadeInModal 0.3s ease-out forwards; /* Added animation */
+        animation: fadeInModal 0.3s ease-out forwards;
+        background-color: var(--modal-bg-dark, var(--color-dark-gray));
+        color: var(--modal-text-dark, var(--text-color));
+    }
+    #logoutConfirmationModal .modal-content {
+        background-color: #fefefe;
+        color: var(--color-black);
+        border-color: #888;
     }
 
-    @keyframes fadeInModal {
-        from { opacity: 0; transform: scale(0.95); }
-        to { opacity: 1; transform: scale(1); }
-    }
+    @keyframes fadeInModal { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
 
-    .modal-close-btn, .close-button { /* Combined close button styles */
-        position: absolute;
-        top: 10px;
-        right: 15px;
-        color: #aaa;
-        font-size: 28px; /* Matches provided style */
-        font-weight: bold;
-        border: none;
-        background: none;
-        cursor: pointer;
-        line-height: 1;
+    .modal-close-btn, .close-button {
+        position: absolute; top: 10px; right: 15px;
+        color: var(--text-muted-setgoals, #aaa);
+        font-size: 2.8rem; font-weight: bold;
+        border: none; background: none; cursor: pointer; line-height: 1;
     }
+    .modal-close-btn:hover, .close-button:hover { color: var(--text-color, black); }
+    #logoutConfirmationModal .modal-close-btn:hover,
+    #logoutConfirmationModal .close-button:hover { color: black; }
 
-    .modal-close-btn:hover, .close-button:hover {
-        color: black; /* Matches provided style */
-        text-decoration: none;
-    }
 
-     /* Specific style for logout message */
-     #logoutModalMessage {
-        color: var(--color-black); /* Matches modal content color */
-        font-size: 1.8rem; /* Adjusted size based on previous requests */
-        margin-bottom: 25px;
+    #logoutModalMessage, #stopModalMessage {
+        font-size: 1.6rem;
+        margin-bottom: 2rem;
         text-align: center;
         font-weight: 500;
+        line-height: 1.6;
     }
+    #logoutConfirmationModal #logoutModalMessage { color: var(--color-black); }
+    #stopModalMessage { color: var(--modal-text-dark); }
 
-    /* --- Modal Button Styles (As Provided) --- */
-    /* Style for OK/Primary Button in Modal */
-    /* Combined selector for primary modal button */
-    #okLogoutButton, .modal-content .btn-primary {
-        display: inline-block;
-        padding: 1.2rem 3rem;
-        border-radius: 0.8rem;
-        font-weight: 600;
-        text-align: center;
-        cursor: pointer;
-        transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease, box-shadow 0.5s ease;
-        border: 2px solid var(--main-color);
-        font-size: 1.7rem;
-        color: var(--color-black);
-        background: var(--main-color);
-        letter-spacing: 0.1rem;
-        box-shadow: none;
-        flex: 1; /* Allow button to grow */
-        min-width: 120px; /* Prevent buttons from becoming too small */
+    .modal-content .btn-primary,
+    .modal-content .btn-secondary {
+        padding: 1rem 2.5rem;
+        font-size: 1.5rem;
+        flex: 1;
+        min-width: 120px;
+        margin: 0 5px;
     }
-    .btn:hover, .btn-primary:hover, #okLogoutButton:hover {
-    background-color: transparent;
-    color: var(--main-color);
-    box-shadow: 0 0 1.6rem var(--main-color);
-    transform: translateY(-2px);
-    cursor: pointer;
-}
-
-
-    /* Style for Cancel/Secondary Button in Modal */
-     /* Combined selector for secondary modal button */
-    #cancelLogoutButton, .modal-content .btn-secondary {
-         display: inline-block;
-         padding: 1.2rem 3rem;
-         border-radius: 0.8rem;
-         font-weight: 600;
-         text-align: center;
-         cursor: pointer;
-         transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
-         border: 2px solid #aaa;
-         font-size: 1.7rem;
-         background: #aaa;
-         color: #fff;
-         margin-right: 0; /* Removed default margin */
-         flex: 1; /* Allow button to grow */
-         min-width: 120px; /* Prevent buttons from becoming too small */
+     .modal-content .btn-secondary {
+         background-color: var(--button-secondary-bg);
+         color: var(--button-secondary-text);
+         border-color: #444;
+     }
+    .modal-content .btn-secondary:hover {
+         background-color: var(--button-secondary-hover-bg);
+         border-color: #555;
     }
-    .btn-secondary:hover {
-    background: #888;
-    border-color: #888;
-    transform: translateY(-1px);
-    cursor: pointer;
-}
+     #logoutConfirmationModal .modal-content .btn-secondary {
+        background: #aaa; color: #fff; border-color: #aaa;
+     }
+     #logoutConfirmationModal .modal-content .btn-secondary:hover {
+         background: #888; border-color: #888;
+     }
 
-     /* Container for modal action buttons */
-    #logoutConfirmationModal .modal-content > div:last-child {
-        text-align: center;
+    #logoutConfirmationModal .modal-content > div:last-child,
+    #stopMembershipModal .modal-content > div:last-child {
         margin-top: 1.5rem;
-        display: flex;          /* Use flexbox */
-        justify-content: center;/* Center buttons horizontally */
-        gap: 1rem;             /* Add space between buttons */
-        flex-wrap: wrap;       /* Allow wrapping on small screens */
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        flex-wrap: wrap;
     }
 
+     #stopMembershipModal .modal-content { max-width: 450px; }
+     #stopMembershipModal h3 { color: #d32f2f; font-size: 2rem; margin-bottom: 1.5rem; }
+     #confirmStopMembershipBtn.btn-danger { background-color: #d32f2f; border-color: #d32f2f; color: white; }
+     #confirmStopMembershipBtn.btn-danger:hover { background-color: #b71c1c; border-color: #b71c1c; color: white; box-shadow: 0 0 1rem rgba(183, 28, 28, 0.5); }
 
-
-    /* --- Subscribe & Footer Styles --- */
     .subscribe-section {
         background-color: var(--snd-bf-color);
         padding: 4rem 0;
@@ -463,58 +587,20 @@
         border: 1px solid var(--border-color-light);
         background-color: var(--color-dark-gray);
         color: var(--text-color);
+        outline: none;
     }
-    .subscribe-form input[type="email"]::placeholder {
-        color: var(--color-text-muted);
-    }
-    /* Use the general btn-primary style for subscribe button */
-    .subscribe-form .btn-primary {
-        padding: 1.2rem 2.5rem;
-        font-size: 1.5rem;
-        min-width: auto; /* Override min-width if needed */
-        border-radius: 0.8rem; /* Match modal style */
-    }
-    .social-icons {
-        display: flex;
-        gap: 1.5rem;
-    }
-    .social-icons a {
-        color: var(--color-text-muted);
-        font-size: 2.2rem;
-        transition: color 0.3s ease, transform 0.3s ease;
-    }
-    .social-icons a:hover {
-        color: var(--main-color);
-        transform: translateY(-3px);
-    }
-    .footer-links {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-        gap: 2rem;
-    }
-    .footer-links h4 {
-        font-size: 1.6rem;
-        color: var(--main-color);
-        margin-bottom: 1rem;
-        font-weight: 600;
-    }
-    .footer-links ul {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-    }
-    .footer-links li {
-        margin-bottom: 0.8rem;
-    }
-    .footer-links a {
-        font-size: 1.4rem;
-        color: var(--color-text-muted);
-        transition: color 0.3s ease;
-    }
-    .footer-links a:hover {
-        color: var(--text-color);
-        text-decoration: underline;
-    }
+    .subscribe-form input[type="email"]::placeholder { color: var(--color-text-muted); }
+    .subscribe-form input[type="email"]:focus { border-color: var(--main-color); box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.2); }
+    .subscribe-form .btn-primary { padding: 1.2rem 2.5rem; font-size: 1.5rem; min-width: auto; }
+    .social-icons { display: flex; gap: 1.5rem; }
+    .social-icons a { color: var(--color-text-muted); font-size: 2.2rem; transition: color 0.3s ease, transform 0.3s ease; }
+    .social-icons a:hover { color: var(--main-color); transform: translateY(-3px); }
+    .footer-links { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 2rem; }
+    .footer-links h4 { font-size: 1.6rem; color: var(--main-color); margin-bottom: 1rem; font-weight: 600; }
+    .footer-links ul { list-style: none; padding: 0; margin: 0; }
+    .footer-links li { margin-bottom: 0.8rem; }
+    .footer-links a { font-size: 1.4rem; color: var(--color-text-muted); transition: color 0.3s ease; }
+    .footer-links a:hover { color: var(--text-color); text-decoration: underline; }
 
     footer {
         background-color: var(--bg-color);
@@ -524,94 +610,55 @@
         font-size: 1.3rem;
         border-top: 1px solid var(--border-color-light);
     }
-    footer .container {
-        padding: 0 2rem;
-    }
+    footer .container { padding: 0 2rem; }
 
-    /* --- Responsive Styles --- */
     @media (max-width: 1024px) {
-            .navbar-right{
-                display: flex; justify-content: flex-end; align-items: center; gap: 10px;
-            }
-            .navbar-right img.profile-pic {
-                width: 50px;
-                height: 50px;
-                margin-left: 20px;
-                margin-right: 20px;
-            }
+        .navbar-right img.profile-pic {
+             width: 50px; height: 50px; margin-left: 0; margin-right: 0;
         }
+        .navbar-right { gap: 1.5rem; }
+    }
 
     @media (max-width: 991px) {
         html { font-size: 55%; }
-        header {
-            height: var(--header-height-mobile);
-            padding: 1rem 5%;
-        }
-        main {
-             padding-top: var(--header-height-mobile);
-        }
-
-        #menu-icon {
-             display: block;
-        }
+        header { height: var(--header-height-mobile); padding: 1rem 5%; }
+        main { padding-top: var(--header-height-mobile); }
+        #menu-icon { display: block; }
+        .logo img { max-width: 100px; }
 
         .navbar {
-            position: absolute;
-            top: 100%;
-            right: -100%;
-            width: 250px;
-            height: auto;
-            background: var(--color-black);
-            flex-direction: column;
-            align-items: center;
-            padding: 2rem;
-            transition: right .50s ease;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
-            border-radius: 0 0 10px 10px;
-            justify-content: flex-start;
-            flex-grow: 0;
-            margin-left: 0;
-            gap: 1.5rem;
+            position: absolute; top: 100%; right: -100%; width: 250px;
+            background: var(--color-black); flex-direction: column; align-items: center;
+            padding: 2rem; transition: right .50s ease; box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+            border-radius: 0 0 10px 10px; justify-content: flex-start; flex-grow: 0; margin-left: 0;
         }
-        .navbar.active {
-            right: 5%;
-            display: flex;
-        }
+        .navbar.active { right: 5%; display: flex; }
 
-        .navbar-left,
-        .navbar-right {
-            flex-direction: column;
-            width: 100%;
-            align-items: center;
-            gap: 1rem;
-        }
-        .navbar-right { margin-top: 1.5rem; }
+        .navbar-left, .navbar-right { flex-direction: column; width: 100%; align-items: center; gap: 0; }
+        .navbar-right { margin-top: 1.5rem; gap: 1.5rem; }
+        .navbar li { width: 100%; text-align: center; margin-bottom: 1.5rem; }
+        .navbar-right li { margin-bottom: 0; }
+        .navbar .profile-pic { margin: 0 auto 1rem auto; }
+        .welcome-text { margin-bottom: 1rem; }
+        .navbar-right li a#logout-link { margin-top: 0.5rem; }
 
-        .navbar li {
-            width: 100%;
-            text-align: center;
-            margin-bottom: 1rem;
-        }
-        .navbar-right li:has(.profile-pic) { order: 0; margin-bottom: 1.5rem; margin-right: 0;}
-        .navbar-right li:has(a#logout-link) { order: 1; margin-bottom: 0;}
+        .navbar a { display: block; margin: 0 !important; padding: 1rem 0; font-size: 2rem; text-align: center; border-bottom: none; }
+         .navbar a:hover, .navbar a.active { color: var(--main-color); border-bottom: none; }
 
-        .navbar a {
-            display: block;
-            margin: 0 !important;
-            padding: 1rem 0;
-            font-size: 2rem;
-            text-align: center;
-            border-bottom: none;
+        .profile-menu-container { position: static; width: 100%; margin-bottom: 1rem; }
+        .profile-dropdown {
+            position: static; display: block;
+            width: 100%; margin-top: 0.5rem; margin-bottom: 0;
+            box-shadow: none; border: none; border-top: 1px solid var(--border-color-light);
+            border-bottom: 1px solid var(--border-color-light); border-radius: 0;
+            background-color: transparent; padding: 0; animation: none;
         }
-         .navbar a:hover,
-         .navbar a.active {
-             color: var(--main-color);
-             border-bottom: none;
+         .profile-dropdown li a.dropdown-item {
+             text-align: center; padding: 1rem 1.5rem; font-size: 1.6rem;
+             border-bottom: 1px solid var(--border-color-light);
          }
-
-        .navbar .profile-pic {
-            margin: 0 auto 1rem auto;
-        }
+         .profile-dropdown li:last-child a.dropdown-item { border-bottom: none; }
+         .profile-dropdown li a.dropdown-item:hover { background-color: var(--color-dark-gray); }
 
         .container { padding: 2.5rem 1.5rem; }
         .gym-banner { margin-bottom: 3rem; }
@@ -621,44 +668,36 @@
         .profile-card img { width: 100px; height: 100px; }
         .profile-info h3 { font-size: 1.8rem; }
         .profile-info p { font-size: 1.5rem; }
-        .btn-membership, .btn-primary { padding: 1.2rem 3rem; font-size: 1.6rem; min-width: 250px;}
+        .btn-membership, .btn-primary, .status-actions .btn { padding: 1.2rem 3rem; font-size: 1.6rem; min-width: 250px;}
+        .status-actions .btn { min-width: 180px; }
 
         .subscribe-content { grid-template-columns: 1fr; gap: 2rem; }
-        .footer-links { grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); }
-         .modal-content { width: 90%; } /* Adjust modal width */
+        .subscribe-text{ text-align: center; }
+        .subscribe-form { justify-content: center; }
+        .social-icons { justify-content: center; }
+        .footer-links { grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); text-align: center;}
+        .modal-content { width: 90%; }
+        .membership-status-section { padding: 2rem; margin-bottom: 3rem; }
+        .membership-status-section h2 { font-size: 2.2rem; }
+        .status-text { font-size: 1.6rem; }
     }
 
-    @media (max-width: 768px) {
+    @media (max-width: 767px) {
         html { font-size: 50%; }
-        header {
-             padding: 1rem 4%;
-             height: calc(var(--header-height-mobile) - 10px);
-        }
-         main {
-             padding-top: calc(var(--header-height-mobile) - 10px);
-        }
+        header { padding: 1rem 4%; height: calc(var(--header-height-mobile) - 10px); }
+        main { padding-top: calc(var(--header-height-mobile) - 10px); }
         .logo img { max-width: 150px; }
 
-        .profile-card {
-            flex-direction: column;
-            text-align: center;
-            align-items: center;
-        }
+        .profile-card { flex-direction: column; text-align: center; align-items: center; }
+        .profile-card img { width: 90px; height: 90px; margin-bottom: 1.5rem; }
+        .membership-options, .status-actions { gap: 1.5rem; }
+        .btn-membership, .btn-primary, .status-actions .btn { min-width: 220px; padding: 1.2rem 2.5rem; font-size: 1.5rem;}
 
-        .profile-card img {
-            width: 90px;
-            height: 90px;
-            margin-bottom: 1.5rem;
-        }
-
-        .membership-options { gap: 1.5rem; }
-        .btn-membership, .btn-primary { min-width: 220px; padding: 1.2rem 2.5rem; font-size: 1.5rem;}
-
-        .subscribe-form { flex-direction: column; }
+        .subscribe-form { flex-direction: column; align-items: stretch; }
         .subscribe-form button { width: 100%; }
-        #logoutModalMessage { font-size: 1.6rem; } /* Adjust modal text size */
-        /* Adjust modal button font size */
+        #logoutModalMessage, #stopModalMessage { font-size: 1.6rem; }
         .modal-content .btn-primary, .modal-content .btn-secondary { font-size: 1.5rem; }
+        .footer-links { text-align: center;}
     }
 
      @media (max-width: 480px) {
@@ -673,12 +712,16 @@
         .profile-card img { width: 80px; height: 80px; }
         .profile-info h3 { font-size: 1.6rem; }
         .profile-info p { font-size: 1.4rem; }
-        .btn-membership, .btn-primary { width: 100%; min-width: unset; padding: 1rem 2rem; font-size: 1.4rem;}
+        .btn-membership, .btn-primary, .status-actions .btn { width: 100%; min-width: unset; padding: 1rem 2rem; font-size: 1.4rem;}
+        .status-actions { flex-direction: column; align-items: stretch; gap: 1rem; }
 
         .footer-links { grid-template-columns: repeat(2, 1fr); }
-        /* Further adjust modal button styles for very small screens */
         .modal-content .btn-primary, .modal-content .btn-secondary { font-size: 1.4rem; padding: 1rem 2.5rem;}
-        #logoutModalMessage { font-size: 1.5rem; } /* Adjust modal text size */
+        #logoutModalMessage, #stopModalMessage { font-size: 1.5rem; }
+        .membership-status-section { padding: 1.5rem; }
+        .membership-status-section h2 { font-size: 2rem; }
+        .status-text { font-size: 1.5rem; }
+        .status-note { font-size: 1.2rem; }
      }
   </style>
 </head>
@@ -695,13 +738,34 @@
              <li><a href="membership.html" class="active">Membership</a></li>
          </div>
          <div class="navbar-right">
-             <li>
-                 <a href="#profile">
-                     <img src="../images/user_pic.jpg" alt="User Profile" class="profile-pic">
-                 </a>
+             <li class="profile-menu-container">
+                 <img src="../images/user_pic.jpg" alt="User Profile" class="profile-pic" id="profilePicTrigger">
+                 <ul class="profile-dropdown" id="profileDropdown">
+                     <li>
+                         <a href="#membership-status-section" class="dropdown-item view-membership-link">
+                             <i class='bx bx-id-card'></i> View Membership
+                         </a>
+                     </li>
+                     <li>
+                         <a href="#" id="request-refund-link" class="dropdown-item">
+                             <i class='bx bx-revision'></i> Request Refund
+                         </a>
+                     </li>
+                     <li>
+                         <a href="#" id="switch-gym-link" class="dropdown-item">
+                             <i class='bx bx-transfer-alt'></i> Switch Gym
+                         </a>
+                     </li>
+                 </ul>
              </li>
              <li>
-                 <a href="signin.html" id="logout-link">Logout</a>
+                 <span class="welcome-text">Welcome, <span id="header-user-name">Han Soyoung</span>!</span>
+             </li>
+             <li>
+                 <a href="signin.html" id="logout-link">
+                     <i class='bx bx-log-out'></i>
+                     Logout
+                 </a>
              </li>
          </div>
     </ul>
@@ -737,6 +801,25 @@
         </div>
       </div>
 
+      <section class="membership-status-section card" id="membership-status-section" style="display: none;">
+          <h2>Your Current Membership</h2>
+          <div class="status-details">
+              <p class="status-text">
+                  Plan: <span class="current-status" id="user-membership-plan">Premium</span>
+              </p>
+              <p class="status-text">
+                  Expires: <span class="expiry-date" id="user-membership-expiry">2024-12-31</span>
+              </p>
+              <p class="status-note">
+                  Manage your subscription below. Extending adds time to your current expiry date.
+              </p>
+          </div>
+          <div class="status-actions">
+              <a href="paymentMethods.html?action=extend" class="btn btn-primary btn-extend">Extend Membership</a>
+              <button type="button" id="stop-membership-btn" class="btn btn-secondary btn-stop">Stop Membership</button>
+          </div>
+      </section>
+
       <div class="membership-options">
         <a href="paymentMethods.html" class="btn-membership">Join Now with Coach (Premium)</a>
         <a href="paymentMethods.html" class="btn-membership secondary">Join Now without Coach</a>
@@ -744,19 +827,28 @@
     </div>
   </main>
 
-  <!-- Logout Confirmation Modal -->
+  <div id="stopMembershipModal" class="modal">
+      <div class="modal-content">
+          <button id="closeStopModalButton" class="modal-close-btn" aria-label="Close modal">×</button>
+          <h3>Confirm Membership Cancellation</h3>
+          <p id="stopModalMessage">Are you sure you want to stop your membership at the end of the current period? This action cannot be undone easily.</p>
+          <div style="text-align: center; margin-top: 1.5rem; display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
+               <button id="cancelStopMembershipBtn" class="btn-secondary">Keep Membership</button>
+               <button id="confirmStopMembershipBtn" class="btn-primary btn-danger">Confirm Stop</button>
+          </div>
+      </div>
+  </div>
+
   <div id="logoutConfirmationModal" class="modal">
       <div class="modal-content">
           <button id="closeLogoutModalButton" class="modal-close-btn" aria-label="Close modal">×</button>
           <p id="logoutModalMessage">Are you sure you want to logout?</p>
-          <!-- This div now uses flexbox for inline buttons -->
           <div style="text-align: center; margin-top: 1.5rem; display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
                <button id="cancelLogoutButton" class="btn-secondary">Cancel</button>
                <button id="okLogoutButton" class="btn-primary">Logout</button>
           </div>
       </div>
   </div>
-  <!-- End Logout Modal -->
 
     <section id="subscribe" class="subscribe-section">
         <div class="container subscribe-content">
@@ -774,7 +866,14 @@
                 </div>
             </div>
             <div class="footer-links">
-                 <div><h4>Company</h4><ul><li><a href="#">Press</a></li><li><a href="#">Blog</a></li><li><a href="#">About</a></li><li><a href="#">Careers</a></li></ul></div> <div><h4>Services</h4><ul><li><a href="#">Training</a></li><li><a href="#">Nutrition</a></li><li><a href="#">Lifestyles</a></li></ul></div> <div><h4>Legal</h4><ul><li><a href="#">Policy</a></li><li><a href="#">Privacy & Cookies</a></li><li><a href="#">Terms & Conditions</a></li></ul></div> <div><h4>Community</h4><ul><li><a href="#">Contact</a></li><li><a href="#">Find a club</a></li><li><a href="#">Membership</a></li></ul></div> <div><h4>Gym</h4><ul><li><a href="#">Book a Gym</a></li><li><a href="#">Find a Gym</a></li></ul></div>
+                 <div><h4>Company</h4><ul><li><a href="#">Press</a></li><li><a href="#">Blog</a></li><li><a href="#">About</a></li><li><a href="#">Careers</a></li></ul></div> <div><h4>Services</h4><ul><li><a href="#">Training</a></li><li><a href="#">Nutrition</a></li><li><a href="#">Lifestyles</a></li></ul></div> <div><h4>Legal</h4><ul><li><a href="#">Policy</a></li><li><a href="#">Privacy & Cookies</a></li><li><a href="#">Terms & Conditions</a></li></ul></div> <div><h4>Community</h4><ul><li><a href="#">Contact</a></li><li><a href="#">Find a club</a></li><li><a href="#">Membership</a></li></ul></div> <div><h4>Gym</h4><ul><li><a href="#">Book a Gym</a></li><li><a href="#">Find a Gym</a></li></ul></div><div>
+                    <h4>System Developed By</h4>
+                    <ul>
+                        <li><a href="#">Sintoy, Joebert</a></li>
+                        <li><a href="#">Paliqueron, Khem</a></li>
+                        <li><a href="#">Iglesia, Jose</a></li>
+                    </ul>
+                </div>
             </div>
         </div>
     </section>
@@ -785,96 +884,180 @@
     </footer>
 
   <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js"></script>
   <script>
     $(document).ready(function() {
         var menuIcon = $('#menu-icon');
         var navbar = $('.navbar');
         var logoutLink = $('#logout-link');
         var logoutModal = $('#logoutConfirmationModal');
-        var closeLogoutModalBtn = $('#closeLogoutModalButton');
-        var cancelLogoutBtn = $('#cancelLogoutButton');
-        var okLogoutBtn = $('#okLogoutButton');
+        const $profilePicTrigger = $('#profilePicTrigger');
+        const $profileDropdown = $('#profileDropdown');
+        const $viewMembershipLink = $('.view-membership-link');
+        const $membershipStatusSection = $('#membership-status-section');
+        const $stopMembershipBtn = $('#stop-membership-btn');
+        const $stopMembershipModal = $('#stopMembershipModal');
+        const $requestRefundLink = $('#request-refund-link');
+        const $switchGymLink = $('#switch-gym-link');
 
-        menuIcon.on('click', function() {
-            $(this).toggleClass('bx-x');
-            navbar.toggleClass('active');
-        });
+        if (menuIcon.length && navbar.length) {
+            menuIcon.on('click', function() {
+                $(this).toggleClass('bx-x');
+                navbar.toggleClass('active');
+                if ($profileDropdown.hasClass('active')) {
+                    $profileDropdown.removeClass('active');
+                    $profilePicTrigger.removeClass('active');
+                }
+            });
 
-        $('.navbar a').on('click', function(event) {
-            if (navbar.hasClass('active') && !$(this).is('#logout-link')) {
-                navbar.removeClass('active');
-                menuIcon.removeClass('bx-x');
-            }
-        });
+            $('.navbar a').not('#profilePicTrigger').not('.dropdown-item').on('click', function(event) {
+                 if (navbar.hasClass('active')) {
+                     navbar.removeClass('active');
+                     menuIcon.removeClass('bx-x');
+                 }
+            });
 
-        $(window).on('scroll', function() {
-            if (navbar.hasClass('active')) {
-                navbar.removeClass('active');
-                menuIcon.removeClass('bx-x');
-            }
-        });
+            $(window).on('scroll', function() {
+                if (navbar.hasClass('active')) {
+                    navbar.removeClass('active');
+                    menuIcon.removeClass('bx-x');
+                }
+                if ($profileDropdown.hasClass('active')) {
+                    $profileDropdown.removeClass('active');
+                    $profilePicTrigger.removeClass('active');
+                }
+            });
+        } else { console.warn("Header menu icon or navbar not found."); }
+
+        if ($profilePicTrigger.length && $profileDropdown.length) {
+            $profilePicTrigger.on('click', function(event) {
+                event.stopPropagation();
+                $profileDropdown.toggleClass('active');
+                $profilePicTrigger.toggleClass('active');
+                 if ($navbar.hasClass('active') && $(window).width() > 991) {
+                      navbar.removeClass('active');
+                      menuIcon.removeClass('bx-x');
+                 }
+            });
+
+            $(document).on('click', function(event) {
+                if (!$profileDropdown.is(event.target) && $profileDropdown.has(event.target).length === 0 && !$profilePicTrigger.is(event.target)) {
+                    if ($profileDropdown.hasClass('active')) {
+                        $profileDropdown.removeClass('active');
+                        $profilePicTrigger.removeClass('active');
+                    }
+                }
+            });
+
+            $profileDropdown.on('click', 'a.dropdown-item', function() {
+                $profileDropdown.removeClass('active');
+                $profilePicTrigger.removeClass('active');
+                 if (navbar.hasClass('active')) {
+                      navbar.removeClass('active');
+                      menuIcon.removeClass('bx-x');
+                 }
+            });
+
+        } else { console.warn("Profile picture trigger or dropdown not found."); }
+
+        if ($viewMembershipLink.length && $membershipStatusSection.length) {
+            $viewMembershipLink.on('click', function(event) {
+                event.preventDefault();
+
+                $membershipStatusSection.slideDown(400, function() {
+                    var headerHeight = $('header').outerHeight() || ( $(window).width() <= 991 ? 80 : 100 );
+                    var scrollToPosition = $membershipStatusSection.offset().top - headerHeight - 30;
+                    $('html, body').animate({ scrollTop: scrollToPosition }, 600);
+                });
+            });
+        } else { console.warn("View Membership link or Status Section not found."); }
 
         if (logoutLink.length && logoutModal.length) {
             logoutLink.on('click', function(event) {
                 event.preventDefault();
-                if (navbar.hasClass('active')) {
-                     navbar.removeClass('active');
-                     menuIcon.removeClass('bx-x');
-                }
-                logoutModal.addClass('active'); // Use 'active' class as per modal CSS
+                if (navbar.hasClass('active')) { navbar.removeClass('active'); menuIcon.removeClass('bx-x'); }
+                if ($profileDropdown.hasClass('active')) { $profileDropdown.removeClass('active'); $profilePicTrigger.removeClass('active'); }
+                logoutModal.addClass('active');
             });
 
-             // Use common close button class + cancel button
             logoutModal.on('click', '.modal-close-btn, #cancelLogoutButton', function() {
                  logoutModal.removeClass('active');
             });
 
-            okLogoutBtn.on('click', function() {
+            $('#okLogoutButton').on('click', function() {
                  logoutModal.removeClass('active');
                  window.location.href = logoutLink.attr('href');
             });
 
-             // Close modal if clicking outside the content area
              $(window).on('click', function(event) {
-                 if ($(event.target).is(logoutModal)) {
-                     logoutModal.removeClass('active');
-                 }
+                 if ($(event.target).is(logoutModal)) { logoutModal.removeClass('active'); }
+             });
+        } else {
+             console.warn("Logout elements not found.");
+             logoutLink.on('click', function(event) { event.preventDefault(); if (confirm("Are you sure?")) { window.location.href = this.href; } });
+        }
+
+        if ($stopMembershipBtn.length && $stopMembershipModal.length) {
+            $stopMembershipBtn.on('click', function() {
+                $stopMembershipModal.addClass('active');
+            });
+
+            $stopMembershipModal.on('click', '.modal-close-btn, #cancelStopMembershipBtn', function() {
+                 $stopMembershipModal.removeClass('active');
+            });
+
+            $('#confirmStopMembershipBtn').on('click', function() {
+                 console.log("Membership stop confirmed (placeholder action)");
+                 alert("Your request to stop the membership has been processed (placeholder).");
+                 $stopMembershipModal.removeClass('active');
+                 $stopMembershipBtn.prop('disabled', true).text('Cancellation Pending');
+            });
+
+             $(window).on('click', function(event) {
+                 if ($(event.target).is($stopMembershipModal)) { $stopMembershipModal.removeClass('active'); }
              });
 
-        } else {
-             console.warn("Logout link or modal not found. Using default confirm.");
-             // Fallback to original confirm if modal elements missing
-             logoutLink.on('click', function(event) {
-                 event.preventDefault();
-                 var confirmLogout = confirm("Are you sure you want to logout?");
-                 if (confirmLogout) {
-                     if (navbar.hasClass('active')) {
-                         navbar.removeClass('active');
-                         menuIcon.removeClass('bx-x');
-                     }
-                     window.location.href = this.href;
-                 }
-             });
+        } else { console.warn("Stop membership button or modal not found."); }
+
+        if ($requestRefundLink.length) {
+            $requestRefundLink.on('click', function(event) {
+                event.preventDefault();
+                console.log("Request Refund clicked (placeholder action)");
+                alert("Refund request feature coming soon!");
+            });
+        }
+
+        if ($switchGymLink.length) {
+            $switchGymLink.on('click', function(event) {
+                event.preventDefault();
+                console.log("Switch Gym clicked (placeholder action)");
+                alert("Switch Gym feature coming soon!");
+            });
         }
 
 
-        $('header .navbar-right a[href="#profile"]').on('click', function(event) {
+        $('a[href="#profile"]').on('click', function(event) {
             event.preventDefault();
             var target = $($(this).attr('href'));
             if (target.length) {
-                 var headerHeight = $('header').outerHeight() || ( $(window).width() <= 991 ? parseInt(getComputedStyle(document.documentElement).getPropertyValue('--header-height-mobile')) : parseInt(getComputedStyle(document.documentElement).getPropertyValue('--header-height-desktop')) );
+                 var headerHeight = $('header').outerHeight() || ( $(window).width() <= 991 ? 80 : 100 );
                  var scrollToPosition = target.offset().top - headerHeight - 20;
-
-                 $('html, body').animate({
-                      scrollTop: scrollToPosition
-                 }, 800);
+                 $('html, body').animate({ scrollTop: scrollToPosition }, 800);
              }
-
-            if (navbar.hasClass('active')) {
-                navbar.removeClass('active');
-                menuIcon.removeClass('bx-x');
-            }
+            if (navbar.hasClass('active')) { navbar.removeClass('active'); menuIcon.removeClass('bx-x'); }
+            if ($profileDropdown.hasClass('active')) { $profileDropdown.removeClass('active'); $profilePicTrigger.removeClass('active');}
         });
+
+        function loadMembershipStatus() {
+            let userName = "Han Soyoung";
+            $('#header-user-name').text(userName);
+
+            const userPlan = "Premium";
+            const expiryDate = "2025-03-15";
+            $('#user-membership-plan').text(userPlan);
+            $('#user-membership-expiry').text(moment(expiryDate).format('MMMM D, YYYY'));
+        }
+        loadMembershipStatus();
 
     });
   </script>

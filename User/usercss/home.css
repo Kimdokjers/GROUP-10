@@ -670,128 +670,189 @@
       .modal-content .btn-primary, .modal-content .btn-secondary { font-size: 1.4rem; padding: 1rem 2.5rem;}
       #logoutModalMessage { font-size: 1.5rem; } /* Adjust modal text size */
    }
-   /* === Styles for Home Page Specific Content === */
+  /* === Styles for Home Page Specific Content === */
+
+/* Base styles for gym display sections */
 .gym-display {
-    padding-top: calc(var(--header-height-desktop) + 3rem); /* Adjust space below header */
-    padding-bottom: 8rem;
+    /* Internal padding for content */
+    padding: 4rem 3rem; /* Slightly more horizontal padding inside the box */
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 4rem; /* Increased gap */
-    min-height: calc(80vh - var(--header-height-desktop)); /* Example height */
-    max-width: 1200px; /* Limit width */
-    margin: 0 auto; /* Center the section */
-    padding-left: 2rem; /* Add padding */
-    padding-right: 2rem; /* Add padding */
+    gap: 4rem;
+
+    /* --- MODIFICATIONS FOR BOXED LOOK --- */
+    max-width: 1140px;  /* Constrain the width of the colored box, same as .container */
+    margin-left: auto;  /* Center the box on the page */
+    margin-right: auto; /* Center the box on the page */
+    border-radius: 12px;/* Add rounded corners to the background box */
+    box-shadow: 0 5px 20px rgba(0,0,0,0.2); /* Optional: Add a subtle shadow to lift the box */
+    /* --- END MODIFICATIONS --- */
 }
 
+/* Add space BELOW each gym section, except the last one */
+main > section.gym-display:not(:last-of-type) {
+    margin-bottom: 4rem; /* Increased gap size slightly */
+}
+
+
+/* --- Keep Alternating Background Colors --- */
+/* Style for ODD sections (1st, 3rd, 5th, etc.) */
+.gym-display:nth-of-type(odd) {
+    background-color: var(--color-dark-gray); /* Dark gray background (#1a1a1a) */
+}
+
+/* Style for EVEN sections (2nd, 4th, 6th, etc.) */
+.gym-display:nth-of-type(even) {
+    background-color: var(--snd-bf-color); /* Slightly different dark (#111) */
+}
+
+
+/* Ensure the very first section still has appropriate top margin below header */
+main > section.gym-display:first-of-type {
+     margin-top: calc(var(--header-height-desktop) + 4rem); /* Increased top margin */
+     /* padding-top is now handled by the base .gym-display padding */
+}
+@media (max-width: 991px) {
+    main > section.gym-display:first-of-type {
+        margin-top: calc(var(--header-height-mobile) + 3rem); /* Adjust for mobile */
+    }
+    main > section.gym-display:not(:last-of-type) {
+        margin-bottom: 3rem; /* Adjust gap for mobile */
+    }
+}
+
+
+/* Content within .gym-display */
 .gym-content {
-    flex: 1 1 55%; /* Allow text content slightly more space */
+    flex: 1 1 55%;
     max-width: 55%;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 2rem; /* Space between h1, p, button */
+    gap: 2rem;
+    color: var(--text-color);
 }
 
 .gym-image {
-    flex: 1 1 40%; /* Image takes less space */
+    flex: 1 1 40%;
     max-width: 40%;
-    text-align: center; /* Center image if container is wider */
+    text-align: center;
 }
 
 .gym-image img {
     width: 100%;
     height: auto;
-    border-radius: 12px; /* Rounded corners */
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); /* Shadow effect */
+    border-radius: 10px; /* Rounded corners for the image inside the box */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
     display: block;
     margin: 0 auto;
 }
 
 .gym-content h1 {
-    font-size: 4rem; /* Larger font size */
+    font-size: 3.8rem; /* Slightly adjusted for potentially less width */
     line-height: 1.2;
-    font-weight: 700; /* Bolder */
-    color: var(--text-color); /* White text */
+    font-weight: 700;
+    color: var(--text-color);
 }
 
 .gym-content h1 span {
-    color: var(--main-color); /* Gold color for gym name highlight */
+    color: var(--main-color);
 }
 
 .gym-content p {
-    font-size: 1.7rem; /* Slightly larger paragraph text */
+    font-size: 1.6rem; /* Slightly adjusted */
     color: var(--color-text-muted);
-    line-height: 1.8; /* Improved readability */
-    margin-bottom: 1.5rem; /* Space below paragraph */
+    line-height: 1.7; /* Adjusted line height */
+    margin-bottom: 1.5rem;
 }
 
 .gym-content .action-button {
-    /* Use .btn-primary styles defined earlier */
-    /* Add specific adjustments if needed */
-    padding: 1.4rem 3.2rem; /* Slightly adjusted padding */
-    font-size: 1.8rem;
+    padding: 1.3rem 3rem; /* Slightly adjusted */
+    font-size: 1.7rem;
 }
 
 /* --- Responsive adjustments for gym display --- */
+@media (max-width: 1180px) { /* Adjust max-width when container is close to section max-width */
+    .gym-display {
+        max-width: 95%; /* Allow a bit more fluid width */
+    }
+}
+
 
 @media (max-width: 991px) {
     .gym-display {
-        padding-top: calc(var(--header-height-mobile) + 4rem);
-        flex-direction: column-reverse; /* Stack image above text */
+        flex-direction: column-reverse;
         text-align: center;
-        gap: 3rem;
-        padding-left: 1rem;
-        padding-right: 1rem;
+        gap: 2.5rem; /* Adjust gap */
+        padding: 3rem 2rem; /* Adjust padding */
+        max-width: 90%; /* Ensure it doesn't touch screen edges */
     }
+    main > section.gym-display:first-of-type {
+        margin-top: calc(var(--header-height-mobile) + 3rem);
+    }
+
     .gym-content {
-        max-width: 90%; /* Allow content to take more width */
-        align-items: center; /* Center text and button */
+        max-width: 100%; /* Full width within the parent box */
+        align-items: center;
     }
     .gym-image {
-        max-width: 80%; /* Adjust image width */
-        margin-bottom: 2rem;
+        max-width: 75%; /* Image size adjustment */
+        margin-bottom: 1.5rem;
     }
     .gym-content h1 {
-        font-size: 3.5rem; /* Adjust heading size */
+        font-size: 3.2rem;
     }
     .gym-content p {
-        font-size: 1.6rem;
+        font-size: 1.5rem;
     }
 }
 
 @media (max-width: 767px) {
      .gym-content h1 {
-        font-size: 3rem;
+        font-size: 2.8rem;
     }
     .gym-content p {
-        font-size: 1.5rem;
+        font-size: 1.4rem;
     }
     .gym-content .action-button {
-        font-size: 1.6rem;
-        padding: 1.2rem 3rem;
+        font-size: 1.5rem;
+        padding: 1.1rem 2.8rem;
     }
     .gym-image {
-        max-width: 90%;
+        max-width: 85%;
+    }
+    .gym-display {
+        padding: 2.5rem 1.5rem;
+        max-width: 92%;
+    }
+    main > section.gym-display:not(:last-of-type) {
+        margin-bottom: 2.5rem;
     }
 }
 
 @media (max-width: 480px) {
      .gym-content h1 {
-        font-size: 2.6rem;
+        font-size: 2.4rem;
     }
     .gym-content p {
-        font-size: 1.4rem;
+        font-size: 1.3rem;
     }
      .gym-content .action-button {
-        font-size: 1.5rem;
-        padding: 1rem 2.5rem;
-        width: 100%; /* Make button full width */
-        max-width: 300px; /* Optional: limit max width */
+        font-size: 1.4rem;
+        padding: 1rem 2.2rem;
+        width: 90%;
+        max-width: 280px;
     }
      .gym-image {
+        max-width: 90%;
+    }
+     .gym-display {
+        padding: 2rem 1rem;
         max-width: 95%;
+    }
+    main > section.gym-display:not(:last-of-type) {
+        margin-bottom: 2rem;
     }
 }
 

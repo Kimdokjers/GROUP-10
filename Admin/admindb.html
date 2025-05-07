@@ -25,7 +25,7 @@
                     <li><a href="#" class="nav-link" data-target="staff-content"><i class="bi bi-headset"></i> <span class="nav-text">Staff/Coaches</span></a></li>
                     <li><a href="#" class="nav-link" data-target="gyms-content"><i class="bi bi-building"></i> <span class="nav-text">Fitness Gyms</span></a></li>
                     <li><a href="#" class="nav-link" data-target="payments-content"><i class="bi bi-credit-card-fill"></i> <span class="nav-text">Payments</span></a></li>
-                    <li><a href="../User/signin.html" id="logout-link"><i class="bi bi-box-arrow-left"></i> <span class="nav-text">Logout</span></a></li>
+
                 </ul>
             </nav>
         </aside>
@@ -33,41 +33,43 @@
         <main class="main-content">
             <header class="main-header">
                 <h1 id="page-title">Dashboard</h1>
-                <div class="admin-profile">
-                    <span>Welcome, Admin!</span>
+                <div class="admin-profile-area">
+                    <img src="../images/admin_pic.jpg" alt="Admin Profile Picture" class="admin-avatar">
+                    <span>Welcome, John!</span>
+                    <a href="../User/signin.html" id="header-logout-link" class="header-logout-button">
+                        <i class="bi bi-box-arrow-right"></i> Logout
+                    </a>
                 </div>
             </header>
 
             <div class="content-area">
+
 
                 <section id="dashboard-content" class="content-section active">
                     <h2>Overview</h2>
                     <div class="stats-cards">
                         <div class="card">
                             <h3>Total Users</h3>
-                            <p>1,250</p>
+                            <p id="total-users-stat">0</p>
                         </div>
                         <div class="card">
                             <h3>Active Members</h3>
-                            <p>980</p>
+                            <p id="active-members-stat">0</p>
                         </div>
                         <div class="card">
                             <h3>Total Gyms</h3>
-                            <p>18</p>
+                            <p id="total-gyms-stat">0</p>
                         </div>
                         <div class="card">
                             <h3>Total Coaches</h3>
-                            <p>15</p>
+                            <p id="total-coaches-stat">0</p>
                         </div>
                     </div>
 
                      <div class="recent-activity">
                         <h3>Recent Activity</h3>
-                        <ul>
-                            <li>John Doe checked in.</li>
-                            <li>New payment received from Jane Smith.</li>
-                            <li>New Coach Been Added By Admin</li>
-                            <li>Mike Ross registered as a new user.</li>
+                        <ul id="recent-activity-list">
+                            <li>Site Initialized.</li>
                         </ul>
                     </div>
                 </section>
@@ -86,8 +88,8 @@
                             <div class="chart-placeholder-container"><canvas id="newUserChart"></canvas></div>
                         </div>
                         <div class="chart-container">
-                            <h3>New Gym Locations</h3>
-                            <div class="chart-placeholder-container"><canvas id="newGymChart"></canvas></div>
+                            <h3>Gym Popularity (by User Count)</h3>
+                            <div class="chart-placeholder-container"><canvas id="gymPopularityChart"></canvas></div>
                         </div>
                     </div>
                 </section>
@@ -96,7 +98,7 @@
                 <section id="users-content" class="content-section">
                     <h2>Manage Users</h2>
                     <div class="controls-container">
-                        <button class="btn btn-primary add-btn">Add New User</button>
+                        <button class="btn btn-primary add-btn" data-modal-target="add-user-modal">Add New User</button>
                         <div class="search-container">
                             <input type="text" id="user-search-input" class="search-input" placeholder="Search Users...">
                             <button class="btn search-btn" id="user-search-btn"><i class="bi bi-search"></i></button>
@@ -105,11 +107,11 @@
                     <div class="table-container">
                         <table>
                             <thead>
-                                <tr><th>ID</th><th>Name</th><th>Email</th><th>Membership</th><th>Status</th><th>Actions</th></tr>
+                                <tr><th>ID</th><th>First Name</th><th>Last Name</th><th>Suffix</th><th>Email</th><th>Membership</th><th>Status</th><th>Actions</th></tr>
                             </thead>
-                            <tbody>
-                                <tr data-id="USR001"><td data-label="ID">USR001</td><td data-label="Name">Alice Johnson</td><td data-label="Email">alice@example.com</td><td data-label="Membership">Premium</td><td data-label="Status">Active</td><td data-label="Actions"><button class="btn btn-sm btn-danger">Delete</button></td></tr>
-                                <tr data-id="USR002"><td data-label="ID">USR002</td><td data-label="Name">Bob Williams</td><td data-label="Email">bob@example.com</td><td data-label="Membership">Basic</td><td data-label="Status">Inactive</td><td data-label="Actions"><button class="btn btn-sm btn-danger">Delete</button></td></tr>
+                            <tbody id="user-table-body">
+                                <tr data-id="USR001"><td data-label="ID">USR001</td><td data-label="First Name">Alice</td><td data-label="Last Name">Johnson</td><td data-label="Suffix"></td><td data-label="Email">alice@example.com</td><td data-label="Membership">Premium</td><td data-label="Status">Active</td><td data-label="Actions"><button class="btn btn-sm btn-danger">Delete</button></td></tr>
+                                <tr data-id="USR002"><td data-label="ID">USR002</td><td data-label="First Name">Bob</td><td data-label="Last Name">Williams</td><td data-label="Suffix">Jr.</td><td data-label="Email">bob@example.com</td><td data-label="Membership">Basic</td><td data-label="Status">Inactive</td><td data-label="Actions"><button class="btn btn-sm btn-danger">Delete</button></td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -118,7 +120,7 @@
                 <section id="staff-content" class="content-section">
                     <h2>Manage Staff / Coaches</h2>
                     <div class="controls-container">
-                        <button class="btn btn-primary add-btn">Add New Staff</button>
+                        <button class="btn btn-primary add-btn" data-modal-target="add-coach-modal">Add New Staff</button>
                         <div class="search-container">
                             <input type="text" id="staff-search-input" class="search-input" placeholder="Search Staff...">
                             <button class="btn search-btn" id="staff-search-btn"><i class="bi bi-search"></i></button>
@@ -127,11 +129,11 @@
                      <div class="table-container">
                         <table>
                             <thead>
-                                <tr><th>ID</th><th>Name</th><th>Role</th><th>Email</th><th>Gym Branch</th><th>Actions</th></tr>
+                                <tr><th>ID</th><th>First Name</th><th>Last Name</th><th>Suffix</th><th>Role</th><th>Email</th><th>Gym Branch</th><th>Actions</th></tr>
                             </thead>
-                            <tbody>
-                                <tr data-id="STF001"><td data-label="ID">STF001</td><td data-label="Name">Charlie Brown</td><td data-label="Role">Head Coach</td><td data-label="Email">charlie@gym.com</td><td data-label="Gym Branch">Downtown</td><td data-label="Actions"><button class="btn btn-sm btn-danger">Delete</button></td></tr>
-                                <tr data-id="STF002"><td data-label="ID">STF002</td><td data-label="Name">Diana Prince</td><td data-label="Role">Receptionist</td><td data-label="Email">diana@gym.com</td><td data-label="Gym Branch">Uptown</td><td data-label="Actions"><button class="btn btn-sm btn-danger">Delete</button></td></tr>
+                            <tbody id="coach-table-body">
+                                <tr data-id="STF001"><td data-label="ID">STF001</td><td data-label="First Name">Charlie</td><td data-label="Last Name">Brown</td><td data-label="Suffix"></td><td data-label="Role">Head Coach</td><td data-label="Email">charlie@gym.com</td><td data-label="Gym Branch">Elite Fitness Hub</td><td data-label="Actions"><button class="btn btn-sm btn-danger">Delete</button></td></tr>
+                                <tr data-id="STF002"><td data-label="ID">STF002</td><td data-label="First Name">Diana</td><td data-label="Last Name">Prince</td><td data-label="Suffix"></td><td data-label="Role">Receptionist</td><td data-label="Email">diana@gym.com</td><td data-label="Gym Branch">Iron Haven</td><td data-label="Actions"><button class="btn btn-sm btn-danger">Delete</button></td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -141,7 +143,7 @@
                 <section id="gyms-content" class="content-section">
                     <h2>Manage Fitness Gyms</h2>
                     <div class="controls-container">
-                         <button class="btn btn-primary add-btn">Add New Gym</button>
+                         <button class="btn btn-primary add-btn" data-modal-target="add-gym-modal">Add New Gym</button>
                          <div class="search-container">
                             <input type="text" id="gym-search-input" class="search-input" placeholder="Search Gyms...">
                             <button class="btn search-btn" id="gym-search-btn"><i class="bi bi-search"></i></button>
@@ -152,9 +154,9 @@
                             <thead>
                                 <tr><th>ID</th><th>Name</th><th>Location</th><th>Manager</th><th>Capacity</th><th>Actions</th></tr>
                             </thead>
-                            <tbody>
-                                <tr data-id="GYM01"><td data-label="ID">GYM01</td><td data-label="Name">Downtown Fitness Hub</td><td data-label="Location">123 Main St</td><td data-label="Manager">Clark Kent</td><td data-label="Capacity">150</td><td data-label="Actions"><button class="btn btn-sm btn-danger">Delete</button></td></tr>
-                                <tr data-id="GYM02"><td data-label="ID">GYM02</td><td data-label="Name">Uptown Gym Center</td><td data-label="Location">456 Market Ave</td><td data-label="Manager">Lois Lane</td><td data-label="Capacity">100</td><td data-label="Actions"><button class="btn btn-sm btn-danger">Delete</button></td></tr>
+                            <tbody id="gym-table-body">
+                                <tr data-id="GYM001"><td data-label="ID">GYM001</td><td data-label="Name">Elite Fitness Hub</td><td data-label="Location">1760 Pearl Street, Boulder, CO 80302, USA</td><td data-label="Manager">Clark Kent</td><td data-label="Capacity">150</td><td data-label="Actions"><button class="btn btn-sm btn-danger">Delete</button></td></tr>
+                                <tr data-id="GYM002"><td data-label="ID">GYM002</td><td data-label="Name">Iron Haven</td><td data-label="Location">52 Portland Street, Manchester M1 4QU, United Kingdom</td><td data-label="Manager">Lois Lane</td><td data-label="Capacity">100</td><td data-label="Actions"><button class="btn btn-sm btn-danger">Delete</button></td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -172,7 +174,7 @@
                             <thead>
                                 <tr><th>Payment ID</th><th>User ID</th><th>User Name</th><th>Amount</th><th>Date</th><th>Status</th><th>Method</th><th>Actions</th></tr>
                             </thead>
-                            <tbody>
+                            <tbody id="payment-table-body">
                                 <tr data-id="PAY001"><td data-label="Payment ID">PAY001</td><td data-label="User ID">USR001</td><td data-label="User Name">Alice Johnson</td><td data-label="Amount">$50.00</td><td data-label="Date">2023-10-26</td><td data-label="Status">Completed</td><td data-label="Method">Credit Card</td><td data-label="Actions"><button class="btn btn-sm btn-info">Refund</button></td></tr>
                                 <tr data-id="PAY002"><td data-label="Payment ID">PAY002</td><td data-label="User ID">USR003</td><td data-label="User Name">Eva Green</td><td data-label="Amount">$50.00</td><td data-label="Date">2023-10-25</td><td data-label="Status">Pending</td><td data-label="Method">Bank Transfer</td><td data-label="Actions"><button class="btn btn-sm btn-success">Mark as Paid</button></td></tr>
                             </tbody>
@@ -180,10 +182,120 @@
                     </div>
                 </section>
 
-            </div>
+            </div> <!-- .content-area -->
         </main>
+    </div> <!-- .admin-container -->
+
+    <!-- MODALS -->
+    <!-- Add New User Modal -->
+    <div id="add-user-modal" class="modal">
+        <div class="modal-content">
+            <button class="close-btn">×</button>
+            <h2>Add New User</h2>
+            <form id="add-user-form" novalidate>
+                <div class="form-group">
+                    <label for="user-id">Member ID:</label>
+                    <input type="text" id="user-id" name="user-id" placeholder="Autogenerated" readonly aria-readonly="true">
+                </div>
+                <div class="form-group">
+                    <label for="user-first-name">First Name:</label>
+                    <input type="text" id="user-first-name" name="user-first-name" required placeholder="e.g., Bruce" aria-describedby="user-first-name-error" aria-invalid="false">
+                    <div class="error-message" id="user-first-name-error" role="alert"></div>
+                </div>
+                <div class="form-group">
+                    <label for="user-last-name">Last Name:</label>
+                    <input type="text" id="user-last-name" name="user-last-name" required placeholder="e.g., Wayne" aria-describedby="user-last-name-error" aria-invalid="false">
+                    <div class="error-message" id="user-last-name-error" role="alert"></div>
+                </div>
+                <div class="form-group">
+                    <label for="user-suffix">Suffix (Optional):</label>
+                    <input type="text" id="user-suffix" name="user-suffix" placeholder="e.g., Jr., III">
+                     <div class="error-message" id="user-suffix-error" role="alert"></div>
+                </div>
+                <div class="form-group">
+                    <label for="user-email">Email:</label>
+                    <input type="email" id="user-email" name="user-email" required placeholder="e.g., bruce@wayne.com" aria-describedby="user-email-error" aria-invalid="false">
+                    <div class="error-message" id="user-email-error" role="alert"></div>
+                </div>
+                <div class="form-group">
+                    <label for="user-membership">Membership:</label>
+                    <select id="user-membership" name="user-membership" required aria-describedby="user-membership-error" aria-invalid="false">
+                        <option value="">-- Select Membership --</option>
+                        <option value="Premium">Premium</option>
+                        <option value="Basic">Basic</option>
+                    </select>
+                    <div class="error-message" id="user-membership-error" role="alert"></div>
+                </div>
+                <div class="form-group">
+                    <label for="user-status">Status:</label>
+                    <select id="user-status" name="user-status" required aria-describedby="user-status-error" aria-invalid="false">
+                        <option value="">-- Select Status --</option>
+                        <option value="Active">Active</option>
+                        <option value="Inactive">Inactive</option>
+                    </select>
+                    <div class="error-message" id="user-status-error" role="alert"></div>
+                </div>
+                <button type="submit" class="btn btn-primary modal-add-btn">Add New Member</button>
+            </form>
+        </div>
     </div>
 
+    <!-- Add New Coach/Staff Modal -->
+    <div id="add-coach-modal" class="modal">
+        <div class="modal-content">
+            <button class="close-btn">×</button>
+            <h2>Add New Coach/Staff</h2>
+            <form id="add-coach-form" novalidate>
+                <div class="form-group">
+                    <label for="coach-id">Staff ID:</label>
+                    <input type="text" id="coach-id" name="coach-id" placeholder="Autogenerated" readonly aria-readonly="true">
+                </div>
+                <div class="form-group">
+                    <label for="coach-first-name">First Name:</label>
+                    <input type="text" id="coach-first-name" name="coach-first-name" required placeholder="e.g., Clark" aria-describedby="coach-first-name-error" aria-invalid="false">
+                    <div class="error-message" id="coach-first-name-error" role="alert"></div>
+                </div>
+                <div class="form-group">
+                    <label for="coach-last-name">Last Name:</label>
+                    <input type="text" id="coach-last-name" name="coach-last-name" required placeholder="e.g., Kent" aria-describedby="coach-last-name-error" aria-invalid="false">
+                    <div class="error-message" id="coach-last-name-error" role="alert"></div>
+                </div>
+                 <div class="form-group">
+                    <label for="coach-suffix">Suffix (Optional):</label>
+                    <input type="text" id="coach-suffix" name="coach-suffix" placeholder="e.g., Sr.">
+                    <div class="error-message" id="coach-suffix-error" role="alert"></div>
+                </div>
+                <div class="form-group">
+                    <label for="coach-email">Email:</label>
+                    <input type="email" id="coach-email" name="coach-email" required placeholder="e.g., clark@dailyplanet.com" aria-describedby="coach-email-error" aria-invalid="false">
+                    <div class="error-message" id="coach-email-error" role="alert"></div>
+                </div>
+                <div class="form-group">
+                    <label for="coach-role">Role:</label>
+                    <select id="coach-role" name="coach-role" required aria-describedby="coach-role-error" aria-invalid="false">
+                        <option value="">-- Select Role --</option>
+                        <option value="Head Coach">Head Coach</option>
+                        <option value="Manager">Manager</option>
+                        <option value="Receptionist">Receptionist</option>
+                    </select>
+                    <div class="error-message" id="coach-role-error" role="alert"></div>
+                </div>
+                <div class="form-group">
+                    <label for="coach-gym-branch">Gym Branch:</label>
+                    <select id="coach-gym-branch" name="coach-gym-branch" required aria-describedby="coach-gym-branch-error" aria-invalid="false">
+                        <option value="">-- Select Gym Branch --</option>
+                        <option value="Elite Fitness Hub">Elite Fitness Hub</option>
+                        <option value="Iron Haven">Iron Haven</option>
+                        <option value="Elevate Athletics">Elevate Athletics</option>
+                    </select>
+                    <div class="error-message" id="coach-gym-branch-error" role="alert"></div>
+                </div>
+                <button type="submit" class="btn btn-primary modal-add-btn">Add New Coach</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add New Gym Modal -->
     <div id="add-gym-modal" class="modal">
         <div class="modal-content">
             <button class="close-btn">×</button>
@@ -191,85 +303,39 @@
             <form id="add-gym-form" novalidate>
                 <div class="form-group">
                     <label for="gym-id">Gym ID:</label>
-                    <input type="text" id="gym-id" name="gym-id" required placeholder="e.g., GYM03">
+                    <input type="text" id="gym-id" name="gym-id" placeholder="Autogenerated" readonly aria-readonly="true">
                 </div>
                 <div class="form-group">
                     <label for="gym-name">Name:</label>
-                    <input type="text" id="gym-name" name="gym-name" required placeholder="e.g., Westside Fitness">
+                    <select id="gym-name" name="gym-name" required aria-describedby="gym-name-error" aria-invalid="false">
+                        <option value="">-- Select Gym Name --</option>
+                        <option value="Elite Fitness Hub">Elite Fitness Hub</option>
+                        <option value="Iron Haven">Iron Haven</option>
+                        <option value="Elevate Athletics">Elevate Athletics</option>
+                    </select>
+                    <div class="error-message" id="gym-name-error" role="alert"></div>
                 </div>
                 <div class="form-group">
                     <label for="gym-location">Location:</label>
-                    <input type="text" id="gym-location" name="gym-location" required placeholder="e.g., 789 Oak Blvd">
+                    <select id="gym-location" name="gym-location" required aria-describedby="gym-location-error" aria-invalid="false">
+                        <option value="">-- Select Location --</option>
+                        <option value="1760 Pearl Street, Boulder, CO 80302, USA">1760 Pearl Street, Boulder, CO 80302, USA</option>
+                        <option value="52 Portland Street, Manchester M1 4QU, United Kingdom">52 Portland Street, Manchester M1 4QU, United Kingdom</option>
+                        <option value="102 Timog Avenue, Barangay Sacred Heart, Quezon City, Metro Manila 1103, Philippines">102 Timog Avenue, Barangay Sacred Heart, Quezon City, Metro Manila 1103, Philippines</option>
+                    </select>
+                    <div class="error-message" id="gym-location-error" role="alert"></div>
                 </div>
                 <div class="form-group">
-                    <label for="gym-manager">Manager:</label>
-                    <input type="text" id="gym-manager" name="gym-manager" required placeholder="e.g., Bruce Wayne">
+                    <label for="gym-manager">Manager Name:</label>
+                    <input type="text" id="gym-manager" name="gym-manager" required placeholder="e.g., Diana Prince" aria-describedby="gym-manager-error" aria-invalid="false">
+                    <div class="error-message" id="gym-manager-error" role="alert"></div>
                 </div>
                 <div class="form-group">
                     <label for="gym-capacity">Capacity:</label>
-                    <input type="number" id="gym-capacity" name="gym-capacity" required min="1" placeholder="e.g., 120">
+                    <input type="number" id="gym-capacity" name="gym-capacity" required min="1" placeholder="e.g., 120" aria-describedby="gym-capacity-error" aria-invalid="false">
+                    <div class="error-message" id="gym-capacity-error" role="alert"></div>
                 </div>
                 <button type="submit" class="btn btn-primary modal-add-btn">Add New Gym</button>
-            </form>
-        </div>
-    </div>
-
-    <div id="add-user-modal" class="modal">
-        <div class="modal-content">
-            <button class="close-btn">×</button>
-            <h2>Add New User</h2>
-            <form id="add-user-form" novalidate>
-                <div class="form-group">
-                    <label for="member-id">Member ID:</label>
-                    <input type="text" id="member-id" name="member-id" required placeholder="e.g., user03">
-                </div>
-                <div class="form-group">
-                    <label for="member-name">Name:</label>
-                    <input type="text" id="member-name" name="member-name" required placeholder="e.g., Bruce Wayne ">
-                </div>
-                <div class="form-group">
-                    <label for="email">Email:</label>
-                    <input type="email" id="email" name="email" required placeholder="e.g., use@gmail.com">
-                </div>
-                <div class="form-group">
-                    <label for="membership">Membership:</label>
-                    <input type="text" id="membership" name="membership" required placeholder="e.g., Premium">
-                </div>
-                <div class="form-group">
-                    <label for="status">Status:</label>
-                    <input type="text" id="status" name="status" required placeholder="e.g., Active">
-                </div>
-                <button type="submit" class="btn btn-primary modal-add-btn">Add New Member</button>
-            </form>
-        </div>
-    </div>
-
-    <div id="add-coach-modal" class="modal">
-        <div class="modal-content">
-            <button class="close-btn">×</button>
-            <h2>Add New Coach/Staff</h2>
-            <form id="add-coach-form" novalidate>
-                <div class="form-group">
-                    <label for="coach-id">ID</label>
-                    <input type="text" id="coach-id" name="coach-id" required placeholder="e.g., STFF01">
-                </div>
-                <div class="form-group">
-                    <label for="coach-name">Name</label>
-                    <input type="text" id="coach-name" name="coach-name" required placeholder="e.g., robert">
-                </div>
-                <div class="form-group">
-                    <label for="coach-role">Role</label>
-                    <input type="text" id="coach-role" name="coach-role" required placeholder="e.g., Manager">
-                </div>
-                <div class="form-group">
-                    <label for="coach-email">Email</label>
-                    <input type="email" id="coach-email" name="coach-email" required placeholder="e.g., coach@gmail.com">
-                </div>
-                <div class="form-group">
-                    <label for="coach-branch">Gym Branch</label>
-                    <input type="text" id="coach-branch" name="coach-branch" required placeholder="e.g., KG">
-                </div>
-                <button type="submit" class="btn btn-primary modal-add-btn">Add New Coach</button>
             </form>
         </div>
     </div>

@@ -4,43 +4,737 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Home Page - OptiLife</title>
-    <!-- Fonts and Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <!-- Link to NEW External CSS file -->
-    <link rel="stylesheet" href="usercss/home.css">
+    <style>
+      * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+          text-decoration: none;
+          list-style: none;
+          border: none;
+          outline: none;
+      }
+
+      :root {
+          --bg-color: #000;
+          --snd-bf-color: #111;
+          --text-color: #fff;
+          --main-color: #FFD700;
+          --color-black: #0a0a0a;
+          --color-dark-gray: #1a1a1a;
+          --color-gold: #daa520;
+          --color-gold-light: #f0c44c;
+          --color-text-muted: #aaaaaa;
+          --border-color-light: #333;
+          --header-height-desktop: 100px;
+          --header-height-mobile: 80px;
+          --font-primary: 'Poppins', sans-serif;
+          --modal-overlay-bg: rgba(0, 0, 0, 0.7);
+          --button-primary-bg: var(--main-color);
+          --button-primary-text: var(--color-black);
+          --button-primary-hover-bg: transparent;
+          --button-secondary-bg: #555;
+          --button-secondary-text: var(--text-color);
+          --button-secondary-hover-bg: #666;
+          --modal-bg-dark: var(--color-dark-gray);
+          --modal-text-dark: var(--text-color);
+      }
+
+      html {
+          font-size: 62.5%;
+          overflow-x: hidden;
+          scroll-behavior: smooth;
+      }
+
+      body {
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        font-family: var(--font-primary);
+        line-height: 1.6;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+
+      img {
+          max-width: 100%;
+          height: auto;
+          display: block;
+      }
+
+      header {
+          position: fixed;
+          width: 100%;
+          height: var(--header-height-desktop);
+          top: 0;
+          left: 0;
+          z-index: 1000;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 1rem 9%;
+          background: rgba(0, 0, 0, 0.7);
+          backdrop-filter: blur(10px);
+          transition: background 0.5s ease, backdrop-filter 0.5s ease, height 0.3s ease;
+          box-sizing: border-box;
+          border-bottom: 1px solid var(--border-color-light);
+      }
+
+      .logo {
+          cursor: pointer;
+          transition: 0.3s ease-in-out;
+          flex-shrink: 0;
+          display: flex;
+          align-items: center;
+      }
+
+      .logo img {
+          max-width: 100px;
+          height: auto;
+      }
+
+      .logo:hover {
+          transform: scale(1.05);
+      }
+
+      .navbar {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          list-style: none;
+          padding: 0;
+          margin: 0;
+          flex-grow: 1;
+          margin-left: 4rem;
+      }
+
+      .navbar-left,
+      .navbar-right {
+          display: flex;
+          align-items: center;
+          padding: 0;
+          margin: 0;
+      }
+      .navbar-right {
+          gap: 2rem;
+      }
+
+
+      .navbar li {
+          margin: 0;
+          padding: 0;
+          display: flex;
+          align-items: center;
+      }
+
+      .navbar a {
+          font-size: 1.8rem;
+          font-weight: 500;
+          color: var(--text-color);
+          transition: all 0.3s ease;
+          border-bottom: 3px solid transparent;
+          white-space: nowrap;
+          padding: 0.5rem 0;
+      }
+
+      .navbar-left li a {
+          margin-left: 4rem;
+      }
+      .navbar-left li:first-child a {
+          margin-left: 0;
+      }
+
+      .navbar-right .profile-menu-container {
+          position: relative;
+      }
+
+      .welcome-text {
+          font-size: 1.6rem;
+          color: var(--color-text-muted);
+          white-space: nowrap;
+      }
+      .welcome-text span#header-user-name {
+          font-weight: 500;
+          color: var(--text-color);
+      }
+
+      .navbar-right li a#logout-link {
+          margin-left: 0;
+          display: flex;
+          align-items: center;
+          gap: 0.6rem;
+          border-bottom: none;
+          padding: 0.5rem 0.8rem;
+          border-radius: 4px;
+      }
+      .navbar-right li a#logout-link i {
+          font-size: 2rem;
+          line-height: 1;
+          transition: color 0.3s ease;
+      }
+
+      .navbar a:hover,
+      .navbar a.active {
+          color: var(--main-color);
+          border-bottom-color: var(--main-color);
+      }
+
+      .navbar-right li a#logout-link:hover {
+          color: var(--main-color);
+          border-bottom-color: transparent;
+          background-color: rgba(255, 215, 0, 0.1);
+      }
+      .navbar-right li a#logout-link:hover i {
+          color: var(--main-color);
+      }
+
+
+      .navbar .profile-pic {
+          width: 50px;
+          height: 50px;
+          border-radius: 50%;
+          object-fit: cover;
+          display: block;
+          cursor: pointer;
+          transition: transform 0.2s ease, box-shadow 0.2s ease;
+          border: 2px solid transparent;
+      }
+      .navbar .profile-pic:hover {
+          transform: scale(1.05);
+          box-shadow: 0 0 10px rgba(var(--main-color), 0.5);
+      }
+       .navbar .profile-pic.active {
+           border-color: var(--main-color);
+           box-shadow: 0 0 10px rgba(var(--main-color), 0.5);
+       }
+
+      #menu-icon {
+          font-size: 4.5rem;
+          color: var(--main-color);
+          cursor: pointer;
+          display: none;
+          margin-left: 2rem;
+          z-index: 1001;
+      }
+
+       .profile-dropdown {
+          display: none;
+          position: absolute;
+          top: 100%;
+          right: 0;
+          margin-top: 10px;
+          background-color: var(--snd-bf-color);
+          border: 1px solid var(--border-color-light);
+          border-radius: 6px;
+          min-width: 180px;
+          box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+          z-index: 1100;
+          padding: 0.5rem 0;
+          list-style: none;
+          animation: fadeInDropdown 0.2s ease-out;
+      }
+      .profile-dropdown.active { display: block; }
+      @keyframes fadeInDropdown { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
+
+      .profile-dropdown li a.dropdown-item {
+          display: block;
+          padding: 0.8rem 1.5rem;
+          font-size: 1.4rem;
+          color: var(--text-color);
+          font-weight: 400;
+          white-space: nowrap;
+          transition: background-color 0.2s ease, color 0.2s ease;
+          border-bottom: none;
+      }
+      .profile-dropdown li a.dropdown-item:hover {
+          background-color: var(--color-dark-gray);
+          color: var(--main-color);
+      }
+
+      main {
+        padding-top: var(--header-height-desktop);
+        flex-grow: 1;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin-left: auto;
+        margin-right: auto;
+        padding: 0 2rem;
+      }
+
+      .gym-display {
+          padding: 5rem 2rem;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 4rem;
+          max-width: 1140px;
+          margin-left: auto;
+          margin-right: auto;
+          border-radius: 12px;
+          box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+      }
+
+      main > section.gym-display:not(:last-of-type) {
+          margin-bottom: 4rem;
+      }
+
+      .gym-display:nth-of-type(odd) {
+          background-color: var(--color-dark-gray);
+      }
+
+      .gym-display:nth-of-type(even) {
+          background-color: var(--snd-bf-color);
+      }
+
+      main > section.gym-display:first-of-type {
+           margin-top: calc(var(--header-height-desktop) + 4rem);
+      }
+      @media (max-width: 991px) {
+          main > section.gym-display:first-of-type {
+              margin-top: calc(var(--header-height-mobile) + 3rem);
+          }
+          main > section.gym-display:not(:last-of-type) {
+              margin-bottom: 3rem;
+          }
+      }
+
+      .gym-content {
+          flex: 1 1 55%;
+          max-width: 55%;
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 2rem;
+          color: var(--text-color);
+      }
+
+      .gym-image {
+          flex: 1 1 40%;
+          max-width: 40%;
+          text-align: center;
+      }
+
+      .gym-image img {
+          width: 100%;
+          height: auto;
+          border-radius: 10px;
+          box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+          display: block;
+          margin: 0 auto;
+      }
+
+      .gym-content h1 {
+          font-size: 3.8rem;
+          line-height: 1.2;
+          font-weight: 700;
+          color: var(--text-color);
+      }
+
+      .gym-content h1 span {
+          color: var(--main-color);
+      }
+
+      .gym-content p {
+          font-size: 1.6rem;
+          color: var(--color-text-muted);
+          line-height: 1.7;
+          margin-bottom: 1.5rem;
+      }
+
+      .gym-content .action-button {
+          padding: 1.3rem 3rem;
+          font-size: 1.7rem;
+      }
+
+      .btn, .btn-primary {
+          display: inline-block;
+          padding: 1.2rem 3rem;
+          border-radius: 0.8rem;
+          font-weight: 600;
+          text-align: center;
+          cursor: pointer;
+          transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease, box-shadow 0.5s ease;
+          border: 2px solid var(--main-color);
+          font-size: 1.7rem;
+          color: var(--button-primary-text);
+          background: var(--button-primary-bg);
+          letter-spacing: 0.1rem;
+          box-shadow: none;
+      }
+      .btn:hover, .btn-primary:hover {
+          background-color: var(--button-primary-hover-bg);
+          color: var(--main-color);
+          box-shadow: 0 0 1.6rem var(--main-color);
+          transform: translateY(-2px);
+      }
+
+      .btn-secondary {
+           display: inline-block;
+           padding: 1.2rem 3rem;
+           border-radius: 0.8rem;
+           font-weight: 600;
+           text-align: center;
+           cursor: pointer;
+           transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+           border: 2px solid var(--button-secondary-bg, #aaa);
+           font-size: 1.7rem;
+           background: var(--button-secondary-bg);
+           color: var(--button-secondary-text);
+      }
+      .btn-secondary:hover {
+          background: var(--button-secondary-hover-bg);
+          border-color: var(--button-secondary-hover-bg);
+          transform: translateY(-1px);
+      }
+
+      .modal {
+          display: none;
+          position: fixed;
+          z-index: 1050;
+          left: 0; top: 0; width: 100%; height: 100%;
+          overflow: auto;
+          background-color: var(--modal-overlay-bg);
+          align-items: center; justify-content: center;
+      }
+      .modal.active { display: flex; }
+      .modal-content {
+          padding: 25px 30px;
+          border: 1px solid var(--border-color-light);
+          width: 90%;
+          max-width: 400px;
+          text-align: center;
+          position: relative;
+          border-radius: 8px;
+          animation: fadeInModal 0.3s ease-out forwards;
+          background-color: var(--modal-bg-dark, var(--color-dark-gray));
+          color: var(--modal-text-dark, var(--text-color));
+      }
+      #logoutConfirmationModal .modal-content {
+          background-color: #fefefe;
+          color: var(--color-black);
+          border-color: #888;
+      }
+
+      @keyframes fadeInModal { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+
+      .modal-close-btn, .close-button {
+          position: absolute; top: 10px; right: 15px;
+          color: var(--text-muted-setgoals, #aaa);
+          font-size: 2.8rem; font-weight: bold;
+          border: none; background: none; cursor: pointer; line-height: 1;
+      }
+      .modal-close-btn:hover, .close-button:hover { color: var(--text-color, black); }
+      #logoutConfirmationModal .modal-close-btn:hover,
+      #logoutConfirmationModal .close-button:hover { color: black; }
+
+
+      #logoutModalMessage {
+          font-size: 1.6rem;
+          margin-bottom: 2rem;
+          text-align: center;
+          font-weight: 500;
+          line-height: 1.6;
+      }
+      #logoutConfirmationModal #logoutModalMessage { color: var(--color-black); }
+
+      .modal-content .btn-primary,
+      .modal-content .btn-secondary {
+          padding: 1rem 2.5rem;
+          font-size: 1.5rem;
+          flex: 1;
+          min-width: 120px;
+          margin: 0 5px;
+      }
+       .modal-content .btn-secondary {
+           background-color: var(--button-secondary-bg);
+           color: var(--button-secondary-text);
+           border-color: #444;
+       }
+      .modal-content .btn-secondary:hover {
+           background-color: var(--button-secondary-hover-bg);
+           border-color: #555;
+      }
+       #logoutConfirmationModal .modal-content .btn-secondary {
+          background: #aaa; color: #fff; border-color: #aaa;
+       }
+       #logoutConfirmationModal .modal-content .btn-secondary:hover {
+           background: #888; border-color: #888;
+       }
+
+      #logoutConfirmationModal .modal-content > div:last-child {
+          margin-top: 1.5rem;
+          display: flex;
+          justify-content: center;
+          gap: 1rem;
+          flex-wrap: wrap;
+      }
+
+      .subscribe-section {
+          background-color: var(--snd-bf-color);
+          padding: 4rem 0;
+          border-top: 1px solid var(--border-color-light);
+          margin-top: auto;
+      }
+      .subscribe-section .container.subscribe-content {
+          max-width: 1200px;
+          margin: 0 auto;
+          padding: 0 2rem;
+          display: grid;
+          grid-template-columns: 1fr 1.5fr;
+          gap: 3rem;
+          align-items: start;
+      }
+      .subscribe-text h2 {
+          font-size: 2.4rem;
+          color: var(--main-color);
+          margin-bottom: 1rem;
+          text-align: left;
+      }
+      .subscribe-text p {
+          font-size: 1.5rem;
+          color: var(--color-text-muted);
+          margin-bottom: 2rem;
+          line-height: 1.7;
+      }
+      .subscribe-form {
+          display: flex;
+          gap: 1rem;
+          margin-bottom: 2rem;
+      }
+      .subscribe-form input[type="email"] {
+          flex-grow: 1;
+          padding: 1.2rem 1.5rem;
+          font-size: 1.5rem;
+          border-radius: 6px;
+          border: 1px solid var(--border-color-light);
+          background-color: var(--color-dark-gray);
+          color: var(--text-color);
+          outline: none;
+      }
+      .subscribe-form input[type="email"]::placeholder {
+          color: var(--color-text-muted);
+      }
+      .subscribe-form input[type="email"]:focus {
+          border-color: var(--main-color);
+          box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.2);
+      }
+
+      .subscribe-form button.btn-primary {
+          padding: 1.2rem 2.5rem;
+          font-size: 1.5rem;
+          min-width: auto;
+          border-radius: 6px;
+      }
+
+      .social-icons {
+          display: flex;
+          gap: 1.5rem;
+      }
+      .social-icons a {
+          color: var(--color-text-muted);
+          font-size: 2.2rem;
+          transition: color 0.3s ease, transform 0.3s ease;
+      }
+      .social-icons a:hover {
+          color: var(--main-color);
+          transform: translateY(-3px);
+      }
+      .footer-links {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+          gap: 2rem;
+      }
+      .footer-links h4 {
+          font-size: 1.6rem;
+          color: var(--main-color);
+          margin-bottom: 1rem;
+          font-weight: 600;
+      }
+      .footer-links ul {
+          list-style: none;
+          padding: 0;
+          margin: 0;
+      }
+      .footer-links li {
+          margin-bottom: 0.8rem;
+      }
+      .footer-links a {
+          font-size: 1.4rem;
+          color: var(--color-text-muted);
+          transition: color 0.3s ease;
+      }
+      .footer-links a:hover {
+          color: var(--text-color);
+          text-decoration: underline;
+      }
+
+      footer {
+          background-color: var(--bg-color);
+          color: var(--color-text-muted);
+          text-align: center;
+          padding: 2rem 0;
+          font-size: 1.3rem;
+          border-top: 1px solid var(--border-color-light);
+          margin-top: 0;
+      }
+      footer .container {
+          max-width: 1200px;
+          margin: 0 auto;
+          padding: 0 2rem;
+      }
+
+      @media (max-width: 1180px) {
+          .gym-display {
+              max-width: 95%;
+          }
+      }
+
+      @media (max-width: 1024px) {
+          .navbar-right img.profile-pic {
+               width: 50px; height: 50px; margin-left: 0; margin-right: 0;
+          }
+          .navbar-right { gap: 1.5rem; }
+      }
+
+      @media (max-width: 991px) {
+          html { font-size: 55%; }
+          header { height: var(--header-height-mobile); padding: 1rem 5%; }
+          main { padding-top: var(--header-height-mobile); }
+          #menu-icon { display: block; }
+          .logo img { max-width: 100px; }
+
+          .navbar {
+              position: absolute; top: 100%; right: -100%; width: 250px;
+              background: var(--color-black); flex-direction: column; align-items: center;
+              padding: 2rem; transition: right .50s ease; box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+              border-radius: 0 0 10px 10px; justify-content: flex-start; flex-grow: 0; margin-left: 0;
+          }
+          .navbar.active { right: 5%; display: flex; }
+
+          .navbar-left, .navbar-right { flex-direction: column; width: 100%; align-items: center; gap: 0; }
+          .navbar-right { margin-top: 1.5rem; gap: 1.5rem; }
+          .navbar li { width: 100%; text-align: center; margin-bottom: 1.5rem; }
+          .navbar-right li { margin-bottom: 0; }
+          .navbar .profile-pic { margin: 0 auto 1rem auto; }
+          .welcome-text { margin-bottom: 1rem; }
+          .navbar-right li a#logout-link { margin-top: 0.5rem; }
+
+          .navbar a { display: block; margin: 0 !important; padding: 1rem 0; font-size: 2rem; text-align: center; border-bottom: none; }
+           .navbar a:hover, .navbar a.active { color: var(--main-color); border-bottom: none; }
+
+          .profile-menu-container { position: static; width: 100%; margin-bottom: 1rem; }
+          .profile-dropdown {
+              position: static; display: block;
+              width: 100%; margin-top: 0.5rem; margin-bottom: 0;
+              box-shadow: none; border: none; border-top: 1px solid var(--border-color-light);
+              border-bottom: 1px solid var(--border-color-light); border-radius: 0;
+              background-color: transparent; padding: 0; animation: none;
+          }
+           .profile-dropdown li a.dropdown-item {
+               text-align: center; padding: 1rem 1.5rem; font-size: 1.6rem;
+               border-bottom: 1px solid var(--border-color-light);
+           }
+           .profile-dropdown li:last-child a.dropdown-item { border-bottom: none; }
+           .profile-dropdown li a.dropdown-item:hover { background-color: var(--color-dark-gray); }
+
+          .gym-display {
+              flex-direction: column-reverse;
+              text-align: center;
+              gap: 2.5rem;
+              padding: 3rem 2rem;
+              max-width: 90%;
+          }
+          main > section.gym-display:first-of-type {
+              margin-top: calc(var(--header-height-mobile) + 3rem);
+          }
+          .gym-content { max-width: 100%; align-items: center; }
+          .gym-image { max-width: 75%; margin-bottom: 1.5rem; }
+          .gym-content h1 { font-size: 3.2rem; }
+          .gym-content p { font-size: 1.5rem; }
+
+          .subscribe-content { grid-template-columns: 1fr; gap: 2rem; }
+          .subscribe-text{ text-align: center; }
+          .subscribe-form { justify-content: center; }
+          .social-icons { justify-content: center; }
+          .footer-links { grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); text-align: center;}
+          .modal-content { width: 90%; }
+      }
+
+      @media (max-width: 767px) {
+          html { font-size: 50%; }
+          header { height: calc(var(--header-height-mobile) - 10px); padding: 1rem 4%; }
+          main { padding-top: calc(var(--header-height-mobile) - 10px); }
+          .logo img { max-width: 150px; }
+
+          .gym-content h1 { font-size: 2.8rem; }
+          .gym-content p { font-size: 1.4rem; }
+          .gym-content .action-button { font-size: 1.5rem; padding: 1.1rem 2.8rem; }
+          .gym-image { max-width: 85%; }
+          .gym-display { padding: 2.5rem 1.5rem; max-width: 92%; }
+          main > section.gym-display:not(:last-of-type) { margin-bottom: 2.5rem; }
+
+          .subscribe-form { flex-direction: column; align-items: stretch; }
+          .subscribe-form button.btn-primary { width: 100%; }
+          .footer-links { text-align: center;}
+          #logoutModalMessage { font-size: 1.6rem; }
+          .modal-content .btn-primary, .modal-content .btn-secondary { font-size: 1.5rem; }
+      }
+
+       @media (max-width: 480px) {
+          header { height: calc(var(--header-height-mobile) - 20px); padding: 0.8rem 3%; }
+          main { padding-top: calc(var(--header-height-mobile) - 20px); }
+          .logo img { max-width: 130px; }
+
+          .gym-content h1 { font-size: 2.4rem; }
+          .gym-content p { font-size: 1.3rem; }
+           .gym-content .action-button { font-size: 1.4rem; padding: 1rem 2.2rem; width: 90%; max-width: 280px; }
+           .gym-image { max-width: 90%; }
+           .gym-display { padding: 2rem 1rem; max-width: 95%; }
+          main > section.gym-display:not(:last-of-type) { margin-bottom: 2rem; }
+
+          .footer-links { grid-template-columns: repeat(2, 1fr); }
+          .modal-content .btn-primary, .modal-content .btn-secondary { font-size: 1.4rem; padding: 1rem 2.5rem;}
+          #logoutModalMessage { font-size: 1.5rem; }
+       }
+    </style>
 </head>
 <body>
 
-    <!-- === HEADER (Copied Structure from membership.html) === -->
     <header>
         <a href="home.html" class="logo"><img src="../images/logo.png" alt="OptiLife Logo"></a>
         <i class='bx bx-menu' id="menu-icon"></i>
         <ul class="navbar">
              <div class="navbar-left">
-                 <!-- Links specific to Home Page -->
                  <li><a href="home.html" class="active">Home</a></li>
                  <li><a href="setGoals.html">Set Goals</a></li>
                  <li><a href="progress.html">Track Progress</a></li>
                  <li><a href="membership.html">Membership</a></li>
              </div>
              <div class="navbar-right">
-                 <li>
-                     <!-- Link wraps the image if profile pic should be clickable -->
-                     <a href="#" id="profilePicTrigger" aria-label="View Profile">
-                         <img src="../images/user_pic.jpg" alt="User Profile" class="profile-pic">
-                     </a>
+                 <li class="profile-menu-container">
+                     <img src="../images/user_pic.jpg" alt="User Profile" class="profile-pic" id="profilePicTrigger">
+                     <ul class="profile-dropdown" id="profileDropdown">
+                         <li><a href="membership.html#membership-status-section" class="dropdown-item view-membership-link">View Membership</a></li>
+                     </ul>
                  </li>
                  <li>
-                     <a href="signin.html" id="logout-link">Logout</a>
+                     <span class="welcome-text">Welcome, <span id="header-user-name">User</span>!</span>
+                 </li>
+                 <li>
+                     <a href="signin.html" id="logout-link">
+                         <i class='bx bx-log-out'></i>
+                         Logout
+                     </a>
                  </li>
              </div>
         </ul>
     </header>
-    <!-- === END HEADER === -->
 
-    <!-- === MAIN CONTENT === -->
     <main>
         <section class="gym-display">
             <div class="gym-content">
@@ -54,7 +748,6 @@
             </div>
             <div class="gym-image">
                 <img src="../images/gymcorp2.webp" alt="Interior of Elite Fitness Hub">
-                 <!-- Make sure this image path is correct -->
             </div>
         </section>
         <section class="gym-display">
@@ -66,8 +759,7 @@
                 <a href="membership.html" class="btn-primary action-button">Apply Now</a>
             </div>
             <div class="gym-image">
-                <img src="../images/gymcorp3.jpg" alt="Interior of Elite Fitness Hub">
-                 <!-- Make sure this image path is correct -->
+                <img src="../images/gymcorp3.jpg" alt="Interior of Iron Haven">
             </div>
         </section>
         <section class="gym-display">
@@ -79,17 +771,12 @@
                 <a href="membership.html" class="btn-primary action-button">Apply Now</a>
             </div>
             <div class="gym-image">
-                <img src="../images/gymcorp4.jpg" alt="Interior of Elite Fitness Hub">
-                 <!-- Make sure this image path is correct -->
+                <img src="../images/gymcorp4.jpg" alt="Interior of Elevate Athletics">
             </div>
         </section>
 
-        <!-- Add other sections for home page as needed -->
-
     </main>
-    <!-- === END MAIN CONTENT === -->
 
-    <!-- === FOOTER AREA (Copied Structure from membership.html) === -->
     <section id="subscribe" class="subscribe-section">
         <div class="container subscribe-content">
              <div class="subscribe-text">
@@ -111,6 +798,14 @@
                  <div><h4>Legal</h4><ul><li><a href="#">Policy</a></li><li><a href="#">Privacy & Cookies</a></li><li><a href="#">Terms & Conditions</a></li></ul></div>
                  <div><h4>Community</h4><ul><li><a href="#">Contact</a></li><li><a href="#">Find a club</a></li><li><a href="#">Membership</a></li></ul></div>
                  <div><h4>Gym</h4><ul><li><a href="#">Book a Gym</a></li><li><a href="#">Find a Gym</a></li></ul></div>
+                 <div>
+                    <h4>System Developed By</h4>
+                    <ul>
+                        <li><a href="#">Sintoy, Joebert</a></li>
+                        <li><a href="#">Paliqueron, Khem</a></li>
+                        <li><a href="#">Iglesia, Jose</a></li>
+                    </ul>
+                </div>
             </div>
         </div>
     </section>
@@ -120,10 +815,7 @@
             <p>© 2024 OPTILIFE. All Rights Reserved.</p>
         </div>
     </footer>
-    <!-- === END FOOTER AREA === -->
 
-    <!-- === MODALS (Copied Structure from membership.html) === -->
-    <!-- Logout Confirmation Modal -->
     <div id="logoutConfirmationModal" class="modal">
         <div class="modal-content">
             <button id="closeLogoutModalButton" class="modal-close-btn" aria-label="Close modal">×</button>
@@ -135,134 +827,140 @@
         </div>
     </div>
 
-    <!-- User Profile Modal (Optional - Add if needed) -->
     <div id="userProfileModal" class="modal">
          <div class="modal-content">
               <button id="closeUserProfileButton" class="modal-close-btn" aria-label="Close modal">×</button>
               <h2>User Profile</h2>
-              <!-- Add profile details structure here -->
               <p>Profile details go here...</p>
          </div>
     </div>
-    <!-- === END MODALS === -->
 
-    <!-- === SCRIPTS === -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script>
         $(document).ready(function() {
-            // --- Header/Nav/Modal Logic (Adapted from membership.html) ---
             var menuIcon = $('#menu-icon');
             var navbar = $('.navbar');
             var logoutLink = $('#logout-link');
             var logoutModal = $('#logoutConfirmationModal');
-            var profilePicTrigger = $('#profilePicTrigger'); // Added profile pic trigger
-            var userProfileModal = $('#userProfileModal'); // Added profile modal
-            var closeUserProfileBtn = $('#closeUserProfileButton'); // Added profile modal close btn
+            const $profilePicTrigger = $('#profilePicTrigger');
+            const $profileDropdown = $('#profileDropdown');
+            const $viewMembershipLink = $('.view-membership-link');
+            const $userProfileModal = $('#userProfileModal');
+            const $closeUserProfileBtn = $('#closeUserProfileButton');
 
-            // Menu Toggle
-            menuIcon.on('click', function() {
-                $(this).toggleClass('bx-x');
-                navbar.toggleClass('active');
-            });
 
-            // Close menu on nav link click (excluding logout/profile)
-            $('.navbar a').not('#logout-link, #profilePicTrigger').on('click', function(event) {
-                // Allow default behavior for non-anchor links
-                 if (this.hash === "" || this.hash === "#" || this.hash === "#0") {
-                     // It's likely a link to another page, let it proceed
-                 } else {
-                    // Smooth scroll or same-page action, close menu
+            if (menuIcon.length && navbar.length) {
+                menuIcon.on('click', function() {
+                    $(this).toggleClass('bx-x');
+                    navbar.toggleClass('active');
+                    if ($profileDropdown.hasClass('active')) {
+                        $profileDropdown.removeClass('active');
+                        $profilePicTrigger.removeClass('active');
+                    }
+                });
+
+                $('.navbar a').not('#profilePicTrigger').not('.dropdown-item').on('click', function(event) {
                      if (navbar.hasClass('active')) {
                          navbar.removeClass('active');
                          menuIcon.removeClass('bx-x');
                      }
-                 }
-                 // For links like setGoals.html etc., just let the browser navigate
-                 // No need to preventDefault unless it's a smooth scroll target on THIS page
-            });
+                });
 
-            // Close menu on scroll
-            $(window).on('scroll', function() {
-                if (navbar.hasClass('active')) {
-                    navbar.removeClass('active');
-                    menuIcon.removeClass('bx-x');
-                }
-            });
+                $(window).on('scroll', function() {
+                    if (navbar.hasClass('active')) {
+                        navbar.removeClass('active');
+                        menuIcon.removeClass('bx-x');
+                    }
+                    if ($profileDropdown.hasClass('active')) {
+                        $profileDropdown.removeClass('active');
+                        $profilePicTrigger.removeClass('active');
+                    }
+                });
+            } else { console.warn("Header menu icon or navbar not found."); }
 
-            // Logout Modal Logic
+            if ($profilePicTrigger.length && $profileDropdown.length) {
+                $profilePicTrigger.on('click', function(event) {
+                    event.stopPropagation();
+                    $profileDropdown.toggleClass('active');
+                    $profilePicTrigger.toggleClass('active');
+                     if ($navbar.hasClass('active') && $(window).width() > 991) {
+                          navbar.removeClass('active');
+                          menuIcon.removeClass('bx-x');
+                     }
+                });
+
+                $(document).on('click', function(event) {
+                    if (!$profileDropdown.is(event.target) && $profileDropdown.has(event.target).length === 0 && !$profilePicTrigger.is(event.target)) {
+                        if ($profileDropdown.hasClass('active')) {
+                            $profileDropdown.removeClass('active');
+                            $profilePicTrigger.removeClass('active');
+                        }
+                    }
+                });
+
+                $profileDropdown.on('click', 'a.dropdown-item', function() {
+                    $profileDropdown.removeClass('active');
+                    $profilePicTrigger.removeClass('active');
+                     if (navbar.hasClass('active')) {
+                          navbar.removeClass('active');
+                          menuIcon.removeClass('bx-x');
+                     }
+                });
+
+            } else { console.warn("Profile picture trigger or dropdown not found."); }
+
+            if ($viewMembershipLink.length) {
+                $viewMembershipLink.on('click', function(event) {
+                    // For cross-page links, just let the browser navigate
+                    // Smooth scroll won't work here without more complex state management
+                    // If the target were on *this* page, you'd add preventDefault() and scroll logic
+                });
+            }
+
             if (logoutLink.length && logoutModal.length) {
                 logoutLink.on('click', function(event) {
                     event.preventDefault();
-                    if (navbar.hasClass('active')) {
-                         navbar.removeClass('active');
-                         menuIcon.removeClass('bx-x');
-                    }
-                    logoutModal.addClass('active'); // Use 'active' class
+                    if (navbar.hasClass('active')) { navbar.removeClass('active'); menuIcon.removeClass('bx-x'); }
+                    if ($profileDropdown.hasClass('active')) { $profileDropdown.removeClass('active'); $profilePicTrigger.removeClass('active'); }
+                    logoutModal.addClass('active');
                 });
 
                 logoutModal.on('click', '.modal-close-btn, #cancelLogoutButton', function() {
                      logoutModal.removeClass('active');
                 });
 
-                $('#okLogoutButton').on('click', function() { // Targeted by ID
+                $('#okLogoutButton').on('click', function() {
                      logoutModal.removeClass('active');
-                     // Redirect after closing
                      window.location.href = logoutLink.attr('href');
                 });
 
-                 $(window).on('click', function(event) { // Close on overlay click
-                     if ($(event.target).is(logoutModal)) {
-                         logoutModal.removeClass('active');
-                     }
+                 $(window).on('click', function(event) {
+                     if ($(event.target).is(logoutModal)) { logoutModal.removeClass('active'); }
                  });
-
             } else {
-                 console.warn("Logout elements not found. Using confirm fallback.");
-                 logoutLink.on('click', function(event) {
-                     event.preventDefault();
-                     if (confirm("Are you sure you want to logout?")) {
-                         window.location.href = this.href;
-                     }
-                 });
+                 console.warn("Logout elements not found.");
+                 logoutLink.on('click', function(event) { event.preventDefault(); if (confirm("Are you sure?")) { window.location.href = this.href; } });
             }
 
-            // User Profile Modal Logic (Optional)
-            if (profilePicTrigger.length && userProfileModal.length) {
-                profilePicTrigger.on('click', function(event) {
-                    event.preventDefault(); // Prevent default link behavior
-                     if (navbar.hasClass('active')) {
-                         navbar.removeClass('active');
-                         menuIcon.removeClass('bx-x');
-                     }
-                     userProfileModal.addClass('active');
-                });
+            // Optional: User Profile Modal Logic (if you want to add it back later)
+            // if ($profilePicTrigger.length && $userProfileModal.length) {
+            //     $profilePicTrigger.on('click', function(event) {
+            //         event.preventDefault();
+            //          if (navbar.hasClass('active')) { navbar.removeClass('active'); menuIcon.removeClass('bx-x'); }
+            //          if ($profileDropdown.hasClass('active')) { $profileDropdown.removeClass('active'); $profilePicTrigger.removeClass('active'); }
+            //          // Logic to populate user profile modal data would go here
+            //          $userProfileModal.addClass('active');
+            //     });
+            //     $userProfileModal.on('click', '.modal-close-btn', function() { $userProfileModal.removeClass('active'); });
+            //     $(window).on('click', function(event) { if ($(event.target).is($userProfileModal)) { $userProfileModal.removeClass('active'); } });
+            //     if($closeUserProfileBtn.length) { $closeUserProfileBtn.on('click', function() { $userProfileModal.removeClass('active'); }); }
+            // }
 
-                userProfileModal.on('click', '.modal-close-btn', function() {
-                    userProfileModal.removeClass('active');
-                });
-
-                // Close on overlay click
-                $(window).on('click', function(event) {
-                    if ($(event.target).is(userProfileModal)) {
-                         userProfileModal.removeClass('active');
-                    }
-                });
-
-                // Add listener for close button if you added one with id="closeUserProfileButton"
-                if(closeUserProfileBtn.length) {
-                    closeUserProfileBtn.on('click', function() {
-                         userProfileModal.removeClass('active');
-                    });
-                }
-
-            } else {
-                 console.log("Profile picture trigger or modal not found.");
-                 // If no modal, maybe link profile pic directly to a profile page?
-                 // profilePicTrigger.attr('href', 'profile.html'); // Example
+            function loadUserName() {
+                let userName = "Han Soyoung";
+                $('#header-user-name').text(userName);
             }
-
-            // --- Add any home.html specific JS below ---
-
+            loadUserName();
 
         });
     </script>

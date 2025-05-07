@@ -1,83 +1,567 @@
+// adminjs/admin.js
 $(document).ready(function() {
-
+    // Cache jQuery Selections
     const $sidebarLinks = $('.sidebar-nav .nav-link');
     const $contentSections = $('.content-section');
     const $pageTitle = $('#page-title');
 
     const logoutModal = $('#logoutConfirmationModal');
     const alertModal = $('#alertModal');
-    const addGymModal = $('#add-gym-modal');
-    const addUserModal = $('#add-user-modal');
-    const addCoachModal = $('#add-coach-modal');
 
-    const logoutLink = $('#logout-link');
-    const closeLogoutModalButton = $('#closeLogoutModalButton');
-    const cancelLogoutButton = $('#cancelLogoutButton');
-    const okLogoutButton = $('#okLogoutButton');
+    const addUserModal = $('#add-user-modal');
+    const addUserForm = $('#add-user-form');
+    const userTableBody = $('#user-table-body');
+
+    const addCoachModal = $('#add-coach-modal');
+    const addCoachForm = $('#add-coach-form');
+    const coachTableBody = $('#coach-table-body');
+
+    const addGymModal = $('#add-gym-modal');
+    const addGymForm = $('#add-gym-form');
+    const gymTableBody = $('#gym-table-body');
 
     const alertModalTitle = $('#alertModalTitle');
     const alertModalMessage = $('#alertModalMessage');
     const alertModalOkButton = $('#alertModalOkButton');
     const alertModalCloseButton = $('#alertModal .alert-modal-close');
 
-    const addGymForm = $('#add-gym-form');
-    const gymTableBody = $('#gyms-content table tbody');
-    const addUserForm = $('#add-user-form');
-    const userTableBody = $('#users-content table tbody');
-    const addCoachForm = $('#add-coach-form');
-    const coachTableBody = $('#staff-content table tbody');
+    const headerLogoutLink = $('#header-logout-link'); // Cache header logout link
 
-    const addGymBtnInSection = $('#gyms-content').find('.add-btn');
-    const addUserBtnInSection = $('#users-content').find('.add-btn');
-    const addCoachBtnInSection = $('#staff-content').find('.add-btn');
+    let trendsChartInstance = null, newUserChartInstance = null, gymPopularityChartInstance = null;
 
-    let trendsChartInstance = null, newUserChartInstance = null, newGymChartInstance = null;
+    // --- Recent Activity & Stats ---
+    const $recentActivityList = $('#recent-activity-list');
+    function addRecentActivity(message) {
+        const date = new Date();
+        const time = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        const $newActivity = $(`<li>${message} - <small>${time}</small></li>`).hide(); // Hide initially for fade-in
+        $recentActivityList.prepend($newActivity);
+        $newActivity.fadeIn(); // Fade in the new activity
+        if ($recentActivityList.children().length > 5) {
+            $recentActivityList.children().last().fadeOut(function() { $(this).remove(); }); // Fade out and remove oldest
+        }
+    }
+    function updateDashboardStats() {
+        $('#total-users-stat').text(userTableBody.find('tr').length);
+        $('#active-members-stat').text(userTableBody.find('tr td[data-label="Status"]:contains("Active")').length);
+        $('#total-gyms-stat').text(gymTableBody.find('tr').length);
+        $('#total-coaches-stat').text(coachTableBody.find('tr').length);
+    }
 
-    function showAlert(message, title = 'Notification') {
+    // --- Generic ID Generation ---
+    function generateNewId(tableBody, prefix, idDataAttribute = 'id') {
+        let maxIdNum = 0;
+        tableBody.find('tr').each(function() {
+            const id = $(this).data(idDataAttribute);
+            if (id && typeof id === 'string' && id.toUpperCase().startsWith(prefix.toUpperCase())) {
+                const numPart = id.substring(prefix.length);
+                if (/^\d+$/.test(numPart)) {
+                    const num = parseInt(numPart, 10);
+                    if (!isNaN(num) && num > maxIdNum) { // Check isNaN just in case
+                        maxIdNum = num;
+                    }
+                }
+            }
+        });
+        const newIdNum = maxIdNum + 1;
+        return prefix.toUpperCase() + String(newIdNum).padStart(3, '0');
+    }
+
+    // --- Form Field Definitions ---
+    const userFormFields = [
+        { input: $('#user-first-name'), errorId: 'user-first-name-error', name: 'First Name', required: true },
+        { input: $('#user-last-name'), errorId: 'user-last-name-error', name: 'Last Name', required: true },
+        { input: $('#user-suffix'), errorId: 'user-suffix-error', name: 'Suffix', required: false },
+        { input: $('#user-email'), errorId: 'user-email-error', name: 'Email', required: true, isEmail: true },
+        { input: $('#user-membership'), errorId: 'user-membership-error', name: 'Membership', required: true },
+        { input: $('#user-status'), errorId: 'user-status-error', name: 'Status', required: true },
+    ];
+    const coachFormFields = [
+        { input: $('#coach-first-name'), errorId: 'coach-first-name-error', name: 'First Name', required: true },
+        { input: $('#coach-last-name'), errorId: 'coach-last-name-error', name: 'Last Name', required: true },
+        { input: $('#coach-suffix'), errorId: 'coach-suffix-error', name: 'Suffix', required: false },
+        { input: $('#coach-email'), errorId: 'coach-email-error', name: 'Email', required: true, isEmail: true },
+        { input: $('#coach-role'), errorId: 'coach-role-error', name: 'Role', required: true },
+        { input: $('#coach-gym-branch'), errorId: 'coach-gym-branch-error', name: 'Gym Branch', required: true },
+    ];
+    const gymFormFields = [
+        { input: $('#gym-name'), errorId: 'gym-name-error', name: 'Gym Name', required: true },
+        { input: $('#gym-location'), errorId: 'gym-location-error', name: 'Location', required: true },
+        { input: $('#gym-manager'), errorId: 'gym-manager-error', name: 'Manager Name', required: true },
+        { input: $('#gym-capacity'), errorId: 'gym-capacity-error', name: 'Capacity', required: true, isNumber: true, min: 1 },
+    ];
+
+    // --- Generic Form Reset ---
+    function resetForm(formElement, fieldsToValidate) {
+        if (formElement && formElement.length) {
+            formElement[0].reset();
+            fieldsToValidate.forEach(field => {
+                field.input.removeClass('is-invalid').attr('aria-invalid', 'false');
+                $('#' + field.errorId).text('').hide();
+                field.input.attr('aria-describedby', field.errorId); // Re-associate
+            });
+        }
+    }
+
+    // --- Generic Form Validation ---
+    function validateForm(fieldsToValidate) {
+        let isFormValid = true;
+        let firstInvalidField = null;
+
+        fieldsToValidate.forEach(field => {
+            const $input = field.input;
+            const $errorDiv = $('#' + field.errorId);
+            const value = $input.val() ? $input.val().trim() : "";
+            let errorMessage = '';
+
+            if (field.required && ($input.is('select') ? $input.val() === "" : value === '')) { // Handle select empty check
+                errorMessage = `${field.name} is required.`;
+            } else if (value !== '' && field.isEmail) {
+                const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailPattern.test(value)) {
+                    errorMessage = `Please enter a valid ${field.name.toLowerCase()} address.`;
+                }
+            } else if (value !== '' && field.isNumber) {
+                 const numValue = parseFloat(value);
+                if (isNaN(numValue)) {
+                    errorMessage = `${field.name} must be a number.`;
+                } else if (field.min !== undefined && numValue < field.min) {
+                    errorMessage = `${field.name} must be at least ${field.min}.`;
+                }
+            }
+
+            if (errorMessage) {
+                $input.addClass('is-invalid').attr('aria-invalid', 'true');
+                $errorDiv.text(errorMessage).show();
+                isFormValid = false;
+                if (!firstInvalidField) firstInvalidField = $input;
+            } else {
+                $input.removeClass('is-invalid').attr('aria-invalid', 'false');
+                $errorDiv.text('').hide();
+            }
+        });
+
+        if (firstInvalidField) firstInvalidField.focus();
+        return isFormValid;
+    }
+
+    // --- Alert Modal Functions ---
+    function showAlert(message, title = 'Notification', isConfirmation = false) {
         if (!alertModal.length || !alertModalMessage.length || !alertModalTitle.length) {
-            console.error("Alert modal elements not found! Fallback to native alert.");
-            alert(message);
+            console.error("Alert modal elements not found! Fallback to native alert/confirm.");
+            if (isConfirmation) return confirm(message);
+            else alert(message);
             return;
         }
         alertModalTitle.text(title);
         alertModalMessage.text(message);
+
+        alertModalOkButton.off('click').on('click', hideAlert);
+
         $('.modal.show').not(alertModal).removeClass('show');
         alertModal.addClass('show');
     }
+    function hideAlert() { if (alertModal.length) alertModal.removeClass('show'); }
 
-    function hideAlert() {
-        if (alertModal.length) {
-            alertModal.removeClass('show');
-        }
-    }
 
-    function showModal($modal) {
+    // --- Modal Show/Hide Functions ---
+     function showModal($modal) {
         if ($modal && $modal.length) {
             $('.modal.show').not($modal).removeClass('show');
             $modal.addClass('show');
-             $modal.find('form input:not([type="hidden"])').first().focus();
+            $modal.find('form input:not([readonly]):not([disabled]):not([type="hidden"]), form select:not([readonly]):not([disabled]), form button:not([disabled])').first().focus();
         } else {
             console.error("Modal element not found to show:", $modal);
             showAlert("Error: Could not open the requested window.", "UI Error");
         }
     }
+    function hideModal($modal) { if ($modal && $modal.length) $modal.removeClass('show'); }
 
-    function hideModal($modal) {
-        if ($modal && $modal.length) {
-            $modal.removeClass('show');
-        }
+    function hideAndResetFormModal($modal, formElement, fieldsToValidate) {
+        hideModal($modal);
+        resetForm(formElement, fieldsToValidate);
     }
 
-    function hideAndResetFormModal($modal, $form) {
-        hideModal($modal);
-        if ($form && $form.length) {
-            try {
-                $form[0].reset();
-                $form.find('.is-invalid').removeClass('is-invalid');
-            } catch (e) {
-                console.error("Error resetting form:", $modal.attr('id'), e);
+    // --- Event Listeners for Modals, Navigation, etc. ---
+    if (alertModalOkButton.length) alertModalOkButton.on('click', hideAlert);
+    if (alertModalCloseButton.length) alertModalCloseButton.on('click', hideAlert);
+    alertModal.on('click', function(event) { if ($(event.target).is(alertModal)) hideAlert(); });
+
+    if (headerLogoutLink.length && logoutModal.length) {
+        headerLogoutLink.on('click', function(e) {
+            e.preventDefault();
+            showModal(logoutModal);
+        });
+        $('#cancelLogoutButton').on('click', () => hideModal(logoutModal));
+        $('#closeLogoutModalButton').on('click', () => hideModal(logoutModal));
+        logoutModal.on('click', (event) => { if ($(event.target).is(logoutModal)) hideModal(logoutModal); });
+        $('#okLogoutButton').on('click', function() {
+            hideModal(logoutModal);
+            addRecentActivity("Admin logged out.");
+             setTimeout(() => {
+                window.location.href = headerLogoutLink.attr('href');
+             }, 100);
+        });
+    } else {
+        console.warn("Header logout link or logout modal not found.");
+    }
+
+    $sidebarLinks.on('click', function(e) {
+        e.preventDefault();
+        const $this = $(this);
+        const targetId = $this.data('target');
+        const $targetSection = $('#' + targetId);
+
+        if (targetId && $targetSection.length) {
+            if (!$this.hasClass('active')) {
+                $sidebarLinks.removeClass('active');
+                $this.addClass('active');
+                $contentSections.removeClass('active');
+                $targetSection.addClass('active');
+                $pageTitle.text($this.find('.nav-text').text().trim() || 'Admin Dashboard');
+                if (targetId === 'analytics-content') {
+                    setTimeout(initializeAnalyticsCharts, 250);
+                }
             }
+        } else {
+            console.error(`Navigation target #${targetId} not found.`);
+            showAlert(`Content for "${$this.find('.nav-text').text().trim()}" could not be found.`, "Navigation Error");
         }
+    });
+
+    $('.add-btn[data-modal-target="add-user-modal"]').on('click', function() {
+        resetForm(addUserForm, userFormFields);
+        $('#user-id').val(generateNewId(userTableBody, 'USR'));
+        showModal(addUserModal);
+    });
+    $('.add-btn[data-modal-target="add-coach-modal"]').on('click', function() {
+        resetForm(addCoachForm, coachFormFields);
+        $('#coach-id').val(generateNewId(coachTableBody, 'STF'));
+        showModal(addCoachModal);
+    });
+    $('.add-btn[data-modal-target="add-gym-modal"]').on('click', function() {
+        resetForm(addGymForm, gymFormFields);
+        $('#gym-id').val(generateNewId(gymTableBody, 'GYM'));
+        showModal(addGymModal);
+    });
+
+    $('.modal .close-btn').not('.alert-modal-close, #closeLogoutModalButton').on('click', function() {
+        const $modal = $(this).closest('.modal');
+        if ($modal.is(addUserModal)) hideAndResetFormModal($modal, addUserForm, userFormFields);
+        else if ($modal.is(addCoachModal)) hideAndResetFormModal($modal, addCoachForm, coachFormFields);
+        else if ($modal.is(addGymModal)) hideAndResetFormModal($modal, addGymForm, gymFormFields);
+        else hideModal($modal);
+    });
+
+    addUserForm.on('submit', function(e) {
+        e.preventDefault();
+        if (!validateForm(userFormFields)) return;
+        const id = $('#user-id').val();
+        const firstName = $('#user-first-name').val().trim();
+        const lastName = $('#user-last-name').val().trim();
+        const suffix = $('#user-suffix').val().trim();
+        const email = $('#user-email').val().trim();
+        const membership = $('#user-membership').val();
+        const status = $('#user-status').val();
+
+        const newRowHtml = `<tr data-id="${id}">
+            <td data-label="ID">${id}</td>
+            <td data-label="First Name">${firstName}</td>
+            <td data-label="Last Name">${lastName}</td>
+            <td data-label="Suffix">${suffix}</td>
+            <td data-label="Email">${email}</td>
+            <td data-label="Membership">${membership}</td>
+            <td data-label="Status">${status}</td>
+            <td data-label="Actions"><button class="btn btn-sm btn-danger">Delete</button></td>
+        </tr>`;
+        userTableBody.append(newRowHtml);
+        addResponsiveTableHeaders();
+        showAlert(`User "${firstName} ${lastName}" added successfully!`, 'Success');
+        addRecentActivity(`New user added: ${firstName} ${lastName} (${id})`);
+        updateDashboardStats();
+        hideAndResetFormModal(addUserModal, addUserForm, userFormFields);
+    });
+
+    addCoachForm.on('submit', function(e) {
+        e.preventDefault();
+        if (!validateForm(coachFormFields)) return;
+        const id = $('#coach-id').val();
+        const firstName = $('#coach-first-name').val().trim();
+        const lastName = $('#coach-last-name').val().trim();
+        const suffix = $('#coach-suffix').val().trim();
+        const email = $('#coach-email').val().trim();
+        const role = $('#coach-role').val();
+        const gymBranch = $('#coach-gym-branch').val();
+
+        const newRowHtml = `<tr data-id="${id}">
+            <td data-label="ID">${id}</td>
+            <td data-label="First Name">${firstName}</td>
+            <td data-label="Last Name">${lastName}</td>
+            <td data-label="Suffix">${suffix}</td>
+            <td data-label="Role">${role}</td>
+            <td data-label="Email">${email}</td>
+            <td data-label="Gym Branch">${gymBranch}</td>
+            <td data-label="Actions"><button class="btn btn-sm btn-danger">Delete</button></td>
+        </tr>`;
+        coachTableBody.append(newRowHtml);
+        addResponsiveTableHeaders();
+        showAlert(`Staff "${firstName} ${lastName}" added successfully!`, 'Success');
+        addRecentActivity(`New staff added: ${firstName} ${lastName} (${id})`);
+        updateDashboardStats();
+        hideAndResetFormModal(addCoachModal, addCoachForm, coachFormFields);
+    });
+
+    addGymForm.on('submit', function(e) {
+        e.preventDefault();
+        if (!validateForm(gymFormFields)) return;
+        const id = $('#gym-id').val();
+        const name = $('#gym-name').val(); // .val() is fine for select, no trim needed
+        const location = $('#gym-location').val(); // .val() is fine for select, no trim needed
+        const manager = $('#gym-manager').val().trim();
+        const capacity = $('#gym-capacity').val().trim();
+
+        const newRowHtml = `<tr data-id="${id}">
+            <td data-label="ID">${id}</td>
+            <td data-label="Name">${name}</td>
+            <td data-label="Location">${location}</td>
+            <td data-label="Manager">${manager}</td>
+            <td data-label="Capacity">${capacity}</td>
+            <td data-label="Actions"><button class="btn btn-sm btn-danger">Delete</button></td>
+        </tr>`;
+        gymTableBody.append(newRowHtml);
+        addResponsiveTableHeaders();
+        showAlert(`Gym "${name}" added successfully!`, 'Success');
+        addRecentActivity(`New gym added: ${name} (${id})`);
+        updateDashboardStats();
+        hideAndResetFormModal(addGymModal, addGymForm, gymFormFields);
+    });
+
+    $(window).on('click', function(event) {
+        const $target = $(event.target);
+        if ($target.is(addUserModal)) hideAndResetFormModal(addUserModal, addUserForm, userFormFields);
+        else if ($target.is(addCoachModal)) hideAndResetFormModal(addCoachModal, addCoachForm, coachFormFields);
+        else if ($target.is(addGymModal)) hideAndResetFormModal(addGymModal, addGymForm, gymFormFields);
+        else if ($target.is(logoutModal)) hideModal(logoutModal);
+        else if ($target.is(alertModal)) hideAlert();
+    });
+
+    $('.content-area').on('click', '.btn-danger', function() {
+        var $row = $(this).closest('tr');
+        var id = $row.data('id');
+        var nameCell = $row.find('td[data-label="Name"], td[data-label="First Name"]').first();
+        var itemName = nameCell.text().trim() || id || 'this item';
+
+        if (nameCell.data('label') === "First Name") {
+            const lastName = $row.find('td[data-label="Last Name"]').text().trim();
+            const suffix = $row.find('td[data-label="Suffix"]').text().trim();
+            itemName = `${itemName} ${lastName}${suffix ? ' ' + suffix : ''}`;
+        }
+
+        showAlert(`Are you sure you want to delete ${itemName.trim()}? This action cannot be undone.`, 'Confirm Deletion', true);
+
+        alertModalOkButton.off('click').on('click', function proceedDelete() {
+            hideAlert();
+            $row.fadeOut(400, function() {
+                 $(this).remove();
+                 addResponsiveTableHeaders();
+                 updateDashboardStats();
+                 addRecentActivity(`${itemName.trim()} (ID: ${id}) deleted.`);
+                 showAlert(`${itemName.trim()} deleted!`, 'Deletion Complete');
+            });
+             alertModalOkButton.off('click', proceedDelete).on('click', hideAlert);
+        });
+         alertModalCloseButton.off('click').on('click', function cancelDelete() {
+              hideAlert();
+              alertModalOkButton.off('click').on('click', hideAlert);
+              alertModalCloseButton.off('click', cancelDelete).on('click', hideAlert);
+         });
+         alertModal.off('click').on('click', function(event) {
+             if ($(event.target).is(alertModal)) {
+                  hideAlert();
+                  alertModalOkButton.off('click').on('click', hideAlert);
+                  alertModalCloseButton.off('click').on('click', hideAlert);
+                  alertModal.off('click').on('click', function(e) {if ($(e.target).is(alertModal)) hideAlert();});
+             }
+         });
+
+    });
+
+    $('.content-area').on('click', '.btn-info', function() {
+         var $row = $(this).closest('tr');
+         var paymentId = $row.data('id') || $row.find('td[data-label="Payment ID"]').text();
+         showAlert(`Initiating refund process for Payment ID: ${paymentId}.`, 'Refund Action');
+    });
+    $('.content-area').on('click', '.btn-success', function() {
+         var $button = $(this);
+         var $row = $button.closest('tr');
+         var paymentId = $row.data('id') || $row.find('td[data-label="Payment ID"]').text();
+         showAlert(`Marking payment ${paymentId} as Paid...`, 'Payment Action');
+         $row.find('td[data-label="Status"]').text('Completed').css('color', 'var(--success)');
+         $button.remove();
+         addRecentActivity(`Payment ${paymentId} marked as Paid.`);
+    });
+
+    function initializeAnalyticsCharts() {
+        if (typeof Chart === 'undefined') { console.error("Chart.js is not loaded."); return; }
+
+        if (trendsChartInstance) trendsChartInstance.destroy();
+        if (newUserChartInstance) newUserChartInstance.destroy();
+        if (gymPopularityChartInstance) gymPopularityChartInstance.destroy();
+        trendsChartInstance = null; newUserChartInstance = null; gymPopularityChartInstance = null;
+
+        const trendsCtx = document.getElementById('trendsChart')?.getContext('2d');
+        const newUserCtx = document.getElementById('newUserChart')?.getContext('2d');
+        const gymPopularityCtx = document.getElementById('gymPopularityChart')?.getContext('2d');
+
+        if (!trendsCtx || !newUserCtx || !gymPopularityCtx) {
+             console.warn("One or more chart canvas elements not found. Analytics may be incomplete.");
+             if (!$('#analytics-content').hasClass('active')) {
+                console.warn("Analytics section is not active. Charts might not initialize correctly if canvas elements are hidden.");
+             }
+             return;
+        }
+
+        const rootStyles = getComputedStyle(document.documentElement);
+        const goldColor = rootStyles.getPropertyValue('--main-color').trim() || '#FFD700';
+        const goldLightColor = rootStyles.getPropertyValue('--gold-light').trim() || '#FFEC8B';
+        const textColor = rootStyles.getPropertyValue('--primary-text').trim() || '#ecf0f1';
+        const gridBorderColor = rootStyles.getPropertyValue('--border-color').trim() || '#444';
+        const doughnutBorderColor = rootStyles.getPropertyValue('--dark-gray').trim() || '#333333';
+        const fontFamily = 'Poppins, sans-serif';
+
+        const commonChartOptions = (type = 'bar') => ({
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: { beginAtZero: true, grid: { color: gridBorderColor }, ticks: { color: textColor, font: { family: fontFamily } } },
+                x: { grid: { display: type === 'line', color: gridBorderColor }, ticks: { color: textColor, font: { family: fontFamily } } }
+            },
+            plugins: {
+                legend: { labels: { color: textColor, font: { family: fontFamily } } },
+                tooltip: {
+                    backgroundColor: 'rgba(0, 0, 0, 0.8)', titleColor: goldColor, bodyColor: textColor,
+                    displayColors: false, bodyFont: { family: fontFamily }, titleFont: { family: fontFamily }
+                }
+            },
+            animation: { duration: 800, easing: 'easeInOutQuad' }
+        });
+        const doughnutOptions = {
+            responsive: true, maintainAspectRatio: false, cutout: '60%',
+            plugins: {
+                legend: { position: 'bottom', labels: { color: textColor, font: { family: fontFamily } } },
+                tooltip: {
+                     backgroundColor: 'rgba(0,0,0,0.8)', titleColor: goldColor, bodyColor: textColor,
+                     displayColors: true,
+                      callbacks: {
+                        label: function(context) {
+                            let label = context.label || '';
+                            if (label) { label += ': '; }
+                            if (context.parsed !== null) {
+                                const total = context.chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
+                                const percentage = total > 0 ? ((context.parsed / total) * 100).toFixed(1) + '%' : '0%';
+                                label += `${context.formattedValue} (${percentage})`;
+                            }
+                            return label;
+                        }
+                    },
+                     bodyFont: { family: fontFamily }, titleFont: { family: fontFamily }
+                }
+            },
+            animation: { animateRotate: true, animateScale: true, duration: 1000 }
+        };
+
+        trendsChartInstance = new Chart(trendsCtx, {
+            type: 'line',
+            data: {
+                labels: ['Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug'],
+                datasets: [{
+                    label: 'Premium Members',
+                    data: [45, 50, 55, 65, 70, 75],
+                    borderColor: goldColor, backgroundColor: 'rgba(255, 215, 0, 0.2)', tension: 0.3, fill: true
+                }, {
+                    label: 'Basic Members',
+                    data: [80, 81, 85, 90, 98, 105],
+                    borderColor: goldLightColor, backgroundColor: 'rgba(255, 236, 139, 0.2)', tension: 0.3, fill: true
+                }]
+            },
+            options: commonChartOptions('line')
+        });
+
+        newUserChartInstance = new Chart(newUserCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug'],
+                datasets: [{
+                    label: 'New Users',
+                    data: [30, 25, 40, 35, 50, 48],
+                    backgroundColor: goldColor, borderColor: goldColor, borderWidth: 1, borderRadius: 4
+                }]
+            },
+            options: commonChartOptions('bar')
+        });
+
+        const gymData = {};
+          $('#gym-table-body tr').each(function() {
+             const name = $(this).find('td[data-label="Name"]').text();
+             gymData[name] = (gymData[name] || 0) + 1;
+         });
+
+         const gymNames = Object.keys(gymData);
+         const gymCounts = Object.values(gymData);
+
+        if (gymNames.length === 0) {
+             gymNames.push("No Gym Data");
+             gymCounts.push(1);
+        }
+
+        gymPopularityChartInstance = new Chart(gymPopularityCtx, {
+            type: 'doughnut',
+            data: {
+                labels: gymNames,
+                datasets: [{
+                    label: 'Gym Locations Added',
+                    data: gymCounts,
+                    backgroundColor: [goldColor, goldLightColor, '#E6BE8A', '#D4AC0D', '#C0A062'],
+                    borderColor: doughnutBorderColor,
+                    borderWidth: 2,
+                    hoverOffset: 8
+                }]
+            },
+            options: doughnutOptions
+        });
+    }
+
+    function handleContentSearch(inputId, tableBodySelector, searchColumns) {
+        const $searchInput = $(inputId);
+        const $tableBody = $(tableBodySelector);
+        if (!$searchInput.length || !$tableBody.length) {
+             console.warn(`Search setup failed: Input (${inputId}) or Table Body (${tableBodySelector}) not found.`);
+             return;
+        }
+
+        $searchInput.on('keyup', function() {
+            const searchTerm = $(this).val().trim().toLowerCase();
+            $tableBody.find('tr').each(function() {
+                const $row = $(this);
+                let match = false;
+                if (searchTerm === '') {
+                    match = true;
+                } else {
+                    for (const col of searchColumns) {
+                        const cellText = $row.find(`td[data-label="${col}"]`).text().trim().toLowerCase();
+                        if (cellText.includes(searchTerm)) {
+                            match = true;
+                            break;
+                        }
+                    }
+                }
+                if (match) {
+                    $row.show();
+                } else {
+                    $row.hide();
+                }
+            });
+        });
     }
 
     function addResponsiveTableHeaders() {
@@ -85,323 +569,46 @@ $(document).ready(function() {
             var $table = $(this);
             var $headerCells = $table.find('thead th');
             if ($headerCells.length === 0) return;
-
             $table.find('tbody tr').each(function() {
                 const $row = $(this);
                 $row.find('td').each(function(index) {
                     if ($headerCells.eq(index).length) {
-                        const currentLabel = $(this).attr('data-label');
-                        const newLabel = $headerCells.eq(index).text();
-                        if (currentLabel !== newLabel) {
-                             $(this).attr('data-label', newLabel);
-                        }
+                         const newLabel = $headerCells.eq(index).text();
+                         if ($(this).attr('data-label') !== newLabel) {
+                            $(this).attr('data-label', newLabel);
+                         }
                     }
                 });
-                 if (!$row.attr('data-id') && $row.find('td').first().length) {
-                    $row.attr('data-id', $row.find('td').first().text().trim());
-                 }
             });
         });
     }
-
-    if (alertModalOkButton.length) alertModalOkButton.on('click', hideAlert);
-    if (alertModalCloseButton.length) alertModalCloseButton.on('click', hideAlert);
-    if (alertModal.length) alertModal.on('click', function(event) {
-        if ($(event.target).is(alertModal)) {
-            hideAlert();
-        }
-    });
-
-    if (logoutLink.length && logoutModal.length) {
-        logoutLink.on('click', function(e) {
-            e.preventDefault();
-            showModal(logoutModal);
-        });
-        if (cancelLogoutButton.length) cancelLogoutButton.on('click', () => hideModal(logoutModal));
-        if (closeLogoutModalButton.length) closeLogoutModalButton.on('click', () => hideModal(logoutModal));
-        logoutModal.on('click', (event) => { if ($(event.target).is(logoutModal)) hideModal(logoutModal); });
-        if (okLogoutButton.length) okLogoutButton.on('click', function() {
-            const originalHref = logoutLink.attr('href');
-            hideModal(logoutModal);
-            if (originalHref) {
-                window.location.href = originalHref;
-            } else {
-                showAlert("Error: Logout destination missing.", "Logout Error");
-            }
-        });
-    } else {
-        console.warn("Logout elements missing.");
-    }
-
-    if ($sidebarLinks.length && $contentSections.length && $pageTitle.length) {
-        $sidebarLinks.on('click', function(e) {
-            const $this = $(this);
-            if ($this.is('#logout-link')) return;
-
-            e.preventDefault();
-            const targetId = $this.data('target');
-            const $targetSection = $('#' + targetId);
-
-            if (targetId && $targetSection.length) {
-                if (!$this.hasClass('active')) {
-                    $sidebarLinks.removeClass('active');
-                    $this.addClass('active');
-                    $contentSections.removeClass('active');
-                    $targetSection.addClass('active');
-
-                    const titleText = $this.find('.nav-text').text().trim();
-                    $pageTitle.text(titleText || 'Admin Dashboard');
-
-                    if (targetId === 'analytics-content') {
-                        setTimeout(initializeAnalyticsCharts, 50);
-                    }
-                }
-            } else {
-                console.error(`Navigation target #${targetId} not found.`);
-                const linkText = $this.find('.nav-text').text().trim();
-                showAlert(`Content for "${linkText}" could not be found.`, "Navigation Error");
-            }
-        });
-    } else {
-        console.error("Core navigation elements missing!");
-    }
-
-    function setupAddButtonHandler(buttonSelector, modalElement) {
-        if (buttonSelector.length && modalElement.length) {
-             buttonSelector.off('click').on('click', function() {
-                showModal(modalElement);
-            });
-        } else {
-             console.warn(`Add button or modal element not found for selector targeting ${modalElement.attr('id') || 'unknown modal'}.`);
-        }
-    }
-
-    setupAddButtonHandler(addGymBtnInSection, addGymModal);
-    setupAddButtonHandler(addUserBtnInSection, addUserModal);
-    setupAddButtonHandler(addCoachBtnInSection, addCoachModal);
-
-    $('.modal .close-btn').not('.alert-modal-close, #closeLogoutModalButton').on('click', function() {
-        const $modal = $(this).closest('.modal');
-        const $form = $modal.find('form');
-        hideAndResetFormModal($modal, $form);
-    });
-
-
-    if (addGymForm.length && gymTableBody.length) {
-        addGymForm.on('submit', function(e) {
-            e.preventDefault();
-            if (this.checkValidity() === false) {
-                showAlert('Please fill out all required gym fields correctly.', 'Validation Error');
-                $(this).find(':invalid').first().focus();
-                return;
-            }
-            var gymId = $('#gym-id').val().trim();
-            var gymName = $('#gym-name').val().trim();
-            var gymLocation = $('#gym-location').val().trim();
-            var gymManager = $('#gym-manager').val().trim();
-            var gymCapacity = $('#gym-capacity').val().trim();
-
-            if (gymTableBody.find(`tr[data-id="${gymId}"]`).length > 0) {
-                 showAlert(`Gym with ID "${gymId}" already exists.`, 'Duplicate Entry');
-                 return;
-            }
-            var newRowHtml = `<tr data-id="${gymId}"><td data-label="ID">${gymId}</td><td data-label="Name">${gymName}</td><td data-label="Location">${gymLocation}</td><td data-label="Manager">${gymManager}</td><td data-label="Capacity">${gymCapacity}</td><td data-label="Actions"><button class="btn btn-sm btn-danger">Delete</button></td></tr>`;
-            gymTableBody.append(newRowHtml);
-            addResponsiveTableHeaders();
-            showAlert(`Gym "${gymName}" added successfully!`, 'Success');
-            hideAndResetFormModal(addGymModal, addGymForm);
-        });
-    }
-
-    if (addUserForm.length && userTableBody.length) {
-        addUserForm.on('submit', function(e) {
-            e.preventDefault();
-             if (this.checkValidity() === false) {
-                 showAlert('Please fill out all required user fields correctly.', 'Validation Error');
-                 $(this).find(':invalid').first().focus();
-                 return;
-             }
-            var userId = $('#member-id').val().trim();
-            var userName = $('#member-name').val().trim();
-            var userEmail = $('#email').val().trim();
-            var membership = $('#membership').val().trim();
-            var status = $('#status').val().trim();
-
-             if (userTableBody.find(`tr[data-id="${userId}"]`).length > 0) {
-                 showAlert(`User with ID "${userId}" already exists.`, 'Duplicate Entry');
-                 return;
-            }
-            var newRowHtml = `<tr data-id="${userId}"><td data-label="ID">${userId}</td><td data-label="Name">${userName}</td><td data-label="Email">${userEmail}</td><td data-label="Membership">${membership}</td><td data-label="Status">${status}</td><td data-label="Actions"><button class="btn btn-sm btn-danger">Delete</button></td></tr>`;
-            userTableBody.append(newRowHtml);
-            addResponsiveTableHeaders();
-            showAlert(`User "${userName}" added successfully!`, 'Success');
-            hideAndResetFormModal(addUserModal, addUserForm);
-        });
-    }
-
-    if (addCoachForm.length && coachTableBody.length) {
-        addCoachForm.on('submit', function(e) {
-            e.preventDefault();
-             if (this.checkValidity() === false) {
-                 showAlert('Please fill out all required staff fields correctly.', 'Validation Error');
-                 $(this).find(':invalid').first().focus();
-                 return;
-             }
-            var coachId = $('#coach-id').val().trim();
-            var coachName = $('#coach-name').val().trim();
-            var coachRole = $('#coach-role').val().trim();
-            var coachEmail = $('#coach-email').val().trim();
-            var coachBranch = $('#coach-branch').val().trim();
-
-             if (coachTableBody.find(`tr[data-id="${coachId}"]`).length > 0) {
-                 showAlert(`Staff with ID "${coachId}" already exists.`, 'Duplicate Entry');
-                 return;
-            }
-            var newRowHtml = `<tr data-id="${coachId}"><td data-label="ID">${coachId}</td><td data-label="Name">${coachName}</td><td data-label="Role">${coachRole}</td><td data-label="Email">${coachEmail}</td><td data-label="Gym Branch">${coachBranch}</td><td data-label="Actions"><button class="btn btn-sm btn-danger">Delete</button></td></tr>`;
-            coachTableBody.append(newRowHtml);
-            addResponsiveTableHeaders();
-            showAlert(`Staff "${coachName}" added successfully!`, 'Success');
-            hideAndResetFormModal(addCoachModal, addCoachForm);
-        });
-    }
-
-    $(window).on('click', function(event) {
-        const $target = $(event.target);
-        if ($target.is(addGymModal)) hideAndResetFormModal(addGymModal, addGymForm);
-        else if ($target.is(addUserModal)) hideAndResetFormModal(addUserModal, addUserForm);
-        else if ($target.is(addCoachModal)) hideAndResetFormModal(addCoachModal, addCoachForm);
-        else if ($target.is(logoutModal)) hideModal(logoutModal);
-        else if ($target.is(alertModal)) hideAlert();
-    });
-
-    $('.content-area').on('click', '.btn-danger', function() {
-        var $row = $(this).closest('tr');
-        var itemName = $row.find('td[data-label="Name"]').text().trim() || 'this item';
-        showAlert(`Deleting ${itemName}... (Simulation)`);
-        setTimeout(() => {
-            $row.remove();
-            showAlert(`${itemName} deleted (Simulation)!`, 'Deletion Complete');
-        }, 800);
-    });
-
-    $('.content-area').on('click', '.btn-info', function() {
-        var $row = $(this).closest('tr');
-        var userName = $row.find('td[data-label="User Name"]').text().trim() || 'selected payment';
-        showAlert(`Refund action triggered for ${userName} (Simulation).`, 'Payment Action');
-    });
-
-    $('.content-area').on('click', '.btn-success', function() {
-        var $button = $(this);
-        var $row = $button.closest('tr');
-        var userName = $row.find('td[data-label="User Name"]').text().trim() || 'selected payment';
-        showAlert(`Marking payment for ${userName} as Paid (Simulation)...`, 'Payment Action');
-        $row.find('td[data-label="Status"]').text('Completed').css('color', 'var(--success)');
-        $button.remove();
-    });
-
-    function initializeAnalyticsCharts() {
-         if (typeof Chart === 'undefined') { console.error("Chart.js is not loaded."); return; }
-         if (trendsChartInstance) trendsChartInstance.destroy();
-         if (newUserChartInstance) newUserChartInstance.destroy();
-         if (newGymChartInstance) newGymChartInstance.destroy();
-         trendsChartInstance = null; newUserChartInstance = null; newGymChartInstance = null;
-
-         const trendsCtx = document.getElementById('trendsChart')?.getContext('2d');
-         const newUserCtx = document.getElementById('newUserChart')?.getContext('2d');
-         const newGymCtx = document.getElementById('newGymChart')?.getContext('2d');
-         if (!trendsCtx && !newUserCtx && !newGymCtx) { console.warn("No chart canvas elements found."); return; }
-
-        try {
-            const goldColor = getComputedStyle(document.documentElement).getPropertyValue('--main-color', '#FFD700').trim();
-            const goldLightColor = '#FFEC8B'; const textColor = '#ecf0f1';
-            const borderColor = '#444'; const darkGrayColor = '#343a40';
-            const fontFamily = 'Poppins, sans-serif';
-
-             const commonChartOptions = { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, grid: { color: borderColor }, ticks: { color: textColor, font: { family: fontFamily } } }, x: { grid: { display: false }, ticks: { color: textColor, font: { family: fontFamily } } } }, plugins: { legend: { labels: { color: textColor, font: { family: fontFamily } } }, tooltip: { backgroundColor: 'rgba(0, 0, 0, 0.8)', titleColor: goldColor, bodyColor: textColor, displayColors: false, bodyFont: { family: fontFamily }, titleFont: { family: fontFamily } } }, animation: { duration: 800, easing: 'easeInOutQuad' }};
-             const doughnutOptions = { responsive: true, maintainAspectRatio: false, cutout: '60%', plugins: { legend: { position: 'bottom', labels: { color: textColor, font: { family: fontFamily } } }, tooltip: { backgroundColor: 'rgba(0, 0, 0, 0.8)', titleColor: goldColor, bodyColor: textColor, displayColors: true, bodyFont: { family: fontFamily }, titleFont: { family: fontFamily } } }, animation: { animateRotate: true, animateScale: true, duration: 1000 }};
-
-            if (trendsCtx) { trendsChartInstance = new Chart(trendsCtx, { type: 'line', data: { labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'], datasets: [{ label: 'Active Members', data: [650, 700, 800, 810, 850, 900, 980], borderColor: goldColor, backgroundColor: 'rgba(255, 215, 0, 0.2)', tension: 0.3, pointRadius: 3, pointHoverRadius: 6, fill: true }] }, options: commonChartOptions }); }
-            if (newUserCtx) { newUserChartInstance = new Chart(newUserCtx, { type: 'bar', data: { labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'], datasets: [{ label: 'New Users', data: [15, 20, 30, 25, 40, 35, 50], backgroundColor: goldLightColor, borderColor: goldColor, borderWidth: 1, borderRadius: 4 }] }, options: commonChartOptions }); }
-            if (newGymCtx) { newGymChartInstance = new Chart(newGymCtx, { type: 'doughnut', data: { labels: ['Downtown', 'Uptown', 'Westside', 'Eastside'], datasets: [{ label: 'Gyms by Region', data: [5, 4, 6, 3], backgroundColor: [ goldColor, goldLightColor, '#E6BE8A', '#D4AC0D' ], borderColor: darkGrayColor, borderWidth: 2, hoverOffset: 8, hoverBorderColor: textColor }] }, options: doughnutOptions }); }
-        } catch (error) { console.error("Error initializing charts:", error); showAlert("An error occurred while displaying analytics charts.", "Chart Error"); }
-    }
-
-    function handleContentSearch(inputId, buttonId, itemType, tableBodySelector) {
-        const $searchInput = $(inputId);
-        const $searchButton = $(buttonId);
-        const $tableBody = $(tableBodySelector);
-
-        if ($searchInput.length && $searchButton.length && $tableBody.length) {
-            const searchHandler = function() {
-                const searchTerm = $searchInput.val().trim().toLowerCase();
-                let itemsFound = 0;
-
-                $tableBody.find('tr').each(function() {
-                    const $row = $(this);
-                    let rowText = '';
-                    $row.find('td[data-label]').each(function() {
-                        if ($(this).data('label') !== 'Actions') {
-                            rowText += $(this).text().toLowerCase() + ' ';
-                        }
-                    });
-
-
-                    if (rowText.includes(searchTerm)) {
-                        $row.show();
-                        itemsFound++;
-                    } else {
-                        $row.hide();
-                    }
-                });
-
-                if (itemsFound === 0 && searchTerm !== '') {
-                     showAlert(`No ${itemType} found matching "${$searchInput.val().trim()}".`, 'Search Results');
-                } else if (searchTerm === '') {
-                }
-            };
-
-            $searchButton.on('click', searchHandler);
-
-            $searchInput.on('keyup', function(e) {
-                 searchHandler();
-            });
-
-        } else {
-            console.warn(`Search elements not found for ${itemType} content section.`);
-            if(!$tableBody.length) console.warn(`Table body not found using selector: ${tableBodySelector}`);
-        }
-    }
-
-    handleContentSearch('#user-search-input', '#user-search-btn', 'Users', '#users-content table tbody');
-    handleContentSearch('#staff-search-input', '#staff-search-btn', 'Staff', '#staff-content table tbody');
-    handleContentSearch('#gym-search-input', '#gym-search-btn', 'Gyms', '#gyms-content table tbody');
-    handleContentSearch('#payment-search-input', '#payment-search-btn', 'Payments', '#payments-content table tbody'); 
 
     addResponsiveTableHeaders();
+    updateDashboardStats();
+    addRecentActivity("Admin dashboard loaded.");
+
+    handleContentSearch('#user-search-input', '#user-table-body', ['First Name', 'Last Name', 'Email', 'ID']);
+    handleContentSearch('#staff-search-input', '#coach-table-body', ['First Name', 'Last Name', 'Email', 'ID', 'Role', 'Gym Branch']);
+    handleContentSearch('#gym-search-input', '#gym-table-body', ['Name', 'Location', 'Manager', 'ID']);
+    handleContentSearch('#payment-search-input', '#payment-table-body', ['User Name', 'User ID', 'Payment ID', 'Method', 'Status']);
 
     const initialActiveLink = $('.sidebar-nav .nav-link.active').first();
-    let initialTargetId = 'dashboard-content';
-    if (initialActiveLink.length) {
-        initialTargetId = initialActiveLink.data('target') || 'dashboard-content';
-    }
+    let initialTargetId = (initialActiveLink.length && initialActiveLink.data('target')) ? initialActiveLink.data('target') : 'dashboard-content';
     const $initialTargetSection = $('#' + initialTargetId);
+
     if ($initialTargetSection.length) {
-         $('.sidebar-nav .nav-link').removeClass('active');
-         $contentSections.removeClass('active');
-         $initialTargetSection.addClass('active');
-         $(`.sidebar-nav .nav-link[data-target="${initialTargetId}"]`).addClass('active');
-         const initialTitle = $(`.sidebar-nav .nav-link[data-target="${initialTargetId}"]`).find('.nav-text').text().trim();
-         $pageTitle.text(initialTitle || 'Dashboard');
-         if (initialTargetId === 'analytics-content') {
-             setTimeout(initializeAnalyticsCharts, 150);
-         }
+        $('.sidebar-nav .nav-link').removeClass('active');
+        $contentSections.removeClass('active');
+        $initialTargetSection.addClass('active');
+        $(`.sidebar-nav .nav-link[data-target="${initialTargetId}"]`).addClass('active');
+        $pageTitle.text($(`.sidebar-nav .nav-link[data-target="${initialTargetId}"]`).find('.nav-text').text().trim() || 'Dashboard');
+        if (initialTargetId === 'analytics-content') {
+            setTimeout(initializeAnalyticsCharts, 250);
+        }
     } else {
-         console.warn(`Initial target section #${initialTargetId} not found. Defaulting to dashboard.`);
-         $('.sidebar-nav .nav-link').removeClass('active');
-         $contentSections.removeClass('active');
-         $('#dashboard-content').addClass('active');
-         $('.sidebar-nav .nav-link[data-target="dashboard-content"]').addClass('active');
-         $pageTitle.text('Dashboard');
+        $('#dashboard-content').addClass('active');
+        $('.sidebar-nav .nav-link[data-target="dashboard-content"]').addClass('active');
+        $pageTitle.text('Dashboard');
     }
 
-});
+}); // End document ready
