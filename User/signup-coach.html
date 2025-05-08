@@ -40,7 +40,7 @@
 
                 <div class="input-box">
                     <label for="username" class="date-label">Username:</label>
-                    <input type="text" placeholder="User123" id="username" required>
+                    <input type="text" placeholder="Coach123" id="username" required>
                     <i class='bx bxs-user'></i>
                 </div>
 
@@ -86,6 +86,17 @@
                     <label for="password" class="date-label">Password:</label>
                     <input type="password" placeholder="e.g., 12xxxxxx(min 8 characters)" id="password" required minlength="8">
                     <i class='bx bxs-lock-alt'></i>
+                </div>
+
+                <div class="input-box">
+                    <label for="selectGym" class="date-label">Select Gym:</label>
+                    <select id="selectGym" required>
+                        <option value="" disabled selected>--Select Gym--</option>
+                        <option value="Elite Fitness Hub">Elite Fitness Hub</option>
+                        <option value="Iron Haven">Iron Haven</option>
+                        <option value="Elevate Athletics">Elevate Athletics</option>
+                        <option value="Location Near Me">Location Near Me</option>
+                    </select>
                 </div>
 
                 <div class="form-button-container">
@@ -166,6 +177,10 @@
 
                 console.log("Browser validation likely passed, or JS proceeding. Preparing redirect.");
 
+                const adminEmail = "admin@gmail.com";
+                const adminPassword = "admin123";
+                const ownerEmail = "gymOwner@gmail.com";
+                const ownerPassword = "gymOwner123";
                 const clientEmail = "user@gmail.com";
                 const clientPassword = "user0123";
 
@@ -173,10 +188,10 @@
                 const currentFormEmail = email;
                 const currentFormPassword = password;
 
-                if (currentFormEmail === clientEmail && currentFormPassword === clientPassword) {
-                    redirectUrl = "home.html";
+               if (currentFormEmail === clientEmail && currentFormPassword === clientPassword) {
+                    redirectUrl = "coach.html";
                 } else {
-                     redirectUrl = "home.html";
+                     redirectUrl = "coach.html";
                 }
 
                 const completeSignupAndRedirect = () => {
