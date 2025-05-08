@@ -408,6 +408,15 @@
 
         .btn-secondary { background-color: #aaa; color: #333; }
         .btn-secondary:hover { background-color: #999; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        /* Style for the new comment button */
+        .btn-secondary.add-comment-btn {
+            background-color: #6c757d; /* Bootstrap secondary color */
+            color: var(--white);
+        }
+        .btn-secondary.add-comment-btn:hover {
+            background-color: #5a6268;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+        }
 
         .controls-container {
             display: flex;
@@ -526,7 +535,8 @@
         #log-progress-modal .modal-content,
         #add-meal-plan-modal .modal-content,
         #add-appointment-modal .modal-content,
-        #assign-plan-modal .modal-content {
+        #assign-plan-modal .modal-content,
+        #add-comment-modal .modal-content { /* Added comment modal */
             background-color: var(--dark-gray);
             color: var(--primary-text);
             max-width: 550px;
@@ -538,7 +548,8 @@
         #add-meal-plan-modal h2,
         #add-appointment-modal h2,
         #assign-plan-modal h2,
-        #log-progress-modal #log-progress-modal-title {
+        #log-progress-modal #log-progress-modal-title,
+        #add-comment-modal #add-comment-modal-title { /* Added comment modal title */
             margin-bottom: 25px;
             color: var(--main-color);
             text-align: center;
@@ -597,6 +608,7 @@
             z-index: 1;
         }
 
+        /* Hide dropdown arrow for non-select inputs */
         .modal .form-group:not(:has(> select))::after,
         .modal .form-group:has(> input[type="date"])::after,
         .modal .form-group:has(> input[type="time"])::after,
@@ -847,7 +859,7 @@
                 padding-right: 10px; 
                 padding-left: 125px; 
                 text-align: left;   
-                white-space: normal;  
+                white-space: normal;  /* Allow wrapping in general */
                 display: block;
                 min-height: auto; 
                 overflow-wrap: break-word; 
@@ -875,6 +887,10 @@
                 word-break: break-word; 
                 font-size: 0.9em; 
             }
+            /* Ensure Notes cell wraps content properly */
+            td[data-label="Notes"] {
+                white-space: normal !important;
+            }
 
             td[data-label="Actions"] {
                 padding-left: 15px !important;  
@@ -883,12 +899,13 @@
                 min-height: auto; 
                 padding-top: 12px;
                 padding-bottom: 12px;
+                white-space: nowrap; /* Prevent action buttons from wrapping */
             }
             td[data-label="Actions"]:before {
                 display: none;
             }
             td[data-label="Actions"] .btn {
-                margin: 0; 
+                margin: 3px; /* Add small margin between buttons if needed */
             }
         
             .modal .modal-content {
@@ -1165,7 +1182,7 @@
                                     <td data-label="Type">Strength</td>
                                     <td data-label="Duration">6 Weeks</td>
                                     <td data-label="Focus">Full Body</td>
-                                    <td data-label="Actions"><button class="btn btn-sm btn-info view-details-btn">View</button> <button class="btn btn-sm btn-danger">Delete</button></td>
+                                    <td data-label="Actions"><button class="btn btn-sm btn-info view-details-btn" data-details="Detailed plan: Week 1-2 focus on form, Week 3-4 increase weight, Week 5-6 volume increase. Exercises: Squat, Bench, Deadlift, Rows, Overhead Press.">View</button> <button class="btn btn-sm btn-danger">Delete</button></td>
                                 </tr>
                                 <tr data-id="WOP002">
                                     <td data-label="ID">WOP002</td>
@@ -1173,7 +1190,7 @@
                                     <td data-label="Type">Cardio</td>
                                     <td data-label="Duration">4 Weeks</td>
                                     <td data-label="Focus">HIIT</td>
-                                    <td data-label="Actions"><button class="btn btn-sm btn-info view-details-btn">View</button> <button class="btn btn-sm btn-danger">Delete</button></td>
+                                    <td data-label="Actions"><button class="btn btn-sm btn-info view-details-btn" data-details="High-Intensity Interval Training. 3 sessions/week. 30s work / 30s rest. Exercises: Burpees, Jump Squats, High Knees, Mountain Climbers.">View</button> <button class="btn btn-sm btn-danger">Delete</button></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -1217,6 +1234,7 @@
                                     <tr><th>Date</th><th>Weight (kg)</th><th>Notes</th><th>Actions</th></tr>
                                 </thead>
                                 <tbody id="progress-log-table-body">
+                                    <!-- Progress logs will be loaded here by JS -->
                                 </tbody>
                             </table>
                         </div>
@@ -1252,7 +1270,7 @@
                                     <td data-label="Type">Muscle Gain</td>
                                     <td data-label="Daily Calories">2500 kcal</td>
                                     <td data-label="Primary Focus">Protein Intake</td>
-                                    <td data-label="Actions"><button class="btn btn-sm btn-info view-details-btn">View</button> <button class="btn btn-sm btn-danger">Delete</button></td>
+                                    <td data-label="Actions"><button class="btn btn-sm btn-info view-details-btn" data-details="Focus on lean protein sources like chicken, fish, lean beef, eggs, and greek yogurt. Aim for 1g protein per lb bodyweight. Moderate carbs (complex sources preferred), healthy fats.">View</button> <button class="btn btn-sm btn-danger">Delete</button></td>
                                 </tr>
                                 <tr data-id="MPL002">
                                     <td data-label="ID">MPL002</td>
@@ -1260,7 +1278,7 @@
                                     <td data-label="Type">Maintenance</td>
                                     <td data-label="Daily Calories">2000 kcal</td>
                                     <td data-label="Primary Focus">Nutrient Balance</td>
-                                    <td data-label="Actions"><button class="btn btn-sm btn-info view-details-btn">View</button> <button class="btn btn-sm btn-danger">Delete</button></td>
+                                    <td data-label="Actions"><button class="btn btn-sm btn-info view-details-btn" data-details="Well-rounded diet with variety. Focus on whole foods, fruits, vegetables, lean proteins, and whole grains. Control portion sizes. Limit processed foods and sugary drinks.">View</button> <button class="btn btn-sm btn-danger">Delete</button></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -1323,6 +1341,7 @@
         </main>
     </div> 
 
+    <!-- Add Client Modal -->
     <div id="add-client-modal" class="modal">
         <div class="modal-content">
             <button class="close-btn">×</button>
@@ -1357,6 +1376,7 @@
         </div>
     </div>
 
+    <!-- Add Workout Plan Modal -->
     <div id="add-workout-plan-modal" class="modal">
         <div class="modal-content">
             <button class="close-btn">×</button>
@@ -1404,6 +1424,7 @@
         </div>
     </div>
     
+    <!-- Log Progress Modal -->
     <div id="log-progress-modal" class="modal">
         <div class="modal-content">
             <button class="close-btn">×</button>
@@ -1439,6 +1460,7 @@
         </div>
     </div>
 
+    <!-- Add Meal Plan Modal -->
      <div id="add-meal-plan-modal" class="modal">
         <div class="modal-content">
             <button class="close-btn">×</button>
@@ -1487,6 +1509,7 @@
         </div>
     </div>
 
+    <!-- Add Appointment Modal -->
     <div id="add-appointment-modal" class="modal">
         <div class="modal-content">
             <button class="close-btn">×</button>
@@ -1539,6 +1562,7 @@
         </div>
     </div>
     
+    <!-- Assign Plan Modal -->
     <div id="assign-plan-modal" class="modal">
         <div class="modal-content">
             <button class="close-btn">×</button>
@@ -1562,11 +1586,13 @@
         </div>
     </div>
 
+    <!-- View Details Modal -->
     <div id="view-details-modal" class="modal">
         <div class="modal-content">
             <button class="close-btn">×</button>
             <h2 id="view-details-title">Details</h2>
             <div id="view-details-body" style="line-height: 1.6;">
+                <!-- Content loaded via JS -->
             </div>
              <div class="modal-actions" style="text-align: center; margin-top: 20px;">
                  <button id="viewDetailsOkButton" class="btn btn-primary" style="min-width: 100px;">OK</button>
@@ -1574,6 +1600,7 @@
         </div>
     </div>
 
+    <!-- Logout Confirmation Modal -->
     <div id="logoutConfirmationModal" class="modal">
         <div class="modal-content">
             <button id="closeLogoutModalButton" class="close-button">×</button>
@@ -1585,6 +1612,7 @@
         </div>
     </div>
 
+    <!-- Alert Modal -->
     <div id="alertModal" class="modal alert-modal">
         <div class="modal-content">
             <button class="close-btn alert-modal-close">×</button>
@@ -1596,6 +1624,25 @@
         </div>
     </div>
 
+    <!-- Add Comment Modal -->
+    <div id="add-comment-modal" class="modal">
+        <div class="modal-content">
+            <button class="close-btn">×</button>
+            <h2 id="add-comment-modal-title">Add Comment</h2>
+            <form id="add-comment-form" novalidate>
+                <input type="hidden" id="comment-client-id" name="comment-client-id">
+                <input type="hidden" id="comment-log-date" name="comment-log-date">
+                <div class="form-group">
+                    <label for="coach-comment-text">Coach's Comment:</label>
+                    <textarea id="coach-comment-text" name="coach-comment-text" rows="4" placeholder="Provide feedback or encouragement..." required></textarea>
+                    <div class="error-message" id="coach-comment-text-error"></div>
+                </div>
+                <button type="submit" class="btn btn-primary modal-add-btn">Save Comment</button>
+            </form>
+        </div>
+    </div>
+
+
     <script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-moment@1.0.1/dist/chartjs-adapter-moment.min.js"></script>
@@ -1605,7 +1652,6 @@
             const $sidebarLinks = $('.sidebar-nav .nav-link');
             const $contentSections = $('.content-section');
             const $pageTitle = $('#page-title');
-
             const logoutModal = $('#logoutConfirmationModal');
             const alertModal = $('#alertModal');
             const alertModalTitle = $('#alertModalTitle');
@@ -1613,61 +1659,57 @@
             const alertModalOkButton = $('#alertModalOkButton');
             const alertModalCloseButton = $('#alertModal .alert-modal-close');
             const headerLogoutLink = $('#header-logout-link');
-
             const addClientModal = $('#add-client-modal');
             const addClientForm = $('#add-client-form');
             const clientTableBody = $('#client-table-body');
-
             const addWorkoutPlanModal = $('#add-workout-plan-modal');
             const addWorkoutPlanForm = $('#add-workout-plan-form');
             const workoutPlanTableBody = $('#workout-plan-table-body');
             const workoutAssignClientSelect = $('#workout-assign-client');
-
-
             const addMealPlanModal = $('#add-meal-plan-modal');
             const addMealPlanForm = $('#add-meal-plan-form');
             const mealPlanTableBody = $('#meal-plan-table-body');
             const mealAssignClientSelect = $('#meal-assign-client');
-
             const addAppointmentModal = $('#add-appointment-modal');
             const addAppointmentForm = $('#add-appointment-form');
             const appointmentTableBody = $('#appointment-table-body');
             const appointmentClientSelect = $('#appointment-client'); 
-
             const logProgressModal = $('#log-progress-modal');
             const logProgressForm = $('#log-progress-form');
             const logProgressModalTitle = $('#log-progress-modal-title');
             const logProgressClientIdHidden = $('#log-progress-client-id');
             const progressLogTableBody = $('#progress-log-table-body');
-
             const selectClientProgress = $('#select-client-progress');
             const clientProgressDisplay = $('#client-progress-display');
             const selectClientPrompt = $('#select-client-prompt');
             const logProgressBtn = $('#log-progress-btn');
             const progressClientNameDisplay = $('#progress-client-name');
-            
             const assignPlanModal = $('#assign-plan-modal');
             const assignPlanForm = $('#assign-plan-form');
             const assignPlanClientName = $('#assign-plan-client-name');
             const assignPlanClientIdHidden = $('#assign-plan-client-id-hidden');
             const assignWorkoutPlanSelect = $('#assign-workout-plan');
             const assignMealPlanSelect = $('#assign-meal-plan');
-
             const viewDetailsModal = $('#view-details-modal');
             const viewDetailsTitle = $('#view-details-title');
             const viewDetailsBody = $('#view-details-body');
             const viewDetailsOkButton = $('#viewDetailsOkButton');
-
+            const addCommentModal = $('#add-comment-modal'); 
+            const addCommentForm = $('#add-comment-form');   
+            const addCommentModalTitle = $('#add-comment-modal-title');
+            const commentClientIdInput = $('#comment-client-id');
+            const commentLogDateInput = $('#comment-log-date');
+            const coachCommentTextInput = $('#coach-comment-text');
 
             let weightChartInstance = null, strengthChartInstance = null, cardioChartInstance = null;
             
-            let clientProgressData = {
+             let clientProgressData = {
                 "CLT001": {
                     name: "Johnathan Doe",
                     logs: [
-                        { date: "2023-10-01", weight: 75.5, strength: 70, cardio: 20, notes: "Started program" },
+                        { date: "2023-10-01", weight: 75.5, strength: 70, cardio: 20, notes: "Started program", coachComment: "Good start, keep it up!" },
                         { date: "2023-10-15", weight: 74.8, strength: 72.5, cardio: 25, notes: "Feeling good" },
-                        { date: "2023-10-28", weight: 74.0, strength: 75, cardio: 30, notes: "New PB on bench!" },
+                        { date: "2023-10-28", weight: 74.0, strength: 75, cardio: 30, notes: "New PB on bench!", coachComment: "Excellent progress on the bench press!" },
                     ]
                 },
                 "CLT002": {
@@ -1675,7 +1717,7 @@
                     logs: [
                         { date: "2023-09-20", weight: 62.0, strength: 40, cardio: 15, notes: "First session" },
                         { date: "2023-10-05", weight: 61.5, strength: 42.5, cardio: 18, notes: "Improving stamina" },
-                        { date: "2023-10-20", weight: 60.8, strength: 45, cardio: 22, notes: "Consistent effort" },
+                        { date: "2023-10-20", weight: 60.8, strength: 45, cardio: 22, notes: "Consistent effort", coachComment: "Consistency is paying off, Jane!" },
                     ]
                 },
                 "CLT003": {
@@ -1738,10 +1780,10 @@
                 return prefix.toUpperCase() + String(newIdNum).padStart(3, '0');
             }
 
-            const clientFormFields = [
+             const clientFormFields = [
                 { input: $('#client-full-name'), errorId: 'client-full-name-error', name: 'Full Name', required: true },
                 { input: $('#client-email'), errorId: 'client-email-error', name: 'Email', required: true, isEmail: true },
-                { input: $('#client-phone'), errorId: 'client-phone-error', name: 'Phone Number', required: true },
+                { input: $('#client-phone'), errorId: 'client-phone-error', name: 'Phone Number', required: true, isNumber: true }, 
                 { input: $('#client-last-checkin'), errorId: 'client-last-checkin-error', name: 'Last Check-in Date', required: true },
             ];
             const workoutPlanFormFields = [
@@ -1769,6 +1811,9 @@
                 { input: $('#log-progress-strength-exercise'), errorId: 'log-progress-strength-exercise-error', name: 'Strength Exc', required: false, isNumber: true },
                 { input: $('#log-progress-cardio-metric'), errorId: 'log-progress-cardio-metric-error', name: 'Cardio Metric', required: false, isNumber: true },
             ];
+             const addCommentFormFields = [ 
+                { input: $('#coach-comment-text'), errorId: 'coach-comment-text-error', name: 'Comment', required: true }
+            ];
 
             function resetForm(formElement, fieldsToValidate) {
                 if (formElement && formElement.length) {
@@ -1788,7 +1833,7 @@
                 fieldsToValidate.forEach(field => {
                     const $input = field.input;
                     const $errorDiv = $('#' + field.errorId);
-                    const value = $input.val() ? (($input.attr('type') === 'password' || $input.attr('type') === 'date' || $input.attr('type') === 'time' || $input.attr('type') === 'number' || $input.attr('type') === 'tel') ? $input.val() : $input.val().trim()) : "";
+                    const value = $input.val() ? (($input.attr('type') === 'password' || $input.attr('type') === 'date' || $input.attr('type') === 'time' || $input.attr('type') === 'number' || $input.attr('type') === 'tel' || $input.is('textarea') || $input.is('select')) ? $input.val() : $input.val().trim()) : ""; 
                     let errorMessage = '';
 
                     if (field.required && value === '') {
@@ -1917,7 +1962,7 @@
                         $targetSection.addClass('active');
                         $pageTitle.text($this.find('.nav-text').text().trim() || 'Coach Dashboard');
                         if (targetId === 'appointments-content' || targetId === 'progress-content' || targetId === 'workouts-content' || targetId === 'meals-content') {
-                            populateClientSelects(); // Ensure client dropdowns are populated when relevant sections are active
+                            populateClientSelects(); 
                         }
                     }
                 } else {
@@ -1933,13 +1978,13 @@
             $('.add-btn[data-modal-target="add-workout-plan-modal"]').on('click', function() {
                 resetForm(addWorkoutPlanForm, workoutPlanFormFields);
                 $('#workout-plan-id').val(generateNewId(workoutPlanTableBody, 'WOP'));
-                populateClientSelects(); // Populate client dropdown for workout plan assignment
+                populateClientSelects(); 
                 showModal(addWorkoutPlanModal);
             });
             $('.add-btn[data-modal-target="add-meal-plan-modal"]').on('click', function() {
                 resetForm(addMealPlanForm, mealPlanFormFields);
                 $('#meal-plan-id').val(generateNewId(mealPlanTableBody, 'MPL'));
-                populateClientSelects(); // Populate client dropdown for meal plan assignment
+                populateClientSelects(); 
                 showModal(addMealPlanModal);
             });
             $('.add-btn[data-modal-target="add-appointment-modal"]').on('click', function() {
@@ -1971,6 +2016,7 @@
                 else if ($modal.is(logProgressModal)) hideAndResetFormModal($modal, logProgressForm, logProgressFormFields);
                 else if ($modal.is(assignPlanModal)) hideModal($modal); 
                 else if ($modal.is(viewDetailsModal)) hideModal($modal);
+                else if ($modal.is(addCommentModal)) hideAndResetFormModal($modal, addCommentForm, addCommentFormFields);
                 else hideModal($modal);
             });
             
@@ -1978,7 +2024,7 @@
                 hideModal(viewDetailsModal);
             });
 
-            addClientForm.on('submit', function(e) {
+             addClientForm.on('submit', function(e) {
                 e.preventDefault();
                 if (!validateForm(clientFormFields)) return;
                 
@@ -2158,7 +2204,7 @@
                     return;
                 }
                 
-                clientProgressData[clientId].logs.push({ date, weight, strength, cardio, notes });
+                clientProgressData[clientId].logs.push({ date, weight, strength, cardio, notes }); 
                 clientProgressData[clientId].logs.sort((a, b) => new Date(a.date) - new Date(b.date)); 
 
                 clientTableBody.find(`tr[data-id="${clientId}"] td[data-label="Last Check-in"]`).text(date);
@@ -2188,6 +2234,48 @@
                 hideModal(assignPlanModal);
             });
 
+             addCommentForm.on('submit', function(e) {
+                e.preventDefault();
+                 if (!validateForm(addCommentFormFields)) return;
+
+                const clientId = commentClientIdInput.val();
+                const logDate = commentLogDateInput.val();
+                const commentText = coachCommentTextInput.val().trim();
+
+                if (!clientId || !logDate) {
+                    showAlert("Error: Could not identify the log entry to comment on.", "Error");
+                    return;
+                }
+                if (!clientProgressData[clientId] || !clientProgressData[clientId].logs) {
+                     showAlert("Error: Client progress data not found.", "Error");
+                     return;
+                }
+
+                const logEntry = clientProgressData[clientId].logs.find(log => log.date === logDate);
+
+                if (logEntry) {
+                    logEntry.coachComment = commentText; 
+
+                    const $logRow = progressLogTableBody.find(`tr[data-log-date="${logDate}"]`);
+                    if ($logRow.length) {
+                        const notesCell = $logRow.find('td[data-label="Notes"]');
+                        let notesHtml = logEntry.notes ? `Notes: ${logEntry.notes}` : 'Notes: N/A';
+                         if (logEntry.coachComment) {
+                             notesHtml += `<br><strong style="color: var(--main-color); margin-top: 5px; display: inline-block;">Coach:</strong> ${logEntry.coachComment}`;
+                         }
+                        notesCell.html(notesHtml); 
+                    }
+
+                    showAlert("Comment saved successfully!", "Success");
+                    addRecentActivity(`Comment added to progress log (${logDate}) for ${clientProgressData[clientId].name}`);
+                    hideAndResetFormModal(addCommentModal, addCommentForm, addCommentFormFields);
+
+                } else {
+                     showAlert("Error: Could not find the specific log entry to update.", "Error");
+                }
+            });
+
+
             $(window).on('click', function(event) {
                 const $target = $(event.target);
                 if ($target.is(addClientModal)) hideAndResetFormModal(addClientModal, addClientForm, clientFormFields);
@@ -2199,31 +2287,36 @@
                 else if ($target.is(viewDetailsModal)) hideModal(viewDetailsModal);
                 else if ($target.is(logoutModal)) hideModal(logoutModal);
                 else if ($target.is(alertModal)) hideAlert();
+                else if ($target.is(addCommentModal)) hideAndResetFormModal(addCommentModal, addCommentForm, addCommentFormFields); 
             });
 
             $('.content-area').on('click', '.btn-danger', function() {
                 var $button = $(this);
-                if ($button.closest('#appointment-table-body').length && !$button.hasClass('cancel-appointment-btn')) {
-                } else if ($button.hasClass('cancel-appointment-btn')) {
+                if ($button.closest('#appointment-table-body').length && $button.hasClass('cancel-appointment-btn')) {
                     return; 
                 }
+                const isProgressLogDelete = $button.closest('#progress-log-table-body').length > 0 && !$button.hasClass('add-comment-btn');
 
                 var $row = $(this).closest('tr');
                 var id = $row.data('id');
-                var itemName = $row.find('td:nth-child(2)').text().trim() || id || 'this item'; 
+                var itemName;
+                if (isProgressLogDelete) {
+                     itemName = `log entry from ${$row.data('log-date')}`;
+                } else {
+                    itemName = $row.find('td:nth-child(2)').text().trim() || id || 'this item';
+                }
                 
                 let itemType = 'item';
                 if ($row.closest('#client-table-body').length) itemType = 'client';
                 else if ($row.closest('#workout-plan-table-body').length) itemType = 'workout plan';
                 else if ($row.closest('#meal-plan-table-body').length) itemType = 'meal plan';
-                else if ($row.closest('#progress-log-table-body').length) itemType = 'progress log entry';
+                else if (isProgressLogDelete) itemType = 'progress'; 
 
                 showAlert(`Are you sure you want to delete this ${itemType}: ${itemName}? This action cannot be undone.`, 'Confirm Deletion', true);
 
                 alertModalOkButton.off('click').on('click', function proceedDelete() {
                     hideAlert();
                     const isClientRow = $row.closest('#client-table-body').length > 0;
-                    const isProgressLog = $row.closest('#progress-log-table-body').length > 0;
                     const currentClientIdForProgress = selectClientProgress.val();
 
                     $row.fadeOut(400, function() {
@@ -2238,14 +2331,14 @@
                                 selectClientPrompt.show();
                                 logProgressBtn.prop('disabled', true);
                             }
-                        } else if (isProgressLog && currentClientIdForProgress) {
+                        } else if (isProgressLogDelete && currentClientIdForProgress) {
                             const logDate = $row.data('log-date'); 
                             if (clientProgressData[currentClientIdForProgress] && clientProgressData[currentClientIdForProgress].logs) {
                                 clientProgressData[currentClientIdForProgress].logs = clientProgressData[currentClientIdForProgress].logs.filter(log => log.date !== logDate);
                                 loadClientProgress(currentClientIdForProgress); 
                             }
                         }
-                        addRecentActivity(`${itemType.charAt(0).toUpperCase() + itemType.slice(1)} "${itemName}" (ID: ${id}) deleted.`);
+                        addRecentActivity(`${itemType.charAt(0).toUpperCase() + itemType.slice(1)} "${itemName}" deleted.`); // Removed ID for logs
                         showAlert(`${itemType.charAt(0).toUpperCase() + itemType.slice(1)} "${itemName}" deleted!`, 'Deletion Complete');
                     });
                     alertModalOkButton.off('click', proceedDelete).on('click', hideAlert); 
@@ -2377,6 +2470,34 @@
                     }
                 });
             });
+            
+             progressLogTableBody.on('click', '.add-comment-btn', function() {
+                const $row = $(this).closest('tr');
+                const logDate = $row.data('log-date');
+                const clientId = selectClientProgress.val(); 
+
+                if (!clientId || !logDate) {
+                    showAlert("Could not identify the client or log entry.", "Error");
+                    return;
+                }
+                 if (!clientProgressData[clientId] || !clientProgressData[clientId].logs) {
+                     showAlert("Client progress data not found.", "Error");
+                     return;
+                 }
+                 
+                 const clientName = clientProgressData[clientId].name;
+                 const logEntry = clientProgressData[clientId].logs.find(log => log.date === logDate);
+                 const existingComment = logEntry ? (logEntry.coachComment || '') : '';
+
+                addCommentModalTitle.text(`Comment on ${clientName}'s log (${logDate})`);
+                commentClientIdInput.val(clientId);
+                commentLogDateInput.val(logDate);
+                coachCommentTextInput.val(existingComment); 
+                resetForm(addCommentForm, addCommentFormFields); 
+
+                showModal(addCommentModal);
+            });
+
 
             selectClientProgress.on('change', function() {
                 const clientId = $(this).val();
@@ -2411,18 +2532,26 @@
                 progressLogTableBody.empty();
                 if (data.logs && data.logs.length > 0) {
                     data.logs.forEach(log => {
+                         let notesDisplayHtml = log.notes ? `Notes: ${log.notes}` : 'Notes: N/A';
+                         if (log.coachComment) {
+                             notesDisplayHtml += `<br><strong style="color: var(--main-color); margin-top: 5px; display: inline-block;">Coach:</strong> ${log.coachComment}`;
+                         }
+
                         const rowHtml = `<tr data-id="log-${clientId}-${log.date}" data-log-date="${log.date}">
                             <td data-label="Date">${log.date}</td>
                             <td data-label="Weight (kg)">${log.weight !== null ? log.weight : 'N/A'}</td>
-                            <td data-label="Notes">${log.notes || 'N/A'}</td>
-                            <td data-label="Actions"><button class="btn btn-sm btn-danger">Delete</button></td>
+                            <td data-label="Notes" style="white-space: normal;">${notesDisplayHtml}</td> 
+                            <td data-label="Actions">
+                                <button class="btn btn-sm btn-secondary add-comment-btn">Comment</button> 
+                                <button class="btn btn-sm btn-danger">Delete</button>
+                            </td>
                         </tr>`;
                         progressLogTableBody.append(rowHtml);
                     });
                 } else {
                     progressLogTableBody.append('<tr><td colspan="4" style="text-align:center;">No logs found for this client.</td></tr>');
                 }
-                addResponsiveTableHeaders();
+                addResponsiveTableHeaders(); 
 
                 const labels = data.logs.map(log => log.date);
                 const weightData = data.logs.map(log => log.weight);
@@ -2508,7 +2637,7 @@
                 }
             }
 
-            function handleContentSearch(inputId, tableBodySelector, searchColumns) {
+             function handleContentSearch(inputId, tableBodySelector, searchColumns) {
                 const $searchInput = $(inputId);
                 const $tableBody = $(tableBodySelector);
                 if (!$searchInput.length || !$tableBody.length) return;
@@ -2547,6 +2676,7 @@
                 });
             }
 
+
             addResponsiveTableHeaders();
             populateClientSelects(); 
             updateDashboardStats(); 
@@ -2568,7 +2698,7 @@
                 $(`.sidebar-nav .nav-link[data-target="${initialTargetId}"]`).addClass('active');
                 $pageTitle.text($(`.sidebar-nav .nav-link[data-target="${initialTargetId}"]`).find('.nav-text').text().trim() || 'Dashboard');
                 if (initialTargetId === 'progress-content' || initialTargetId === 'appointments-content' || initialTargetId === 'workouts-content' || initialTargetId === 'meals-content') {
-                     populateClientSelects(); // Ensure dropdowns are populated on initial load if relevant tab is active
+                     populateClientSelects(); 
                 }
             } else {
                 $('#dashboard-content').addClass('active');

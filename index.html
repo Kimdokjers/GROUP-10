@@ -7,7 +7,7 @@
    
     <link rel="stylesheet" href="User/usercss/landingPage.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'> {/* Added Boxicons */}
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
@@ -30,8 +30,7 @@
                 <li><a href="#coaches">Coaches</a></li>
             </div>
             <div class="navbar-right">
-                <li><a href="User/signup-user.html" class="btn btn-primary header-signup-member">Member Sign Up</a></li>
-                <li><a href="User/signup-gymOwner.html" class="btn btn-secondary header-signup-gym">Gym Owner Sign Up</a></li>
+                <li><a href="User/signup-user.html" class="btn btn-primary header-signup-member">Sign Up</a></li>
                 <li><a href="User/signin.html" class="btn btn-primary header-signin">Sign In</a></li>
             </div>
         </ul>
@@ -105,6 +104,7 @@
                    <div class="hook-up-actions">
                        <a href="User/signup-user.html" class="btn btn-primary">Become a Member</a>
                        <a href="User/signup-gymOwner.html" class="btn btn-secondary">Partner as a Gym Owner</a>
+                       <a href="User/signup-coach.html" class="btn btn-primary">Apply as Coach</a>
                    </div>
                </div>
            </div>
@@ -349,16 +349,15 @@
     <script>
     $(document).ready(function() {
         const $menuIcon = $('#menu-icon');
-        const $navbar = $('.navbar'); // The UL element
-        const $header = $('header'); // The main header element
+        const $navbar = $('.navbar');
+        const $header = $('header');
 
         if ($menuIcon.length && $navbar.length) {
             $menuIcon.on('click', () => {
-                $menuIcon.toggleClass('bx-x'); // Toggles between bx-menu and bx-x
-                $navbar.toggleClass('active'); // Toggles visibility of navbar on mobile
+                $menuIcon.toggleClass('bx-x');
+                $navbar.toggleClass('active');
             });
 
-            // Close menu on scroll
             $(window).on('scroll', () => {
                 if ($navbar.hasClass('active')) {
                     $menuIcon.removeClass('bx-x');
@@ -366,22 +365,16 @@
                 }
             });
 
-            // Close menu when a nav link or button inside navbar is clicked
             $navbar.find('a').on('click', function() {
-                // If it's an on-page anchor, smooth scroll will also handle closing.
-                // If it's a link to another page or not a hash link, close here.
                 if ($navbar.hasClass('active')) {
                     if (this.hash === "" || this.hash === "#" || this.hash === "#0" || !$(this.hash).length) {
-                        // Not a valid on-page scroll link, or link to another page
                         $menuIcon.removeClass('bx-x');
                         $navbar.removeClass('active');
                     }
-                    // For valid on-page anchors, smooth scroll below will also ensure menu closes.
                 }
             });
         }
 
-        // Smooth scroll functionality for on-page anchor links
         $('a[href*="#"]').not('[href="#"]').not('[href="#0"]').click(function(event) {
             if (
                 location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') &&
@@ -393,37 +386,26 @@
                 if (target.length) {
                     event.preventDefault(); 
 
-                    // If mobile menu is open, close it first
                     if ($navbar.hasClass('active')) {
                         $menuIcon.removeClass('bx-x');
                         $navbar.removeClass('active');
                     }
                     
                     var headerHeight = 0;
-                    // Use CSS variables for header height for consistency with home.css styling
-                    // Fallback to direct calculation if CSS vars not fully supported or available
-                    if ($(window).width() <= 991) { // Mobile breakpoint from home.css
+                    if ($(window).width() <= 991) {
                         headerHeight = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--header-height-mobile').trim()) || ($header.outerHeight() || 80);
-                    } else { // Desktop
+                    } else {
                         headerHeight = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--header-height-desktop').trim()) || ($header.outerHeight() || 100);
                     }
 
                     $('html, body').animate({
                         scrollTop: target.offset().top - headerHeight
                     }, 500, function() {
-                        // Optional: Update focus to target for accessibility
-                        // var $target = $(target);
-                        // $target.focus();
-                        // if (!$target.is(":focus")) { 
-                        //     $target.attr('tabindex','-1'); 
-                        //     $target.focus();
-                        // }
                     });
                 }
             }
         });
 
-        // Active link highlighting on scroll (adapted from home.html script)
         let scrollTimeout;
         $(window).on('scroll', function() {
             clearTimeout(scrollTimeout);
@@ -435,23 +417,22 @@
                 } else {
                     headerHeight = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--header-height-desktop').trim()) || ($header.outerHeight() || 100);
                 }
-                var threshold = headerHeight + 50; // Adjust threshold as needed
+                var threshold = headerHeight + 50;
 
                 var activeSection = null;
 
                 $('section[id]').each(function() {
-                    if ($(this).offset() && $(this).is(':visible')) { // Check if element exists and is visible
+                    if ($(this).offset() && $(this).is(':visible')) {
                         var sectionTop = $(this).offset().top - threshold;
                         var sectionBottom = sectionTop + $(this).outerHeight();
 
                         if (scrollDistance >= sectionTop && scrollDistance < sectionBottom) {
                             activeSection = $(this).attr('id');
-                            return false; // Break loop
+                            return false;
                         }
                     }
                 });
                 
-                // Fallback for top of page if no section is active (e.g. highlight "Benefits" if it's first)
                 if (!activeSection && scrollDistance < ($('section[id]').first().offset() ? $('section[id]').first().offset().top - threshold : 500) ) {
                      activeSection = $('.navbar-left a').first().attr('href')?.substring(1) || null;
                 }
@@ -465,17 +446,12 @@
                     $('.navbar-left a').removeClass('active');
                     targetLink.addClass('active');
                 } else if (!activeSection && currentActiveLink.length) {
-                    // If scrolled to top and no section matches, or no activeSection determined
-                    // you might want to remove active class or set a default like the first item
-                    // $('.navbar-left a').removeClass('active');
-                    // $('.navbar-left a[href="#benefit"]').addClass('active'); // Example default
                 }
-            }, 100); // Debounce scroll event
+            }, 100);
         });
-        $(window).trigger('scroll'); // Initial check
+        $(window).trigger('scroll');
     });
     </script>
-    <!-- === END SCRIPTS SECTION === -->
 
 </body>
 </html>
