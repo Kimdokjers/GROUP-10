@@ -15,7 +15,7 @@
                 <a href="signin.html"><i class='bx bx-left-arrow-alt' style="color: white; font-size: 20px;"></i></a>
                 <div class="google">
                     <img src="../images/google.jpg" alt="Google Logo" class="google-logo">
-                    <span>Sign in with Google</span>
+                    <span>Sign up with Google</span>
                 </div>
 
             </div>
@@ -29,36 +29,45 @@
 
                 <div class="chooser-account-list">
                     <ul class="accounts">
-<!-- Remove onclick="..." from these buttons -->
-<li>
-    <button class="account-item" data-email="admin@gmail.com" id="admin">
-        <img src="../images/admin_pic.jpg" alt="" class="picture">
-        <div class="account-details">
-            <span class="account-name">Admin</span>
-            <span class="account-email">admin@gmail.com</span>
-        </div>
-    </button>
-</li>
+                        <li>
+                            <button class="account-item" data-email="admin@gmail.com" id="admin">
+                                <img src="../images/admin_pic.jpg" alt="" class="picture">
+                                <div class="account-details">
+                                    <span class="account-name">Admin</span>
+                                    <span class="account-email">admin@gmail.com</span>
+                                </div>
+                            </button>
+                        </li>
 
-<li>
-    <button class="account-item" data-email="gymOwner@gmail.com" id="gymOwner">
-        <img src="../images/gymOwner_pic.jpg" alt="" class="picture">
-        <div class="account-details">
-            <span class="account-name">Gym Owner</span>
-            <span class="account-email">gymOwner@gmail.com</span>
-        </div>
-    </button>
-</li>
+                        <li>
+                            <button class="account-item" data-email="gymOwner@gmail.com" id="gymOwner">
+                                <img src="../images/gymOwner_pic.jpg" alt="" class="picture">
+                                <div class="account-details">
+                                    <span class="account-name">Gym Owner</span>
+                                    <span class="account-email">gymOwner@gmail.com</span>
+                                </div>
+                            </button>
+                        </li>
 
-<li>
-    <button class="account-item" data-email="user@gmail.com" id="user">
-        <img src="../images/user_pic.jpg" alt="" class="picture">
-        <div class="account-details">
-            <span class="account-name">User</span>
-            <span class="account-email">user@gmail.com</span>
-        </div>
-    </button>
-</li>
+                        <li>
+                            <button class="account-item" data-email="gymCoach@gmail.com" id="gymCoach">
+                                <img src="../images/gymcoach.jpg" alt="" class="picture"> 
+                                <div class="account-details">
+                                    <span class="account-name">Gym Coach</span>
+                                    <span class="account-email">gymCoach@gmail.com</span>
+                                </div>
+                            </button>
+                        </li>
+
+                        <li>
+                            <button class="account-item" data-email="user@gmail.com" id="user">
+                                <img src="../images/user_pic.jpg" alt="" class="picture">
+                                <div class="account-details">
+                                    <span class="account-name">User</span>
+                                    <span class="account-email">user@gmail.com</span>
+                                </div>
+                            </button>
+                        </li>
                     </ul>
 
                     <hr class="separator">
@@ -77,92 +86,78 @@
         </div>
     </div>
 
-    <!-- The Modal -->
     <div id="Modal" class="modal">
         <div class="modal-content">
             <button id="closeModalButton" class="close-button">×</button>
-            <p id="modalMessage">Sign in successful! Welcome Back!</p>
+            <p id="modalMessage">Sign up successful! Welcome!</p>
             <button id="okModalButton" >Ok</button>
         </div>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // Select elements using vanilla JS
-            const accountButtons = document.querySelectorAll('.account-chooser-container .account-item[data-email]'); // Select only buttons with data-email
+            const accountButtons = document.querySelectorAll('.account-chooser-container .account-item[data-email]'); 
             const useOtherButton = document.querySelector('.account-chooser-container .use-other');
             const modal = document.getElementById('Modal');
             const closeModalButton = document.getElementById('closeModalButton');
             const okModalButton = document.getElementById('okModalButton');
             const modalMessage = document.getElementById('modalMessage');
     
-            let redirectUrl = null; // Variable to store the URL for redirection
+            let redirectUrl = null; 
     
-            // Function to show the modal
             const openModal = (message) => {
-                modalMessage.textContent = message; // Set message text
-                modalMessage.style.color = "black"; // Set text color
-                modal.classList.add('show');        // Add 'show' class to display modal
+                modalMessage.textContent = message; 
+                modalMessage.style.color = "black"; 
+                modal.classList.add('show');        
             };
     
-            // Function to hide the modal
             const closeModal = () => {
-                modal.classList.remove('show');     // Remove 'show' class to hide modal
-                redirectUrl = null; // Clear the redirect URL when closing manually
+                modal.classList.remove('show');     
+                redirectUrl = null; 
             };
     
-            // Add listeners to ACCOUNT buttons
             accountButtons.forEach(button => {
                 button.addEventListener('click', (e) => {
                     const email = button.dataset.email;
                     console.log(`Account selected: ${email}`);
     
-                    // Determine the redirect URL based on the button's ID
                     const targetId = button.id;
                     if (targetId === 'admin') {
                         redirectUrl = '../Admin/admindb.html';
                     } else if (targetId === 'gymOwner') {
                         redirectUrl = '../GymOwner/gymOwner.html';
+                    } else if (targetId === 'gymCoach') { 
+                        redirectUrl = '../GymCoach/coach.html'; 
                     } else if (targetId === 'user') {
                         redirectUrl = 'home.html';
                     } else {
-                        redirectUrl = null; // Fallback, should not happen with current HTML
+                        redirectUrl = null; 
                     }
     
-                    // Show the modal if a valid account was clicked
                     if (redirectUrl) {
-                        openModal(`Sign in successful as ${button.querySelector('.account-name').textContent}! Welcome Back!`);
+                        openModal(`Sign up successful as ${button.querySelector('.account-name').textContent}! Welcome!`);
                     }
                 });
             });
     
-            // Add listener for the "Use another account" button
             if (useOtherButton) {
                 useOtherButton.addEventListener('click', () => {
                     console.log('Use another account selected');
-                    // Implement redirection or other logic for "Use another account"
-                    alert('Redirecting to general sign in page...'); // Placeholder action
-                    // window.location.href = 'your_general_signup.html'; // Example redirection
+                    alert('Redirecting to general sign up page...'); 
                 });
             }
     
-    
-            // Add listeners to modal buttons
             closeModalButton.addEventListener('click', closeModal);
     
             okModalButton.addEventListener('click', () => {
                 if (redirectUrl) {
-                    // Redirect if a URL was stored
                     window.location.href = redirectUrl;
                 } else {
-                    // Otherwise, just close the modal (e.g., if opened by mistake somehow)
                     closeModal();
                 }
             });
     
-            // Optional: Close modal if clicking on the background overlay
             modal.addEventListener('click', (e) => {
-                // Check if the click is directly on the modal background (not its content)
                 if (e.target === modal) {
                     closeModal();
                 }
