@@ -1041,7 +1041,7 @@
                     <div class="stats-cards">
                         <div class="card">
                             <h3>Total Clients</h3>
-                            <p id="total-clients-stat">2</p>
+                            <p id="total-clients-stat">3</p> 
                         </div>
                         <div class="card">
                             <h3>Upcoming Appointments</h3>
@@ -1118,6 +1118,20 @@
                                         <button class="btn btn-sm btn-danger">Delete</button>
                                     </td>
                                 </tr>
+                                <tr data-id="CLT003">
+                                    <td data-label="ID">CLT003</td>
+                                    <td data-label="Full Name">Han Soyoung</td>
+                                    <td data-label="Email">han.soyoung@example.com</td>
+                                    <td data-label="Phone">09234567890</td>
+                                    <td data-label="Assigned Workout">N/A</td>
+                                    <td data-label="Assigned Meal Plan">N/A</td>
+                                    <td data-label="Last Check-in">2023-10-25</td>
+                                    <td data-label="Actions">
+                                        <button class="btn btn-sm btn-info view-progress-btn">Progress</button>
+                                        <button class="btn btn-sm btn-primary assign-plan-btn">Assign</button>
+                                        <button class="btn btn-sm btn-danger">Delete</button>
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -1175,6 +1189,7 @@
                                 <option value="">-- Select a Client --</option>
                                 <option value="CLT001">Johnathan Doe</option>
                                 <option value="CLT002">Jane Smith</option>
+                                <option value="CLT003">Han Soyoung</option>
                             </select>
                         </div>
                         <button class="btn btn-primary" id="log-progress-btn" data-modal-target="log-progress-modal" disabled>Log New Progress</button>
@@ -1329,7 +1344,7 @@
                 </div>
                 <div class="form-group">
                     <label for="client-phone">Phone Number:</label>
-                    <input type="tel" id="client-phone" name="client-phone" required placeholder="e.g., 09xxxxxxxxxx">
+                    <input type="number" id="client-phone" name="client-phone" required placeholder="e.g., 09xxxxxxxxxx">
                     <div class="error-message" id="client-phone-error"></div>
                 </div>
                 <div class="form-group">
@@ -1376,6 +1391,13 @@
                     <label for="workout-plan-focus">Focus/Details:</label>
                     <textarea id="workout-plan-focus" name="workout-plan-focus" rows="3" placeholder="e.g., Full body, 3 days/week. Squats, Bench, Rows..."></textarea>
                     <div class="error-message" id="workout-plan-focus-error"></div>
+                </div>
+                <div class="form-group">
+                    <label for="workout-assign-client">Assign to Client (Optional):</label>
+                    <select id="workout-assign-client" name="workout-assign-client">
+                        <option value="">-- Select Client --</option>
+                        <!-- Options will be populated by JS -->
+                    </select>
                 </div>
                 <button type="submit" class="btn btn-primary modal-add-btn">Add Workout Plan</button>
             </form>
@@ -1452,6 +1474,13 @@
                     <label for="meal-plan-focus">Primary Focus/Details:</label>
                     <textarea id="meal-plan-focus" name="meal-plan-focus" rows="3" placeholder="e.g., High protein, moderate carbs, low fat. Sample meals..."></textarea>
                      <div class="error-message" id="meal-plan-focus-error"></div>
+                </div>
+                <div class="form-group">
+                    <label for="meal-assign-client">Assign to Client (Optional):</label>
+                    <select id="meal-assign-client" name="meal-assign-client">
+                        <option value="">-- Select Client --</option>
+                        <!-- Options will be populated by JS -->
+                    </select>
                 </div>
                 <button type="submit" class="btn btn-primary modal-add-btn">Add Meal Plan</button>
             </form>
@@ -1592,10 +1621,13 @@
             const addWorkoutPlanModal = $('#add-workout-plan-modal');
             const addWorkoutPlanForm = $('#add-workout-plan-form');
             const workoutPlanTableBody = $('#workout-plan-table-body');
+            const workoutAssignClientSelect = $('#workout-assign-client');
+
 
             const addMealPlanModal = $('#add-meal-plan-modal');
             const addMealPlanForm = $('#add-meal-plan-form');
             const mealPlanTableBody = $('#meal-plan-table-body');
+            const mealAssignClientSelect = $('#meal-assign-client');
 
             const addAppointmentModal = $('#add-appointment-modal');
             const addAppointmentForm = $('#add-appointment-form');
@@ -1644,6 +1676,13 @@
                         { date: "2023-09-20", weight: 62.0, strength: 40, cardio: 15, notes: "First session" },
                         { date: "2023-10-05", weight: 61.5, strength: 42.5, cardio: 18, notes: "Improving stamina" },
                         { date: "2023-10-20", weight: 60.8, strength: 45, cardio: 22, notes: "Consistent effort" },
+                    ]
+                },
+                "CLT003": {
+                    name: "Han Soyoung",
+                    logs: [
+                         { date: "2023-10-10", weight: 58.0, strength: 35, cardio: 20, notes: "Initial assessment" },
+                         { date: "2023-10-25", weight: 57.5, strength: 37, cardio: 22, notes: "Getting into it" },
                     ]
                 }
             };
@@ -1816,7 +1855,7 @@
             }
 
             function populateClientSelects() {
-                const $selects = $('#appointment-client, #select-client-progress');
+                const $selects = $('#appointment-client, #select-client-progress, #workout-assign-client, #meal-assign-client');
                 $selects.each(function() {
                     const $currentSelect = $(this);
                     const currentValue = $currentSelect.val(); 
@@ -1877,8 +1916,8 @@
                         $contentSections.removeClass('active');
                         $targetSection.addClass('active');
                         $pageTitle.text($this.find('.nav-text').text().trim() || 'Coach Dashboard');
-                        if (targetId === 'appointments-content' || targetId === 'progress-content') {
-                            populateClientSelects();
+                        if (targetId === 'appointments-content' || targetId === 'progress-content' || targetId === 'workouts-content' || targetId === 'meals-content') {
+                            populateClientSelects(); // Ensure client dropdowns are populated when relevant sections are active
                         }
                     }
                 } else {
@@ -1894,11 +1933,13 @@
             $('.add-btn[data-modal-target="add-workout-plan-modal"]').on('click', function() {
                 resetForm(addWorkoutPlanForm, workoutPlanFormFields);
                 $('#workout-plan-id').val(generateNewId(workoutPlanTableBody, 'WOP'));
+                populateClientSelects(); // Populate client dropdown for workout plan assignment
                 showModal(addWorkoutPlanModal);
             });
             $('.add-btn[data-modal-target="add-meal-plan-modal"]').on('click', function() {
                 resetForm(addMealPlanForm, mealPlanFormFields);
                 $('#meal-plan-id').val(generateNewId(mealPlanTableBody, 'MPL'));
+                populateClientSelects(); // Populate client dropdown for meal plan assignment
                 showModal(addMealPlanModal);
             });
             $('.add-btn[data-modal-target="add-appointment-modal"]').on('click', function() {
@@ -1980,6 +2021,7 @@
                 const type = $('#workout-plan-type').val();
                 const duration = $('#workout-plan-duration').val().trim();
                 const focus = $('#workout-plan-focus').val().trim();
+                const assignedClientId = workoutAssignClientSelect.val();
 
                 const newRowHtml = `<tr data-id="${id}">
                     <td data-label="ID">${id}</td>
@@ -1991,7 +2033,20 @@
                 </tr>`;
                 workoutPlanTableBody.append(newRowHtml);
                 addResponsiveTableHeaders();
-                showAlert(`Workout Plan "${planName}" added successfully!`, 'Success');
+
+                if (assignedClientId) {
+                    const $clientRow = clientTableBody.find(`tr[data-id="${assignedClientId}"]`);
+                    if ($clientRow.length) {
+                        $clientRow.find('td[data-label="Assigned Workout"]').text(planName);
+                        const clientNameForLog = $clientRow.find('td[data-label="Full Name"]').text();
+                        addRecentActivity(`Workout plan "${planName}" assigned to ${clientNameForLog}.`);
+                        showAlert(`Workout Plan "${planName}" added and assigned to ${clientNameForLog}!`, 'Success');
+                    } else { 
+                         showAlert(`Workout Plan "${planName}" added successfully! (Client assignment failed to find client)`, 'Success');
+                    }
+                } else {
+                    showAlert(`Workout Plan "${planName}" added successfully!`, 'Success');
+                }
                 updateDashboardStats();
                 hideAndResetFormModal(addWorkoutPlanModal, addWorkoutPlanForm, workoutPlanFormFields);
             });
@@ -2005,6 +2060,8 @@
                 const type = $('#meal-plan-type').val();
                 const calories = $('#meal-plan-calories').val().trim();
                 const focus = $('#meal-plan-focus').val().trim();
+                const assignedClientId = mealAssignClientSelect.val();
+
 
                 const newRowHtml = `<tr data-id="${id}">
                     <td data-label="ID">${id}</td>
@@ -2016,7 +2073,20 @@
                 </tr>`;
                 mealPlanTableBody.append(newRowHtml);
                 addResponsiveTableHeaders();
-                showAlert(`Meal Plan "${planName}" added successfully!`, 'Success');
+
+                if (assignedClientId) {
+                    const $clientRow = clientTableBody.find(`tr[data-id="${assignedClientId}"]`);
+                    if ($clientRow.length) {
+                        $clientRow.find('td[data-label="Assigned Meal Plan"]').text(planName);
+                        const clientNameForLog = $clientRow.find('td[data-label="Full Name"]').text();
+                        addRecentActivity(`Meal plan "${planName}" assigned to ${clientNameForLog}.`);
+                        showAlert(`Meal Plan "${planName}" added and assigned to ${clientNameForLog}!`, 'Success');
+                    } else {
+                        showAlert(`Meal Plan "${planName}" added successfully! (Client assignment failed to find client)`, 'Success');
+                    }
+                } else {
+                    showAlert(`Meal Plan "${planName}" added successfully!`, 'Success');
+                }
                 hideAndResetFormModal(addMealPlanModal, addMealPlanForm, mealPlanFormFields);
             });
 
@@ -2497,7 +2567,8 @@
                 $initialTargetSection.addClass('active');
                 $(`.sidebar-nav .nav-link[data-target="${initialTargetId}"]`).addClass('active');
                 $pageTitle.text($(`.sidebar-nav .nav-link[data-target="${initialTargetId}"]`).find('.nav-text').text().trim() || 'Dashboard');
-                if (initialTargetId === 'progress-content') {
+                if (initialTargetId === 'progress-content' || initialTargetId === 'appointments-content' || initialTargetId === 'workouts-content' || initialTargetId === 'meals-content') {
+                     populateClientSelects(); // Ensure dropdowns are populated on initial load if relevant tab is active
                 }
             } else {
                 $('#dashboard-content').addClass('active');
