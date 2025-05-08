@@ -1,0 +1,2510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gym Coach Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #1a1a1a;
+            color: #ecf0f1;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        :root {
+            --main-color: #FFD700;
+            --gold: #FFD700;
+            --gold-light: #FFEC8B;
+            --color-black: #0a0a0a;
+            --primary-text: #ecf0f1;
+            --secondary-text: #bdc3c7;
+            --darkest-gray: #1f1f1f;
+            --darker-gray: #2c2c2c;
+            --dark-gray: #333;
+            --medium-gray: #444;
+            --light-gray: #555;
+            --border-color: #444;
+            --success: #27ae60;
+            --info: #16a085;
+            --danger: #c0392b;
+            --white: #ffffff;
+            --modal-overlay-color: rgba(0, 0, 0, 0.7);
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        .admin-container {
+            display: flex;
+            min-height: 100vh;
+            width: 100%;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: var(--darkest-gray);
+            color: var(--primary-text);
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+            transition: width 0.3s ease;
+            overflow-x: hidden;
+            z-index: 1010;
+        }
+
+        .sidebar-header {
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid var(--border-color);
+            white-space: nowrap;
+        }
+
+        .sidebar-header h2 {
+            font-size: 1.5em;
+            transition: opacity 0.3s ease;
+            color: var(--main-color);
+        }
+
+        .sidebar-header h2 .header-text {
+            transition: opacity 0.2s ease;
+        }
+
+        .sidebar-nav {
+            flex-grow: 1;
+            padding-top: 20px;
+        }
+
+        .sidebar-nav ul li {
+            margin: 5px 0;
+            white-space: nowrap;
+        }
+
+        .sidebar-nav ul li a {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            color: var(--primary-text);
+            transition: background-color 0.3s ease, color 0.3s ease, padding 0.3s ease, justify-content 0.3s ease;
+        }
+
+        .sidebar-nav ul li a i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+            flex-shrink: 0;
+            font-size: 1.1em;
+            transition: margin-right 0.3s ease, font-size 0.3s ease, width 0.3s ease;
+        }
+
+        .sidebar-nav ul li a .nav-text {
+            opacity: 1;
+            transition: opacity 0.2s ease 0.05s, width 0.3s ease;
+        }
+
+        .sidebar-nav ul li a:hover {
+            background-color: var(--dark-gray);
+        }
+
+        .sidebar:not(.collapsed) .sidebar-nav ul li a:hover {
+            padding-left: 25px;
+        }
+
+        .sidebar-nav ul li a.active {
+            background-color: var(--main-color);
+            color: var(--color-black);
+            font-weight: bold;
+        }
+
+        .main-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            background-color: var(--darker-gray);
+            transition: margin-left 0.3s ease;
+            overflow-x: hidden;
+            height: 100vh;
+        }
+
+        .main-header {
+            background-color: var(--darker-gray);
+            padding: 15px 30px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: none;
+            flex-shrink: 0;
+        }
+
+        .main-header h1 {
+            font-size: 1.8em;
+            color: var(--primary-text);
+            margin-right: auto;
+        }
+
+        .admin-profile-area {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .admin-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--main-color);
+            background-color: var(--medium-gray);
+        }
+
+        .admin-profile-area span {
+            font-weight: 500;
+            color: var(--secondary-text);
+        }
+
+        .header-logout-button {
+            display: inline-flex;
+            align-items: center;
+            padding: 8px 12px;
+            background-color: transparent;
+            color: var(--secondary-text);
+            text-decoration: none;
+            border-radius: 4px;
+            transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
+            border: 1px solid transparent;
+        }
+
+        .header-logout-button i {
+            margin-right: 6px;
+            font-size: 1.1em;
+        }
+
+        .header-logout-button:hover {
+            color: var(--main-color);
+            background-color: var(--medium-gray);
+            border-color: var(--main-color);
+        }
+
+        .content-area {
+            padding: 30px;
+            flex-grow: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .content-section {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        .content-section h2 {
+            margin-bottom: 20px;
+            color: var(--primary-text);
+            font-size: 1.6em;
+            border-bottom: 2px solid var(--main-color);
+            padding-bottom: 5px;
+            display: inline-block;
+        }
+
+        .section-description {
+            color: var(--secondary-text);
+            margin-bottom: 20px;
+        }
+
+        .stats-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background-color: var(--dark-gray);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: none;
+            text-align: center;
+            border-left: 5px solid var(--main-color);
+            color: var(--primary-text);
+        }
+
+        .card h3 {
+            margin-bottom: 10px;
+            font-size: 1.1em;
+            color: var(--secondary-text);
+        }
+
+        .card p {
+            font-size: 2em;
+            font-weight: bold;
+            color: var(--white);
+        }
+
+        .recent-activity {
+            background-color: var(--dark-gray);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: none;
+            margin-bottom: 20px;
+            color: var(--primary-text);
+        }
+
+        .recent-activity h3 {
+            margin-bottom: 15px;
+            color: var(--primary-text);
+        }
+
+        .recent-activity ul li {
+            padding: 8px 0;
+            border-bottom: 1px dashed var(--light-gray);
+        }
+
+        .recent-activity ul li:last-child {
+            border-bottom: none;
+        }
+
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .chart-container {
+            background-color: var(--dark-gray);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: none;
+            position: relative;
+            border-left: 5px solid var(--main-color);
+            display: flex;
+            flex-direction: column;
+            min-height: 350px;
+        }
+
+        .chart-container h3 {
+            text-align: center;
+            margin-bottom: 15px;
+            color: var(--primary-text);
+            font-size: 1.3em;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .chart-placeholder-container {
+            position: relative;
+            width: 100%;
+            flex-grow: 1;
+        }
+
+        canvas {
+            display: block;
+            max-width: 100%;
+            width: 100% !important;
+            height: auto !important;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            width: 100%;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: var(--dark-gray);
+            box-shadow: none;
+            color: var(--primary-text);
+            table-layout: auto; 
+            min-width: 600px; 
+        }
+
+        thead {
+            background-color: var(--medium-gray);
+            color: var(--primary-text);
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--light-gray);
+            white-space: nowrap;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #3a3a3a;
+        }
+
+        tbody tr:hover {
+            background-color: var(--medium-gray);
+        }
+
+        th {
+            font-weight: 600;
+        }
+
+        .btn {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9em;
+            font-family: inherit;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.1s ease;
+            margin: 2px;
+            vertical-align: middle;
+            text-align: center;
+            display: inline-block;
+        }
+        .btn:active {
+            transform: translateY(1px);
+        }
+
+        .btn-sm {
+            padding: 5px 10px;
+            font-size: 0.8em;
+        }
+
+        .btn-primary {
+            background-color: var(--main-color);
+            color: var(--color-black);
+        }
+        .btn-primary:hover {
+            background-color: #e6a800;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .btn-danger { background-color: var(--danger); color: var(--white); }
+        .btn-danger:hover { background-color: #a53125; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+
+        .btn-info { background-color: var(--info); color: var(--white); }
+        .btn-info:hover { background-color: #117a65; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+
+        .btn-success { background-color: var(--success); color: var(--white); }
+        .btn-success:hover { background-color: #1f8b4c; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+
+        .btn-secondary { background-color: #aaa; color: #333; }
+        .btn-secondary:hover { background-color: #999; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+
+        .controls-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+            gap: 15px;
+        }
+
+        .search-container {
+            display: flex;
+            align-items: center;
+            background-color: var(--medium-gray);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .controls-container .search-container {
+            margin-bottom: 0;
+        }
+
+        .search-input {
+            padding: 8px 12px;
+            border: none;
+            background-color: transparent;
+            color: var(--primary-text);
+            font-size: 0.9em;
+            outline: none;
+            min-width: 180px;
+            flex-grow: 1;
+        }
+
+        .search-input::placeholder {
+            color: #999;
+        }
+
+        .search-btn {
+            padding: 8px 12px;
+            background-color: var(--light-gray);
+            color: var(--primary-text);
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin: 0;
+            border-radius: 0;
+        }
+
+        .search-btn:hover {
+            background-color: #666;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1050;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: var(--modal-overlay-color);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.show {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal .modal-content {
+            margin: auto;
+            padding: 25px 30px;
+            border: 1px solid var(--light-gray);
+            width: 90%;
+            border-radius: 8px;
+            position: relative;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.4);
+            transform: scale(0.95);
+            transition: transform 0.3s ease;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal.show .modal-content {
+            transform: scale(1);
+        }
+
+        .modal .close-btn,
+        .modal .close-button {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 28px;
+            font-weight: bold;
+            color: var(--secondary-text);
+            background: none;
+            border: none;
+            cursor: pointer;
+            line-height: 1;
+            padding: 0;
+            transition: color 0.2s ease, transform 0.2s ease;
+        }
+        .modal .close-btn:hover,
+        .modal .close-button:hover {
+            color: var(--primary-text);
+            transform: scale(1.1);
+        }
+
+        #add-client-modal .modal-content,
+        #add-workout-plan-modal .modal-content,
+        #log-progress-modal .modal-content,
+        #add-meal-plan-modal .modal-content,
+        #add-appointment-modal .modal-content,
+        #assign-plan-modal .modal-content {
+            background-color: var(--dark-gray);
+            color: var(--primary-text);
+            max-width: 550px;
+            opacity: 1;
+        }
+
+        #add-client-modal h2,
+        #add-workout-plan-modal h2,
+        #add-meal-plan-modal h2,
+        #add-appointment-modal h2,
+        #assign-plan-modal h2,
+        #log-progress-modal #log-progress-modal-title {
+            margin-bottom: 25px;
+            color: var(--main-color);
+            text-align: center;
+            font-size: 1.5em;
+        }
+
+        .modal .form-group {
+            margin-bottom: 18px;
+            position: relative;
+        }
+        .modal label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 500;
+            color: var(--secondary-text);
+        }
+
+        .modal .form-group input[type="text"],
+        .modal .form-group input[type="number"],
+        .modal .form-group input[type="email"],
+        .modal .form-group input[type="password"],
+        .modal .form-group input[type="date"],
+        .modal .form-group input[type="tel"], 
+        .modal .form-group input[type="time"], 
+        .modal .form-group select,
+        .modal .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--light-gray);
+            background-color: var(--medium-gray);
+            color: var(--primary-text);
+            border-radius: 4px;
+            font-size: 1em;
+            font-family: inherit;
+        }
+
+        .modal .form-group select {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            padding-right: 35px;
+        }
+
+        .modal .form-group::after { 
+            content: '';
+            position: absolute;
+            top: calc(50% + 7px); 
+            right: 15px;
+            width: 0;
+            height: 0;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-top: 6px solid var(--secondary-text);
+            pointer-events: none;
+            transform: translateY(-50%);
+            z-index: 1;
+        }
+
+        .modal .form-group:not(:has(> select))::after,
+        .modal .form-group:has(> input[type="date"])::after,
+        .modal .form-group:has(> input[type="time"])::after,
+        .modal .form-group:has(> input[type="text"])::after,
+        .modal .form-group:has(> input[type="email"])::after,
+        .modal .form-group:has(> input[type="password"])::after,
+        .modal .form-group:has(> input[type="tel"])::after,
+        .modal .form-group:has(> input[type="number"])::after,
+        .modal .form-group:has(> textarea)::after {
+            display: none;
+        }
+
+
+        .modal .form-group select:required:invalid {
+            color: #999;
+        }
+        .modal .form-group select option {
+            color: var(--primary-text);
+            background-color: var(--dark-gray);
+        }
+        .modal .form-group select option:first-child {
+            color: #999;
+        }
+
+        .modal input:focus,
+        .modal select:focus,
+        .modal textarea:focus {
+            outline: none;
+            border-color: var(--main-color);
+            box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.3);
+        }
+
+        .modal .modal-add-btn {
+            display: block;
+            width: 100%;
+            margin-top: 25px;
+            padding: 12px;
+            font-size: 1.1em;
+            font-weight: 500;
+        }
+
+        .error-message {
+            display: none;
+            color: var(--danger);
+            font-size: 0.85em;
+            margin-top: 5px;
+            width: 100%;
+        }
+
+        .form-group input.is-invalid,
+        .form-group select.is-invalid,
+        .form-group textarea.is-invalid {
+            border-color: var(--danger) !important;
+            box-shadow: 0 0 0 1px var(--danger);
+        }
+
+        input[readonly],
+        select[readonly],
+        textarea[readonly] {
+            background-color: var(--light-gray) !important;
+            cursor: default;
+            color: var(--secondary-text) !important;
+        }
+        input[readonly]::placeholder {
+            color: #888 !important;
+        }
+
+        #logoutConfirmationModal .modal-content {
+            background-color: var(--white);
+            color: var(--color-black);
+            max-width: 400px;
+            padding: 30px 35px;
+        }
+        #logoutConfirmationModal #logoutModalMessage {
+            color: #333;
+            font-size: 1.1rem;
+            margin-top: 10px;
+            margin-bottom: 30px;
+            line-height: 1.5;
+            text-align: center;
+        }
+        #logoutConfirmationModal .close-button {
+            color: #aaa;
+        }
+        #logoutConfirmationModal .close-button:hover {
+            color: var(--color-black);
+        }
+        #logoutConfirmationModal .modal-actions button {
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin: 0 8px;
+            min-width: 100px;
+        }
+        #logoutConfirmationModal #cancelLogoutButton {
+            background-color: #ccc; color: #333;
+        }
+        #logoutConfirmationModal #cancelLogoutButton:hover {
+            background-color: #bbb;
+        }
+        #logoutConfirmationModal #okLogoutButton {
+            background-color: var(--main-color); color: #333;
+        }
+        #logoutConfirmationModal #okLogoutButton:hover {
+            background-color: transparent;
+            color: var(--main-color);
+            box-shadow: 0 0 1.6rem var(--main-color);
+            transform: translateY(-2px);
+        }
+
+        #alertModal.alert-modal .modal-content,
+        #view-details-modal .modal-content {
+            background-color: var(--dark-gray);
+            color: var(--primary-text);
+            max-width: 450px;
+            border-left: 5px solid var(--main-color);
+            padding: 25px 30px;
+        }
+        #alertModal #alertModalTitle,
+        #view-details-modal #view-details-title {
+            color: var(--main-color);
+            font-size: 1.4em;
+            font-weight: 600;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        #alertModal #alertModalMessage,
+        #view-details-modal #view-details-body {
+            color: var(--primary-text);
+            font-size: 1.05rem;
+            margin-bottom: 25px;
+            line-height: 1.6;
+            word-wrap: break-word;
+        }
+        #view-details-modal #view-details-body {
+            text-align: center;
+        }
+
+        #alertModal .modal-actions,
+        #view-details-modal .modal-actions {
+            text-align: center;
+        }
+        #alertModal #alertModalOkButton,
+        #view-details-modal #viewDetailsOkButton {
+            min-width: 120px;
+            font-weight: 500;
+        }
+        #alertModal .alert-modal-close {
+            color: var(--secondary-text);
+        }
+        #alertModal .alert-modal-close:hover {
+            color: var(--primary-text);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 70px;
+                overflow: visible;
+                position: absolute;
+                height: 100%;
+            }
+            .sidebar:hover {
+                width: 250px;
+                box-shadow: 5px 0 15px rgba(0,0,0,0.2);
+            }
+            .sidebar-header { padding: 20px 10px; text-align: center; overflow: hidden; }
+            .sidebar:hover .sidebar-header { padding: 20px; text-align: left; }
+            .sidebar-header h2 .header-text { opacity: 0; pointer-events: none; display: inline-block; }
+            .sidebar:hover .sidebar-header h2 .header-text { opacity: 1; pointer-events: auto; transition-delay: 0.1s; }
+            .sidebar-nav ul li a { justify-content: center; padding: 15px 5px; overflow: hidden; }
+            .sidebar-nav ul li a i { margin-right: 0; font-size: 1.6em; width: auto; }
+            .sidebar-nav ul li a .nav-text { opacity: 0; margin-left: 10px; pointer-events: none; width: 0; overflow: hidden; display: inline-block; }
+            .sidebar:hover .sidebar-nav ul li a { justify-content: flex-start; padding: 12px 20px; overflow: visible; }
+            .sidebar:hover .sidebar-nav ul li a i { margin-right: 10px; font-size: 1.1em; width: 20px; }
+            .sidebar:hover .sidebar-nav ul li a .nav-text { opacity: 1; pointer-events: auto; width: auto; overflow: visible; transition-delay: 0.1s; }
+            
+            .main-content {
+                margin-left: 70px;
+                width: calc(100% - 70px);
+                transition: margin-left 0.3s ease;
+            }
+            
+            .main-header {
+                padding: 15px;
+                flex-wrap: wrap;
+            }
+            .main-header h1 {
+                font-size: 1.5em;
+                margin-right: 15px;
+                flex-grow: 1;
+            }
+            .admin-profile-area {
+                gap: 10px;
+            }
+            .admin-avatar {
+                width: 35px;
+                height: 35px;
+            }
+            .header-logout-button {
+                padding: 6px 10px;
+                font-size: 0.85em;
+            }
+            .header-logout-button i {
+                font-size: 1em;
+            }
+                
+            .stats-cards { grid-template-columns: 1fr; }
+            .content-area { padding: 20px; }
+            
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+            .chart-container {
+                min-height: 300px;
+            }
+
+            table {
+                min-width: 100%; 
+                width: 100%;
+            }
+                
+            table, thead, tbody, th, td, tr {
+                display: block;
+            }
+            thead tr {
+                position: absolute;
+                top: -9999px;
+                left: -9999px;
+            }
+            tr { 
+                border: 1px solid var(--light-gray); 
+                margin-bottom: 10px; 
+                border-radius: 4px; 
+                overflow: hidden; 
+                background-color: var(--dark-gray); 
+                width: 100%; 
+            }
+            td {
+                border: none;
+                border-bottom: 1px solid var(--medium-gray);
+                position: relative; 
+                padding-top: 10px;  
+                padding-bottom: 10px; 
+                padding-right: 10px; 
+                padding-left: 125px; 
+                text-align: left;   
+                white-space: normal;  
+                display: block;
+                min-height: auto; 
+                overflow-wrap: break-word; 
+                word-break: break-word; 
+                color: var(--primary-text); 
+                width: 100%; 
+                box-sizing: border-box; 
+            }
+            td:last-child { 
+                border-bottom: 0; 
+            }
+            td:before {
+                content: attr(data-label);
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
+                left: 10px; 
+                width: 100px; 
+                padding-right: 5px; 
+                text-align: left;
+                font-weight: bold;
+                color: var(--secondary-text);
+                white-space: normal; 
+                overflow-wrap: break-word;
+                word-break: break-word; 
+                font-size: 0.9em; 
+            }
+
+            td[data-label="Actions"] {
+                padding-left: 15px !important;  
+                padding-right: 15px !important; 
+                text-align: center; 
+                min-height: auto; 
+                padding-top: 12px;
+                padding-bottom: 12px;
+            }
+            td[data-label="Actions"]:before {
+                display: none;
+            }
+            td[data-label="Actions"] .btn {
+                margin: 0; 
+            }
+        
+            .modal .modal-content {
+                width: 90%;
+                max-width: 90%;
+                margin: 5% auto;
+                padding: 20px;
+                max-height: 85vh;
+            }
+            .modal .form-group::after {
+                top: calc(50% + 7px);
+                right: 12px;
+            }
+                
+            .controls-container {
+                justify-content: flex-start;
+            }
+            #select-client-progress {
+                padding: 10px;
+                width: 100%; 
+                background-color: var(--medium-gray);
+                color: var(--primary-text);
+                border: 1px solid var(--light-gray);
+                border-radius: 4px;
+                font-family: inherit;
+                font-size: 0.95em;
+            }
+
+            #select-client-progress:focus {
+                outline: none;
+                border-color: var(--main-color);
+                box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.3);
+            }
+            #client-progress-display .charts-grid {
+                margin-bottom: 30px; 
+            }
+        }
+            
+        @media (max-width: 480px) {
+            .sidebar { width: 60px; }
+            .sidebar:hover { width: 200px; }
+            .main-content { margin-left: 60px; width: calc(100% - 60px); }
+            
+            .main-header {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 10px 15px;
+            }
+            .main-header h1 {
+                margin-bottom: 10px;
+                font-size: 1.3em;
+                width: 100%;
+                text-align: center;
+                margin-right: 0;
+            }
+            .admin-profile-area {
+                width: 100%;
+                justify-content: center;
+                gap: 8px;
+            }
+            .admin-avatar {
+                width: 30px;
+                height: 30px;
+            }
+            .admin-profile-area span {
+                font-size: 0.9em;
+            }
+            .header-logout-button {
+                padding: 5px 8px;
+                font-size: 0.8em;
+            }
+                
+            .content-area { padding: 15px; }
+            .card { padding: 15px; }
+            .card h3 { font-size: 1em; }
+            .card p { font-size: 1.8em; }
+            .btn { padding: 7px 12px; font-size: 0.85em; }
+            .btn-sm { padding: 4px 8px; font-size: 0.75em; }
+            
+            td {
+                padding-left: 95px; 
+                padding-right: 5px; 
+                font-size: 0.85em; 
+                padding-top: 8px;
+                padding-bottom: 8px;
+            }
+            td:before {
+                left: 5px; 
+                width: 75px; 
+                font-size: 0.8em; 
+                padding-right: 3px;
+            }
+            td[data-label="Actions"] { 
+                padding-left: 10px !important; 
+                padding-right: 10px !important;
+                padding-top: 10px;
+                padding-bottom: 10px;
+            }
+        
+            .chart-container {
+                min-height: 250px;
+            }
+            
+            .modal .modal-content { padding: 15px; width: 95%}
+            
+            .modal .form-group::after {
+                top: calc(50% + 6px);
+                right: 10px;
+                border-left-width: 4px;
+                border-right-width: 4px;
+                border-top-width: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container"> 
+
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2><span class="header-text">Gym Coach</span></h2>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="#" class="nav-link active" data-target="dashboard-content"><i class="bi bi-speedometer2"></i> <span class="nav-text">Dashboard</span></a></li>
+                    <li><a href="#" class="nav-link" data-target="clients-content"><i class="bi bi-people-fill"></i> <span class="nav-text">Clients</span></a></li>
+                    <li><a href="#" class="nav-link" data-target="workouts-content"><i class="bi bi-bicycle"></i> <span class="nav-text">Workout Plans</span></a></li>
+                    <li><a href="#" class="nav-link" data-target="progress-content"><i class="bi bi-graph-up"></i> <span class="nav-text">Progress Tracking</span></a></li>
+                    <li><a href="#" class="nav-link" data-target="meals-content"><i class="bi bi-egg-fried"></i> <span class="nav-text">Meal Plans</span></a></li>
+                    <li><a href="#" class="nav-link" data-target="appointments-content"><i class="bi bi-calendar-check"></i> <span class="nav-text">Appointments</span></a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="main-header">
+                <h1 id="page-title">Dashboard</h1>
+                <div class="admin-profile-area">
+                    <img src="../images/gymcoach.jpg" alt="Coach Profile Picture" class="admin-avatar">
+                    <span>Welcome, Yoo Joonghyuk !</span>
+                    <a href="../User/signin.html" id="header-logout-link" class="header-logout-button">
+                        <i class="bi bi-box-arrow-right"></i> Logout
+                    </a>
+                </div>
+            </header>
+
+            <div class="content-area">
+                <section id="dashboard-content" class="content-section active">
+                    <h2>Coach Overview</h2>
+                    <div class="stats-cards">
+                        <div class="card">
+                            <h3>Total Clients</h3>
+                            <p id="total-clients-stat">2</p>
+                        </div>
+                        <div class="card">
+                            <h3>Upcoming Appointments</h3>
+                            <p id="upcoming-appointments-stat">1</p>
+                        </div>
+                        <div class="card">
+                            <h3>Active Workout Plans</h3>
+                            <p id="active-workout-plans-stat">2</p>
+                        </div>
+                         <div class="card">
+                            <h3>Pending Progress Updates</h3>
+                            <p id="pending-progress-stat">1</p>
+                        </div>
+                    </div>
+                    <div class="recent-activity">
+                        <h3>Recent Client Activity</h3>
+                        <ul id="recent-activity-list">
+                            <li>Coach dashboard loaded. - 10:04 PM</li>
+                            <li>Client John Doe completed 'Strength Builder' workout. - 09:30 PM</li>
+                            <li>Appointment scheduled with Jane Smith for tomorrow. - 08:15 PM</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <section id="clients-content" class="content-section">
+                    <h2>Manage Clients</h2>
+                    <div class="controls-container">
+                        <button class="btn btn-primary add-btn" data-modal-target="add-client-modal">Add New Client</button>
+                        <div class="search-container">
+                            <input type="text" id="client-search-input" class="search-input" placeholder="Search Clients...">
+                            <button class="btn search-btn" id="client-search-btn"><i class="bi bi-search"></i></button>
+                        </div>
+                    </div>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Full Name</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th>Assigned Workout</th>
+                                    <th>Assigned Meal Plan</th>
+                                    <th>Last Check-in</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="client-table-body">
+                                <tr data-id="CLT001">
+                                    <td data-label="ID">CLT001</td>
+                                    <td data-label="Full Name">Johnathan Doe</td>
+                                    <td data-label="Email">john.doe@example.com</td>
+                                    <td data-label="Phone">09123456789</td>
+                                    <td data-label="Assigned Workout">Strength Builder</td>
+                                    <td data-label="Assigned Meal Plan">High Protein Diet</td>
+                                    <td data-label="Last Check-in">2023-10-28</td>
+                                    <td data-label="Actions">
+                                        <button class="btn btn-sm btn-info view-progress-btn">Progress</button>
+                                        <button class="btn btn-sm btn-primary assign-plan-btn">Assign</button>
+                                        <button class="btn btn-sm btn-danger">Delete</button>
+                                    </td>
+                                </tr>
+                                <tr data-id="CLT002">
+                                    <td data-label="ID">CLT002</td>
+                                    <td data-label="Full Name">Jane Smith</td>
+                                    <td data-label="Email">jane.smith@example.com</td>
+                                    <td data-label="Phone">09987654321</td>
+                                    <td data-label="Assigned Workout">Cardio Blast</td>
+                                    <td data-label="Assigned Meal Plan">Balanced Diet</td>
+                                    <td data-label="Last Check-in">2023-10-27</td>
+                                    <td data-label="Actions">
+                                        <button class="btn btn-sm btn-info view-progress-btn">Progress</button>
+                                        <button class="btn btn-sm btn-primary assign-plan-btn">Assign</button>
+                                        <button class="btn btn-sm btn-danger">Delete</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section id="workouts-content" class="content-section">
+                    <h2>Manage Workout Plans</h2>
+                    <div class="controls-container">
+                        <button class="btn btn-primary add-btn" data-modal-target="add-workout-plan-modal">Add Workout Plan</button>
+                        <div class="search-container">
+                            <input type="text" id="workout-search-input" class="search-input" placeholder="Search Workout Plans...">
+                            <button class="btn search-btn" id="workout-search-btn"><i class="bi bi-search"></i></button>
+                        </div>
+                    </div>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Plan Name</th>
+                                    <th>Type</th>
+                                    <th>Duration</th>
+                                    <th>Focus</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="workout-plan-table-body">
+                                <tr data-id="WOP001">
+                                    <td data-label="ID">WOP001</td>
+                                    <td data-label="Plan Name">Strength Builder</td>
+                                    <td data-label="Type">Strength</td>
+                                    <td data-label="Duration">6 Weeks</td>
+                                    <td data-label="Focus">Full Body</td>
+                                    <td data-label="Actions"><button class="btn btn-sm btn-info view-details-btn">View</button> <button class="btn btn-sm btn-danger">Delete</button></td>
+                                </tr>
+                                <tr data-id="WOP002">
+                                    <td data-label="ID">WOP002</td>
+                                    <td data-label="Plan Name">Cardio Blast</td>
+                                    <td data-label="Type">Cardio</td>
+                                    <td data-label="Duration">4 Weeks</td>
+                                    <td data-label="Focus">HIIT</td>
+                                    <td data-label="Actions"><button class="btn btn-sm btn-info view-details-btn">View</button> <button class="btn btn-sm btn-danger">Delete</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section id="progress-content" class="content-section">
+                    <h2>Client Progress Tracking</h2>
+                    <div class="controls-container">
+                        <div class="form-group" style="flex-grow: 1; margin-right: 15px;">
+                            <label for="select-client-progress" style="margin-bottom: 5px;">Select Client:</label>
+                            <select id="select-client-progress" name="select-client-progress" style="padding:10px; width:100%; background-color: var(--medium-gray); color: var(--primary-text); border: 1px solid var(--light-gray); border-radius: 4px;">
+                                <option value="">-- Select a Client --</option>
+                                <option value="CLT001">Johnathan Doe</option>
+                                <option value="CLT002">Jane Smith</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-primary" id="log-progress-btn" data-modal-target="log-progress-modal" disabled>Log New Progress</button>
+                    </div>
+                    <div id="client-progress-display" style="display: none;">
+                        <h3 id="progress-client-name" style="margin-bottom: 20px;"></h3>
+                        <div class="charts-grid">
+                            <div class="chart-container">
+                                <h3>Weight Trend (kg)</h3>
+                                <div class="chart-placeholder-container"><canvas id="weightTrendChart"></canvas></div>
+                            </div>
+                            <div class="chart-container">
+                                <h3>Strength: Bench Press (kg)</h3>
+                                <div class="chart-placeholder-container"><canvas id="strengthChart"></canvas></div>
+                            </div>
+                            <div class="chart-container">
+                                <h3>Cardio: Run Duration (min)</h3>
+                                <div class="chart-placeholder-container"><canvas id="cardioChart"></canvas></div>
+                            </div>
+                        </div>
+                        <div class="table-container" style="margin-top: 30px;">
+                            <h4>Recent Logs</h4>
+                            <table id="progress-log-table">
+                                <thead>
+                                    <tr><th>Date</th><th>Weight (kg)</th><th>Notes</th><th>Actions</th></tr>
+                                </thead>
+                                <tbody id="progress-log-table-body">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <p id="select-client-prompt" class="section-description" style="text-align:center; margin-top:30px;">Please select a client to view or log progress.</p>
+                </section>
+
+                <section id="meals-content" class="content-section">
+                    <h2>Manage Meal Plans</h2>
+                     <div class="controls-container">
+                        <button class="btn btn-primary add-btn" data-modal-target="add-meal-plan-modal">Add Meal Plan</button>
+                        <div class="search-container">
+                            <input type="text" id="meal-plan-search-input" class="search-input" placeholder="Search Meal Plans...">
+                            <button class="btn search-btn" id="meal-plan-search-btn"><i class="bi bi-search"></i></button>
+                        </div>
+                    </div>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Plan Name</th>
+                                    <th>Type</th>
+                                    <th>Daily Calories</th>
+                                    <th>Primary Focus</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="meal-plan-table-body">
+                               <tr data-id="MPL001">
+                                    <td data-label="ID">MPL001</td>
+                                    <td data-label="Plan Name">High Protein Diet</td>
+                                    <td data-label="Type">Muscle Gain</td>
+                                    <td data-label="Daily Calories">2500 kcal</td>
+                                    <td data-label="Primary Focus">Protein Intake</td>
+                                    <td data-label="Actions"><button class="btn btn-sm btn-info view-details-btn">View</button> <button class="btn btn-sm btn-danger">Delete</button></td>
+                                </tr>
+                                <tr data-id="MPL002">
+                                    <td data-label="ID">MPL002</td>
+                                    <td data-label="Plan Name">Balanced Diet</td>
+                                    <td data-label="Type">Maintenance</td>
+                                    <td data-label="Daily Calories">2000 kcal</td>
+                                    <td data-label="Primary Focus">Nutrient Balance</td>
+                                    <td data-label="Actions"><button class="btn btn-sm btn-info view-details-btn">View</button> <button class="btn btn-sm btn-danger">Delete</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section id="appointments-content" class="content-section">
+                    <h2>Schedule & Manage Appointments</h2>
+                    <div class="controls-container">
+                        <button class="btn btn-primary add-btn" data-modal-target="add-appointment-modal">Schedule Appointment</button>
+                        <div class="search-container">
+                            <input type="text" id="appointment-search-input" class="search-input" placeholder="Search Appointments...">
+                            <button class="btn search-btn" id="appointment-search-btn"><i class="bi bi-search"></i></button>
+                        </div>
+                    </div>
+                     <div class="table-container">
+                         <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Client Name</th>
+                                    <th>Date</th>
+                                    <th>Time</th>
+                                    <th>Purpose</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="appointment-table-body">
+                                <tr data-id="APT001">
+                                    <td data-label="ID">APT001</td>
+                                    <td data-label="Client Name">Jane Smith</td>
+                                    <td data-label="Date">2023-11-10</td>
+                                    <td data-label="Time">10:00 AM</td>
+                                    <td data-label="Purpose">Consultation</td>
+                                    <td data-label="Status">Confirmed</td>
+                                    <td data-label="Actions">
+                                        <button class="btn btn-sm btn-success mark-done-btn">Mark Done</button> 
+                                        <button class="btn btn-sm btn-danger cancel-appointment-btn">Cancel</button>
+                                    </td>
+                                </tr>
+                                 <tr data-id="APT002">
+                                    <td data-label="ID">APT002</td>
+                                    <td data-label="Client Name">Johnathan Doe</td>
+                                    <td data-label="Date">2023-11-12</td>
+                                    <td data-label="Time">02:00 PM</td>
+                                    <td data-label="Purpose">Training Session</td>
+                                    <td data-label="Status">Pending</td>
+                                    <td data-label="Actions">
+                                        <button class="btn btn-sm btn-primary confirm-appointment-btn">Confirm</button> 
+                                        <button class="btn btn-sm btn-danger cancel-appointment-btn">Cancel</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+            </div> 
+        </main>
+    </div> 
+
+    <div id="add-client-modal" class="modal">
+        <div class="modal-content">
+            <button class="close-btn">×</button>
+            <h2>Add New Client</h2>
+            <form id="add-client-form" novalidate>
+                <div class="form-group">
+                    <label for="client-id">Client ID:</label>
+                    <input type="text" id="client-id" name="client-id" placeholder="Autogenerated" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="client-full-name">Full Name:</label>
+                    <input type="text" id="client-full-name" name="client-full-name" required placeholder="e.g., John Doe">
+                    <div class="error-message" id="client-full-name-error"></div>
+                </div>
+                <div class="form-group">
+                    <label for="client-email">Email:</label>
+                    <input type="email" id="client-email" name="client-email" required placeholder="e.g., john.doe@example.com">
+                    <div class="error-message" id="client-email-error"></div>
+                </div>
+                <div class="form-group">
+                    <label for="client-phone">Phone Number:</label>
+                    <input type="tel" id="client-phone" name="client-phone" required placeholder="e.g., 09xxxxxxxxxx">
+                    <div class="error-message" id="client-phone-error"></div>
+                </div>
+                <div class="form-group">
+                    <label for="client-last-checkin">Last Check-in Date:</label>
+                    <input type="date" id="client-last-checkin" name="client-last-checkin" required>
+                    <div class="error-message" id="client-last-checkin-error"></div>
+                </div>
+                <button type="submit" class="btn btn-primary modal-add-btn">Add New Client</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="add-workout-plan-modal" class="modal">
+        <div class="modal-content">
+            <button class="close-btn">×</button>
+            <h2>Add New Workout Plan</h2>
+            <form id="add-workout-plan-form" novalidate>
+                <div class="form-group">
+                    <label for="workout-plan-id">Plan ID:</label>
+                    <input type="text" id="workout-plan-id" name="workout-plan-id" placeholder="Autogenerated" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="workout-plan-name">Plan Name:</label>
+                    <input type="text" id="workout-plan-name" name="workout-plan-name" required placeholder="e.g., Beginner Strength">
+                    <div class="error-message" id="workout-plan-name-error"></div>
+                </div>
+                <div class="form-group">
+                    <label for="workout-plan-type">Type:</label>
+                    <select id="workout-plan-type" name="workout-plan-type" required>
+                        <option value="">-- Select Type --</option>
+                        <option value="Strength">Strength</option>
+                        <option value="Cardio">Cardio</option>
+                        <option value="Hybrid">Hybrid</option>
+                        <option value="Flexibility">Flexibility</option>
+                    </select>
+                    <div class="error-message" id="workout-plan-type-error"></div>
+                </div>
+                <div class="form-group">
+                    <label for="workout-plan-duration">Duration:</label>
+                    <input type="text" id="workout-plan-duration" name="workout-plan-duration" required placeholder="e.g., 4 Weeks">
+                    <div class="error-message" id="workout-plan-duration-error"></div>
+                </div>
+                <div class="form-group">
+                    <label for="workout-plan-focus">Focus/Details:</label>
+                    <textarea id="workout-plan-focus" name="workout-plan-focus" rows="3" placeholder="e.g., Full body, 3 days/week. Squats, Bench, Rows..."></textarea>
+                    <div class="error-message" id="workout-plan-focus-error"></div>
+                </div>
+                <button type="submit" class="btn btn-primary modal-add-btn">Add Workout Plan</button>
+            </form>
+        </div>
+    </div>
+    
+    <div id="log-progress-modal" class="modal">
+        <div class="modal-content">
+            <button class="close-btn">×</button>
+            <h2 id="log-progress-modal-title">Log Progress for [Client Name]</h2>
+            <form id="log-progress-form" novalidate>
+                <input type="hidden" id="log-progress-client-id" name="log-progress-client-id">
+                <div class="form-group">
+                    <label for="log-progress-date">Date:</label>
+                    <input type="date" id="log-progress-date" name="log-progress-date" required>
+                    <div class="error-message" id="log-progress-date-error"></div>
+                </div>
+                <div class="form-group">
+                    <label for="log-progress-weight">Weight (kg):</label>
+                    <input type="number" step="0.1" id="log-progress-weight" name="log-progress-weight" placeholder="e.g., 70.5">
+                    <div class="error-message" id="log-progress-weight-error"></div>
+                </div>
+                 <div class="form-group">
+                    <label for="log-progress-strength-exercise">Strength Exc (e.g. Bench Press kg):</label>
+                    <input type="number" step="0.5" id="log-progress-strength-exercise" name="log-progress-strength-exercise" placeholder="e.g., 80">
+                    <div class="error-message" id="log-progress-strength-exercise-error"></div>
+                </div>
+                 <div class="form-group">
+                    <label for="log-progress-cardio-metric">Cardio Metric (e.g. Run Duration min):</label>
+                    <input type="number" step="1" id="log-progress-cardio-metric" name="log-progress-cardio-metric" placeholder="e.g., 30">
+                    <div class="error-message" id="log-progress-cardio-metric-error"></div>
+                </div>
+                <div class="form-group">
+                    <label for="log-progress-notes">Notes/Achievements:</label>
+                    <textarea id="log-progress-notes" name="log-progress-notes" rows="3" placeholder="e.g., Felt strong today, new PB!"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary modal-add-btn">Save Progress</button>
+            </form>
+        </div>
+    </div>
+
+     <div id="add-meal-plan-modal" class="modal">
+        <div class="modal-content">
+            <button class="close-btn">×</button>
+            <h2>Add New Meal Plan</h2>
+            <form id="add-meal-plan-form" novalidate>
+                <div class="form-group">
+                    <label for="meal-plan-id">Plan ID:</label>
+                    <input type="text" id="meal-plan-id" name="meal-plan-id" placeholder="Autogenerated" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="meal-plan-name">Plan Name:</label>
+                    <input type="text" id="meal-plan-name" name="meal-plan-name" required placeholder="e.g., Lean Bulk Plan">
+                    <div class="error-message" id="meal-plan-name-error"></div>
+                </div>
+                <div class="form-group">
+                    <label for="meal-plan-type">Type:</label>
+                    <select id="meal-plan-type" name="meal-plan-type" required>
+                        <option value="">-- Select Type --</option>
+                        <option value="Weight Loss">Weight Loss</option>
+                        <option value="Muscle Gain">Muscle Gain</option>
+                        <option value="Maintenance">Maintenance</option>
+                        <option value="Vegetarian">Vegetarian</option>
+                        <option value="Vegan">Vegan</option>
+                    </select>
+                    <div class="error-message" id="meal-plan-type-error"></div>
+                </div>
+                <div class="form-group">
+                    <label for="meal-plan-calories">Daily Calories (kcal):</label>
+                    <input type="number" id="meal-plan-calories" name="meal-plan-calories" required placeholder="e.g., 2200">
+                    <div class="error-message" id="meal-plan-calories-error"></div>
+                </div>
+                <div class="form-group">
+                    <label for="meal-plan-focus">Primary Focus/Details:</label>
+                    <textarea id="meal-plan-focus" name="meal-plan-focus" rows="3" placeholder="e.g., High protein, moderate carbs, low fat. Sample meals..."></textarea>
+                     <div class="error-message" id="meal-plan-focus-error"></div>
+                </div>
+                <button type="submit" class="btn btn-primary modal-add-btn">Add Meal Plan</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="add-appointment-modal" class="modal">
+        <div class="modal-content">
+            <button class="close-btn">×</button>
+            <h2>Schedule New Appointment</h2>
+            <form id="add-appointment-form" novalidate>
+                <div class="form-group">
+                    <label for="appointment-id">Appointment ID:</label>
+                    <input type="text" id="appointment-id" name="appointment-id" placeholder="Autogenerated" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="appointment-client">Client:</label>
+                    <select id="appointment-client" name="appointment-client" required>
+                        <option value="">-- Select Client --</option>
+                    </select>
+                    <div class="error-message" id="appointment-client-error"></div>
+                </div>
+                <div class="form-group">
+                    <label for="appointment-date">Date:</label>
+                    <input type="date" id="appointment-date" name="appointment-date" required>
+                    <div class="error-message" id="appointment-date-error"></div>
+                </div>
+                 <div class="form-group">
+                    <label for="appointment-time">Time:</label>
+                    <input type="time" id="appointment-time" name="appointment-time" required>
+                    <div class="error-message" id="appointment-time-error"></div>
+                </div>
+                <div class="form-group">
+                    <label for="appointment-purpose">Purpose:</label>
+                    <select id="appointment-purpose" name="appointment-purpose" required>
+                        <option value="">-- Select Purpose --</option>
+                        <option value="Consultation">Consultation</option>
+                        <option value="Training Session">Training Session</option>
+                        <option value="Progress Check-in">Progress Check-in</option>
+                        <option value="Diet Review">Diet Review</option>
+                    </select>
+                    <div class="error-message" id="appointment-purpose-error"></div>
+                </div>
+                 <div class="form-group">
+                    <label for="appointment-status">Status:</label>
+                    <select id="appointment-status" name="appointment-status" required>
+                        <option value="Pending">Pending</option>
+                        <option value="Confirmed">Confirmed</option>
+                        <option value="Completed">Completed</option>
+                        <option value="Cancelled">Cancelled</option>
+                    </select>
+                    <div class="error-message" id="appointment-status-error"></div>
+                </div>
+                <button type="submit" class="btn btn-primary modal-add-btn">Schedule Appointment</button>
+            </form>
+        </div>
+    </div>
+    
+    <div id="assign-plan-modal" class="modal">
+        <div class="modal-content">
+            <button class="close-btn">×</button>
+            <h2>Assign Plan to <span id="assign-plan-client-name">Client</span></h2>
+            <form id="assign-plan-form">
+                <input type="hidden" id="assign-plan-client-id-hidden">
+                <div class="form-group">
+                    <label for="assign-workout-plan">Workout Plan:</label>
+                    <select id="assign-workout-plan" name="assign-workout-plan">
+                        <option value="">-- Select Workout Plan --</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="assign-meal-plan">Meal Plan:</label>
+                    <select id="assign-meal-plan" name="assign-meal-plan">
+                        <option value="">-- Select Meal Plan --</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary modal-add-btn">Assign Plans</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="view-details-modal" class="modal">
+        <div class="modal-content">
+            <button class="close-btn">×</button>
+            <h2 id="view-details-title">Details</h2>
+            <div id="view-details-body" style="line-height: 1.6;">
+            </div>
+             <div class="modal-actions" style="text-align: center; margin-top: 20px;">
+                 <button id="viewDetailsOkButton" class="btn btn-primary" style="min-width: 100px;">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="logoutConfirmationModal" class="modal">
+        <div class="modal-content">
+            <button id="closeLogoutModalButton" class="close-button">×</button>
+            <p id="logoutModalMessage">Are you sure you want to logout?</p>
+            <div class="modal-actions" style="text-align: center;">
+                 <button id="cancelLogoutButton" class="btn btn-secondary" style="margin-right: 15px;">Cancel</button>
+                 <button id="okLogoutButton" class="btn btn-primary">Logout</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="alertModal" class="modal alert-modal">
+        <div class="modal-content">
+            <button class="close-btn alert-modal-close">×</button>
+            <h3 id="alertModalTitle" style="text-align: center; margin-top:10px; margin-bottom: 15px;">Notification</h3>
+            <p id="alertModalMessage" style="margin-bottom: 25px; text-align: center; line-height: 1.6;"></p>
+            <div class="modal-actions" style="text-align: center;">
+                 <button id="alertModalOkButton" class="btn btn-primary" style="min-width: 100px;">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-moment@1.0.1/dist/chartjs-adapter-moment.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script> 
+    <script>
+        $(document).ready(function() {
+            const $sidebarLinks = $('.sidebar-nav .nav-link');
+            const $contentSections = $('.content-section');
+            const $pageTitle = $('#page-title');
+
+            const logoutModal = $('#logoutConfirmationModal');
+            const alertModal = $('#alertModal');
+            const alertModalTitle = $('#alertModalTitle');
+            const alertModalMessage = $('#alertModalMessage');
+            const alertModalOkButton = $('#alertModalOkButton');
+            const alertModalCloseButton = $('#alertModal .alert-modal-close');
+            const headerLogoutLink = $('#header-logout-link');
+
+            const addClientModal = $('#add-client-modal');
+            const addClientForm = $('#add-client-form');
+            const clientTableBody = $('#client-table-body');
+
+            const addWorkoutPlanModal = $('#add-workout-plan-modal');
+            const addWorkoutPlanForm = $('#add-workout-plan-form');
+            const workoutPlanTableBody = $('#workout-plan-table-body');
+
+            const addMealPlanModal = $('#add-meal-plan-modal');
+            const addMealPlanForm = $('#add-meal-plan-form');
+            const mealPlanTableBody = $('#meal-plan-table-body');
+
+            const addAppointmentModal = $('#add-appointment-modal');
+            const addAppointmentForm = $('#add-appointment-form');
+            const appointmentTableBody = $('#appointment-table-body');
+            const appointmentClientSelect = $('#appointment-client'); 
+
+            const logProgressModal = $('#log-progress-modal');
+            const logProgressForm = $('#log-progress-form');
+            const logProgressModalTitle = $('#log-progress-modal-title');
+            const logProgressClientIdHidden = $('#log-progress-client-id');
+            const progressLogTableBody = $('#progress-log-table-body');
+
+            const selectClientProgress = $('#select-client-progress');
+            const clientProgressDisplay = $('#client-progress-display');
+            const selectClientPrompt = $('#select-client-prompt');
+            const logProgressBtn = $('#log-progress-btn');
+            const progressClientNameDisplay = $('#progress-client-name');
+            
+            const assignPlanModal = $('#assign-plan-modal');
+            const assignPlanForm = $('#assign-plan-form');
+            const assignPlanClientName = $('#assign-plan-client-name');
+            const assignPlanClientIdHidden = $('#assign-plan-client-id-hidden');
+            const assignWorkoutPlanSelect = $('#assign-workout-plan');
+            const assignMealPlanSelect = $('#assign-meal-plan');
+
+            const viewDetailsModal = $('#view-details-modal');
+            const viewDetailsTitle = $('#view-details-title');
+            const viewDetailsBody = $('#view-details-body');
+            const viewDetailsOkButton = $('#viewDetailsOkButton');
+
+
+            let weightChartInstance = null, strengthChartInstance = null, cardioChartInstance = null;
+            
+            let clientProgressData = {
+                "CLT001": {
+                    name: "Johnathan Doe",
+                    logs: [
+                        { date: "2023-10-01", weight: 75.5, strength: 70, cardio: 20, notes: "Started program" },
+                        { date: "2023-10-15", weight: 74.8, strength: 72.5, cardio: 25, notes: "Feeling good" },
+                        { date: "2023-10-28", weight: 74.0, strength: 75, cardio: 30, notes: "New PB on bench!" },
+                    ]
+                },
+                "CLT002": {
+                    name: "Jane Smith",
+                    logs: [
+                        { date: "2023-09-20", weight: 62.0, strength: 40, cardio: 15, notes: "First session" },
+                        { date: "2023-10-05", weight: 61.5, strength: 42.5, cardio: 18, notes: "Improving stamina" },
+                        { date: "2023-10-20", weight: 60.8, strength: 45, cardio: 22, notes: "Consistent effort" },
+                    ]
+                }
+            };
+
+            const $recentActivityList = $('#recent-activity-list');
+            function addRecentActivity(message) {
+                const date = new Date();
+                const time = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                const $newActivity = $(`<li>${message} - <small>${time}</small></li>`).hide();
+                $recentActivityList.prepend($newActivity);
+                $newActivity.fadeIn();
+                if ($recentActivityList.children().length > 5) {
+                    $recentActivityList.children().last().fadeOut(function() { $(this).remove(); });
+                }
+            }
+
+            function updateDashboardStats() {
+                $('#total-clients-stat').text(clientTableBody.find('tr').length);
+                $('#upcoming-appointments-stat').text(appointmentTableBody.find('tr td[data-label="Status"]:not(:contains("Completed")):not(:contains("Cancelled"))').length);
+                $('#active-workout-plans-stat').text(workoutPlanTableBody.find('tr').length); 
+                
+                let pendingProgressCount = 0;
+                clientTableBody.find('tr').each(function() {
+                    const clientId = $(this).data('id');
+                    const lastCheckinDate = $(this).find('td[data-label="Last Check-in"]').text();
+                    if (lastCheckinDate) {
+                        const daysSinceCheckin = moment().diff(moment(lastCheckinDate), 'days');
+                        if (daysSinceCheckin > 7) { 
+                            pendingProgressCount++;
+                        }
+                    } else {
+                        pendingProgressCount++; 
+                    }
+                });
+                $('#pending-progress-stat').text(pendingProgressCount);
+            }
+
+            function generateNewId(tableBody, prefix, idDataAttribute = 'id') {
+                let maxIdNum = 0;
+                tableBody.find('tr').each(function() {
+                    const id = $(this).data(idDataAttribute);
+                    if (id && typeof id === 'string' && id.toUpperCase().startsWith(prefix.toUpperCase())) {
+                        const numPart = id.substring(prefix.length);
+                        if (/^\d+$/.test(numPart)) {
+                            const num = parseInt(numPart, 10);
+                            if (!isNaN(num) && num > maxIdNum) {
+                                maxIdNum = num;
+                            }
+                        }
+                    }
+                });
+                const newIdNum = maxIdNum + 1;
+                return prefix.toUpperCase() + String(newIdNum).padStart(3, '0');
+            }
+
+            const clientFormFields = [
+                { input: $('#client-full-name'), errorId: 'client-full-name-error', name: 'Full Name', required: true },
+                { input: $('#client-email'), errorId: 'client-email-error', name: 'Email', required: true, isEmail: true },
+                { input: $('#client-phone'), errorId: 'client-phone-error', name: 'Phone Number', required: true },
+                { input: $('#client-last-checkin'), errorId: 'client-last-checkin-error', name: 'Last Check-in Date', required: true },
+            ];
+            const workoutPlanFormFields = [
+                { input: $('#workout-plan-name'), errorId: 'workout-plan-name-error', name: 'Plan Name', required: true },
+                { input: $('#workout-plan-type'), errorId: 'workout-plan-type-error', name: 'Type', required: true },
+                { input: $('#workout-plan-duration'), errorId: 'workout-plan-duration-error', name: 'Duration', required: true },
+                { input: $('#workout-plan-focus'), errorId: 'workout-plan-focus-error', name: 'Focus/Details', required: false }, 
+            ];
+            const mealPlanFormFields = [
+                { input: $('#meal-plan-name'), errorId: 'meal-plan-name-error', name: 'Plan Name', required: true },
+                { input: $('#meal-plan-type'), errorId: 'meal-plan-type-error', name: 'Type', required: true },
+                { input: $('#meal-plan-calories'), errorId: 'meal-plan-calories-error', name: 'Daily Calories', required: true, isNumber: true },
+                { input: $('#meal-plan-focus'), errorId: 'meal-plan-focus-error', name: 'Primary Focus', required: false }, 
+            ];
+            const appointmentFormFields = [
+                { input: $('#appointment-client'), errorId: 'appointment-client-error', name: 'Client', required: true },
+                { input: $('#appointment-date'), errorId: 'appointment-date-error', name: 'Date', required: true },
+                { input: $('#appointment-time'), errorId: 'appointment-time-error', name: 'Time', required: true },
+                { input: $('#appointment-purpose'), errorId: 'appointment-purpose-error', name: 'Purpose', required: true },
+                { input: $('#appointment-status'), errorId: 'appointment-status-error', name: 'Status', required: true },
+            ];
+            const logProgressFormFields = [
+                { input: $('#log-progress-date'), errorId: 'log-progress-date-error', name: 'Date', required: true },
+                { input: $('#log-progress-weight'), errorId: 'log-progress-weight-error', name: 'Weight', required: false, isNumber: true }, 
+                { input: $('#log-progress-strength-exercise'), errorId: 'log-progress-strength-exercise-error', name: 'Strength Exc', required: false, isNumber: true },
+                { input: $('#log-progress-cardio-metric'), errorId: 'log-progress-cardio-metric-error', name: 'Cardio Metric', required: false, isNumber: true },
+            ];
+
+            function resetForm(formElement, fieldsToValidate) {
+                if (formElement && formElement.length) {
+                    formElement[0].reset();
+                    fieldsToValidate.forEach(field => {
+                        field.input.removeClass('is-invalid').attr('aria-invalid', 'false');
+                        $('#' + field.errorId).text('').hide();
+                        field.input.attr('aria-describedby', field.errorId);
+                    });
+                }
+            }
+
+            function validateForm(fieldsToValidate) {
+                let isFormValid = true;
+                let firstInvalidField = null;
+
+                fieldsToValidate.forEach(field => {
+                    const $input = field.input;
+                    const $errorDiv = $('#' + field.errorId);
+                    const value = $input.val() ? (($input.attr('type') === 'password' || $input.attr('type') === 'date' || $input.attr('type') === 'time' || $input.attr('type') === 'number' || $input.attr('type') === 'tel') ? $input.val() : $input.val().trim()) : "";
+                    let errorMessage = '';
+
+                    if (field.required && value === '') {
+                        errorMessage = `${field.name} is required.`;
+                    } else if (value !== '' && field.minLength && value.length < field.minLength) {
+                        errorMessage = `${field.name} must be at least ${field.minLength} characters long.`;
+                    } else if (value !== '' && field.isEmail) {
+                        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                        if (!emailPattern.test(value)) {
+                            errorMessage = `Please enter a valid ${field.name.toLowerCase()} address.`;
+                        }
+                    } else if (value !== '' && field.isNumber) {
+                        const numValue = parseFloat(value);
+                        if (isNaN(numValue) || !/^\d*\.?\d*$/.test(value)) { 
+                            errorMessage = `${field.name} must be a valid number.`;
+                        } else if (field.min !== undefined && numValue < field.min) {
+                            errorMessage = `${field.name} must be at least ${field.min}.`;
+                        }
+                    }
+                    
+                    if (errorMessage) {
+                        $input.addClass('is-invalid').attr('aria-invalid', 'true');
+                        $errorDiv.text(errorMessage).show();
+                        isFormValid = false;
+                        if (!firstInvalidField) firstInvalidField = $input;
+                    } else {
+                        $input.removeClass('is-invalid').attr('aria-invalid', 'false');
+                        $errorDiv.text('').hide();
+                    }
+                });
+
+                if (firstInvalidField) firstInvalidField.focus();
+                return isFormValid;
+            }
+            
+            function showAlert(message, title = 'Notification', isConfirmation = false) {
+                if (!alertModal.length || !alertModalMessage.length || !alertModalTitle.length) {
+                    if (isConfirmation) return confirm(message);
+                    else alert(message);
+                    return;
+                }
+                alertModalTitle.text(title);
+                alertModalMessage.html(message); 
+                alertModalOkButton.off('click').on('click', hideAlert);
+                $('.modal.show').not(alertModal).removeClass('show');
+                alertModal.addClass('show');
+            }
+            function hideAlert() { if (alertModal.length) alertModal.removeClass('show'); }
+
+            function showModal($modal) {
+                if ($modal && $modal.length) {
+                    $('.modal.show').not($modal).removeClass('show');
+                    $modal.addClass('show');
+                    $modal.find('form input:not([readonly]):not([disabled]):not([type="hidden"]), form select:not([readonly]):not([disabled]), form textarea:not([readonly]):not([disabled]), form button:not([disabled])').first().focus();
+                } else {
+                    showAlert("Error: Could not open the requested window.", "UI Error");
+                }
+            }
+            function hideModal($modal) { if ($modal && $modal.length) $modal.removeClass('show'); }
+
+            function hideAndResetFormModal($modal, formElement, fieldsToValidate) {
+                hideModal($modal);
+                resetForm(formElement, fieldsToValidate);
+            }
+
+            function populateClientSelects() {
+                const $selects = $('#appointment-client, #select-client-progress');
+                $selects.each(function() {
+                    const $currentSelect = $(this);
+                    const currentValue = $currentSelect.val(); 
+                    $currentSelect.find('option:not(:first-child)').remove(); 
+                    clientTableBody.find('tr').each(function() {
+                        const clientId = $(this).data('id');
+                        const clientName = $(this).find('td[data-label="Full Name"]').text();
+                        $currentSelect.append(`<option value="${clientId}">${clientName}</option>`);
+                    });
+                    if(currentValue) $currentSelect.val(currentValue);
+                });
+            }
+            
+            function populatePlanSelects() {
+                assignWorkoutPlanSelect.find('option:not(:first-child)').remove();
+                workoutPlanTableBody.find('tr').each(function() {
+                    const planId = $(this).data('id');
+                    const planName = $(this).find('td[data-label="Plan Name"]').text();
+                    assignWorkoutPlanSelect.append(`<option value="${planId}">${planName}</option>`);
+                });
+
+                assignMealPlanSelect.find('option:not(:first-child)').remove();
+                mealPlanTableBody.find('tr').each(function() {
+                    const planId = $(this).data('id');
+                    const planName = $(this).find('td[data-label="Plan Name"]').text();
+                    assignMealPlanSelect.append(`<option value="${planId}">${planName}</option>`);
+                });
+            }
+
+            if (alertModalOkButton.length) alertModalOkButton.on('click', hideAlert);
+            if (alertModalCloseButton.length) alertModalCloseButton.on('click', hideAlert);
+            alertModal.on('click', function(event) { if ($(event.target).is(alertModal)) hideAlert(); });
+
+            if (headerLogoutLink.length && logoutModal.length) {
+                headerLogoutLink.on('click', function(e) {
+                    e.preventDefault();
+                    showModal(logoutModal);
+                });
+                $('#cancelLogoutButton, #closeLogoutModalButton').on('click', () => hideModal(logoutModal));
+                logoutModal.on('click', (event) => { if ($(event.target).is(logoutModal)) hideModal(logoutModal); });
+                $('#okLogoutButton').on('click', function() {
+                    hideModal(logoutModal);
+                    addRecentActivity("Coach logged out.");
+                    setTimeout(() => { window.location.href = headerLogoutLink.attr('href'); }, 100);
+                });
+            }
+
+            $sidebarLinks.on('click', function(e) {
+                e.preventDefault();
+                const $this = $(this);
+                const targetId = $this.data('target');
+                const $targetSection = $('#' + targetId);
+
+                if (targetId && $targetSection.length) {
+                    if (!$this.hasClass('active')) {
+                        $sidebarLinks.removeClass('active');
+                        $this.addClass('active');
+                        $contentSections.removeClass('active');
+                        $targetSection.addClass('active');
+                        $pageTitle.text($this.find('.nav-text').text().trim() || 'Coach Dashboard');
+                        if (targetId === 'appointments-content' || targetId === 'progress-content') {
+                            populateClientSelects();
+                        }
+                    }
+                } else {
+                    showAlert(`Content for "${$this.find('.nav-text').text().trim()}" could not be found.`, "Navigation Error");
+                }
+            });
+
+            $('.add-btn[data-modal-target="add-client-modal"]').on('click', function() {
+                resetForm(addClientForm, clientFormFields);
+                $('#client-id').val(generateNewId(clientTableBody, 'CLT'));
+                showModal(addClientModal);
+            });
+            $('.add-btn[data-modal-target="add-workout-plan-modal"]').on('click', function() {
+                resetForm(addWorkoutPlanForm, workoutPlanFormFields);
+                $('#workout-plan-id').val(generateNewId(workoutPlanTableBody, 'WOP'));
+                showModal(addWorkoutPlanModal);
+            });
+            $('.add-btn[data-modal-target="add-meal-plan-modal"]').on('click', function() {
+                resetForm(addMealPlanForm, mealPlanFormFields);
+                $('#meal-plan-id').val(generateNewId(mealPlanTableBody, 'MPL'));
+                showModal(addMealPlanModal);
+            });
+            $('.add-btn[data-modal-target="add-appointment-modal"]').on('click', function() {
+                resetForm(addAppointmentForm, appointmentFormFields);
+                $('#appointment-id').val(generateNewId(appointmentTableBody, 'APT'));
+                populateClientSelects();
+                showModal(addAppointmentModal);
+            });
+            logProgressBtn.on('click', function() {
+                const selectedClientId = selectClientProgress.val();
+                if (!selectedClientId) {
+                    showAlert("Please select a client first.", "Action Required");
+                    return;
+                }
+                resetForm(logProgressForm, logProgressFormFields);
+                const clientName = selectClientProgress.find('option:selected').text();
+                logProgressModalTitle.text(`Log Progress for ${clientName}`);
+                logProgressClientIdHidden.val(selectedClientId);
+                $('#log-progress-date').val(moment().format('YYYY-MM-DD'));
+                showModal(logProgressModal);
+            });
+
+            $('.modal .close-btn').not('.alert-modal-close, #closeLogoutModalButton').on('click', function() {
+                const $modal = $(this).closest('.modal');
+                if ($modal.is(addClientModal)) hideAndResetFormModal($modal, addClientForm, clientFormFields);
+                else if ($modal.is(addWorkoutPlanModal)) hideAndResetFormModal($modal, addWorkoutPlanForm, workoutPlanFormFields);
+                else if ($modal.is(addMealPlanModal)) hideAndResetFormModal($modal, addMealPlanForm, mealPlanFormFields);
+                else if ($modal.is(addAppointmentModal)) hideAndResetFormModal($modal, addAppointmentForm, appointmentFormFields);
+                else if ($modal.is(logProgressModal)) hideAndResetFormModal($modal, logProgressForm, logProgressFormFields);
+                else if ($modal.is(assignPlanModal)) hideModal($modal); 
+                else if ($modal.is(viewDetailsModal)) hideModal($modal);
+                else hideModal($modal);
+            });
+            
+            viewDetailsOkButton.on('click', function() {
+                hideModal(viewDetailsModal);
+            });
+
+            addClientForm.on('submit', function(e) {
+                e.preventDefault();
+                if (!validateForm(clientFormFields)) return;
+                
+                const id = $('#client-id').val();
+                const fullName = $('#client-full-name').val().trim();
+                const email = $('#client-email').val().trim();
+                const phone = $('#client-phone').val().trim();
+                const lastCheckin = $('#client-last-checkin').val();
+
+                const newRowHtml = `<tr data-id="${id}">
+                    <td data-label="ID">${id}</td>
+                    <td data-label="Full Name">${fullName}</td>
+                    <td data-label="Email">${email}</td>
+                    <td data-label="Phone">${phone}</td>
+                    <td data-label="Assigned Workout">N/A</td>
+                    <td data-label="Assigned Meal Plan">N/A</td>
+                    <td data-label="Last Check-in">${lastCheckin}</td>
+                    <td data-label="Actions">
+                        <button class="btn btn-sm btn-info view-progress-btn">Progress</button>
+                        <button class="btn btn-sm btn-primary assign-plan-btn">Assign</button>
+                        <button class="btn btn-sm btn-danger">Delete</button>
+                    </td>
+                </tr>`;
+                clientTableBody.append(newRowHtml);
+                clientProgressData[id] = { name: fullName, logs: [] }; 
+                addResponsiveTableHeaders(); 
+                populateClientSelects(); 
+                showAlert(`Client "${fullName}" added successfully!`, 'Success');
+                addRecentActivity(`New client added: ${fullName} (${id})`);
+                updateDashboardStats();
+                hideAndResetFormModal(addClientModal, addClientForm, clientFormFields);
+            });
+
+            addWorkoutPlanForm.on('submit', function(e) {
+                e.preventDefault();
+                if (!validateForm(workoutPlanFormFields)) return;
+
+                const id = $('#workout-plan-id').val();
+                const planName = $('#workout-plan-name').val().trim();
+                const type = $('#workout-plan-type').val();
+                const duration = $('#workout-plan-duration').val().trim();
+                const focus = $('#workout-plan-focus').val().trim();
+
+                const newRowHtml = `<tr data-id="${id}">
+                    <td data-label="ID">${id}</td>
+                    <td data-label="Plan Name">${planName}</td>
+                    <td data-label="Type">${type}</td>
+                    <td data-label="Duration">${duration}</td>
+                    <td data-label="Focus">${focus.substring(0,50) + (focus.length > 50 ? '...' : '')}</td>
+                    <td data-label="Actions"><button class="btn btn-sm btn-info view-details-btn" data-details="${encodeURIComponent(focus)}">View</button> <button class="btn btn-sm btn-danger">Delete</button></td>
+                </tr>`;
+                workoutPlanTableBody.append(newRowHtml);
+                addResponsiveTableHeaders();
+                showAlert(`Workout Plan "${planName}" added successfully!`, 'Success');
+                updateDashboardStats();
+                hideAndResetFormModal(addWorkoutPlanModal, addWorkoutPlanForm, workoutPlanFormFields);
+            });
+            
+            addMealPlanForm.on('submit', function(e) {
+                e.preventDefault();
+                if (!validateForm(mealPlanFormFields)) return;
+
+                const id = $('#meal-plan-id').val();
+                const planName = $('#meal-plan-name').val().trim();
+                const type = $('#meal-plan-type').val();
+                const calories = $('#meal-plan-calories').val().trim();
+                const focus = $('#meal-plan-focus').val().trim();
+
+                const newRowHtml = `<tr data-id="${id}">
+                    <td data-label="ID">${id}</td>
+                    <td data-label="Plan Name">${planName}</td>
+                    <td data-label="Type">${type}</td>
+                    <td data-label="Daily Calories">${calories} kcal</td>
+                    <td data-label="Primary Focus">${focus.substring(0,50) + (focus.length > 50 ? '...' : '')}</td>
+                    <td data-label="Actions"><button class="btn btn-sm btn-info view-details-btn" data-details="${encodeURIComponent(focus)}">View</button> <button class="btn btn-sm btn-danger">Delete</button></td>
+                </tr>`;
+                mealPlanTableBody.append(newRowHtml);
+                addResponsiveTableHeaders();
+                showAlert(`Meal Plan "${planName}" added successfully!`, 'Success');
+                hideAndResetFormModal(addMealPlanModal, addMealPlanForm, mealPlanFormFields);
+            });
+
+            addAppointmentForm.on('submit', function(e) {
+                e.preventDefault();
+                if (!validateForm(appointmentFormFields)) return;
+
+                const id = $('#appointment-id').val();
+                const clientId = $('#appointment-client').val();
+                const clientName = $('#appointment-client option:selected').text();
+                const date = $('#appointment-date').val();
+                const time = $('#appointment-time').val();
+                const formattedTime = moment(time, "HH:mm").format("hh:mm A");
+                const purpose = $('#appointment-purpose').val();
+                const status = $('#appointment-status').val();
+
+                let actionsHtml = '';
+                if (status === 'Pending') {
+                    actionsHtml = `
+                        <button class="btn btn-sm btn-primary confirm-appointment-btn">Confirm</button>
+                        <button class="btn btn-sm btn-danger cancel-appointment-btn">Cancel</button>
+                    `;
+                } else if (status === 'Confirmed') {
+                    actionsHtml = `
+                        <button class="btn btn-sm btn-success mark-done-btn">Mark Done</button>
+                        <button class="btn btn-sm btn-danger cancel-appointment-btn">Cancel</button>
+                    `;
+                } else if (status === 'Completed') {
+                    actionsHtml = `<span style="color: var(--secondary-text);">Done</span>`;
+                } else if (status === 'Cancelled') {
+                    actionsHtml = `<span style="color: var(--danger);">Cancelled</span>`;
+                } else { 
+                    actionsHtml = `
+                        <button class="btn btn-sm btn-primary confirm-appointment-btn">Confirm</button>
+                        <button class="btn btn-sm btn-danger cancel-appointment-btn">Cancel</button>
+                    `;
+                }
+
+                const newRowHtml = `<tr data-id="${id}">
+                    <td data-label="ID">${id}</td>
+                    <td data-label="Client Name" data-client-id="${clientId}">${clientName}</td>
+                    <td data-label="Date">${date}</td>
+                    <td data-label="Time">${formattedTime}</td>
+                    <td data-label="Purpose">${purpose}</td>
+                    <td data-label="Status">${status}</td>
+                    <td data-label="Actions">${actionsHtml}</td>
+                </tr>`;
+                appointmentTableBody.append(newRowHtml);
+                addResponsiveTableHeaders();
+                showAlert(`Appointment for "${clientName}" on ${date} at ${formattedTime} scheduled with status: ${status}!`, 'Success');
+                addRecentActivity(`Appointment scheduled: ${clientName} - ${purpose} (${status})`);
+                updateDashboardStats();
+                hideAndResetFormModal(addAppointmentModal, addAppointmentForm, appointmentFormFields);
+            });
+
+            logProgressForm.on('submit', function(e) {
+                e.preventDefault();
+                if (!validateForm(logProgressFormFields)) return;
+
+                const clientId = logProgressClientIdHidden.val();
+                const date = $('#log-progress-date').val();
+                const weight = parseFloat($('#log-progress-weight').val()) || null;
+                const strength = parseFloat($('#log-progress-strength-exercise').val()) || null;
+                const cardio = parseFloat($('#log-progress-cardio-metric').val()) || null;
+                const notes = $('#log-progress-notes').val().trim();
+
+                if (!clientProgressData[clientId]) {
+                    showAlert("Error: Client data not found for progress logging.", "Error");
+                    return;
+                }
+                
+                clientProgressData[clientId].logs.push({ date, weight, strength, cardio, notes });
+                clientProgressData[clientId].logs.sort((a, b) => new Date(a.date) - new Date(b.date)); 
+
+                clientTableBody.find(`tr[data-id="${clientId}"] td[data-label="Last Check-in"]`).text(date);
+
+                showAlert("Progress logged successfully!", "Success");
+                addRecentActivity(`Progress logged for ${clientProgressData[clientId].name}`);
+                loadClientProgress(clientId); 
+                updateDashboardStats();
+                hideAndResetFormModal(logProgressModal, logProgressForm, logProgressFormFields);
+            });
+            
+            assignPlanForm.on('submit', function(e) {
+                e.preventDefault();
+                const clientId = assignPlanClientIdHidden.val();
+                const workoutPlanId = assignWorkoutPlanSelect.val();
+                const mealPlanId = assignMealPlanSelect.val();
+
+                const workoutPlanName = workoutPlanId ? $(`#workout-plan-table-body tr[data-id="${workoutPlanId}"] td[data-label="Plan Name"]`).text() : "N/A";
+                const mealPlanName = mealPlanId ? $(`#meal-plan-table-body tr[data-id="${mealPlanId}"] td[data-label="Plan Name"]`).text() : "N/A";
+
+                const $clientRow = $(`#client-table-body tr[data-id="${clientId}"]`);
+                $clientRow.find('td[data-label="Assigned Workout"]').text(workoutPlanName);
+                $clientRow.find('td[data-label="Assigned Meal Plan"]').text(mealPlanName);
+                
+                showAlert(`Plans assigned to ${$clientRow.find('td[data-label="Full Name"]').text()}.`, "Success");
+                addRecentActivity(`Plans assigned to client ${clientId}.`);
+                hideModal(assignPlanModal);
+            });
+
+            $(window).on('click', function(event) {
+                const $target = $(event.target);
+                if ($target.is(addClientModal)) hideAndResetFormModal(addClientModal, addClientForm, clientFormFields);
+                else if ($target.is(addWorkoutPlanModal)) hideAndResetFormModal(addWorkoutPlanModal, addWorkoutPlanForm, workoutPlanFormFields);
+                else if ($target.is(addMealPlanModal)) hideAndResetFormModal(addMealPlanModal, addMealPlanForm, mealPlanFormFields);
+                else if ($target.is(addAppointmentModal)) hideAndResetFormModal(addAppointmentModal, addAppointmentForm, appointmentFormFields);
+                else if ($target.is(logProgressModal)) hideAndResetFormModal(logProgressModal, logProgressForm, logProgressFormFields);
+                else if ($target.is(assignPlanModal)) hideModal(assignPlanModal);
+                else if ($target.is(viewDetailsModal)) hideModal(viewDetailsModal);
+                else if ($target.is(logoutModal)) hideModal(logoutModal);
+                else if ($target.is(alertModal)) hideAlert();
+            });
+
+            $('.content-area').on('click', '.btn-danger', function() {
+                var $button = $(this);
+                if ($button.closest('#appointment-table-body').length && !$button.hasClass('cancel-appointment-btn')) {
+                } else if ($button.hasClass('cancel-appointment-btn')) {
+                    return; 
+                }
+
+                var $row = $(this).closest('tr');
+                var id = $row.data('id');
+                var itemName = $row.find('td:nth-child(2)').text().trim() || id || 'this item'; 
+                
+                let itemType = 'item';
+                if ($row.closest('#client-table-body').length) itemType = 'client';
+                else if ($row.closest('#workout-plan-table-body').length) itemType = 'workout plan';
+                else if ($row.closest('#meal-plan-table-body').length) itemType = 'meal plan';
+                else if ($row.closest('#progress-log-table-body').length) itemType = 'progress log entry';
+
+                showAlert(`Are you sure you want to delete this ${itemType}: ${itemName}? This action cannot be undone.`, 'Confirm Deletion', true);
+
+                alertModalOkButton.off('click').on('click', function proceedDelete() {
+                    hideAlert();
+                    const isClientRow = $row.closest('#client-table-body').length > 0;
+                    const isProgressLog = $row.closest('#progress-log-table-body').length > 0;
+                    const currentClientIdForProgress = selectClientProgress.val();
+
+                    $row.fadeOut(400, function() {
+                        $(this).remove();
+                        addResponsiveTableHeaders(); 
+                        updateDashboardStats();
+                        if (isClientRow) {
+                            delete clientProgressData[id]; 
+                            populateClientSelects(); 
+                            if (selectClientProgress.val() === id) { 
+                                clientProgressDisplay.hide();
+                                selectClientPrompt.show();
+                                logProgressBtn.prop('disabled', true);
+                            }
+                        } else if (isProgressLog && currentClientIdForProgress) {
+                            const logDate = $row.data('log-date'); 
+                            if (clientProgressData[currentClientIdForProgress] && clientProgressData[currentClientIdForProgress].logs) {
+                                clientProgressData[currentClientIdForProgress].logs = clientProgressData[currentClientIdForProgress].logs.filter(log => log.date !== logDate);
+                                loadClientProgress(currentClientIdForProgress); 
+                            }
+                        }
+                        addRecentActivity(`${itemType.charAt(0).toUpperCase() + itemType.slice(1)} "${itemName}" (ID: ${id}) deleted.`);
+                        showAlert(`${itemType.charAt(0).toUpperCase() + itemType.slice(1)} "${itemName}" deleted!`, 'Deletion Complete');
+                    });
+                    alertModalOkButton.off('click', proceedDelete).on('click', hideAlert); 
+                });
+                alertModalCloseButton.off('click').on('click', function cancelDelete() {
+                    hideAlert();
+                    alertModalOkButton.off('click').on('click', hideAlert); 
+                    alertModalCloseButton.off('click', cancelDelete).on('click', hideAlert); 
+                });
+                alertModal.off('click').on('click', function(event) { 
+                    if ($(event.target).is(alertModal)) {
+                        hideAlert();
+                        alertModalOkButton.off('click').on('click', hideAlert);
+                        alertModalCloseButton.off('click').on('click', hideAlert);
+                        alertModal.off('click').on('click', function(e) {if ($(e.target).is(alertModal)) hideAlert();});
+                    }
+                });
+            });
+            
+            clientTableBody.on('click', '.view-progress-btn', function() {
+                const $row = $(this).closest('tr');
+                const clientId = $row.data('id');
+                $('.sidebar-nav .nav-link[data-target="progress-content"]').click();
+                selectClientProgress.val(clientId).trigger('change');
+            });
+
+            clientTableBody.on('click', '.assign-plan-btn', function() {
+                const $row = $(this).closest('tr');
+                const clientId = $row.data('id');
+                const clientName = $row.find('td[data-label="Full Name"]').text();
+
+                assignPlanClientIdHidden.val(clientId);
+                assignPlanClientName.text(clientName);
+                
+                populatePlanSelects();
+                const currentWorkout = $row.find('td[data-label="Assigned Workout"]').text();
+                const currentMeal = $row.find('td[data-label="Assigned Meal Plan"]').text();
+
+                assignWorkoutPlanSelect.find('option').filter(function() {
+                    return $(this).text() === currentWorkout;
+                }).prop('selected', true);
+                
+                assignMealPlanSelect.find('option').filter(function() {
+                    return $(this).text() === currentMeal;
+                }).prop('selected', true);
+
+                showModal(assignPlanModal);
+            });
+
+            $('#workouts-content, #meals-content').on('click', '.view-details-btn', function() {
+                const $row = $(this).closest('tr');
+                const planName = $row.find('td[data-label="Plan Name"]').text();
+                let details = decodeURIComponent($(this).data('details') || "No additional details provided.");
+                
+                details = details.replace(/\n/g, '<br>');
+
+                viewDetailsTitle.text(`Details for: ${planName}`);
+                viewDetailsBody.html(`<p>${details}</p>`);
+                showModal(viewDetailsModal);
+            });
+
+            appointmentTableBody.on('click', '.confirm-appointment-btn', function() {
+                const $button = $(this);
+                const $row = $button.closest('tr');
+                const $statusCell = $row.find('td[data-label="Status"]');
+                const $actionsCell = $row.find('td[data-label="Actions"]');
+
+                $statusCell.text('Confirmed').css('color', 'var(--success)');
+                $actionsCell.html(`
+                    <button class="btn btn-sm btn-success mark-done-btn">Mark Done</button>
+                    <button class="btn btn-sm btn-danger cancel-appointment-btn">Cancel</button>
+                `);
+                addRecentActivity(`Appointment ID ${$row.data('id')} confirmed.`);
+                updateDashboardStats();
+                showAlert(`Appointment ID ${$row.data('id')} has been confirmed.`, 'Appointment Confirmed');
+            });
+
+            appointmentTableBody.on('click', '.mark-done-btn', function() {
+                const $button = $(this);
+                const $row = $button.closest('tr');
+                const $statusCell = $row.find('td[data-label="Status"]');
+                const $actionsCell = $row.find('td[data-label="Actions"]');
+
+                $statusCell.text('Completed').css('color', 'var(--secondary-text)');
+                $actionsCell.html('<span style="color: var(--secondary-text);">Done</span>');
+                addRecentActivity(`Appointment ID ${$row.data('id')} marked as done.`);
+                updateDashboardStats();
+                showAlert(`Appointment ID ${$row.data('id')} has been marked as completed.`, 'Appointment Completed');
+            });
+
+            appointmentTableBody.on('click', '.cancel-appointment-btn', function() {
+                var $row = $(this).closest('tr');
+                var appointmentId = $row.data('id');
+                var clientName = $row.find('td[data-label="Client Name"]').text();
+                const $statusCell = $row.find('td[data-label="Status"]');
+                const $actionsCell = $row.find('td[data-label="Actions"]');
+
+                if ($statusCell.text() === 'Completed') {
+                    showAlert(`Appointment ID ${appointmentId} is already completed and cannot be cancelled.`, 'Action Denied');
+                    return;
+                }
+                if ($statusCell.text() === 'Cancelled') {
+                    showAlert(`Appointment ID ${appointmentId} is already cancelled.`, 'Information');
+                    return;
+                }
+
+                showAlert(`Are you sure you want to cancel the appointment for ${clientName} (ID: ${appointmentId})?`, 'Confirm Cancellation', true);
+                
+                alertModalOkButton.off('click').on('click', function() {
+                    hideAlert();
+                    $statusCell.text('Cancelled').css('color', 'var(--danger)');
+                    $actionsCell.html('<span style="color: var(--danger);">Cancelled</span>');
+                    addRecentActivity(`Appointment ID ${appointmentId} cancelled.`);
+                    updateDashboardStats();
+                    showAlert(`Appointment ID ${appointmentId} has been cancelled.`, 'Appointment Cancelled');
+                    alertModalOkButton.off('click').on('click', hideAlert); 
+                });
+                alertModalCloseButton.off('click').on('click', function() {
+                    hideAlert();
+                    alertModalOkButton.off('click').on('click', hideAlert);
+                    alertModalCloseButton.off('click').on('click', hideAlert);
+                });
+                alertModal.off('click').on('click', function(event) {
+                    if ($(event.target).is(alertModal)) {
+                        hideAlert();
+                        alertModalOkButton.off('click').on('click', hideAlert);
+                        alertModalCloseButton.off('click').on('click', hideAlert);
+                        alertModal.off('click').on('click', function(e) {if ($(e.target).is(alertModal)) hideAlert();});
+                    }
+                });
+            });
+
+            selectClientProgress.on('change', function() {
+                const clientId = $(this).val();
+                if (clientId) {
+                    loadClientProgress(clientId);
+                    logProgressBtn.prop('disabled', false);
+                    clientProgressDisplay.fadeIn();
+                    selectClientPrompt.hide();
+                } else {
+                    logProgressBtn.prop('disabled', true);
+                    clientProgressDisplay.hide();
+                    selectClientPrompt.show();
+                    if (weightChartInstance) weightChartInstance.destroy();
+                    if (strengthChartInstance) strengthChartInstance.destroy();
+                    if (cardioChartInstance) cardioChartInstance.destroy();
+                }
+            });
+
+            function loadClientProgress(clientId) {
+                const data = clientProgressData[clientId];
+                if (!data) {
+                    progressClientNameDisplay.text("No data for this client.");
+                    progressLogTableBody.empty().append('<tr><td colspan="4" style="text-align:center;">No logs found.</td></tr>');
+                    if (weightChartInstance) weightChartInstance.destroy();
+                    if (strengthChartInstance) strengthChartInstance.destroy();
+                    if (cardioChartInstance) cardioChartInstance.destroy();
+                    return;
+                }
+
+                progressClientNameDisplay.text(`Progress for: ${data.name}`);
+                
+                progressLogTableBody.empty();
+                if (data.logs && data.logs.length > 0) {
+                    data.logs.forEach(log => {
+                        const rowHtml = `<tr data-id="log-${clientId}-${log.date}" data-log-date="${log.date}">
+                            <td data-label="Date">${log.date}</td>
+                            <td data-label="Weight (kg)">${log.weight !== null ? log.weight : 'N/A'}</td>
+                            <td data-label="Notes">${log.notes || 'N/A'}</td>
+                            <td data-label="Actions"><button class="btn btn-sm btn-danger">Delete</button></td>
+                        </tr>`;
+                        progressLogTableBody.append(rowHtml);
+                    });
+                } else {
+                    progressLogTableBody.append('<tr><td colspan="4" style="text-align:center;">No logs found for this client.</td></tr>');
+                }
+                addResponsiveTableHeaders();
+
+                const labels = data.logs.map(log => log.date);
+                const weightData = data.logs.map(log => log.weight);
+                const strengthData = data.logs.map(log => log.strength); 
+                const cardioData = data.logs.map(log => log.cardio); 
+
+                initializeProgressCharts(labels, weightData, strengthData, cardioData);
+            }
+
+            function initializeProgressCharts(labels, weightSet, strengthSet, cardioSet) {
+                if (typeof Chart === 'undefined') { console.error("Chart.js is not loaded."); return; }
+
+                if (weightChartInstance) weightChartInstance.destroy();
+                if (strengthChartInstance) strengthChartInstance.destroy();
+                if (cardioChartInstance) cardioChartInstance.destroy();
+
+                const weightCtx = document.getElementById('weightTrendChart')?.getContext('2d');
+                const strengthCtx = document.getElementById('strengthChart')?.getContext('2d');
+                const cardioCtx = document.getElementById('cardioChart')?.getContext('2d');
+
+                if (!weightCtx || !strengthCtx || !cardioCtx) {
+                    console.warn("One or more progress chart canvas elements not found.");
+                    return;
+                }
+
+                const rootStyles = getComputedStyle(document.documentElement);
+                const goldColor = rootStyles.getPropertyValue('--main-color').trim() || '#FFD700';
+                const goldLightColor = rootStyles.getPropertyValue('--gold-light').trim() || '#FFEC8B';
+                const infoColor = rootStyles.getPropertyValue('--info').trim() || '#16a085';
+                const textColor = rootStyles.getPropertyValue('--primary-text').trim() || '#ecf0f1';
+                const gridBorderColor = rootStyles.getPropertyValue('--border-color').trim() || '#444';
+                const fontFamily = 'Poppins, sans-serif';
+
+                const commonLineChartOptions = (titleText) => ({
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: { beginAtZero: false, grid: { color: gridBorderColor }, ticks: { color: textColor, font: { family: fontFamily } } },
+                        x: { 
+                            type: 'time', 
+                            time: { unit: 'day', tooltipFormat: 'MMM D, YYYY', displayFormats: { day: 'MMM D'}},
+                            grid: { display: true, color: gridBorderColor }, 
+                            ticks: { color: textColor, font: { family: fontFamily }, autoSkip: true, maxTicksLimit: 7 } 
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        title: { display: false, text: titleText, color: textColor, font: { family: fontFamily, size: 14 }},
+                        tooltip: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)', titleColor: goldColor, bodyColor: textColor,
+                            displayColors: false, bodyFont: { family: fontFamily }, titleFont: { family: fontFamily }
+                        }
+                    },
+                    animation: { duration: 800, easing: 'easeInOutQuad' }
+                });
+
+                if (labels.length > 0) {
+                    weightChartInstance = new Chart(weightCtx, {
+                        type: 'line',
+                        data: { labels: labels, datasets: [{ label: 'Weight (kg)', data: weightSet, borderColor: goldColor, backgroundColor: 'rgba(255, 215, 0, 0.2)', tension: 0.1, fill: false, pointRadius: 4, pointHoverRadius: 6 }] },
+                        options: commonLineChartOptions('Weight Trend (kg)')
+                    });
+                    strengthChartInstance = new Chart(strengthCtx, {
+                        type: 'line',
+                        data: { labels: labels, datasets: [{ label: 'Bench Press (kg)', data: strengthSet, borderColor: goldLightColor, backgroundColor: 'rgba(255, 236, 139, 0.2)', tension: 0.1, fill: false, pointRadius: 4, pointHoverRadius: 6 }] },
+                        options: commonLineChartOptions('Strength: Bench Press (kg)')
+                    });
+                    cardioChartInstance = new Chart(cardioCtx, {
+                        type: 'line',
+                        data: { labels: labels, datasets: [{ label: 'Run Duration (min)', data: cardioSet, borderColor: infoColor, backgroundColor: 'rgba(22, 160, 133, 0.2)', tension: 0.1, fill: false, pointRadius: 4, pointHoverRadius: 6 }] },
+                        options: commonLineChartOptions('Cardio: Run Duration (min)')
+                    });
+                } else {
+                    [weightCtx, strengthCtx, cardioCtx].forEach(ctx => {
+                        if (ctx) {
+                            ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+                            ctx.fillStyle = textColor;
+                            ctx.textAlign = 'center';
+                            ctx.font = `14px ${fontFamily}`;
+                            ctx.fillText('No data to display.', ctx.canvas.width / 2, ctx.canvas.height / 2);
+                        }
+                    });
+                }
+            }
+
+            function handleContentSearch(inputId, tableBodySelector, searchColumns) {
+                const $searchInput = $(inputId);
+                const $tableBody = $(tableBodySelector);
+                if (!$searchInput.length || !$tableBody.length) return;
+
+                $searchInput.on('keyup', function() {
+                    const searchTerm = $(this).val().trim().toLowerCase();
+                    $tableBody.find('tr').each(function() {
+                        const $row = $(this);
+                        let match = false;
+                        if (searchTerm === '') match = true;
+                        else {
+                            for (const col of searchColumns) {
+                                const cellText = $row.find(`td[data-label="${col}"]`).text().trim().toLowerCase();
+                                if (cellText.includes(searchTerm)) { match = true; break; }
+                            }
+                        }
+                        $row.toggle(match);
+                    });
+                });
+            }
+
+            function addResponsiveTableHeaders() {
+                $('table').each(function() {
+                    var $table = $(this);
+                    var $headerCells = $table.find('thead th');
+                    if ($headerCells.length === 0) return;
+                    $table.find('tbody tr').each(function() {
+                        const $row = $(this);
+                        $row.find('td').each(function(index) {
+                            if ($headerCells.eq(index).length) {
+                                const newLabel = $headerCells.eq(index).text().trim();
+                                if ($(this).attr('data-label') !== newLabel) $(this).attr('data-label', newLabel);
+                            }
+                        });
+                    });
+                });
+            }
+
+            addResponsiveTableHeaders();
+            populateClientSelects(); 
+            updateDashboardStats(); 
+            addRecentActivity("Coach dashboard loaded.");
+
+            handleContentSearch('#client-search-input', '#client-table-body', ['Full Name', 'Email', 'Phone', 'ID']);
+            handleContentSearch('#workout-search-input', '#workout-plan-table-body', ['Plan Name', 'Type', 'Focus']);
+            handleContentSearch('#meal-plan-search-input', '#meal-plan-table-body', ['Plan Name', 'Type', 'Primary Focus']);
+            handleContentSearch('#appointment-search-input', '#appointment-table-body', ['Client Name', 'Date', 'Purpose', 'Status']);
+
+            const initialActiveLink = $('.sidebar-nav .nav-link.active').first();
+            let initialTargetId = (initialActiveLink.length && initialActiveLink.data('target')) ? initialActiveLink.data('target') : 'dashboard-content';
+            const $initialTargetSection = $('#' + initialTargetId);
+
+            if ($initialTargetSection.length) {
+                $('.sidebar-nav .nav-link').removeClass('active');
+                $contentSections.removeClass('active');
+                $initialTargetSection.addClass('active');
+                $(`.sidebar-nav .nav-link[data-target="${initialTargetId}"]`).addClass('active');
+                $pageTitle.text($(`.sidebar-nav .nav-link[data-target="${initialTargetId}"]`).find('.nav-text').text().trim() || 'Dashboard');
+                if (initialTargetId === 'progress-content') {
+                }
+            } else {
+                $('#dashboard-content').addClass('active');
+                $('.sidebar-nav .nav-link[data-target="dashboard-content"]').addClass('active');
+                $pageTitle.text('Dashboard');
+            }
+        });
+    </script>
+</body>
+</html>
