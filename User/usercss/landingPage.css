@@ -1,22 +1,21 @@
-/* @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap'); */
-/* Font import is already in HTML */
+
 
 :root {
-    /* Original landingPage.css variables */
+   
     --color-black: #0a0a0a;
     --color-black-rgb: 10, 10, 10;
     --color-dark-gray: #1a1a1a;
     --color-darker-gray: #1f1f1f;
-    --color-gold: #daa520; /* Primary gold for this page */
+    --color-gold: #daa520; 
     --color-gold-rgb: 218, 165, 32;
     --color-gold-light: #f0c44c;
     --color-text: #ffffff;
     --color-text-muted: #aaaaaa;
     --font-primary: 'Poppins', sans-serif;
 
-    /* Added from home.css for header compatibility */
-    --bg-color-header: #000; /* Or var(--color-black) if preferred */
-    --border-color-light: #333; /* Used for header border */
+    
+    --bg-color-header: #000; 
+    --border-color-light: #333;
     --header-height-desktop: 100px;
     --header-height-mobile: 80px;
 }
@@ -187,9 +186,9 @@ header {
 }
 
 .logo img { 
-    max-width: 100px; /* MODIFIED: Matches home.css desktop */
-    height: auto;     /* MODIFIED: Ensures aspect ratio is maintained */
-    width: auto;      /* Ensures width doesn't conflict if image is smaller than max-width */
+    max-width: 100px; 
+    height: auto;     
+    width: auto;      
 }
 .logo:hover { 
     transform: scale(1.05);
@@ -290,7 +289,7 @@ header {
     margin-left: 20px; 
 }
 
-/* === END HEADER STYLES === */
+
 
 .intro {
     background-image: linear-gradient(rgba(var(--color-black-rgb), 0.65), rgba(var(--color-black-rgb), 0.75)), url(../../images/intro-bg.webp);
@@ -876,7 +875,7 @@ footer p {
     margin: 0;
 }
 
-/* === RESPONSIVE STYLES FOR NEW HEADER (Adapted from home.css) === */
+
 @media (max-width: 991px) { 
     header {
         height: var(--header-height-mobile);
@@ -892,8 +891,8 @@ footer p {
     }
     #menu-icon { display: block; }
     .logo img {
-        max-width: 140px; /* MODIFIED: Matches home.css mobile */
-        height: auto;     /* MODIFIED: Ensures aspect ratio */
+        max-width: 140px; 
+        height: auto;   
     }
 
     .navbar {
@@ -1033,9 +1032,8 @@ footer p {
         padding: 1rem 4%; 
     }
     .logo img {
-        /* max-width: 140px; already covered by 991px */
-        /* No specific change for 768px in home.css for logo, so it inherits from 991px */
-        height: auto; /* Ensure fixed height isn't reapplied */
+       
+        height: auto; 
     }
     #menu-icon {
         font-size: 32px; 
@@ -1094,7 +1092,7 @@ footer p {
 }
 
 
-@media (max-width: 576px) { /* home.css had 480px for smallest logo, this is 576px */
+@media (max-width: 576px) { 
     header {
         padding: 0.8rem 3%; 
         height: calc(var(--header-height-mobile) - 10px); 
@@ -1103,8 +1101,8 @@ footer p {
         padding-top: calc(var(--header-height-mobile) - 10px);
     }
     .logo img { 
-        max-width: 120px; /* MODIFIED: Matches home.css smallest logo size */
-        height: auto;     /* MODIFIED: Ensure aspect ratio */
+        max-width: 120px; 
+        height: auto;   
     }
     #menu-icon {
         font-size: 30px;

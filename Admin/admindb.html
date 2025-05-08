@@ -50,32 +50,33 @@
                     <div class="stats-cards">
                         <div class="card">
                             <h3>Total Users</h3>
-                            <p id="total-users-stat">0</p>
+                            <p id="total-users-stat">2</p> 
                         </div>
                         <div class="card">
-                            <h3>Active Members</h3>
-                            <p id="active-members-stat">0</p>
+                            <h3>Active Users</h3>
+                            <p id="total-active-users-stat">1</p> 
                         </div>
                         <div class="card">
                             <h3>Total Gyms</h3>
-                            <p id="total-gyms-stat">0</p>
+                            <p id="total-gyms-stat">2</p> 
                         </div>
                         <div class="card">
                             <h3>Total Coaches</h3>
-                            <p id="total-coaches-stat">0</p>
+                            <p id="total-coaches-stat">2</p> 
                         </div>
                     </div>
 
                      <div class="recent-activity">
                         <h3>Recent Activity</h3>
                         <ul id="recent-activity-list">
+                             <li>Admin dashboard loaded. - 11:18 AM</li>
                             <li>Site Initialized.</li>
                         </ul>
                     </div>
                 </section>
 
 
-                <section id="analytics-content" class="content-section">
+                <section id="analytics-content" class="content-section"> 
                     <h2>Analytics</h2>
                     <p class="section-description">Visual representation of key metrics.</p>
                     <div class="charts-grid">
@@ -107,11 +108,65 @@
                     <div class="table-container">
                         <table>
                             <thead>
-                                <tr><th>ID</th><th>First Name</th><th>Last Name</th><th>Suffix</th><th>Email</th><th>Membership</th><th>Status</th><th>Actions</th></tr>
+                                <tr> 
+                                    <th>ID</th>
+                                    <th>First Name</th>
+                                    <th>Middle Name</th>
+                                    <th>Last Name</th>
+                                    <th>Suffix</th>
+                                    <th>Username</th>
+                                    <th>Email</th>
+                                    <th>Phone Number</th>
+                                    <th>Birth Date</th>
+                                    <th>Street Address</th>
+                                    <th>City</th>
+                                    <th>Province</th>
+                                    <th>Zip Code</th>
+                                    <th>Password</th> 
+                                    <th>Membership</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
                             </thead>
                             <tbody id="user-table-body">
-                                <tr data-id="USR001"><td data-label="ID">USR001</td><td data-label="First Name">Alice</td><td data-label="Last Name">Johnson</td><td data-label="Suffix"></td><td data-label="Email">alice@example.com</td><td data-label="Membership">Premium</td><td data-label="Status">Active</td><td data-label="Actions"><button class="btn btn-sm btn-danger">Delete</button></td></tr>
-                                <tr data-id="USR002"><td data-label="ID">USR002</td><td data-label="First Name">Bob</td><td data-label="Last Name">Williams</td><td data-label="Suffix">Jr.</td><td data-label="Email">bob@example.com</td><td data-label="Membership">Basic</td><td data-label="Status">Inactive</td><td data-label="Actions"><button class="btn btn-sm btn-danger">Delete</button></td></tr>
+                                <tr data-id="USR001"> 
+                                    <td data-label="ID">USR001</td>
+                                    <td data-label="First Name">Alice</td>
+                                    <td data-label="Middle Name"></td>
+                                    <td data-label="Last Name">Johnson</td>
+                                    <td data-label="Suffix"></td>
+                                    <td data-label="Username">alice_j</td>
+                                    <td data-label="Email">alice@example.com</td>
+                                    <td data-label="Phone Number">09123456701</td>
+                                    <td data-label="Birth Date">1992-02-20</td>
+                                    <td data-label="Street Address">10 Main St</td>
+                                    <td data-label="City">Boulder</td>
+                                    <td data-label="Province">CO</td>
+                                    <td data-label="Zip Code">80302</td>
+                                    <td data-label="text">AliceJhon01</td> 
+                                    <td data-label="Membership">Premium</td>
+                                    <td data-label="Status">Active</td>
+                                    <td data-label="Actions"><button class="btn btn-sm btn-danger">Delete</button></td>
+                                </tr>
+                                <tr data-id="USR002"> 
+                                    <td data-label="ID">USR002</td>
+                                    <td data-label="First Name">Bob</td>
+                                    <td data-label="Middle Name">W.</td>
+                                    <td data-label="Last Name">Williams</td>
+                                    <td data-label="Suffix">Jr.</td>
+                                    <td data-label="Username">bob_w_jr</td>
+                                    <td data-label="Email">bob@example.com</td>
+                                    <td data-label="Phone Number">09123456702</td>
+                                    <td data-label="Birth Date">1989-07-15</td>
+                                    <td data-label="Street Address">20 Side Ave</td>
+                                    <td data-label="City">Manchester</td>
+                                    <td data-label="Province">UK</td>
+                                    <td data-label="Zip Code">M1 4QU</td>
+                                     <td data-label="text">BobWillians12</td>
+                                    <td data-label="Membership">Basic</td>
+                                    <td data-label="Status">Inactive</td>
+                                    <td data-label="Actions"><button class="btn btn-sm btn-danger">Delete</button></td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -129,11 +184,62 @@
                      <div class="table-container">
                         <table>
                             <thead>
-                                <tr><th>ID</th><th>First Name</th><th>Last Name</th><th>Suffix</th><th>Role</th><th>Email</th><th>Gym Branch</th><th>Actions</th></tr>
+                                <tr> 
+                                    <th>ID</th>
+                                    <th>First Name</th>
+                                    <th>Middle Name</th>
+                                    <th>Last Name</th>
+                                    <th>Suffix</th>
+                                    <th>Username</th>
+                                    <th>Email</th>
+                                    <th>Phone Number</th>
+                                    <th>Birth Date</th>
+                                    <th>Street Address</th>
+                                    <th>City</th>
+                                    <th>Province</th>
+                                    <th>Zip Code</th>
+                                    <th>Password</th> 
+                                    <th>Designation</th>
+                                    <th>Actions</th>
+                                </tr>
                             </thead>
                             <tbody id="coach-table-body">
-                                <tr data-id="STF001"><td data-label="ID">STF001</td><td data-label="First Name">Charlie</td><td data-label="Last Name">Brown</td><td data-label="Suffix"></td><td data-label="Role">Head Coach</td><td data-label="Email">charlie@gym.com</td><td data-label="Gym Branch">Elite Fitness Hub</td><td data-label="Actions"><button class="btn btn-sm btn-danger">Delete</button></td></tr>
-                                <tr data-id="STF002"><td data-label="ID">STF002</td><td data-label="First Name">Diana</td><td data-label="Last Name">Prince</td><td data-label="Suffix"></td><td data-label="Role">Receptionist</td><td data-label="Email">diana@gym.com</td><td data-label="Gym Branch">Iron Haven</td><td data-label="Actions"><button class="btn btn-sm btn-danger">Delete</button></td></tr>
+                                <tr data-id="STF001"> 
+                                    <td data-label="ID">STF001</td>
+                                    <td data-label="First Name">Charlie</td>
+                                    <td data-label="Middle Name">B.</td>
+                                    <td data-label="Last Name">Brown</td>
+                                    <td data-label="Suffix"></td>
+                                    <td data-label="Username">charlie_b</td>
+                                    <td data-label="Email">charlie@gym.com</td>
+                                    <td data-label="Phone Number">09123456703</td>
+                                    <td data-label="Birth Date">1985-04-01</td>
+                                    <td data-label="Street Address">30 High St</td>
+                                    <td data-label="City">Denver</td>
+                                    <td data-label="Province">CO</td>
+                                    <td data-label="Zip Code">80202</td>
+                                    <td data-label="text">CharlieBrown1985</td> 
+                                    <td data-label="Designation">Head Coach</td>
+                                    <td data-label="Actions"><button class="btn btn-sm btn-danger">Delete</button></td>
+                                </tr>
+                                <tr data-id="STF002"> 
+                                    <td data-label="ID">STF002</td>
+                                    <td data-label="First Name">Diana</td>
+                                    <td data-label="Middle Name"></td>
+                                    <td data-label="Last Name">Prince</td>
+                                    <td data-label="Suffix"></td>
+                                    <td data-label="Username">diana_p</td>
+                                    <td data-label="Email">diana@gym.com</td>
+                                    <td data-label="Phone Number">09123456704</td>
+                                    <td data-label="Birth Date">1990-10-10</td>
+                                    <td data-label="Street Address">40 Low Ave</td>
+                                    <td data-label="City">London</td>
+                                    <td data-label="Province">UK</td>
+                                    <td data-label="Zip Code">W1 1AA</td>
+                                    <td data-label="text">DianaPrince1990</td>
+                                    <td data-label="Designation">Receptionist</td>
+                                    <td data-label="Actions"><button class="btn btn-sm btn-danger">Delete</button></td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -163,7 +269,7 @@
                 </section>
 
 
-                <section id="payments-content" class="content-section">
+                <section id="payments-content" class="content-section"> 
                     <h2>Payment History</h2>
                     <div class="search-container">
                         <input type="text" id="payment-search-input" class="search-input" placeholder="Search Payments...">
@@ -182,9 +288,9 @@
                     </div>
                 </section>
 
-            </div> <!-- .content-area -->
+            </div> 
         </main>
-    </div> <!-- .admin-container -->
+    </div> 
 
     <!-- MODALS -->
     <!-- Add New User Modal -->
@@ -193,7 +299,7 @@
             <button class="close-btn">×</button>
             <h2>Add New User</h2>
             <form id="add-user-form" novalidate>
-                <div class="form-group">
+                 <div class="form-group">
                     <label for="user-id">Member ID:</label>
                     <input type="text" id="user-id" name="user-id" placeholder="Autogenerated" readonly aria-readonly="true">
                 </div>
@@ -201,6 +307,11 @@
                     <label for="user-first-name">First Name:</label>
                     <input type="text" id="user-first-name" name="user-first-name" required placeholder="e.g., Bruce" aria-describedby="user-first-name-error" aria-invalid="false">
                     <div class="error-message" id="user-first-name-error" role="alert"></div>
+                </div>
+                <div class="form-group">
+                    <label for="user-middle-name">Middle Name (Optional):</label>
+                    <input type="text" id="user-middle-name" name="user-middle-name" placeholder="e.g., Jam">
+                    <div class="error-message" id="user-middle-name-error" role="alert"></div>
                 </div>
                 <div class="form-group">
                     <label for="user-last-name">Last Name:</label>
@@ -213,9 +324,49 @@
                      <div class="error-message" id="user-suffix-error" role="alert"></div>
                 </div>
                 <div class="form-group">
+                    <label for="user-username">Username:</label>
+                    <input type="text" id="user-username" name="user-username" required placeholder="e.g., User123" aria-describedby="user-username-error" aria-invalid="false">
+                    <div class="error-message" id="user-username-error" role="alert"></div>
+                </div>
+                <div class="form-group">
+                    <label for="user-birthdate">Birth Date:</label>
+                    <input type="date" id="user-birthdate" name="user-birthdate" required aria-describedby="user-birthdate-error" aria-invalid="false">
+                    <div class="error-message" id="user-birthdate-error" role="alert"></div>
+                </div>
+                 <div class="form-group">
+                    <label for="user-street-address">Street Address:</label>
+                    <input type="text" id="user-street-address" name="user-street-address" required placeholder="e.g., 123 Fitness Ave" aria-describedby="user-street-address-error" aria-invalid="false">
+                    <div class="error-message" id="user-street-address-error" role="alert"></div>
+                </div>
+                <div class="form-group">
+                    <label for="user-city">City:</label>
+                    <input type="text" id="user-city" name="user-city" required placeholder="e.g., Metro Manila" aria-describedby="user-city-error" aria-invalid="false">
+                    <div class="error-message" id="user-city-error" role="alert"></div>
+                </div>
+                <div class="form-group">
+                    <label for="user-province">State/Province:</label>
+                    <input type="text" id="user-province" name="user-province" required placeholder="e.g., NCR" aria-describedby="user-province-error" aria-invalid="false">
+                    <div class="error-message" id="user-province-error" role="alert"></div>
+                </div>
+                <div class="form-group">
+                    <label for="user-zip-code">Zip/Postal Code:</label>
+                    <input type="number" id="user-zip-code" name="user-zip-code" required placeholder="e.g., 1000" aria-describedby="user-zip-code-error" aria-invalid="false">
+                    <div class="error-message" id="user-zip-code-error" role="alert"></div>
+                </div>
+                <div class="form-group">
+                    <label for="user-phone">Phone Number:</label>
+                    <input type="tel" id="user-phone" name="user-phone" required placeholder="e.g., 09xxxxxxxxxx" aria-describedby="user-phone-error" aria-invalid="false">
+                    <div class="error-message" id="user-phone-error" role="alert"></div>
+                </div>
+                <div class="form-group">
                     <label for="user-email">Email:</label>
                     <input type="email" id="user-email" name="user-email" required placeholder="e.g., bruce@wayne.com" aria-describedby="user-email-error" aria-invalid="false">
                     <div class="error-message" id="user-email-error" role="alert"></div>
+                </div>
+                <div class="form-group">
+                    <label for="user-password">Password:</label>
+                    <input type="text" id="user-password" name="user-password" required placeholder="e.g., 12xxxxxx (min 8 characters)" aria-describedby="user-password-error" aria-invalid="false">
+                    <div class="error-message" id="user-password-error" role="alert"></div>
                 </div>
                 <div class="form-group">
                     <label for="user-membership">Membership:</label>
@@ -255,6 +406,11 @@
                     <input type="text" id="coach-first-name" name="coach-first-name" required placeholder="e.g., Clark" aria-describedby="coach-first-name-error" aria-invalid="false">
                     <div class="error-message" id="coach-first-name-error" role="alert"></div>
                 </div>
+                 <div class="form-group">
+                    <label for="coach-middle-name">Middle Name (Optional):</label>
+                    <input type="text" id="coach-middle-name" name="coach-middle-name" placeholder="e.g., J.">
+                    <div class="error-message" id="coach-middle-name-error" role="alert"></div>
+                </div>
                 <div class="form-group">
                     <label for="coach-last-name">Last Name:</label>
                     <input type="text" id="coach-last-name" name="coach-last-name" required placeholder="e.g., Kent" aria-describedby="coach-last-name-error" aria-invalid="false">
@@ -265,30 +421,62 @@
                     <input type="text" id="coach-suffix" name="coach-suffix" placeholder="e.g., Sr.">
                     <div class="error-message" id="coach-suffix-error" role="alert"></div>
                 </div>
+                 <div class="form-group">
+                    <label for="coach-username">Username:</label>
+                    <input type="text" id="coach-username" name="coach-username" required placeholder="e.g., CoachClark" aria-describedby="coach-username-error" aria-invalid="false">
+                    <div class="error-message" id="coach-username-error" role="alert"></div>
+                </div>
+                 <div class="form-group">
+                    <label for="coach-birthdate">Birth Date:</label>
+                    <input type="date" id="coach-birthdate" name="coach-birthdate" required aria-describedby="coach-birthdate-error" aria-invalid="false">
+                    <div class="error-message" id="coach-birthdate-error" role="alert"></div>
+                </div>
+                 <div class="form-group">
+                    <label for="coach-street-address">Street Address:</label>
+                    <input type="text" id="coach-street-address" name="coach-street-address" required placeholder="e.g., 456 Training Blvd" aria-describedby="coach-street-address-error" aria-invalid="false">
+                    <div class="error-message" id="coach-street-address-error" role="alert"></div>
+                </div>
+                <div class="form-group">
+                    <label for="coach-city">City:</label>
+                    <input type="text" id="coach-city" name="coach-city" required placeholder="e.g., Metropolis" aria-describedby="coach-city-error" aria-invalid="false">
+                    <div class="error-message" id="coach-city-error" role="alert"></div>
+                </div>
+                <div class="form-group">
+                    <label for="coach-province">State/Province:</label>
+                    <input type="text" id="coach-province" name="coach-province" required placeholder="e.g., State" aria-describedby="coach-province-error" aria-invalid="false">
+                    <div class="error-message" id="coach-province-error" role="alert"></div>
+                </div>
+                <div class="form-group">
+                    <label for="coach-zip-code">Zip/Postal Code:</label>
+                    <input type="number" id="coach-zip-code" name="coach-zip-code" required placeholder="e.g., 1001" aria-describedby="coach-zip-code-error" aria-invalid="false">
+                    <div class="error-message" id="coach-zip-code-error" role="alert"></div>
+                </div>
+                <div class="form-group">
+                    <label for="coach-phone">Phone Number:</label>
+                    <input type="tel" id="coach-phone" name="coach-phone" required placeholder="e.g., 09123456789" aria-describedby="coach-phone-error" aria-invalid="false">
+                    <div class="error-message" id="coach-phone-error" role="alert"></div>
+                </div>
                 <div class="form-group">
                     <label for="coach-email">Email:</label>
                     <input type="email" id="coach-email" name="coach-email" required placeholder="e.g., clark@dailyplanet.com" aria-describedby="coach-email-error" aria-invalid="false">
                     <div class="error-message" id="coach-email-error" role="alert"></div>
                 </div>
-                <div class="form-group">
-                    <label for="coach-role">Role:</label>
-                    <select id="coach-role" name="coach-role" required aria-describedby="coach-role-error" aria-invalid="false">
-                        <option value="">-- Select Role --</option>
-                        <option value="Head Coach">Head Coach</option>
-                        <option value="Manager">Manager</option>
-                        <option value="Receptionist">Receptionist</option>
-                    </select>
-                    <div class="error-message" id="coach-role-error" role="alert"></div>
+                <div class="form-group"> <!-- Added Password Field -->
+                    <label for="coach-password">Password:</label>
+                    <input type="text" id="coach-password" name="coach-password" required placeholder="min 8 characters" aria-describedby="coach-password-error" aria-invalid="false">
+                    <div class="error-message" id="coach-password-error" role="alert"></div>
                 </div>
                 <div class="form-group">
-                    <label for="coach-gym-branch">Gym Branch:</label>
-                    <select id="coach-gym-branch" name="coach-gym-branch" required aria-describedby="coach-gym-branch-error" aria-invalid="false">
-                        <option value="">-- Select Gym Branch --</option>
-                        <option value="Elite Fitness Hub">Elite Fitness Hub</option>
-                        <option value="Iron Haven">Iron Haven</option>
-                        <option value="Elevate Athletics">Elevate Athletics</option>
+                    <label for="coach-role">Designation:</label> 
+                    <select id="coach-role" name="coach-role" required aria-describedby="coach-role-error" aria-invalid="false">
+                        <option value="">-- Select Designation --</option>
+                        <option value="Head Coach">Head Coach</option>
+                        <option value="Receptionist">Receptionist</option>
+                        <option value="Trainer">Trainer</option>
+                         <option value="Assistant Coach">Assistant Coach</option>
+                         <option value="Manager">Manager</option> 
                     </select>
-                    <div class="error-message" id="coach-gym-branch-error" role="alert"></div>
+                    <div class="error-message" id="coach-role-error" role="alert"></div>
                 </div>
                 <button type="submit" class="btn btn-primary modal-add-btn">Add New Coach</button>
             </form>
@@ -296,7 +484,7 @@
     </div>
 
     <!-- Add New Gym Modal -->
-    <div id="add-gym-modal" class="modal">
+    <div id="add-gym-modal" class="modal"> <!-- Gym modal unchanged -->
         <div class="modal-content">
             <button class="close-btn">×</button>
             <h2>Add New Fitness Gym</h2>

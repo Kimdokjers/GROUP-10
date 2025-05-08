@@ -1,3 +1,4 @@
+
 *{
     margin: 0;
     padding: 0;
@@ -327,8 +328,8 @@
     background-color: var(--dark-gray);
     box-shadow: none;
     color: var(--primary-text);
-    table-layout: auto;
-    min-width: 600px;
+    table-layout: auto; 
+    min-width: 600px; 
     }
     
     thead {
@@ -538,6 +539,9 @@
     .modal .form-group input[type="text"],
     .modal .form-group input[type="number"],
     .modal .form-group input[type="email"],
+    .modal .form-group input[type="password"],
+    .modal .form-group input[type="date"],
+    .modal .form-group input[type="tel"], 
     .modal .form-group select {
     width: 100%;
     padding: 12px;
@@ -556,10 +560,10 @@
     padding-right: 35px;
     }
     
-    .modal .form-group::after {
+    .modal .form-group::after { 
     content: '';
     position: absolute;
-    top: calc(50% + 7px);
+    top: calc(50% + 7px); 
     right: 15px;
     width: 0;
     height: 0;
@@ -571,12 +575,16 @@
     z-index: 1;
     }
     
-    .modal .form-group:not(:has(> select))::after {
-    display: none;
+    .modal .form-group:not(:has(> select))::after,
+    .modal .form-group:has(> input[type="date"])::after,
+    .modal .form-group:has(> input[type="text"])::after,
+    .modal .form-group:has(> input[type="email"])::after,
+    .modal .form-group:has(> input[type="password"])::after,
+    .modal .form-group:has(> input[type="tel"])::after,
+    .modal .form-group:has(> input[type="number"])::after {
+        display: none;
     }
-    .modal .form-group:has(> input)::after {
-    display: none;
-    }
+    
     
     .modal .form-group select:required:invalid {
     color: #999;
@@ -592,6 +600,9 @@
     .modal input[type="text"]:focus,
     .modal input[type="number"]:focus,
     .modal input[type="email"]:focus,
+    .modal input[type="password"]:focus,
+    .modal input[type="date"]:focus,
+    .modal input[type="tel"]:focus, 
     .modal .form-group select:focus {
     outline: none;
     border-color: var(--main-color);
@@ -714,10 +725,6 @@
     to { opacity: 1; }
     }
     
-    @media (min-width: 1200px) {
-    
-    }
-    
     @media (max-width: 768px) {
     .sidebar {
     width: 70px;
@@ -770,8 +777,7 @@
     .header-logout-button i {
         font-size: 1em;
     }
-    
-    
+        
     .stats-cards { grid-template-columns: 1fr; }
     .content-area { padding: 20px; }
     
@@ -781,8 +787,13 @@
     .chart-container {
         min-height: 300px;
     }
-    
-    
+
+  
+    table {
+        min-width: 100%; 
+        width: 100%;
+    }
+        
     table, thead, tbody, th, td, tr {
         display: block;
     }
@@ -791,46 +802,67 @@
         top: -9999px;
         left: -9999px;
     }
-    tr { border: 1px solid var(--light-gray); margin-bottom: 10px; border-radius: 4px; overflow: hidden; }
+    tr { 
+        border: 1px solid var(--light-gray); 
+        margin-bottom: 10px; 
+        border-radius: 4px; 
+        overflow: hidden; 
+        background-color: var(--dark-gray); 
+        width: 100%; 
+    }
     td {
         border: none;
         border-bottom: 1px solid var(--medium-gray);
-        position: relative;
-        padding-left: 45% !important;
-        padding-top: 10px;
-        padding-bottom: 10px;
-        text-align: right;
-        white-space: normal;
-        min-height: 30px;
-        display: flex;
-        align-items: center;
-        justify-content: flex-end;
+        position: relative; 
+        padding-top: 10px;  
+        padding-bottom: 10px; 
+        padding-right: 10px; 
+        padding-left: 125px; 
+        text-align: left;   
+        white-space: normal;  
+        display: block;
+        min-height: auto; 
+        overflow-wrap: break-word; 
+        word-break: break-word; 
+        color: var(--primary-text); 
+        width: 100%; 
+        box-sizing: border-box; 
     }
-    td:last-child { border-bottom: 0; }
+    td:last-child { 
+        border-bottom: 0; 
+    }
     td:before {
+        content: attr(data-label);
         position: absolute;
         top: 50%;
-        left: 15px;
-        width: 40%;
-        padding-right: 10px;
-        white-space: nowrap;
-        content: attr(data-label);
+        transform: translateY(-50%);
+        left: 10px; 
+        width: 100px; 
+        padding-right: 5px; 
         text-align: left;
         font-weight: bold;
         color: var(--secondary-text);
-        transform: translateY(-50%);
+        white-space: normal; 
+        overflow-wrap: break-word;
+        word-break: break-word; 
+        font-size: 0.9em; 
     }
+
     td[data-label="Actions"] {
-         padding-left: 15px !important;
-         text-align: center;
-         justify-content: center;
+         padding-left: 15px !important;  
+         padding-right: 15px !important; 
+         text-align: center; 
+         min-height: auto; 
+         padding-top: 12px;
+         padding-bottom: 12px;
     }
     td[data-label="Actions"]:before {
          display: none;
     }
     td[data-label="Actions"] .btn {
-         margin: 3px 5px;
+         margin: 0; 
     }
+   
     
     .modal .modal-content {
         width: 90%;
@@ -843,8 +875,7 @@
         top: calc(50% + 7px);
         right: 12px;
     }
-    
-    
+        
     .controls-container {
         justify-content: flex-start;
     }
@@ -887,8 +918,7 @@
         padding: 5px 8px;
         font-size: 0.8em;
     }
-    
-    
+        
     .content-area { padding: 15px; }
     .card { padding: 15px; }
     .card h3 { font-size: 1em; }
@@ -896,9 +926,27 @@
     .btn { padding: 7px 12px; font-size: 0.85em; }
     .btn-sm { padding: 4px 8px; font-size: 0.75em; }
     
-    td { padding-left: 35% !important; font-size: 0.9em; }
-    td:before { width: 30%; left: 10px; font-size: 0.85em; }
-    td[data-label="Actions"] { padding-left: 10px !important; }
+    
+    td {
+        padding-left: 95px; 
+        padding-right: 5px; 
+        font-size: 0.85em; 
+        padding-top: 8px;
+        padding-bottom: 8px;
+    }
+    td:before {
+        left: 5px; 
+        width: 75px; 
+        font-size: 0.8em; 
+        padding-right: 3px;
+    }
+    td[data-label="Actions"] { 
+        padding-left: 10px !important; 
+        padding-right: 10px !important;
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+   
     
     .chart-container {
         min-height: 250px;

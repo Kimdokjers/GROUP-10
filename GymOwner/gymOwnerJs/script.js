@@ -1,4 +1,4 @@
-// adminjs/admin.js
+// gymOwnerJs/script.js
 $(document).ready(function() {
     // Cache jQuery Selections
     const $sidebarLinks = $('.sidebar-nav .nav-link');
@@ -10,7 +10,7 @@ $(document).ready(function() {
 
     const addUserModal = $('#add-user-modal');
     const addUserForm = $('#add-user-form');
-    const userTableBody = $('#user-table-body'); // Needed for membership chart
+    const userTableBody = $('#user-table-body'); 
 
     const addCoachModal = $('#add-coach-modal');
     const addCoachForm = $('#add-coach-form');
@@ -41,15 +41,13 @@ $(document).ready(function() {
     function calculateTotalRevenue() {
         let totalRevenue = 0;
         $('#payment-table-body tr').each(function() {
-            // More robust parsing for currency, handles potential PHP symbols or commas
             let amountText = $(this).find('td[data-label="Amount"]').text();
-            amountText = amountText.replace(/[₱$A-Za-z,]/g, '').trim(); // Remove symbols and commas
+            amountText = amountText.replace(/[₱$A-Za-z,]/g, '').trim(); 
             const amount = parseFloat(amountText);
             if (!isNaN(amount)) {
                 totalRevenue += amount;
             }
         });
-        // Format to PHP currency string
         return new Intl.NumberFormat('en-PH', { style: 'currency', currency: 'PHP' }).format(totalRevenue);
     }
 
@@ -57,7 +55,7 @@ $(document).ready(function() {
     function updateDashboardStats() {
         $('#total-users-stat').text(userTableBody.find('tr').length);
         $('#active-members-stat').text(userTableBody.find('tr td[data-label="Status"]:contains("Active")').length);
-        $('#total-revenue-stat').text(calculateTotalRevenue()); // Now uses PHP formatting
+        $('#total-revenue-stat').text(calculateTotalRevenue()); 
         $('#total-coaches-stat').text(coachTableBody.find('tr').length);
     }
 
@@ -83,18 +81,36 @@ $(document).ready(function() {
     // --- Form Field Definitions ---
     const userFormFields = [
         { input: $('#user-first-name'), errorId: 'user-first-name-error', name: 'First Name', required: true },
+        { input: $('#user-middle-name'), errorId: 'user-middle-name-error', name: 'Middle Name', required: false },
         { input: $('#user-last-name'), errorId: 'user-last-name-error', name: 'Last Name', required: true },
         { input: $('#user-suffix'), errorId: 'user-suffix-error', name: 'Suffix', required: false },
+        { input: $('#user-username'), errorId: 'user-username-error', name: 'Username', required: true },
+        { input: $('#user-birthdate'), errorId: 'user-birthdate-error', name: 'Birth Date', required: true },
+        { input: $('#user-street-address'), errorId: 'user-street-address-error', name: 'Street Address', required: true },
+        { input: $('#user-city'), errorId: 'user-city-error', name: 'City', required: true },
+        { input: $('#user-province'), errorId: 'user-province-error', name: 'State/Province', required: true },
+        { input: $('#user-zip-code'), errorId: 'user-zip-code-error', name: 'Zip Code', required: true, isNumber: true }, // Changed type=number, added isNumber check
+        { input: $('#user-phone'), errorId: 'user-phone-error', name: 'Phone Number', required: true }, // Changed type=tel
         { input: $('#user-email'), errorId: 'user-email-error', name: 'Email', required: true, isEmail: true },
+        { input: $('#user-password'), errorId: 'user-password-error', name: 'Password', required: true, minLength: 8 },
         { input: $('#user-membership'), errorId: 'user-membership-error', name: 'Membership', required: true },
         { input: $('#user-status'), errorId: 'user-status-error', name: 'Status', required: true },
     ];
+    // --- Updated Coach Form Fields ---
     const coachFormFields = [
         { input: $('#coach-first-name'), errorId: 'coach-first-name-error', name: 'First Name', required: true },
+        { input: $('#coach-middle-name'), errorId: 'coach-middle-name-error', name: 'Middle Name', required: false },
         { input: $('#coach-last-name'), errorId: 'coach-last-name-error', name: 'Last Name', required: true },
         { input: $('#coach-suffix'), errorId: 'coach-suffix-error', name: 'Suffix', required: false },
+        { input: $('#coach-username'), errorId: 'coach-username-error', name: 'Username', required: true },
+        { input: $('#coach-birthdate'), errorId: 'coach-birthdate-error', name: 'Birth Date', required: true },
+        { input: $('#coach-street-address'), errorId: 'coach-street-address-error', name: 'Street Address', required: true },
+        { input: $('#coach-city'), errorId: 'coach-city-error', name: 'City', required: true },
+        { input: $('#coach-province'), errorId: 'coach-province-error', name: 'State/Province', required: true },
+        { input: $('#coach-zip-code'), errorId: 'coach-zip-code-error', name: 'Zip Code', required: true, isNumber: true }, // type=number, add check
+        { input: $('#coach-phone'), errorId: 'coach-phone-error', name: 'Phone Number', required: true }, // type=tel
         { input: $('#coach-email'), errorId: 'coach-email-error', name: 'Email', required: true, isEmail: true },
-        { input: $('#coach-role'), errorId: 'coach-role-error', name: 'Role', required: true },
+        { input: $('#coach-role'), errorId: 'coach-role-error', name: 'Designation', required: true }, // Changed name to Designation for error msg
     ];
 
     // --- Generic Form Reset ---
@@ -117,25 +133,28 @@ $(document).ready(function() {
         fieldsToValidate.forEach(field => {
             const $input = field.input;
             const $errorDiv = $('#' + field.errorId);
-            const value = $input.val() ? $input.val().trim() : "";
+            const value = $input.val() ? (($input.attr('type') === 'password' || $input.attr('type') === 'date' || $input.attr('type') === 'number' || $input.attr('type') === 'tel') ? $input.val() : $input.val().trim()) : ""; 
             let errorMessage = '';
 
             if (field.required && value === '') {
                 errorMessage = `${field.name} is required.`;
+            } else if (value !== '' && field.minLength && value.length < field.minLength) {
+                errorMessage = `${field.name} must be at least ${field.minLength} characters long.`;
             } else if (value !== '' && field.isEmail) {
                 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
                 if (!emailPattern.test(value)) {
                     errorMessage = `Please enter a valid ${field.name.toLowerCase()} address.`;
                 }
-            } else if (value !== '' && field.isNumber) {
+            } else if (value !== '' && field.isNumber) { // Used for Zip Code
                  const numValue = parseFloat(value);
-                if (isNaN(numValue)) {
-                    errorMessage = `${field.name} must be a number.`;
+                if (isNaN(numValue) || !/^\d+$/.test(value)) { 
+                    errorMessage = `${field.name} must be a valid number.`;
                 } else if (field.min !== undefined && numValue < field.min) {
                     errorMessage = `${field.name} must be at least ${field.min}.`;
                 }
             }
-
+            // Add specific pattern check for phone if needed
+            
             if (errorMessage) {
                 $input.addClass('is-invalid').attr('aria-invalid', 'true');
                 $errorDiv.text(errorMessage).show();
@@ -248,7 +267,7 @@ $(document).ready(function() {
     $('.modal .close-btn').not('.alert-modal-close, #closeLogoutModalButton').on('click', function() {
         const $modal = $(this).closest('.modal');
         if ($modal.is(addUserModal)) hideAndResetFormModal($modal, addUserForm, userFormFields);
-        else if ($modal.is(addCoachModal)) hideAndResetFormModal($modal, addCoachForm, coachFormFields);
+        else if ($modal.is(addCoachModal)) hideAndResetFormModal($modal, addCoachForm, coachFormFields); // Use coachFormFields here
         else hideModal($modal);
     });
 
@@ -256,72 +275,108 @@ $(document).ready(function() {
     addUserForm.on('submit', function(e) {
         e.preventDefault();
         if (!validateForm(userFormFields)) return;
+        
         const id = $('#user-id').val();
         const firstName = $('#user-first-name').val().trim();
+        const middleName = $('#user-middle-name').val().trim();
         const lastName = $('#user-last-name').val().trim();
         const suffix = $('#user-suffix').val().trim();
+        const username = $('#user-username').val().trim();
+        const birthdate = $('#user-birthdate').val(); 
+        const streetAddress = $('#user-street-address').val().trim();
+        const city = $('#user-city').val().trim();
+        const province = $('#user-province').val().trim();
+        const zipCode = $('#user-zip-code').val(); // Use val() for number type
+        const phone = $('#user-phone').val(); // Use val() for tel type
         const email = $('#user-email').val().trim();
+
         const membership = $('#user-membership').val();
         const status = $('#user-status').val();
 
         const newRowHtml = `<tr data-id="${id}">
             <td data-label="ID">${id}</td>
             <td data-label="First Name">${firstName}</td>
+            <td data-label="Middle Name">${middleName}</td>
             <td data-label="Last Name">${lastName}</td>
             <td data-label="Suffix">${suffix}</td>
+            <td data-label="Username">${username}</td>
             <td data-label="Email">${email}</td>
+            <td data-label="Phone Number">${phone}</td>
+            <td data-label="Birth Date">${birthdate}</td>
+            <td data-label="Street Address">${streetAddress}</td>
+            <td data-label="City">${city}</td>
+            <td data-label="Province">${province}</td>
+            <td data-label="Zip Code">${zipCode}</td>
             <td data-label="Membership">${membership}</td>
             <td data-label="Status">${status}</td>
             <td data-label="Actions"><button class="btn btn-sm btn-danger">Delete</button></td>
         </tr>`;
         userTableBody.append(newRowHtml);
-        addResponsiveTableHeaders();
+        addResponsiveTableHeaders(); 
         showAlert(`User "${firstName} ${lastName}" added successfully!`, 'Success');
         addRecentActivity(`New user added: ${firstName} ${lastName} (${id})`);
         updateDashboardStats();
         if ($('#analytics-content').hasClass('active')) {
-            initializeAnalyticsCharts();
+            initializeAnalyticsCharts(); 
         }
         hideAndResetFormModal(addUserModal, addUserForm, userFormFields);
     });
 
+    // --- Updated Coach Form Submission ---
     addCoachForm.on('submit', function(e) {
         e.preventDefault();
-        if (!validateForm(coachFormFields)) return;
+        if (!validateForm(coachFormFields)) return; // Validate using coach fields
+
         const id = $('#coach-id').val();
         const firstName = $('#coach-first-name').val().trim();
+        const middleName = $('#coach-middle-name').val().trim();
         const lastName = $('#coach-last-name').val().trim();
         const suffix = $('#coach-suffix').val().trim();
+        const username = $('#coach-username').val().trim();
+        const birthdate = $('#coach-birthdate').val();
+        const streetAddress = $('#coach-street-address').val().trim();
+        const city = $('#coach-city').val().trim();
+        const province = $('#coach-province').val().trim();
+        const zipCode = $('#coach-zip-code').val();
+        const phone = $('#coach-phone').val();
         const email = $('#coach-email').val().trim();
-        const role = $('#coach-role').val();
+        const role = $('#coach-role').val(); // This is the Designation field
 
         const newRowHtml = `<tr data-id="${id}">
             <td data-label="ID">${id}</td>
             <td data-label="First Name">${firstName}</td>
+            <td data-label="Middle Name">${middleName}</td>
             <td data-label="Last Name">${lastName}</td>
             <td data-label="Suffix">${suffix}</td>
-            <td data-label="Role">${role}</td>
+            <td data-label="Username">${username}</td>
             <td data-label="Email">${email}</td>
+            <td data-label="Phone Number">${phone}</td>
+            <td data-label="Birth Date">${birthdate}</td>
+            <td data-label="Street Address">${streetAddress}</td>
+            <td data-label="City">${city}</td>
+            <td data-label="Province">${province}</td>
+            <td data-label="Zip Code">${zipCode}</td>
+            <td data-label="Designation">${role}</td>
             <td data-label="Actions"><button class="btn btn-sm btn-danger">Delete</button></td>
         </tr>`;
         coachTableBody.append(newRowHtml);
-        addResponsiveTableHeaders();
+        addResponsiveTableHeaders(); // Apply responsive labels
         showAlert(`Staff "${firstName} ${lastName}" added successfully!`, 'Success');
         addRecentActivity(`New staff added: ${firstName} ${lastName} (${id})`);
         updateDashboardStats();
-        hideAndResetFormModal(addCoachModal, addCoachForm, coachFormFields);
+        hideAndResetFormModal(addCoachModal, addCoachForm, coachFormFields); // Use coach fields for reset
     });
 
     // --- Click Outside Modal ---
     $(window).on('click', function(event) {
         const $target = $(event.target);
         if ($target.is(addUserModal)) hideAndResetFormModal(addUserModal, addUserForm, userFormFields);
-        else if ($target.is(addCoachModal)) hideAndResetFormModal(addCoachModal, addCoachForm, coachFormFields);
+        else if ($target.is(addCoachModal)) hideAndResetFormModal(addCoachModal, addCoachForm, coachFormFields); // Use coach fields
         else if ($target.is(logoutModal)) hideModal(logoutModal);
         else if ($target.is(alertModal)) hideAlert();
     });
 
-    // --- Table Action Handlers ---
+    // --- Table Action Handlers (Generic - should work for both tables) ---
     $('.content-area').on('click', '.btn-danger', function() {
         var $row = $(this).closest('tr');
         var id = $row.data('id');
@@ -341,7 +396,7 @@ $(document).ready(function() {
             const isUserRow = $row.closest('#user-table-body').length > 0;
             $row.fadeOut(400, function() {
                  $(this).remove();
-                 addResponsiveTableHeaders();
+                 addResponsiveTableHeaders(); 
                  updateDashboardStats();
                  if (isUserRow && $('#analytics-content').hasClass('active')) {
                      initializeAnalyticsCharts();
@@ -441,7 +496,6 @@ $(document).ready(function() {
                             if (context.parsed !== null) {
                                 const total = context.chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
                                 const percentage = total > 0 ? ((context.parsed / total) * 100).toFixed(1) + '%' : '0%';
-                                // CHANGED TO PHP
                                 const currencyValue = new Intl.NumberFormat('en-PH', { style: 'currency', currency: 'PHP' }).format(context.parsed);
                                 label += `${currencyValue} (${percentage})`;
                             }
@@ -484,8 +538,7 @@ $(document).ready(function() {
             options: commonChartOptions('bar')
         });
 
-        // Revenue by Membership Type Chart (Doughnut)
-        const premiumMembershipCost = 2000;
+        const premiumMembershipCost = 2000; 
         const basicMembershipCost = 550;
 
         let premiumMembersCount = 0;
@@ -508,7 +561,7 @@ $(document).ready(function() {
 
         if (premiumRevenue === 0 && basicRevenue === 0) {
              revenueLabels.push("No Revenue Data");
-             revenueData.push(1);
+             revenueData.push(1); 
         }
 
 
@@ -519,7 +572,7 @@ $(document).ready(function() {
                 datasets: [{
                     label: 'Revenue',
                     data: revenueData,
-                    backgroundColor: [goldColor, goldLightColor, '#E6BE8A'],
+                    backgroundColor: [goldColor, goldLightColor, '#E6BE8A'], 
                     borderColor: doughnutBorderColor,
                     borderWidth: 2,
                     hoverOffset: 8
@@ -574,7 +627,7 @@ $(document).ready(function() {
                 const $row = $(this);
                 $row.find('td').each(function(index) {
                     if ($headerCells.eq(index).length) {
-                         const newLabel = $headerCells.eq(index).text();
+                         const newLabel = $headerCells.eq(index).text().trim(); // Added .trim() here
                          if ($(this).attr('data-label') !== newLabel) {
                             $(this).attr('data-label', newLabel);
                          }
@@ -586,11 +639,12 @@ $(document).ready(function() {
 
     // --- Initial Page Load Setup ---
     addResponsiveTableHeaders();
-    updateDashboardStats(); // Will now use PHP for total revenue stat card
+    updateDashboardStats(); 
     addRecentActivity("Gym Owner dashboard loaded.");
 
-    handleContentSearch('#user-search-input', '#user-table-body', ['First Name', 'Last Name', 'Email', 'ID', 'Membership']);
-    handleContentSearch('#staff-search-input', '#coach-table-body', ['First Name', 'Last Name', 'Email', 'ID', 'Role']);
+    handleContentSearch('#user-search-input', '#user-table-body', ['First Name', 'Last Name', 'Username', 'Email', 'Phone Number', 'ID', 'Membership']);
+    // --- Updated Staff Search ---
+    handleContentSearch('#staff-search-input', '#coach-table-body', ['First Name', 'Last Name', 'Username', 'Email', 'Phone Number', 'ID', 'Designation']);
     handleContentSearch('#payment-search-input', '#payment-table-body', ['User Name', 'User ID', 'Payment ID', 'Method', 'Status']);
 
     const initialActiveLink = $('.sidebar-nav .nav-link.active').first();
