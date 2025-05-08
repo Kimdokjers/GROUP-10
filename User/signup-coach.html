@@ -177,21 +177,17 @@
 
                 console.log("Browser validation likely passed, or JS proceeding. Preparing redirect.");
 
-                const adminEmail = "admin@gmail.com";
-                const adminPassword = "admin123";
-                const ownerEmail = "gymOwner@gmail.com";
-                const ownerPassword = "gymOwner123";
-                const clientEmail = "user@gmail.com";
-                const clientPassword = "user0123";
+                const coachEmail = "coach@gmail.com";
+                const coachPassword = "coach123";
 
                 let redirectUrl;
                 const currentFormEmail = email;
                 const currentFormPassword = password;
 
-               if (currentFormEmail === clientEmail && currentFormPassword === clientPassword) {
-                    redirectUrl = "coach.html";
+               if (currentFormEmail === coachEmail && currentFormPassword === coachPassword) {
+                    redirectUrl = "../GymCoach/coach.html";
                 } else {
-                     redirectUrl = "coach.html";
+                     redirectUrl = "../GymCoach/coach.html";
                 }
 
                 const completeSignupAndRedirect = () => {
